@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+	<color name="amber_primary">#FFFFB300</color>
+	<color name="amber_light">#FFFFE54C</color>
+	<color name="amber_dark">#FFC68400</color>
+	<color name="blue_secondary">#FF1565C0</color>
+	<color name="blue_light">#FF5E92F3</color>
+	<color name="blue_dark">#FF003C8F</color>
+	<color name="black">#FF000000</color>
+	<color name="white">#FFFFFFFF</color>
+	<color name="gray">#FFCCCCCC</color>
+	<color name="transparent">#00000000</color>
+
+	<array name="material_colors_700" tools:ignore="UnusedResources">
+		<item name="red_700" type="color">#d01716</item>
+		<item name="pink_700" type="color">#c2185b</item>
+		<item name="purple_700" type="color">#7b1fa2</item>
+		<item name="deep_purple_700" type="color">#512da8</item>
+		<item name="indigo_700" type="color">#303f9f</item>
+		<item name="blue_700" type="color">#455ede</item>
+		<item name="light_blue_700" type="color">#0288d1</item>
+		<item name="cyan_700" type="color">#0097a7</item>
+		<item name="teal_700" type="color">#00796b</item>
+		<item name="green_700" type="color">#0a7e07</item>
+		<item name="light_green_700" type="color">#689f38</item>
+		<item name="lime_700" type="color">#afb42b</item>
+		<item name="yellow_700" type="color">#fbc02d</item>
+		<item name="amber_700" type="color">#ffa000</item>
+		<item name="orange_700" type="color">#f57c00</item>
+		<item name="deep_orange_700" type="color">#e64a19</item>
+	</array>
+
+	<array name="material_colors_900" tools:ignore="UnusedResources">
+		<item name="red_900" type="color">#b0120a</item>
+		<item name="pink_900" type="color">#880e4f</item>
+		<item name="purple_900" type="color">#4a148c</item>
+		<item name="deep_purple_900" type="color">#311b92</item>
+		<item name="indigo_900" type="color">#1a237e</item>
+		<item name="blue_900" type="color">#2a36b1</item>
+		<item name="light_blue_900" type="color">#01579b</item>
+		<item name="cyan_900" type="color">#006064</item>
+		<item name="teal_900" type="color">#004d40</item>
+		<item name="green_900" type="color">#0d5302</item>
+		<item name="light_green_900" type="color">#33691e</item>
+		<item name="lime_900" type="color">#827717</item>
+		<item name="yellow_900" type="color">#f57f17</item>
+		<item name="amber_900" type="color">#ff6f00</item>
+		<item name="orange_900" type="color">#e65100</item>
+		<item name="deep_orange_900" type="color">#bf360c</item>
+	</array>
+
+</resources>

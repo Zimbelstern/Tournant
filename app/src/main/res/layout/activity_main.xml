@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	tools:context=".MainActivity">
+
+	<androidx.core.widget.NestedScrollView
+		android:id="@+id/activity_main_welcome"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:clipToPadding="false">
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="vertical"
+			android:padding="32dp">
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:padding="16dp"
+				android:background="@drawable/round_corners"
+				android:text="@string/choose_file_long"/>
+
+			<ImageView
+				android:background="@drawable/round_corners"
+				android:id="@+id/activity_main_cookie"
+				android:contentDescription="@string/choose_file"
+				android:layout_width="64dp"
+				android:layout_height="64dp"
+				android:layout_margin="16dp"
+				android:padding="12dp"
+				android:layout_gravity="center_horizontal"
+				android:src="@drawable/ic_cookie"/>
+
+			<TextView
+				android:id="@+id/activity_main_file_modes_explanation"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:padding="16dp"
+				android:background="@drawable/round_corners"
+				tools:text="@string/file_modes_explanation"/>
+
+		</LinearLayout>
+
+	</androidx.core.widget.NestedScrollView>
+
+	<androidx.recyclerview.widget.RecyclerView
+		android:id="@+id/activity_main_recycler"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="@drawable/background_repeat"
+		android:paddingVertical="8dp"
+		android:clipToPadding="false"
+		android:visibility="gone"
+		app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+	<androidx.coordinatorlayout.widget.CoordinatorLayout
+		android:id="@+id/activity_main_loading"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="@drawable/background_repeat">
+
+		<ProgressBar
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"/>
+
+	</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</FrameLayout>

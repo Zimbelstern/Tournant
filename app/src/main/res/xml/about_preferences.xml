@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+	<PreferenceCategory
+		app:key="about"
+		app:title="@string/about_app_name">
+
+		<Preference
+			app:key=""
+			app:title="@string/website"
+			app:icon="@drawable/ic_website"/>
+
+		<Preference
+			app:key="version"
+			app:title="@string/version"
+			app:summary="@string/versionName"
+			app:icon="@drawable/ic_number"/>
+
+		<Preference
+			app:key="license"
+			app:title="@string/license"
+			app:summary="Apache License, Version 2.0"
+			app:icon="@drawable/ic_license"/>
+
+		<Preference
+			app:key="source"
+			app:title="@string/code"
+			app:icon="@drawable/ic_code"/>
+
+		<Preference
+			app:key="issues"
+			app:title="@string/issues"
+			app:icon="@drawable/ic_bug"/>
+
+		<Preference
+			app:key="donate"
+			app:title="@string/donate"
+			app:icon="@drawable/ic_donate"/>
+
+	</PreferenceCategory>
+
+	<PreferenceCategory
+		app:key="libraries"
+		app:title="@string/libraries">
+
+		<Preference
+			app:title="Android Jetpack"
+			app:summary="Apache License, Version 2.0"
+			app:icon="@drawable/ic_library"/>
+
+		<Preference
+			app:title="Kotlin"
+			app:summary="Apache License, Version 2.0"
+			app:icon="@drawable/ic_library"/>
+
+		<Preference
+			app:title="Material Design Icons"
+			app:summary="Apache License, Version 2.0"
+			app:icon="@drawable/ic_library"/>
+
+	</PreferenceCategory>
+
+</PreferenceScreen>

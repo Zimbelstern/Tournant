@@ -1,0 +1,72 @@
+<resources>
+
+	<!-- App bar titles -->
+	<string name="recipes">Rezepte</string>
+	<string name="recipes_with_file_mode">Rezepte (%s)</string>
+
+	<!-- Recipe -->
+	<string name="category">Kategorie</string>
+	<string name="cuisine">Küche</string>
+	<string name="rating">Bewertung</string>
+	<string name="source">Quelle</string>
+	<string name="link">Webseite</string>
+	<string name="cooktime">Garzeit</string>
+	<string name="preptime">Vorbereitungszeit</string>
+	<string name="yields">Ergibt Portionen</string>
+	<string name="ingredients">Zutaten</string>
+	<string name="optional">%s (optional)</string>
+	<string name="instructions">Anleitung</string>
+	<string name="notes">Notizen</string>
+
+	<!-- First start UI & file choose options -->
+	<string name="choose_file_long">Tippen Sie auf den Keks, um eine Gourmet/Gourmand-XML-Datei vom Gerät auszuwählen.</string>
+	<string name="file_modes_explanation">"&lt;p>Sie können dann zwischen folgenden Dateimodi wählen:&lt;/p>
+		&lt;h6>Vorschau&lt;/h6>
+		&lt;p>Die Datei wird einmalig eingelesen und die Rezepte werden angezeigt, bis Sie die Datei oder die App schließen.&lt;/p>
+		&lt;h6>Importieren&lt;/h6>
+		&lt;p>Die Datei wird in den App-Speicher kopiert und der Inhalt als Ihre Standard-Rezepteliste angezeigt.&lt;/p>
+		&lt;h6>Verlinken&lt;/h6>
+		&lt;p>Die Datei wird bei jedem Start der App neu eingelesen, sodass die angezeigten Rezepte immer aktuell sind. Dies ist vor allem dann nützlich, wenn Sie die Rezepte-Datei mit Ihrem PC synchronisieren wollen.
+Aufgrund von Systembeschränkungen funktioniert das Verlinken jedoch nicht immer. Dieser Modus steht deshalb nicht zur Verfügung, wenn Sie die App über die &lt;i>Öffnen-mit&lt;/i>-Option einer Datei aufrufen.&lt;/p>"</string>
+	<string-array name="file_modes">
+		<item>Vorschau</item>
+		<item>Importieren</item>
+		<item>Verlinken</item>
+	</string-array>
+	<string-array name="file_modes_participles">
+		<item>Vorschau</item>
+		<item>Importiert</item>
+		<item>Verlinkt</item>
+	</string-array>
+
+	<!-- Messages -->
+	<string name="file_does_not_exist">Die Datei existiert nicht</string>
+	<string name="no_recipes_found">Keine Rezepte gefunden</string>
+	<string name="inputstream_null">Fehler beim Öffnen der Datei</string>
+	<string name="unknown_file_error">Unbekannter Dateifehler</string>
+
+	<!-- Options menu -->
+	<string name="choose_file">Datei wählen</string>
+	<string name="close_file">Datei schließen</string>
+	<string name="settings">Einstellungen</string>
+	<string name="about_app_name">Über %s</string>
+
+	<!-- Settings -->
+	<string name="general_settings">Allgemeine Einstellungen</string>
+	<string name="keep_screen_on">Bildschirm in der Rezeptansicht angeschaltet lassen</string>
+
+	<!-- About -->
+	<string name="website">Webseite</string>
+	<string name="version">Version</string>
+	<string name="license">Lizenz</string>
+	<string name="code">Quellcode</string>
+	<string name="issues">Bugtracker</string>
+	<string name="donate">Spenden</string>
+	<string name="libraries">Bibliotheken</string>
+
+	<!-- General purpose -->
+	<string name="cancel">Abbrechen</string>
+	<string name="ok">OK</string>
+	<string name="egg">Hier, ein Keks: 🍪</string>
+
+</resources>

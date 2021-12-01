@@ -1,0 +1,14 @@
+<resources>
+	<style name="Theme.Tournant" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+		<item name="colorPrimary">@color/amber_primary</item>
+		<item name="colorPrimaryVariant">@color/amber_dark</item>
+		<item name="colorOnPrimary">@color/black</item>
+		<item name="colorSecondary">@color/blue_secondary</item>
+		<item name="colorSecondaryVariant">@color/blue_dark</item>
+		<item name="colorOnSecondary">@color/white</item>
+		<item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+	</style>
+	<style name="Theme.Tournant.KitchenBackground" parent="Theme.Tournant">
+		<item name="android:windowBackground">@drawable/background_repeat</item>
+	</style>
+</resources>

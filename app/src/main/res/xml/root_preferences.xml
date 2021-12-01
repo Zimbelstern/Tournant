@@ -1,0 +1,15 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+	<PreferenceCategory
+		app:title="@string/general_settings">
+
+		<CheckBoxPreference
+			app:key="keep_screen_on"
+			app:title="@string/keep_screen_on"
+			app:defaultValue="true"
+			app:singleLineTitle="false"
+			app:icon="@drawable/ic_screen"/>
+
+	</PreferenceCategory>
+
+</PreferenceScreen>
