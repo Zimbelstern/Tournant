@@ -43,10 +43,11 @@ Aufgrund von Systembeschränkungen funktioniert das Verlinken jedoch nicht immer
 	<string name="file_does_not_exist">Die Datei existiert nicht</string>
 	<string name="no_recipes_found">Keine Rezepte gefunden</string>
 	<string name="inputstream_null">Fehler beim Öffnen der Datei</string>
-	<string name="unknown_file_error">Unbekannter Dateifehler</string>
+	<string name="unknown_file_error">Unbekannter Dateifehler: %s</string>
 
 	<!-- Options menu -->
 	<string name="choose_file">Datei wählen</string>
+	<string name="choose_file_option">Dateioption wählen</string>
 	<string name="close_file">Datei schließen</string>
 	<string name="settings">Einstellungen</string>
 	<string name="about_app_name">Über %s</string>

@@ -41,7 +41,6 @@ class MainActivity : AppCompatActivity() {
 	private var titleView: TextView? = null
 	private var recipes = MutableLiveData<List<Recipe>>()
 	private var fileMode = -1
-	private var fileName: String? = null
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -80,7 +79,6 @@ class MainActivity : AppCompatActivity() {
 			savedInstanceState?.getParcelableArrayList<Recipe>("RECIPES") != null -> {
 				recipes.postValue(savedInstanceState.getParcelableArrayList("RECIPES"))
 				fileMode = savedInstanceState.getInt("FILE_MODE")
-				fileName = savedInstanceState.getString("FILE_NAME")
 			}
 			intent.action == Intent.ACTION_VIEW -> showOpenOptions(intent.data as Uri, 2)
 			else -> openSavedRecipes()
@@ -131,7 +129,7 @@ class MainActivity : AppCompatActivity() {
 							parseRecipes(inputStream)
 						}
 					} catch (e: Exception) {
-						Toast.makeText(this, getString(R.string.unknown_file_error), Toast.LENGTH_LONG).show()
+						Toast.makeText(this, getString(R.string.unknown_file_error, e.message), Toast.LENGTH_LONG).show()
 					}
 				}
 			}
@@ -150,7 +148,7 @@ class MainActivity : AppCompatActivity() {
 
 	/** Launches [getRecipeFileUri] to get a file. **/
 	private fun chooseFile() {
-		getRecipeFileUri.launch(arrayOf("application/*", "text/xml"))
+		getRecipeFileUri.launch(arrayOf("application/octet-stream", "application/xml", "text/html", "text/xml"))
 	}
 
 	/** Shows the options Preview, Import and Link depending on the context
@@ -159,7 +157,7 @@ class MainActivity : AppCompatActivity() {
 		var choice = 0
 		val options = resources.getStringArray(R.array.file_modes).dropLast( 3 - numOfOptions).toTypedArray()
 		MaterialAlertDialogBuilder(this)
-			.setTitle(uri.path?.substringAfterLast("/")?.substringAfterLast(":"))
+			.setTitle(getString(R.string.choose_file_option))
 			.setSingleChoiceItems(options, 0) { _, which ->
 				choice = which
 			}
@@ -171,7 +169,6 @@ class MainActivity : AppCompatActivity() {
 						Toast.makeText(this, getString(R.string.inputstream_null), Toast.LENGTH_LONG).show()
 					} else {
 						fileMode = choice
-						fileName = uri.path?.substringAfterLast("/")?.substringAfterLast(":")
 						when (choice) {
 							FILE_MODE_PREVIEW -> previewRecipes(inputStream)
 							FILE_MODE_IMPORT -> importRecipes(inputStream)
@@ -179,7 +176,7 @@ class MainActivity : AppCompatActivity() {
 						}
 					}
 				} catch (e: Exception) {
-					Toast.makeText(this, getString(R.string.unknown_file_error), Toast.LENGTH_LONG).show()
+					Toast.makeText(this, getString(R.string.unknown_file_error, e.message), Toast.LENGTH_LONG).show()
 				}
 			}
 			.show()
@@ -232,9 +229,9 @@ class MainActivity : AppCompatActivity() {
 			withContext(Dispatchers.IO) {
 				try {
 					recipes.postValue(GourmetXmlParser().parse(inputStream))
-				} catch (_: Exception) {
+				} catch (e: Exception) {
 					withContext(Dispatchers.Main) {
-						Toast.makeText(applicationContext, getString(R.string.unknown_file_error), Toast.LENGTH_LONG).show()
+						Toast.makeText(applicationContext, getString(R.string.unknown_file_error, e.message), Toast.LENGTH_LONG).show()
 						recipes.postValue(null)
 					}
 				}
@@ -275,7 +272,6 @@ class MainActivity : AppCompatActivity() {
 		recipes.value?.let {
 			outState.putParcelableArrayList("RECIPES", ArrayList<Recipe>(it))
 			outState.putInt("FILE_MODE", fileMode)
-			outState.putString("FILE_NAME", fileName)
 		}
 		super.onSaveInstanceState(outState)
 	}
