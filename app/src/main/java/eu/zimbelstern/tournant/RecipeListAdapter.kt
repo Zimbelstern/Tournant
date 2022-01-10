@@ -47,7 +47,7 @@ class RecipeListAdapter(private val allRecipes: List<Recipe>) : RecyclerView.Ada
 			text = recipe.cuisine
 			val colors = resources.obtainTypedArray(R.array.material_colors_700)
 			val colorsRipple = resources.obtainTypedArray(R.array.material_colors_900)
-			val hashColor = Random(recipe.category.hashCode()).nextInt(resources.getStringArray(R.array.material_colors_700).size)
+			val hashColor = Random(recipe.cuisine.hashCode()).nextInt(resources.getStringArray(R.array.material_colors_700).size)
 			chipBackgroundColor = colors.getColorStateList(hashColor)
 			rippleColor = colorsRipple.getColorStateList(hashColor)
 			colors.recycle()
