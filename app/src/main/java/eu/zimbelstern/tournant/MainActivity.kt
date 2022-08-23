@@ -232,7 +232,7 @@ class MainActivity : AppCompatActivity() {
 				} catch (e: Exception) {
 					withContext(Dispatchers.Main) {
 						Toast.makeText(applicationContext, getString(R.string.unknown_file_error, e.message), Toast.LENGTH_LONG).show()
-						recipes.postValue(null)
+						recipes.postValue(listOf())
 					}
 				}
 				inputStream.close()
@@ -276,10 +276,10 @@ class MainActivity : AppCompatActivity() {
 		super.onSaveInstanceState(outState)
 	}
 
-	override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+	override fun onCreateOptionsMenu(menu: Menu): Boolean {
 		menuInflater.inflate(R.menu.options, menu)
-		menu?.findItem(R.id.close_file)?.isEnabled = fileMode == FILE_MODE_PREVIEW
-		menu?.findItem(R.id.show_about)?.title = getString(R.string.about_app_name, getString(R.string.app_name))
+		menu.findItem(R.id.close_file)?.isEnabled = fileMode == FILE_MODE_PREVIEW
+		menu.findItem(R.id.show_about)?.title = getString(R.string.about_app_name, getString(R.string.app_name))
 		return true
 	}
 
@@ -290,7 +290,7 @@ class MainActivity : AppCompatActivity() {
 				true
 			}
 			R.id.close_file -> {
-				recipes.postValue(null)
+				recipes.postValue(listOf())
 				true
 			}
 			R.id.show_settings -> {
