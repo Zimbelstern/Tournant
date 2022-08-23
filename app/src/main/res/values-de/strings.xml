@@ -12,11 +12,19 @@
 	<string name="link">Webseite</string>
 	<string name="cooktime">Garzeit</string>
 	<string name="preptime">Vorbereitungszeit</string>
-	<string name="yields">Ergibt Portionen</string>
+	<string name="yield">für</string>
 	<string name="ingredients">Zutaten</string>
 	<string name="optional">%s (optional)</string>
 	<string name="instructions">Anleitung</string>
 	<string name="notes">Notizen</string>
+	<plurals name="servings">
+		<item quantity="one">Portion</item>
+		<item quantity="other">Portionen</item>
+	</plurals>
+	<plurals name="lots">
+		<item quantity="one">-fache Rezeptmenge</item>
+		<item quantity="other">-fache Rezeptmenge</item>
+	</plurals>
 
 	<!-- First start UI & file choose options -->
 	<string name="choose_file_long">Tippen Sie auf den Keks, um eine Gourmet/Gourmand-XML-Datei vom Gerät auszuwählen.</string>
@@ -69,5 +77,7 @@ Aufgrund von Systembeschränkungen funktioniert das Verlinken jedoch nicht immer
 	<string name="cancel">Abbrechen</string>
 	<string name="ok">OK</string>
 	<string name="egg">Hier, ein Keks: 🍪</string>
+	<string name="less">Weniger</string>
+	<string name="more">Mehr</string>
 
 </resources>

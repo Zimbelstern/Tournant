@@ -3,12 +3,16 @@ package eu.zimbelstern.tournant
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.text.isDigitsOnly
 import androidx.recyclerview.widget.RecyclerView
 import eu.zimbelstern.tournant.databinding.RecyclerItemIngredientsBinding
-import java.lang.StringBuilder
 
-class IngredientListAdapter(private val strings: List<String?>) : RecyclerView.Adapter<IngredientListAdapter.IngredientListViewHolder>() {
+class IngredientListAdapter(private val strings: List<String?>, private val type: Int) : RecyclerView.Adapter<IngredientListAdapter.IngredientListViewHolder>() {
+
+	companion object {
+		const val TYPE_AMOUNT = 1
+		const val TYPE_UNIT = 2
+		const val TYPE_ITEM = 3
+	}
 
 	class IngredientListViewHolder(val binding: RecyclerItemIngredientsBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -22,7 +26,7 @@ class IngredientListAdapter(private val strings: List<String?>) : RecyclerView.A
 			holder.binding.root.text = StringBuilder(strings[position]!!).append("  ").toString()
 		else
 			holder.binding.root.text = null
-		if (strings[position]?.isDigitsOnly() == true)
+		if (type == TYPE_AMOUNT)
 			holder.binding.root.textAlignment = View.TEXT_ALIGNMENT_TEXT_END
 	}
 

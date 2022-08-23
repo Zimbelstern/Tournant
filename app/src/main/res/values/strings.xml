@@ -15,11 +15,19 @@
 	<string name="link">Webpage</string>
 	<string name="cooktime">Cooking time</string>
 	<string name="preptime">Preparation time</string>
-	<string name="yields">Yield</string>
+	<string name="yield">Yield:</string>
 	<string name="ingredients">Ingredients</string>
 	<string name="optional">%s (optional)</string>
 	<string name="instructions">Instructions</string>
 	<string name="notes">Notes</string>
+	<plurals name="servings">
+		<item quantity="one">serving</item>
+		<item quantity="other">servings</item>
+	</plurals>
+	<plurals name="lots">
+		<item quantity="one">lot</item>
+		<item quantity="other">lots</item>
+	</plurals>
 
 	<!-- First start UI & file choose options -->
 	<string name="choose_file_long">Tap the cookie to choose a Gourmet/Gourmand XML file from your device.</string>
@@ -72,5 +80,7 @@ Note that due to system restrictions, linking the file will not always work. Hen
 	<string name="cancel">Cancel</string>
 	<string name="ok">OK</string>
 	<string name="egg">Have a cookie: 🍪</string>
+	<string name="less">less</string>
+	<string name="more">more</string>
 
 </resources>

@@ -10,4 +10,19 @@ data class Ingredient (
 	val item: String?,
 	val key: String?,
 	val optional: Boolean?
-) : Parcelable
+) : Parcelable {
+
+	fun withScaledAmount(factor: Float): Ingredient {
+		if (factor == 1f || amount == null) {
+			return this
+		}
+
+		val amountScaled = amount.toFloat()
+			.times(factor)
+			.roundToNDigits(amount.toFloat().getNumberOfDigits() + 2)
+			.toStringForCooks()
+
+		return this.copy(amount = amountScaled)
+	}
+
+}

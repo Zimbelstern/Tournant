@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
 			else -> openSavedRecipes()
 		}
 
-		recipes.observe(this, {
+		recipes.observe(this) {
 			binding.activityMainRecycler.visibility = View.GONE
 			binding.activityMainLoading.visibility = View.GONE
 			searchView?.apply {
@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity() {
 					openSavedRecipes()
 			}
 			invalidateOptionsMenu()
-		})
+		}
 
 	}
 

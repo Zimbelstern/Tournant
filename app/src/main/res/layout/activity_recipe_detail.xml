@@ -212,29 +212,6 @@
 
 				</LinearLayout>
 
-
-				<LinearLayout
-					android:id="@+id/recipe_detail_yields"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:orientation="vertical"
-					android:visibility="gone"
-					tools:visibility="visible">
-
-					<TextView
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:text="@string/yields"
-						android:textSize="16sp"
-						android:textStyle="bold"/>
-
-					<TextView
-						android:id="@+id/recipe_detail_yields_text"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"/>
-
-				</LinearLayout>
-
 			</LinearLayout>
 
 		</com.google.android.material.card.MaterialCardView>
@@ -263,6 +240,68 @@
 					android:text="@string/ingredients"
 					android:textSize="16sp"
 					android:textStyle="bold" />
+
+				<LinearLayout
+					android:id="@+id/recipe_detail_yields"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="8dp"
+					android:orientation="horizontal"
+					android:visibility="gone"
+					tools:visibility="visible">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:labelFor="@id/recipe_detail_yields_value"
+						android:text="@string/yield"
+						android:textSize="16sp"
+						android:textStyle="italic"/>
+
+					<EditText
+						android:id="@+id/recipe_detail_yields_value"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginStart="4sp"
+						android:inputType="numberDecimal"
+						android:importantForAutofill="no"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:id="@+id/recipe_detail_yields_text"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:textSize="16sp"
+						android:textStyle="italic"
+						tools:text="portions"/>
+
+					<View
+						android:layout_width="0dp"
+						android:layout_height="match_parent"
+						android:layout_weight="1"/>
+
+					<ImageButton
+						android:id="@+id/recipe_detail_less"
+						android:layout_width="32dp"
+						android:layout_height="32dp"
+						android:layout_gravity="center"
+						android:layout_margin="4dp"
+						android:background="@drawable/button_round"
+						android:src="@drawable/ic_minus"
+						android:contentDescription="@string/less"/>
+
+					<ImageButton
+						android:id="@+id/recipe_detail_more"
+						android:layout_width="32dp"
+						android:layout_height="32dp"
+						android:layout_gravity="center"
+						android:layout_margin="4dp"
+						android:background="@drawable/button_round"
+						android:src="@drawable/ic_plus"
+						android:contentDescription="@string/more"/>
+
+				</LinearLayout>
+
 
 				<LinearLayout
 					android:layout_width="wrap_content"
