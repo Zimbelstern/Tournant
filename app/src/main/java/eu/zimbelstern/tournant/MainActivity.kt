@@ -97,7 +97,8 @@ class MainActivity : AppCompatActivity() {
 					if (fileMode == FILE_MODE_PREVIEW)
 						openSavedRecipes()
 				} else {
-					showRecipes(it, fileMode)
+					showRecipes(it, fileMode, savedInstanceState?.getCharSequence("SEARCH_QUERY"))
+					savedInstanceState?.putCharSequence("SEARCH_QUERY", null)
 				}
 			} else {
 				if (fileMode == FILE_MODE_PREVIEW)
@@ -240,13 +241,16 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	/** Fills the recycler with a RecipeListAdapter, sets the title according to the file mode and enables the search view. **/
-	private fun showRecipes(recipes: List<Recipe>, fileMode: Int) {
+	private fun showRecipes(recipes: List<Recipe>, fileMode: Int, filter: CharSequence?) {
 		val adapter = RecipeListAdapter(recipes)
 		binding.activityMainRecycler.visibility = View.VISIBLE
 		binding.activityMainRecycler.adapter = adapter
 		titleView?.text = getString(R.string.recipes_with_file_mode, resources.getStringArray(R.array.file_modes_participles)[fileMode])
 		searchView?.apply {
 			visibility = View.VISIBLE
+			isIconified = filter == null || filter.isEmpty()
+			setQuery(filter, true)
+			clearFocus()
 			adapter.filterRecipes(query)
 			setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 				override fun onQueryTextChange(query: String?): Boolean {
@@ -270,6 +274,7 @@ class MainActivity : AppCompatActivity() {
 	override fun onSaveInstanceState(outState: Bundle) {
 		recipes.value?.let {
 			outState.putInt("FILE_MODE", fileMode)
+			outState.putCharSequence("SEARCH_QUERY", searchView?.query)
 		}
 		super.onSaveInstanceState(outState)
 	}
