@@ -75,14 +75,10 @@ class MainActivity : AppCompatActivity() {
 
 		binding.activityMainRecycler.adapter = RecipeListAdapter(listOf())
 
-		when {
-			savedInstanceState?.getParcelableArrayList<Recipe>("RECIPES") != null -> {
-				recipes.postValue(savedInstanceState.getParcelableArrayList("RECIPES"))
-				fileMode = savedInstanceState.getInt("FILE_MODE")
-			}
-			intent.action == Intent.ACTION_VIEW -> showOpenOptions(intent.data as Uri, 2)
-			else -> openSavedRecipes()
-		}
+		if (intent.action == Intent.ACTION_VIEW)
+			showOpenOptions(intent.data as Uri, 2)
+		else
+			openSavedRecipes(savedInstanceState?.getInt("FILE_MODE"))
 
 		recipes.observe(this) {
 			binding.activityMainRecycler.visibility = View.GONE
@@ -98,7 +94,6 @@ class MainActivity : AppCompatActivity() {
 			}
 			if (it != null) {
 				if (it.isEmpty()) {
-					Toast.makeText(this, getString(R.string.no_recipes_found), Toast.LENGTH_LONG).show()
 					if (fileMode == FILE_MODE_PREVIEW)
 						openSavedRecipes()
 				} else {
@@ -113,10 +108,12 @@ class MainActivity : AppCompatActivity() {
 
 	}
 
-	/** Checks for an imported or linked recipe file and - if available - parses its contents. **/
-	private fun openSavedRecipes() {
-		fileMode = getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE).getInt("FILE_MODE", -1)
+	/** Checks for an imported or linked recipe file and - if available - parses its contents.
+	 * If mode ist null, it uses the file mode stored in the preferences. **/
+	private fun openSavedRecipes(mode: Int? = null) {
+		fileMode = mode ?: getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE).getInt("FILE_MODE", -1)
 		when (fileMode) {
+			FILE_MODE_PREVIEW -> parseRecipes(FileInputStream(File(filesDir, "tmp.xml")))
 			FILE_MODE_IMPORT -> parseRecipes(FileInputStream(File(filesDir, "import.xml")))
 			FILE_MODE_LINK -> {
 				val uri = getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE).getString("LINKED_FILE_URI", null)?.toUri()
@@ -228,11 +225,13 @@ class MainActivity : AppCompatActivity() {
 			}
 			withContext(Dispatchers.IO) {
 				try {
-					recipes.postValue(GourmetXmlParser().parse(inputStream))
+					recipes.postValue(GourmetXmlParser().parse(inputStream).also {
+						if (it.isEmpty())
+							Toast.makeText(applicationContext, getString(R.string.no_recipes_found), Toast.LENGTH_LONG).show()
+					})
 				} catch (e: Exception) {
 					withContext(Dispatchers.Main) {
 						Toast.makeText(applicationContext, getString(R.string.unknown_file_error, e.message), Toast.LENGTH_LONG).show()
-						recipes.postValue(listOf())
 					}
 				}
 				inputStream.close()
@@ -270,7 +269,6 @@ class MainActivity : AppCompatActivity() {
 
 	override fun onSaveInstanceState(outState: Bundle) {
 		recipes.value?.let {
-			outState.putParcelableArrayList("RECIPES", ArrayList<Recipe>(it))
 			outState.putInt("FILE_MODE", fileMode)
 		}
 		super.onSaveInstanceState(outState)
