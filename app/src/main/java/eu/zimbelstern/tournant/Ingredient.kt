@@ -17,10 +17,14 @@ data class Ingredient (
 			return this
 		}
 
-		val amountScaled = amount.toFloat()
-			.times(factor)
-			.roundToNDigits(amount.toFloat().getNumberOfDigits() + 2)
-			.toStringForCooks()
+		val amountScaled = try {
+			amount.toFloat()
+				.times(factor)
+				.roundToNDigits(amount.toFloat().getNumberOfDigits() + 2)
+				.toStringForCooks()
+		} catch (_: Exception) {
+			"${factor}x $amount"
+		}
 
 		return this.copy(amount = amountScaled)
 	}
