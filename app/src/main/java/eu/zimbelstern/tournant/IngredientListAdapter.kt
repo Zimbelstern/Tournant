@@ -1,37 +1,43 @@
 package eu.zimbelstern.tournant
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import eu.zimbelstern.tournant.databinding.RecyclerItemIngredientsBinding
 
-class IngredientListAdapter(private val strings: List<String?>, private val type: Int) : RecyclerView.Adapter<IngredientListAdapter.IngredientListViewHolder>() {
-
-	companion object {
-		const val TYPE_AMOUNT = 1
-		const val TYPE_UNIT = 2
-		const val TYPE_ITEM = 3
-	}
+class IngredientListAdapter(private val ingredients: List<Ingredient>) : RecyclerView.Adapter<IngredientListAdapter.IngredientListViewHolder>() {
 
 	class IngredientListViewHolder(val binding: RecyclerItemIngredientsBinding) : RecyclerView.ViewHolder(binding.root)
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IngredientListViewHolder {
 		val binding = RecyclerItemIngredientsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+
+		binding.recyclerItemIngredientsAmount.minimumWidth = ingredients.maxOf { ingredient ->
+			var amountString = ""
+			ingredient.amount?.let {
+				amountString += "$it "
+			}
+			ingredient.unit?.let {
+				amountString += "$it "
+			}
+			binding.recyclerItemIngredientsAmountValue.paint.measureText(amountString)
+		}.toInt()
+
 		return IngredientListViewHolder(binding)
 	}
 
 	override fun onBindViewHolder(holder: IngredientListViewHolder, position: Int) {
-		if (strings[position] != null)
-			holder.binding.root.text = StringBuilder(strings[position]!!).append("  ").toString()
-		else
-			holder.binding.root.text = null
-		if (type == TYPE_AMOUNT)
-			holder.binding.root.textAlignment = View.TEXT_ALIGNMENT_TEXT_END
+		holder.binding.recyclerItemIngredientsAmountValue.text = ingredients[position].amount?.let { StringBuilder(it).append(" ") }
+		holder.binding.recyclerItemIngredientsAmountUnit.text = ingredients[position].unit?.let { StringBuilder(it).append(" ") }
+		holder.binding.recyclerItemIngredientsItem.text =
+			if (ingredients[position].optional == true)
+				holder.binding.root.context.getString(R.string.optional, ingredients[position].item)
+			else
+				ingredients[position].item
 	}
 
 	override fun getItemCount(): Int {
-		return strings.size
+		return ingredients.size
 	}
 
 }

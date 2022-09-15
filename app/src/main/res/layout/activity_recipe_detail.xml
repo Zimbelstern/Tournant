@@ -152,7 +152,6 @@
 
 				</LinearLayout>
 
-
 				<LinearLayout
 					android:id="@+id/recipe_detail_times"
 					android:layout_width="match_parent"
@@ -208,7 +207,6 @@
 							android:layout_height="wrap_content"/>
 
 					</LinearLayout>
-
 
 				</LinearLayout>
 
@@ -302,37 +300,14 @@
 
 				</LinearLayout>
 
-
-				<LinearLayout
+				<androidx.recyclerview.widget.RecyclerView
+					android:id="@+id/recipe_detail_ingredients_recycler"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:orientation="horizontal">
+					android:nestedScrollingEnabled="false"
+					app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
-					<androidx.recyclerview.widget.RecyclerView
-						android:id="@+id/recipe_detail_ingredients_amounts"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:nestedScrollingEnabled="false"
-						app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
-					<androidx.recyclerview.widget.RecyclerView
-						android:id="@+id/recipe_detail_ingredients_units"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:nestedScrollingEnabled="false"
-						app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
-					<androidx.recyclerview.widget.RecyclerView
-						android:id="@+id/recipe_detail_ingredients_items"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:nestedScrollingEnabled="false"
-						app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
-				</LinearLayout>
-
-			</LinearLayout>
-
+		</LinearLayout>
 
 		</com.google.android.material.card.MaterialCardView>
 
@@ -365,6 +340,7 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:lineSpacingExtra="2sp"/>
+
 			</LinearLayout>
 
 		</com.google.android.material.card.MaterialCardView>
@@ -404,4 +380,5 @@
 		</com.google.android.material.card.MaterialCardView>
 
 	</LinearLayout>
+
 </androidx.core.widget.NestedScrollView>

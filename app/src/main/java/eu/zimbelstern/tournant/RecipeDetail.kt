@@ -11,9 +11,6 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.parseAsHtml
 import androidx.core.widget.addTextChangedListener
-import eu.zimbelstern.tournant.IngredientListAdapter.Companion.TYPE_AMOUNT
-import eu.zimbelstern.tournant.IngredientListAdapter.Companion.TYPE_ITEM
-import eu.zimbelstern.tournant.IngredientListAdapter.Companion.TYPE_UNIT
 import eu.zimbelstern.tournant.databinding.ActivityRecipeDetailBinding
 import kotlin.random.Random
 
@@ -154,14 +151,7 @@ class RecipeDetail : AppCompatActivity() {
 	}
 
 	private fun fillIngredientList(list: List<Ingredient>) {
-		binding.recipeDetailIngredientsAmounts.adapter = IngredientListAdapter(list.map { it.amount }, TYPE_AMOUNT)
-		binding.recipeDetailIngredientsUnits.adapter = IngredientListAdapter(list.map { it.unit }, TYPE_UNIT)
-		binding.recipeDetailIngredientsItems.adapter = IngredientListAdapter(list.map {
-			if (it.optional == true)
-				getString(R.string.optional, it.item)
-			else
-				it.item
-		}, TYPE_ITEM)
+		binding.recipeDetailIngredientsRecycler.adapter = IngredientListAdapter(list)
 	}
 
 	override fun onSupportNavigateUp(): Boolean {
