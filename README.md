@@ -23,5 +23,8 @@ If you make substantial changes to the app, please change the logo and name befo
 ## Issues
 Please use the [bug tracker](https://tournant.zimbelstern.eu/issues). Feature requests are welcome.
 
+## Translations
+Translations of Tournant are managed with [Weblate](https://tournant.zimbelstern.eu/translations). Feel free to improve translations or add your language. 
+
 ## Donate
 If you would like to buy me a hot chocolate (or chocolate bar), you can do so via [tournant.zimbelstern.eu/donate](https://tournant.zimbelstern.eu/donate).
