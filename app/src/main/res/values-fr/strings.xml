@@ -1,2 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="notes">Notes</string>
+    <string name="recipes_with_file_mode">Recettes (%s)</string>
+    <string name="cooktime">Temps de cuisson</string>
+    <string name="instructions">Instructions</string>
+    <string name="optional">%s (optionnel)</string>
+    <string name="preptime">Temps de préparation</string>
+    <string name="file_modes_explanation"><p>Vous pouvez ensuite choisir l\'un des modes de fichier suivants :</p>
+\n\t\t<h6>Aperçu</h6>
+\n\t\t<p>Le fichier sera analysé une seule fois et vos recettes seront affichées jusqu\'à ce que vous choisissiez de fermer le fichier ou de fermer l\'application.</p>
+\n\t\t<h6>Importer</h6>
+\n\t\t<p>Le fichier sera copié dans le stockage de l\'application et son contenu sera affiché comme votre liste de recettes par défaut.</p>
+\n\t\t<h6>Lien</h6>
+\n\t\t<p>Le fichier sera analysé à nouveau chaque fois que vous ouvrirez l\'application. Cette fonction est particulièrement utile si vous souhaitez synchroniser le fichier avec votre ordinateur. Notez qu\'en raison des restrictions du système, lier le fichier ne fonctionnera pas toujours. Par conséquent, vous ne pouvez pas choisir ce mode lorsque vous démarrez l\'application via <i>Ouvrir avec</i> à partir d\'un fichier.</p></string>
+    <string name="recipes">Recettes</string>
+    <string name="libraries">Bibliothèques</string>
+    <string name="rating">Évaluation</string>
+    <string name="source">Source</string>
+    <string name="category">Catégorie</string>
+    <string name="cuisine">Cuisine</string>
+    <string name="ingredients">Ingrédients</string>
+    <string name="choose_file">Choisir le fichier</string>
+    <string name="link">Page web</string>
+    <string name="yield">pour</string>
+    <plurals name="lots">
+        <item quantity="one">lot</item>
+        <item quantity="many">lots</item>
+        <item quantity="other">lots</item>
+    </plurals>
+    <string name="no_recipes_found">Aucune recette trouvée</string>
+    <string name="unknown_file_error">Erreur de fichier inconnue : %s</string>
+    <plurals name="servings">
+        <item quantity="one">portion</item>
+        <item quantity="many">portions</item>
+        <item quantity="other">portions</item>
+    </plurals>
+    <string name="choose_file_long">Appuyez sur le biscuit pour choisir un fichier XML Gourmet/Gourmand à partir de votre appareil.</string>
+    <string name="file_does_not_exist">Le fichier n\'existe pas</string>
+    <string name="inputstream_null">Erreur lors de l\'ouverture du fichier</string>
+    <string name="choose_file_option">Choisir l\'option de fichier</string>
+    <string name="close_file">Fermer le fichier</string>
+    <string name="keep_screen_on">Maintenir l\'affichage dans la vue de recette unique</string>
+    <string name="version">Version</string>
+    <string name="donate">Faire un don</string>
+    <string name="about_app_name">À propos de %s</string>
+    <string name="general_settings">Paramètres généraux</string>
+    <string name="code">Source</string>
+    <string name="settings">Paramètres</string>
+    <string name="cancel">Annuler</string>
+    <string name="more">plus</string>
+    <string name="website">Site web</string>
+    <string name="issues">Suivi des bogues</string>
+    <string name="license">Licence</string>
+    <string name="ok">OK</string>
+    <string name="egg">Prenez un cookie : 🍪</string>
+    <string name="less">moins</string>
+</resources>
