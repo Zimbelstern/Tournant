@@ -1,2 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="ingredients">Ingredienti</string>
+    <string name="instructions">Istruzioni</string>
+    <string name="recipes_with_file_mode">Ricette (%s)</string>
+    <string name="cuisine">Cucina</string>
+    <string name="notes">Note</string>
+    <string name="choose_file_long">Tocca il cookie per scegliere un file XML Gourmet/Gourmand dal dispositivo.</string>
+    <string name="file_does_not_exist">Il file non esiste</string>
+    <string name="recipes">Ricette</string>
+    <string name="link">Pagina web</string>
+    <string name="cooktime">Tempo di cottura</string>
+    <string name="preptime">Tempo di preparazione</string>
+    <string name="yield">per</string>
+    <string name="no_recipes_found">Nessuna ricetta trovata</string>
+    <string name="inputstream_null">Errore durante l\'apertura del file</string>
+    <string name="unknown_file_error">Errore di file sconosciuto: %s</string>
+    <string name="choose_file">Scegli il file</string>
+    <string name="choose_file_option">Scegli l\'opzione file</string>
+    <string name="rating">Valutazione</string>
+    <string name="category">Categoria</string>
+    <string name="close_file">Chiudi il file</string>
+    <string name="settings">Impostazioni</string>
+    <string name="about_app_name">Informazioni su %s</string>
+    <string name="general_settings">Impostazioni generali</string>
+    <string name="keep_screen_on">Mantieni la visualizzazione nella vista di ricetta singola</string>
+    <string name="website">Sito web</string>
+    <string name="version">Versione</string>
+    <string name="source">Fonte</string>
+    <string name="file_modes_explanation"><p>È possibile scegliere una delle seguenti modalità:</p>
+\n\t\t<h6>Anteprima</h6>
+\n\t\t<p>Il file viene analizzato una sola volta e le ricette vengono visualizzate finché non si sceglie di chiudere il file o l\'applicazione.</p>
+\n\t\t<h6>Importazione</h6>
+\n\t\t<p>Il file verrà copiato nella memoria dell\'applicazione e il contenuto verrà visualizzato come elenco di ricette predefinito.</p>
+\n\t\t<h6>Collegamento</h6>
+\n\t\t<p>Il file verrà analizzato nuovamente ogni volta che si apre l\'applicazione. Questo è particolarmente utile se si desidera sincronizzare il file con il computer. Si noti che, a causa di restrizioni di sistema, il collegamento del file non funziona sempre. Pertanto, non è possibile scegliere questa modalità quando si avvia l\'applicazione tramite <i>Aprire con</i> da un file.</p></string>
+    <string name="optional">%s (opzionale)</string>
+    <plurals name="servings">
+        <item quantity="one">porzione</item>
+        <item quantity="many">porzioni</item>
+        <item quantity="other">porzioni</item>
+    </plurals>
+    <plurals name="lots">
+        <item quantity="one">lotto</item>
+        <item quantity="many">lotti</item>
+        <item quantity="other">lotti</item>
+    </plurals>
+    <string name="code">Fonte</string>
+    <string name="libraries">Biblioteche</string>
+    <string name="license">Licenza</string>
+    <string name="issues">Tracciamento degli errori</string>
+    <string name="donate">Dona</string>
+    <string name="cancel">Annulla</string>
+    <string name="ok">OK</string>
+    <string name="egg">Prendi un biscotto: 🍪</string>
+    <string name="less">meno</string>
+    <string name="more">più</string>
+</resources>
