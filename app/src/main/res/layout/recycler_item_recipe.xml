@@ -53,23 +53,25 @@
 			style="@style/Widget.AppCompat.RatingBar.Small"/>
 
 		<HorizontalScrollView
-			android:layout_width="wrap_content"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			app:layout_constraintStart_toStartOf="@id/recipe_card_title"
+			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintTop_toBottomOf="@id/recipe_card_rating"
 			app:layout_constraintBottom_toBottomOf="parent"
 			app:layout_constraintVertical_bias="0"
-			android:nestedScrollingEnabled="true">
+			android:scrollbars="none"
+			android:overScrollMode="never">
 
-			<LinearLayout
+			<com.google.android.material.chip.ChipGroup
 				android:layout_width="wrap_content"
-				android:layout_height="wrap_content">
+				android:layout_height="wrap_content"
+				app:singleLine="true">
 
 				<com.google.android.material.chip.Chip
 					android:id="@+id/recipe_card_category"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_marginEnd="8dp"
 					android:textColor="@color/white"
 					android:visibility="gone"
 					tools:visibility="visible"/>
@@ -82,9 +84,9 @@
 					android:visibility="gone"
 					tools:visibility="visible"/>
 
-			</LinearLayout>
-		</HorizontalScrollView>
+			</com.google.android.material.chip.ChipGroup>
 
+		</HorizontalScrollView>
 
 	</androidx.constraintlayout.widget.ConstraintLayout>
 
