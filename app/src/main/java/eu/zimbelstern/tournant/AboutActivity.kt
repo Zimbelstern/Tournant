@@ -1,5 +1,6 @@
 package eu.zimbelstern.tournant
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -61,10 +62,10 @@ class AboutActivity : AppCompatActivity() {
 
 		private fun actionViewUri(uriString: String) {
 			val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uriString))
-			if (activity?.packageManager?.resolveActivity(intent, 0) == null) {
-				Toast.makeText(context, uriString, Toast.LENGTH_LONG).show()
-			} else {
+			try {
 				startActivity(intent)
+			} catch (_: ActivityNotFoundException) {
+				Toast.makeText(context, uriString, Toast.LENGTH_LONG).show()
 			}
 		}
 

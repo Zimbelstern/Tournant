@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="notes">Notes</string>
     <string name="recipes_with_file_mode">Recettes (%s)</string>
     <string name="cooktime">Temps de cuisson</string>
@@ -24,14 +24,14 @@
     <string name="link">Page web</string>
     <string name="yield">pour</string>
     <plurals name="lots">
-        <item quantity="one">lot</item>
+        <item quantity="one" tools:ignore="ImpliedQuantity">lot</item>
         <item quantity="many">lots</item>
         <item quantity="other">lots</item>
     </plurals>
     <string name="no_recipes_found">Aucune recette trouvée</string>
     <string name="unknown_file_error">Erreur de fichier inconnue : %s</string>
     <plurals name="servings">
-        <item quantity="one">portion</item>
+        <item quantity="one" tools:ignore="ImpliedQuantity">portion</item>
         <item quantity="many">portions</item>
         <item quantity="other">portions</item>
     </plurals>
