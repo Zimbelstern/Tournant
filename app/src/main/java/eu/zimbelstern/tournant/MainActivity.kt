@@ -31,9 +31,9 @@ import java.io.InputStream
 class MainActivity : AppCompatActivity() {
 
 	companion object {
-		private const val FILE_MODE_PREVIEW = 0
-		private const val FILE_MODE_IMPORT = 1
-		private const val FILE_MODE_LINK = 2
+		const val FILE_MODE_PREVIEW = 0
+		const val FILE_MODE_IMPORT = 1
+		const val FILE_MODE_LINK = 2
 	}
 
 	private lateinit var binding: ActivityMainBinding
@@ -80,7 +80,21 @@ class MainActivity : AppCompatActivity() {
 		else
 			openSavedRecipes(savedInstanceState?.getInt("FILE_MODE"))
 
-		recipes.observe(this) {
+		recipes.observe(this) { recipeList ->
+			intent.extras?.getInt("RECIPE_ID")?.let { id ->
+				val recipe = recipeList.find { it.id == id }
+				if (recipe != null) {
+					val intent = Intent(this, RecipeDetail::class.java).apply {
+						putExtra("RECIPE", recipe)
+						putExtra("FILE_MODE", fileMode)
+					}
+					startActivity(intent)
+				}
+				else {
+					Toast.makeText(this, getString(R.string.recipe_not_found), Toast.LENGTH_LONG).show()
+				}
+				finish()
+			}
 			binding.activityMainRecycler.visibility = View.GONE
 			binding.activityMainLoading.visibility = View.GONE
 			searchView?.apply {
@@ -92,12 +106,12 @@ class MainActivity : AppCompatActivity() {
 				text = getString(R.string.app_name)
 				titleView?.visibility = View.VISIBLE
 			}
-			if (it != null) {
-				if (it.isEmpty()) {
+			if (recipeList != null) {
+				if (recipeList.isEmpty()) {
 					if (fileMode == FILE_MODE_PREVIEW)
 						openSavedRecipes()
 				} else {
-					showRecipes(it, fileMode, savedInstanceState?.getCharSequence("SEARCH_QUERY"))
+					showRecipes(recipeList, fileMode, savedInstanceState?.getCharSequence("SEARCH_QUERY"))
 					savedInstanceState?.putCharSequence("SEARCH_QUERY", null)
 				}
 			} else {
@@ -110,7 +124,7 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	/** Checks for an imported or linked recipe file and - if available - parses its contents.
-	 * If mode ist null, it uses the file mode stored in the preferences. **/
+	 * If mode is null, it uses the file mode stored in the preferences. **/
 	private fun openSavedRecipes(mode: Int? = null) {
 		fileMode = mode ?: getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE).getInt("FILE_MODE", -1)
 		when (fileMode) {

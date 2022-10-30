@@ -1,6 +1,7 @@
 package eu.zimbelstern.tournant
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.SpannableStringBuilder
@@ -8,6 +9,7 @@ import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.parseAsHtml
 import androidx.core.widget.addTextChangedListener
@@ -98,8 +100,8 @@ class RecipeDetail : AppCompatActivity() {
 				}
 				fillYieldsUnit()
 				addTextChangedListener { editable ->
-					recipe.getScaledIngredientList(editable.toString().toFloatOrNull())?.let { list ->
-						fillIngredientList(list)
+					recipe.ingredientList?.scale(editable.toString().toFloatOrNull()?.div(recipe.getYieldsValue() ?: 1f))?.let { list ->
+						binding.recipeDetailIngredientsRecycler.adapter = IngredientTableAdapter(this@RecipeDetail, list)
 						fillYieldsUnit()
 					}
 				}
@@ -112,7 +114,7 @@ class RecipeDetail : AppCompatActivity() {
 		}
 		recipe.ingredientList?.let { list ->
 			binding.recipeDetailIngredients.visibility = View.VISIBLE
-			fillIngredientList(list)
+			binding.recipeDetailIngredientsRecycler.adapter = IngredientTableAdapter(this@RecipeDetail, list)
 		}
 		recipe.instructions?.let {
 			binding.recipeDetailInstructions.visibility = View.VISIBLE
@@ -150,8 +152,15 @@ class RecipeDetail : AppCompatActivity() {
 		}
 	}
 
-	private fun fillIngredientList(list: List<Ingredient>) {
-		binding.recipeDetailIngredientsRecycler.adapter = IngredientListAdapter(list)
+	fun findReferencedRecipe(refId: Int) {
+		if (intent.extras?.getInt("FILE_MODE") == MainActivity.FILE_MODE_PREVIEW) {
+			Toast.makeText(this, getString(R.string.not_available_in_preview), Toast.LENGTH_LONG).show()
+		}
+		else {
+			startActivity(Intent(this, MainActivity::class.java).apply {
+				putExtra("RECIPE_ID", refId)
+			})
+		}
 	}
 
 	override fun onSupportNavigateUp(): Boolean {

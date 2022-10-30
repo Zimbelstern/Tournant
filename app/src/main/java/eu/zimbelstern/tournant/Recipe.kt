@@ -18,7 +18,7 @@ data class Recipe(
 	val preptime: String?,
 	val cooktime: String?,
 	val yields: String?,
-	val ingredientList: List<Ingredient>?,
+	val ingredientList: List<IngredientListElement>?,
 	val instructions: String?,
 	val modifications: String?,
 	val image: ByteArray?
@@ -39,13 +39,6 @@ data class Recipe(
 			yields.split(" ").drop(1).joinToString(" ")
 		}
 		else yields
-	}
-
-	fun getScaledIngredientList(yield: Float?): List<Ingredient>? {
-		return if (yield != null) {
-			ingredientList?.map { it.withScaledAmount(yield / (getYieldsValue() ?: 1f)) }
-		}
-		else ingredientList
 	}
 
 	fun moreYield(currentYield: Float): Float {

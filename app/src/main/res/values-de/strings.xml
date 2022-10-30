@@ -79,5 +79,7 @@ Aufgrund von Systembeschränkungen funktioniert das Verlinken jedoch nicht immer
 	<string name="egg">Hier, ein Keks: 🍪</string>
 	<string name="less">Weniger</string>
 	<string name="more">Mehr</string>
+	<string name="recipe_not_found">Rezept nicht gefunden</string>
+	<string name="not_available_in_preview">Im Vorschau-Modus nicht verfügbar</string>
 
 </resources>

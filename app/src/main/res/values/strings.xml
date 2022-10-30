@@ -53,8 +53,10 @@ Note that due to system restrictions, linking the file will not always work. Hen
 	<!-- Messages -->
 	<string name="file_does_not_exist">The file does not exist</string>
 	<string name="no_recipes_found">No recipes found</string>
+	<string name="recipe_not_found">Recipe not found</string>
 	<string name="inputstream_null">Error while opening the file</string>
 	<string name="unknown_file_error">Unknown file error: %s</string>
+	<string name="not_available_in_preview">Not available in preview mode</string>
 
 	<!-- Options menu -->
 	<string name="choose_file">Choose file</string>

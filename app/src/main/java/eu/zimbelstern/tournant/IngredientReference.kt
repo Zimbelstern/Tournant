@@ -3,16 +3,14 @@ package eu.zimbelstern.tournant
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Ingredient (
-	val amount: String?,
-	val unit: String?,
-	val item: String?,
-	val key: String?,
-	val optional: Boolean?
+data class IngredientReference(
+	val refId: Int,
+	val amount: String,
+	val name: String
 ) : IngredientListElement() {
 
-	fun withScaledAmount(factor: Float): Ingredient {
-		if (factor == 1f || amount == null) {
+	fun withScaledAmount(factor: Float): IngredientReference {
+		if (factor == 1f) {
 			return this
 		}
 
@@ -27,5 +25,4 @@ data class Ingredient (
 
 		return this.copy(amount = amountScaled)
 	}
-
 }
