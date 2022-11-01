@@ -52,6 +52,7 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_marginBottom="4dp"
+					android:textColor="@color/blue_text"
 					android:textSize="24sp"
 					android:textStyle="bold"/>
 
@@ -80,7 +81,7 @@
 						app:rippleColor="@color/transparent"
 						android:textColor="@color/white"
 						android:visibility="gone"
-						tools:visibility="visible" />
+						tools:visibility="visible"/>
 
 					<com.google.android.material.chip.Chip
 						android:id="@+id/recipe_detail_cuisine"
@@ -89,7 +90,7 @@
 						app:rippleColor="@color/transparent"
 						android:textColor="@color/white"
 						android:visibility="gone"
-						tools:visibility="visible" />
+						tools:visibility="visible"/>
 
 				</com.google.android.material.chip.ChipGroup>
 
@@ -116,13 +117,15 @@
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
 							android:text="@string/source"
-							android:textSize="16sp"
+							android:textColor="@color/blue_text"
+							android:textSize="@dimen/font_size_text"
 							android:textStyle="bold"/>
 
 						<TextView
 							android:id="@+id/recipe_detail_source_text"
 							android:layout_width="match_parent"
-							android:layout_height="wrap_content"/>
+							android:layout_height="wrap_content"
+							android:textSize="@dimen/font_size_text"/>
 
 					</LinearLayout>
 
@@ -139,13 +142,15 @@
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
 							android:text="@string/link"
-							android:textSize="16sp"
+							android:textColor="@color/blue_text"
+							android:textSize="@dimen/font_size_text"
 							android:textStyle="bold"/>
 
 						<TextView
 							android:id="@+id/recipe_detail_link_text"
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
+							android:textSize="@dimen/font_size_text"
 							android:autoLink="all"/>
 
 					</LinearLayout>
@@ -175,13 +180,15 @@
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
 							android:text="@string/cooktime"
-							android:textSize="16sp"
+							android:textColor="@color/blue_text"
+							android:textSize="@dimen/font_size_text"
 							android:textStyle="bold"/>
 
 						<TextView
 							android:id="@+id/recipe_detail_cooktime_text"
 							android:layout_width="match_parent"
-							android:layout_height="wrap_content"/>
+							android:layout_height="wrap_content"
+							android:textSize="@dimen/font_size_text"/>
 
 					</LinearLayout>
 
@@ -198,13 +205,15 @@
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
 							android:text="@string/preptime"
-							android:textSize="16sp"
+							android:textColor="@color/blue_text"
+							android:textSize="@dimen/font_size_text"
 							android:textStyle="bold"/>
 
 						<TextView
 							android:id="@+id/recipe_detail_preptime_text"
 							android:layout_width="match_parent"
-							android:layout_height="wrap_content"/>
+							android:layout_height="wrap_content"
+							android:textSize="@dimen/font_size_text"/>
 
 					</LinearLayout>
 
@@ -236,24 +245,27 @@
 					android:layout_height="wrap_content"
 					android:layout_marginBottom="4dp"
 					android:text="@string/ingredients"
-					android:textSize="16sp"
-					android:textStyle="bold" />
+					android:textColor="@color/blue_text"
+					android:textSize="@dimen/font_size_heading"
+					android:textStyle="bold"/>
 
 				<LinearLayout
 					android:id="@+id/recipe_detail_yields"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:layout_marginBottom="8dp"
+					android:layout_marginBottom="4dp"
 					android:orientation="horizontal"
 					android:visibility="gone"
-					tools:visibility="visible">
+					tools:visibility="visible"
+					android:descendantFocusability="beforeDescendants"
+					android:focusableInTouchMode="true">
 
 					<TextView
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:labelFor="@id/recipe_detail_yields_value"
 						android:text="@string/yield"
-						android:textSize="16sp"
+						android:textSize="@dimen/font_size_text"
 						android:textStyle="italic"/>
 
 					<EditText
@@ -263,13 +275,13 @@
 						android:layout_marginStart="4sp"
 						android:inputType="numberDecimal"
 						android:importantForAutofill="no"
-						android:textSize="16sp"/>
+						android:textSize="@dimen/font_size_text"/>
 
 					<TextView
 						android:id="@+id/recipe_detail_yields_text"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:textSize="16sp"
+						android:textSize="@dimen/font_size_text"
 						android:textStyle="italic"
 						tools:text="portions"/>
 
@@ -302,7 +314,7 @@
 
 				<androidx.recyclerview.widget.RecyclerView
 					android:id="@+id/recipe_detail_ingredients_recycler"
-					android:layout_width="wrap_content"
+					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:nestedScrollingEnabled="false"
 					app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
@@ -325,21 +337,25 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:orientation="vertical"
-				android:padding="16dp">
+				android:padding="16dp"
+				android:clipToPadding="false">
 
 				<TextView
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_marginBottom="4dp"
 					android:text="@string/instructions"
-					android:textSize="16sp"
+					android:textColor="@color/blue_text"
+					android:textSize="@dimen/font_size_heading"
 					android:textStyle="bold"/>
 
-				<TextView
-					android:id="@+id/recipe_detail_instructions_text"
+				<androidx.recyclerview.widget.RecyclerView
+					android:id="@+id/recipe_detail_instructions_recycler"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:lineSpacingExtra="2sp"/>
+					android:layout_marginEnd="-4dp"
+					android:nestedScrollingEnabled="false"
+					app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 			</LinearLayout>
 
@@ -366,14 +382,15 @@
 					android:layout_height="wrap_content"
 					android:layout_marginBottom="4dp"
 					android:text="@string/notes"
-					android:textSize="16sp"
+					android:textColor="@color/blue_text"
+					android:textSize="@dimen/font_size_heading"
 					android:textStyle="bold" />
 
 				<TextView
 					android:id="@+id/recipe_detail_notes_text"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:lineSpacingExtra="2sp"/>
+					android:textSize="@dimen/font_size_text"/>
 
 			</LinearLayout>
 

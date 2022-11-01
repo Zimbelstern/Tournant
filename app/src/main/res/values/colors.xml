@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+
 	<color name="amber_primary">#FFFFB300</color>
 	<color name="amber_light">#FFFFE54C</color>
 	<color name="amber_dark">#FFC68400</color>
+	<color name="amber_pale">#fff3d3</color>
+
 	<color name="blue_secondary">#FF1565C0</color>
 	<color name="blue_light">#FF5E92F3</color>
 	<color name="blue_dark">#FF003C8F</color>
+	<color name="blue_text">#FF405678</color>
+
 	<color name="black">#FF000000</color>
 	<color name="white">#FFFFFFFF</color>
 	<color name="gray">#FFCCCCCC</color>

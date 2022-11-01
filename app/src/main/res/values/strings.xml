@@ -84,5 +84,6 @@ Note that due to system restrictions, linking the file will not always work. Hen
 	<string name="egg">Have a cookie: 🍪</string>
 	<string name="less">less</string>
 	<string name="more">more</string>
+	<string name="checked">checked</string>
 
 </resources>

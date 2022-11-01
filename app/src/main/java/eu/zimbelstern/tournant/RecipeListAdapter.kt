@@ -1,7 +1,6 @@
 package eu.zimbelstern.tournant
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import eu.zimbelstern.tournant.databinding.RecyclerItemRecipeBinding
 import kotlin.random.Random
 
-class RecipeListAdapter(private val allRecipes: List<Recipe>) : RecyclerView.Adapter<RecipeListAdapter.RecipeListViewHolder>() {
+class RecipeListAdapter(private val mainActivity: MainActivity, private val allRecipes: List<Recipe>) : RecyclerView.Adapter<RecipeListAdapter.RecipeListViewHolder>() {
 
 	private var filteredRecipes = allRecipes
 
@@ -22,10 +21,12 @@ class RecipeListAdapter(private val allRecipes: List<Recipe>) : RecyclerView.Ada
 	}
 
 	override fun onBindViewHolder(holder: RecipeListViewHolder, position: Int) {
-		val context = holder.binding.root.context
 		val recipe = filteredRecipes[position]
 		if (recipe.image != null)
-			holder.binding.recipeCardImage.setImageBitmap(BitmapFactory.decodeByteArray(recipe.image, 0, recipe.image.size))
+			holder.binding.recipeCardImage.apply {
+				setImageBitmap(BitmapFactory.decodeByteArray(recipe.image, 0, recipe.image.size))
+				clipToOutline = true
+			}
 		else
 			holder.binding.recipeCardImage.setImageResource(R.drawable.ic_dining)
 		holder.binding.recipeCardCategory.apply {
@@ -39,8 +40,7 @@ class RecipeListAdapter(private val allRecipes: List<Recipe>) : RecyclerView.Ada
 			colorsRipple.recycle()
 			visibility = if (recipe.category != null) View.VISIBLE else View.GONE
 			setOnClickListener {
-				if (context is MainActivity)
-					context.searchForSomething(recipe.category)
+				mainActivity.searchForSomething(recipe.category)
 			}
 		}
 		holder.binding.recipeCardCuisine.apply {
@@ -54,8 +54,7 @@ class RecipeListAdapter(private val allRecipes: List<Recipe>) : RecyclerView.Ada
 			colorsRipple.recycle()
 			visibility = if (recipe.cuisine != null) View.VISIBLE else View.GONE
 			setOnClickListener {
-				if (context is MainActivity)
-					context.searchForSomething(recipe.cuisine)
+				mainActivity.searchForSomething(recipe.cuisine)
 			}
 		}
 		holder.binding.recipeCardRating.apply {
@@ -64,10 +63,7 @@ class RecipeListAdapter(private val allRecipes: List<Recipe>) : RecyclerView.Ada
 		}
 		holder.binding.recipeCardTitle.text = recipe.title
 		holder.binding.root.setOnClickListener {
-			val intent = Intent(holder.binding.root.context, RecipeDetail::class.java).apply {
-				putExtra("RECIPE", recipe)
-			}
-			holder.binding.root.context.startActivity(intent)
+			mainActivity.openRecipeDetail(recipe)
 		}
 	}
 

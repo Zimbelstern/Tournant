@@ -23,17 +23,19 @@
 				android:layout_height="wrap_content"
 				android:padding="16dp"
 				android:background="@drawable/round_corners"
+				android:backgroundTint="@color/amber_pale"
 				android:text="@string/choose_file_long"/>
 
 			<ImageView
-				android:background="@drawable/round_corners"
 				android:id="@+id/activity_main_cookie"
-				android:contentDescription="@string/choose_file"
 				android:layout_width="64dp"
 				android:layout_height="64dp"
 				android:layout_margin="16dp"
-				android:padding="12dp"
 				android:layout_gravity="center_horizontal"
+				android:background="@drawable/round_corners"
+				android:backgroundTint="@color/amber_pale"
+				android:contentDescription="@string/choose_file"
+				android:padding="12dp"
 				android:src="@drawable/ic_cookie"/>
 
 			<TextView
@@ -42,6 +44,7 @@
 				android:layout_height="wrap_content"
 				android:padding="16dp"
 				android:background="@drawable/round_corners"
+				android:backgroundTint="@color/amber_pale"
 				tools:text="@string/file_modes_explanation"/>
 
 		</LinearLayout>

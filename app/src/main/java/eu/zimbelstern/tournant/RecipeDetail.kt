@@ -118,7 +118,7 @@ class RecipeDetail : AppCompatActivity() {
 		}
 		recipe.instructions?.let {
 			binding.recipeDetailInstructions.visibility = View.VISIBLE
-			binding.recipeDetailInstructionsText.text = it.replace("\n", "&lt;br/>").parseAsHtml().toString().parseAsHtml()
+			binding.recipeDetailInstructionsRecycler.adapter = InstructionsTextAdapter(it)
 		}
 		recipe.modifications?.let {
 			binding.recipeDetailNotes.visibility = View.VISIBLE

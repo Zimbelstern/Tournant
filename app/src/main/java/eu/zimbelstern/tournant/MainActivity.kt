@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
 		binding.activityMainFileModesExplanation.text =
 			HtmlCompat.fromHtml(getString(R.string.file_modes_explanation), FROM_HTML_MODE_COMPACT)
 
-		binding.activityMainRecycler.adapter = RecipeListAdapter(listOf())
+		binding.activityMainRecycler.adapter = RecipeListAdapter(this, listOf())
 
 		if (intent.action == Intent.ACTION_VIEW)
 			showOpenOptions(intent.data as Uri, 2)
@@ -84,16 +84,13 @@ class MainActivity : AppCompatActivity() {
 			intent.extras?.getInt("RECIPE_ID")?.let { id ->
 				val recipe = recipeList.find { it.id == id }
 				if (recipe != null) {
-					val intent = Intent(this, RecipeDetail::class.java).apply {
-						putExtra("RECIPE", recipe)
-						putExtra("FILE_MODE", fileMode)
-					}
-					startActivity(intent)
+					openRecipeDetail(recipe)
 				}
 				else {
 					Toast.makeText(this, getString(R.string.recipe_not_found), Toast.LENGTH_LONG).show()
 				}
 				finish()
+				return@observe
 			}
 			binding.activityMainRecycler.visibility = View.GONE
 			binding.activityMainLoading.visibility = View.GONE
@@ -256,7 +253,7 @@ class MainActivity : AppCompatActivity() {
 
 	/** Fills the recycler with a RecipeListAdapter, sets the title according to the file mode and enables the search view. **/
 	private fun showRecipes(recipes: List<Recipe>, fileMode: Int, filter: CharSequence?) {
-		val adapter = RecipeListAdapter(recipes)
+		val adapter = RecipeListAdapter(this, recipes)
 		binding.activityMainRecycler.visibility = View.VISIBLE
 		binding.activityMainRecycler.adapter = adapter
 		titleView?.text = getString(R.string.recipes_with_file_mode, resources.getStringArray(R.array.file_modes_participles)[fileMode])
@@ -283,6 +280,15 @@ class MainActivity : AppCompatActivity() {
 			isIconified = false
 			clearFocus()
 		}
+	}
+
+	/** Opens the recipe view. **/
+	fun openRecipeDetail(recipe: Recipe) {
+		val intent = Intent(this, RecipeDetail::class.java).apply {
+			putExtra("RECIPE", recipe)
+			putExtra("FILE_MODE", fileMode)
+		}
+		startActivity(intent)
 	}
 
 	override fun onSaveInstanceState(outState: Bundle) {

@@ -3,6 +3,8 @@ package eu.zimbelstern.tournant
 import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import eu.zimbelstern.tournant.databinding.RecyclerItemIngredientsBinding
 
@@ -25,10 +27,16 @@ class IngredientTableAdapter(private val recipeActivity: RecipeDetail, ingredien
 	override fun onBindViewHolder(holder: IngredientTableViewHolder, position: Int) {
 		val row = tableRows[position]
 
-		holder.binding.ingredientGroupName.text = row.first[0]
-		holder.binding.ingredientAmountValue.text = row.first[1]
-		holder.binding.ingredientAmountUnit.text = row.first[2]
-		holder.binding.ingredientItem.text = row.first[3]
+		val textViews = listOf(
+			holder.binding.ingredientGroupName,
+			holder.binding.ingredientAmountValue,
+			holder.binding.ingredientAmountUnit,
+			holder.binding.ingredientItem
+		)
+
+		textViews.forEachIndexed { i, it ->
+			it.text = row.first[i]
+		}
 
 		// For ingredient references
 		row.second?.let { refId ->
@@ -36,6 +44,22 @@ class IngredientTableAdapter(private val recipeActivity: RecipeDetail, ingredien
 				paintFlags = paintFlags or Paint.UNDERLINE_TEXT_FLAG
 				setOnClickListener {
 					recipeActivity.findReferencedRecipe(refId)
+				}
+			}
+		}
+
+		if (textViews[0].text == "") {
+			holder.binding.root.setOnClickListener {
+				if (holder.binding.ingredientChecked.isVisible) {
+					textViews.forEach {
+						it.setTextColor(ContextCompat.getColor(holder.binding.root.context, android.R.color.tab_indicator_text))
+					}
+					holder.binding.ingredientChecked.isVisible = false
+				} else {
+					textViews.forEach {
+						it.setTextColor(ContextCompat.getColor(holder.binding.root.context, R.color.gray))
+					}
+					holder.binding.ingredientChecked.isVisible = true
 				}
 			}
 		}
