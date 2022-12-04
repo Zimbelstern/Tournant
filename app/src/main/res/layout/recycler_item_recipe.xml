@@ -63,23 +63,19 @@
 				app:layout_constraintStart_toStartOf="@id/recipe_card_title"
 				app:layout_constraintTop_toBottomOf="@id/recipe_card_rating"
 				app:chipSpacingHorizontal="6dp"
-				app:chipSpacingVertical="-10dp">
+				app:chipSpacingVertical="-8dp">
 
 				<com.google.android.material.chip.Chip
 					android:id="@+id/recipe_card_category"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:textColor="@color/white"
-					android:visibility="gone"
-					tools:visibility="visible"/>
+					android:textColor="@color/white"/>
 
 				<com.google.android.material.chip.Chip
 					android:id="@+id/recipe_card_cuisine"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:textColor="@color/white"
-					android:visibility="gone"
-					tools:visibility="visible"/>
+					android:textColor="@color/white"/>
 
 			</com.google.android.material.chip.ChipGroup>
 

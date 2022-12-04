@@ -21,7 +21,7 @@ class InstructionsTextAdapter(text: String) : RecyclerView.Adapter<InstructionsT
 
 	override fun onBindViewHolder(holder: InstructionTextViewHolder, position: Int) {
 		holder.binding.instructionText.text = paragraphs[position]
-		holder.binding.root.setOnClickListener {
+		if (paragraphs[position].isNotEmpty()) holder.binding.root.setOnClickListener {
 			if (holder.binding.instructionChecked.isVisible) {
 				holder.binding.instructionText.setTextColor(ContextCompat.getColor(holder.binding.root.context, android.R.color.tab_indicator_text))
 				holder.binding.instructionChecked.visibility =  View.INVISIBLE

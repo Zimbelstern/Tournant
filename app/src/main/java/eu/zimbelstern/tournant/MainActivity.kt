@@ -266,6 +266,10 @@ class MainActivity : AppCompatActivity() {
 			setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 				override fun onQueryTextChange(query: String?): Boolean {
 					adapter.filterRecipes(query)
+					if (query.isNullOrEmpty())
+						findViewById<ImageView>(R.id.search_close_btn).setImageResource(R.drawable.ic_close)
+					else
+						findViewById<ImageView>(R.id.search_close_btn).setImageResource(R.drawable.ic_backspace)
 					return true
 				}
 				override fun onQueryTextSubmit(query: String?) = false

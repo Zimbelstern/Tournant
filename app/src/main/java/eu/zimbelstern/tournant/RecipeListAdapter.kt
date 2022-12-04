@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.setPadding
 import androidx.recyclerview.widget.RecyclerView
 import eu.zimbelstern.tournant.databinding.RecyclerItemRecipeBinding
 import kotlin.random.Random
@@ -22,13 +23,16 @@ class RecipeListAdapter(private val mainActivity: MainActivity, private val allR
 
 	override fun onBindViewHolder(holder: RecipeListViewHolder, position: Int) {
 		val recipe = filteredRecipes[position]
-		if (recipe.image != null)
-			holder.binding.recipeCardImage.apply {
+		holder.binding.recipeCardImage.apply {
+			if (recipe.image != null) {
 				setImageBitmap(BitmapFactory.decodeByteArray(recipe.image, 0, recipe.image.size))
 				clipToOutline = true
+				setPadding(0)
+			} else {
+				setImageResource(R.drawable.ic_dining)
+				setPadding(4 * resources.displayMetrics.density.toInt())
 			}
-		else
-			holder.binding.recipeCardImage.setImageResource(R.drawable.ic_dining)
+		}
 		holder.binding.recipeCardCategory.apply {
 			text = recipe.category
 			val colors = resources.obtainTypedArray(R.array.material_colors_700)
