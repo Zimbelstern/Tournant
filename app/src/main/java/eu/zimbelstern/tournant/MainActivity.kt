@@ -7,17 +7,20 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.core.net.toUri
 import androidx.core.text.HtmlCompat
 import androidx.core.text.HtmlCompat.FROM_HTML_MODE_COMPACT
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import eu.zimbelstern.tournant.databinding.ActivityMainBinding
 import kotlinx.coroutines.Dispatchers
@@ -55,12 +58,15 @@ class MainActivity : AppCompatActivity() {
 			searchView = it.customView?.findViewById<SearchView>(R.id.action_bar_search)?.apply {
 				if (!isIconified) {
 					titleView?.visibility = View.GONE
+					binding.activityMainCcSearch.visibility = View.VISIBLE
 				}
 				setOnSearchClickListener {
 					titleView?.visibility = View.GONE
+					binding.activityMainCcSearch.visibility = View.VISIBLE
 				}
 				setOnCloseListener {
 					titleView?.visibility = View.VISIBLE
+					binding.activityMainCcSearch.visibility = View.GONE
 					false
 				}
 			}
@@ -72,8 +78,6 @@ class MainActivity : AppCompatActivity() {
 
 		binding.activityMainFileModesExplanation.text =
 			HtmlCompat.fromHtml(getString(R.string.file_modes_explanation), FROM_HTML_MODE_COMPACT)
-
-		binding.activityMainRecycler.adapter = RecipeListAdapter(this, listOf())
 
 		if (intent.action == Intent.ACTION_VIEW)
 			showOpenOptions(intent.data as Uri, 2)
@@ -92,8 +96,9 @@ class MainActivity : AppCompatActivity() {
 				finish()
 				return@observe
 			}
-			binding.activityMainRecycler.visibility = View.GONE
+			binding.activityMainWelcome.visibility = View.VISIBLE
 			binding.activityMainLoading.visibility = View.GONE
+			binding.activityMainRecipes.visibility = View.GONE
 			searchView?.apply {
 				setQuery(null, false)
 				isIconified = true
@@ -233,7 +238,9 @@ class MainActivity : AppCompatActivity() {
 	private fun parseRecipes(inputStream: InputStream) {
 		lifecycleScope.launch {
 			withContext(Dispatchers.Main) {
+				binding.activityMainWelcome.visibility = View.INVISIBLE
 				binding.activityMainLoading.visibility = View.VISIBLE
+				binding.activityMainRecipes.visibility = View.INVISIBLE
 			}
 			withContext(Dispatchers.IO) {
 				try {
@@ -253,32 +260,49 @@ class MainActivity : AppCompatActivity() {
 
 	/** Fills the recycler with a RecipeListAdapter, sets the title according to the file mode and enables the search view. **/
 	private fun showRecipes(recipes: List<Recipe>, fileMode: Int, filter: CharSequence?) {
-		val adapter = RecipeListAdapter(this, recipes)
-		binding.activityMainRecycler.visibility = View.VISIBLE
-		binding.activityMainRecycler.adapter = adapter
+		binding.activityMainWelcome.visibility = View.INVISIBLE
+
+		val recipeListAdapter = RecipeListAdapter(this, recipes)
+		binding.activityMainRecipes.visibility = View.VISIBLE
+		binding.activityMainRecipeRecycler.adapter = recipeListAdapter
+
+		val categoryChipGroupAdapter = ChipGroupAdapter(this, recipes.mapNotNull { it.category }.distinct().sorted())
+		binding.activityMainCcSearchCategoryRecycler.adapter = categoryChipGroupAdapter
+		binding.activityMainCcSearchCategoryRecycler.layoutManager = FlexboxLayoutManager(this)
+
+		val cuisineChipGroupAdapter = ChipGroupAdapter(this, recipes.mapNotNull { it.cuisine }.distinct().sorted())
+		binding.activityMainCcSearchCuisineRecycler.adapter = cuisineChipGroupAdapter
+		binding.activityMainCcSearchCuisineRecycler.layoutManager = FlexboxLayoutManager(this)
+
 		titleView?.text = getString(R.string.recipes_with_file_mode, resources.getStringArray(R.array.file_modes_participles)[fileMode])
 		searchView?.apply {
 			visibility = View.VISIBLE
-			isIconified = filter == null || filter.isEmpty()
-			setQuery(filter, true)
-			clearFocus()
-			adapter.filterRecipes(query)
-			setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+			isIconified = filter.isNullOrEmpty()
+			setOnQueryTextListener(object : OnQueryTextListener {
 				override fun onQueryTextChange(query: String?): Boolean {
-					adapter.filterRecipes(query)
+					recipeListAdapter.filterRecipes(query)
+					binding.activityMainRecipeNoRecipes.visibility = if (recipeListAdapter.itemCount == 0) View.VISIBLE else View.GONE
+					categoryChipGroupAdapter.filterChips(query)
+					binding.activityMainCcSearchCategory.visibility = if (categoryChipGroupAdapter.itemCount != 0) View.VISIBLE else View.GONE
+					cuisineChipGroupAdapter.filterChips(query)
+					binding.activityMainCcSearchCuisine.visibility = if (cuisineChipGroupAdapter.itemCount != 0) View.VISIBLE else View.GONE
+					binding.activityMainCcSearch.visibility = minOf(binding.activityMainCcSearchCategory.visibility, binding.activityMainCcSearchCuisine.visibility)
+					binding.activityMainRecipes.fullScroll(View.FOCUS_UP)
 					if (query.isNullOrEmpty())
 						findViewById<ImageView>(R.id.search_close_btn).setImageResource(R.drawable.ic_close)
 					else
 						findViewById<ImageView>(R.id.search_close_btn).setImageResource(R.drawable.ic_backspace)
 					return true
 				}
-				override fun onQueryTextSubmit(query: String?) = false
+				override fun onQueryTextSubmit(query: String?) = onQueryTextChange(query)
 			})
+			setQuery(filter, true)
+			clearFocus()
 		}
 	}
 
 	/** Searches for something. **/
-	fun searchForSomething(query: String?) {
+	fun searchForSomething(query: CharSequence?) {
 		supportActionBar?.customView?.findViewById<SearchView>(R.id.action_bar_search)?.apply {
 			setQuery(query, true)
 			isIconified = false

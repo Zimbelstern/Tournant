@@ -14,6 +14,16 @@ class RecipeListAdapter(private val mainActivity: MainActivity, private val allR
 
 	private var filteredRecipes = allRecipes
 
+	private val colors = mainActivity.resources.obtainTypedArray(R.array.material_colors_700)
+	private val colorsRipple = mainActivity.resources.obtainTypedArray(R.array.material_colors_900)
+	private val ccPseudoRandomInt = allRecipes.mapNotNull { it.category }.plus(allRecipes.mapNotNull { it.cuisine })
+		.distinct()
+		.associateWith {
+			Random(it.hashCode()).nextInt(mainActivity.resources.getStringArray(R.array.material_colors_700).size)
+		}
+	private val ccColors = ccPseudoRandomInt.mapValues { colors.getColorStateList(it.value) }
+	private val ccRippleColors = ccPseudoRandomInt.mapValues { colorsRipple.getColorStateList(it.value) }
+
 	class RecipeListViewHolder(val binding: RecyclerItemRecipeBinding) : RecyclerView.ViewHolder(binding.root)
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeListViewHolder {
@@ -35,30 +45,20 @@ class RecipeListAdapter(private val mainActivity: MainActivity, private val allR
 		}
 		holder.binding.recipeCardCategory.apply {
 			text = recipe.category
-			val colors = resources.obtainTypedArray(R.array.material_colors_700)
-			val colorsRipple = resources.obtainTypedArray(R.array.material_colors_900)
-			val hashColor = Random(recipe.category.hashCode()).nextInt(resources.getStringArray(R.array.material_colors_700).size)
-			chipBackgroundColor = colors.getColorStateList(hashColor)
-			rippleColor = colorsRipple.getColorStateList(hashColor)
-			colors.recycle()
-			colorsRipple.recycle()
+			chipBackgroundColor = ccColors[text]
+			rippleColor = ccRippleColors[text]
 			visibility = if (recipe.category != null) View.VISIBLE else View.GONE
 			setOnClickListener {
-				mainActivity.searchForSomething(recipe.category)
+				mainActivity.searchForSomething(text)
 			}
 		}
 		holder.binding.recipeCardCuisine.apply {
 			text = recipe.cuisine
-			val colors = resources.obtainTypedArray(R.array.material_colors_700)
-			val colorsRipple = resources.obtainTypedArray(R.array.material_colors_900)
-			val hashColor = Random(recipe.cuisine.hashCode()).nextInt(resources.getStringArray(R.array.material_colors_700).size)
-			chipBackgroundColor = colors.getColorStateList(hashColor)
-			rippleColor = colorsRipple.getColorStateList(hashColor)
-			colors.recycle()
-			colorsRipple.recycle()
+			chipBackgroundColor = ccColors[text]
+			rippleColor = ccRippleColors[text]
 			visibility = if (recipe.cuisine != null) View.VISIBLE else View.GONE
 			setOnClickListener {
-				mainActivity.searchForSomething(recipe.cuisine)
+				mainActivity.searchForSomething(text)
 			}
 		}
 		holder.binding.recipeCardRating.apply {

@@ -49,7 +49,17 @@
 			app:icon="@drawable/ic_library"/>
 
 		<Preference
+			app:title="FlexboxLayout"
+			app:summary="Apache License, Version 2.0"
+			app:icon="@drawable/ic_library"/>
+
+		<Preference
 			app:title="Kotlin"
+			app:summary="Apache License, Version 2.0"
+			app:icon="@drawable/ic_library"/>
+
+		<Preference
+			app:title="Material Components for Android"
 			app:summary="Apache License, Version 2.0"
 			app:icon="@drawable/ic_library"/>
 
