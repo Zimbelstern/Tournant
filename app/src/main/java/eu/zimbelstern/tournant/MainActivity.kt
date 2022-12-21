@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
 			}
 		}
 
-		binding.activityMainCookie.setOnClickListener {
+		binding.activityMainChooseFile.setOnClickListener {
 			chooseFile()
 		}
 

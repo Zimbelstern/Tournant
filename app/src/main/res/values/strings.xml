@@ -30,8 +30,8 @@
 	</plurals>
 
 	<!-- First start UI & file choose options -->
-	<string name="choose_file_long">Tap the cookie to choose a Gourmet/Gourmand XML file from your device.</string>
-	<string name="file_modes_explanation">"&lt;p>You can then choose one of these file modes:&lt;/p>
+	<string name="choose_file_long">Choose a Gourmet/Gourmand XML file from your device.</string>
+	<string name="file_modes_explanation">"&lt;p>You can then choose between the following file modes:&lt;/p>
 		&lt;h6>Preview&lt;/h6>
 		&lt;p>The file will be parsed just once and your recipes will be displayed until you choose to close the file or close the app.&lt;/p>
 		&lt;h6>Import&lt;/h6>

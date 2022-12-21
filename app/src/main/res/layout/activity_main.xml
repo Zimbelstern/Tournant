@@ -17,6 +17,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:orientation="vertical"
+			android:gravity="center_horizontal"
 			android:padding="32dp">
 
 			<TextView
@@ -27,17 +28,19 @@
 				android:backgroundTint="@color/amber_pale"
 				android:text="@string/choose_file_long"/>
 
-			<ImageView
-				android:id="@+id/activity_main_cookie"
-				android:layout_width="64dp"
-				android:layout_height="64dp"
+			<TextView
+				android:id="@+id/activity_main_choose_file"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
 				android:layout_margin="16dp"
-				android:layout_gravity="center_horizontal"
+				android:padding="16dp"
 				android:background="@drawable/round_corners"
 				android:backgroundTint="@color/amber_pale"
-				android:contentDescription="@string/choose_file"
-				android:padding="12dp"
-				android:src="@drawable/ic_cookie"/>
+				android:text="@string/choose_file"
+				android:textSize="20sp"
+				android:textStyle="bold"
+				app:drawableStartCompat="@drawable/ic_cookie"
+				android:drawablePadding="8dp"/>
 
 			<TextView
 				android:id="@+id/activity_main_file_modes_explanation"

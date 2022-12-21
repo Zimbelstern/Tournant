@@ -35,7 +35,7 @@
         <item quantity="many">portions</item>
         <item quantity="other">portions</item>
     </plurals>
-    <string name="choose_file_long">Appuyez sur le biscuit pour choisir un fichier XML Gourmet/Gourmand à partir de votre appareil.</string>
+    <string name="choose_file_long">Choisissez un fichier XML Gourmet/Gourmand à partir de votre appareil.</string>
     <string name="file_does_not_exist">Le fichier n\'existe pas</string>
     <string name="inputstream_null">Erreur lors de l\'ouverture du fichier</string>
     <string name="choose_file_option">Choisir l\'option de fichier</string>

@@ -27,7 +27,7 @@
 	</plurals>
 
 	<!-- First start UI & file choose options -->
-	<string name="choose_file_long">Tippen Sie auf den Keks, um eine Gourmet/Gourmand-XML-Datei vom Gerät auszuwählen.</string>
+	<string name="choose_file_long">Wählen Sie eine Gourmet/Gourmand-XML-Datei vom Gerät aus.</string>
 	<string name="file_modes_explanation">"&lt;p>Sie können dann zwischen folgenden Dateimodi wählen:&lt;/p>
 		&lt;h6>Vorschau&lt;/h6>
 		&lt;p>Die Datei wird einmalig eingelesen und die Rezepte werden angezeigt, bis Sie die Datei oder die App schließen.&lt;/p>
