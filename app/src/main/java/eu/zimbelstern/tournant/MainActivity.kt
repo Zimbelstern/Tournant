@@ -288,6 +288,7 @@ class MainActivity : AppCompatActivity() {
 					binding.activityMainCcSearchCuisine.visibility = if (cuisineChipGroupAdapter.itemCount != 0) View.VISIBLE else View.GONE
 					binding.activityMainCcSearch.visibility = minOf(binding.activityMainCcSearchCategory.visibility, binding.activityMainCcSearchCuisine.visibility)
 					binding.activityMainRecipes.fullScroll(View.FOCUS_UP)
+					searchView?.requestFocus()
 					if (query.isNullOrEmpty())
 						findViewById<ImageView>(R.id.search_close_btn).setImageResource(R.drawable.ic_close)
 					else
