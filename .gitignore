@@ -1,10 +1,11 @@
+.directory
 .gradle/
 .idea/
 app/build/
 app/release/
-gradle
+fastlane/*
+!fastlane/metadata/
+gradle/
 local.properties
-**/.directory
 *.iml
 *.log
-

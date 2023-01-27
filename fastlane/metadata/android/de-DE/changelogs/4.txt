@@ -1,0 +1,2 @@
+– Fehlerbehebung: Absturz bei größeren Kochbüchern
+– Verbesserung: Rezeptsuche wird nach Displaydrehung wiederhergestellt

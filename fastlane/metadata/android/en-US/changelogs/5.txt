@@ -1,0 +1,2 @@
+– Bugfix: Crash when scaling non-numerical ingredient amounts
+– Bugfix: Misalignment of ingredient amounts and names

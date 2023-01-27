@@ -1,0 +1,5 @@
+Tournant serves your favorite dishes on your Android device!
+With Tournant, you can open recipe files from Gourmand/Gourmet Recipe Manager.
+
+Visit the website for documentation:
+https://tournant.zimbelstern.eu

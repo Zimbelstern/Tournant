@@ -1,0 +1,2 @@
+– Bugfix: Crash when reading larger cookbooks.
+– Improvement: Search query is restored on orientation changes.
