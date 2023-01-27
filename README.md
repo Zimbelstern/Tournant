@@ -32,6 +32,7 @@ Please use the [bug tracker](https://tournant.zimbelstern.eu/issues). Feature re
 ## Translations
 Translations of Tournant are managed with Weblate. <br/>
 Feel free to [improve translations or add your language](https://hosted.weblate.org/engage/tournant/).
+
 <img src="https://hosted.weblate.org/widgets/tournant/-/multi-blue.svg" alt="Translation status"/>
 
 ## Donate
