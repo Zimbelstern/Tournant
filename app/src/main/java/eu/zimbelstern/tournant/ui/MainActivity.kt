@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
@@ -70,6 +71,7 @@ class MainActivity : AppCompatActivity() {
 				setOnSearchClickListener {
 					titleView?.visibility = View.GONE
 					binding.activityMainCcSearch.visibility = View.VISIBLE
+					onBackPressedDispatcher.addCallback(this@MainActivity, closeSearchOnBackPressedCallback)
 				}
 				setOnCloseListener {
 					titleView?.visibility = View.VISIBLE
@@ -359,12 +361,11 @@ class MainActivity : AppCompatActivity() {
 		}
 	}
 
-	override fun onBackPressed() {
-		if (searchView?.isIconified == false) {
+	private val closeSearchOnBackPressedCallback = object : OnBackPressedCallback(true) {
+		override fun handleOnBackPressed() {
 			searchView?.setQuery("", false)
 			searchView?.isIconified = true
-		} else {
-			super.onBackPressed()
+			remove()
 		}
 	}
 
