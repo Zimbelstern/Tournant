@@ -5,7 +5,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:background="@drawable/background_repeat"
-	tools:context=".MainActivity">
+	tools:context=".ui.MainActivity">
 
 	<androidx.core.widget.NestedScrollView
 		android:id="@+id/activity_main_welcome"
@@ -13,45 +13,8 @@
 		android:layout_height="match_parent"
 		android:clipToPadding="false">
 
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:orientation="vertical"
-			android:gravity="center_horizontal"
-			android:padding="32dp">
-
-			<TextView
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:padding="16dp"
-				android:background="@drawable/round_corners"
-				android:backgroundTint="@color/amber_pale"
-				android:text="@string/choose_file_long"/>
-
-			<TextView
-				android:id="@+id/activity_main_choose_file"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_margin="16dp"
-				android:padding="16dp"
-				android:background="@drawable/round_corners"
-				android:backgroundTint="@color/amber_pale"
-				android:text="@string/choose_file"
-				android:textSize="20sp"
-				android:textStyle="bold"
-				app:drawableStartCompat="@drawable/ic_cookie"
-				android:drawablePadding="8dp"/>
-
-			<TextView
-				android:id="@+id/activity_main_file_modes_explanation"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:padding="16dp"
-				android:background="@drawable/round_corners"
-				android:backgroundTint="@color/amber_pale"
-				tools:text="@string/file_modes_explanation"/>
-
-		</LinearLayout>
+		<include android:id="@+id/activity_main_start"
+			layout="@layout/activity_main_start"/>
 
 	</androidx.core.widget.NestedScrollView>
 
@@ -87,7 +50,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:background="@drawable/round_corners_bottom"
-				android:backgroundTint="@color/white"
+				android:backgroundTint="?attr/colorSurface"
 				android:orientation="vertical"
 				android:padding="12dp"
 				android:visibility="gone"
@@ -104,7 +67,7 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:text="@string/category"
-						android:textColor="@color/blue_secondary"
+						android:textColor="@color/highlight_color"
 						android:textStyle="bold"/>
 
 					<androidx.recyclerview.widget.RecyclerView
@@ -125,7 +88,7 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:text="@string/cuisine"
-						android:textColor="@color/blue_secondary"
+						android:textColor="@color/highlight_color"
 						android:textStyle="bold"/>
 
 					<androidx.recyclerview.widget.RecyclerView

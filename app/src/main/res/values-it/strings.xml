@@ -8,7 +8,7 @@
     <string name="choose_file_long">Scegliere un file XML Gourmet/Gourmand dal dispositivo.</string>
     <string name="file_does_not_exist">Il file non esiste</string>
     <string name="recipes">Ricette</string>
-    <string name="link">Pagina web</string>
+    <string name="webpage">Pagina web</string>
     <string name="cooktime">Tempo di cottura</string>
     <string name="preptime">Tempo di preparazione</string>
     <string name="yield">per</string>
@@ -27,13 +27,14 @@
     <string name="website">Sito web</string>
     <string name="version">Versione</string>
     <string name="source">Fonte</string>
-    <string name="file_modes_explanation"><p>È possibile scegliere una delle seguenti modalità:</p>
-\n\t\t<h6>Anteprima</h6>
-\n\t\t<p>Il file viene analizzato una sola volta e le ricette vengono visualizzate finché non si sceglie di chiudere il file o l\'applicazione.</p>
-\n\t\t<h6>Importazione</h6>
-\n\t\t<p>Il file verrà copiato nella memoria dell\'applicazione e il contenuto verrà visualizzato come elenco di ricette predefinito.</p>
-\n\t\t<h6>Collegamento</h6>
-\n\t\t<p>Il file verrà analizzato nuovamente ogni volta che si apre l\'applicazione. Questo è particolarmente utile se si desidera sincronizzare il file con il computer. Si noti che, a causa di restrizioni di sistema, il collegamento del file non funziona sempre. Pertanto, non è possibile scegliere questa modalità quando si avvia l\'applicazione tramite <i>Aprire con</i> da un file.</p></string>
+    <string name="file_modes_explanation">È possibile scegliere una delle seguenti modalità:</string>
+    <string name="preview">Anteprima</string>
+    <string name="preview_explanation">Il file viene analizzato una sola volta e le ricette vengono visualizzate finché non si sceglie di chiudere il file o l\'applicazione.</string>
+    <string name="import_">Importazione</string>
+    <string name="import_explanation">Il file verrà copiato nella memoria dell\'applicazione e il contenuto verrà visualizzato come elenco di ricette predefinito.</string>
+    <string name="link">Collegamento</string>
+    <string name="link_explanation_1">Il file verrà analizzato nuovamente ogni volta che si apre l\'applicazione. Questo è particolarmente utile se si desidera sincronizzare il file con il computer.</string>
+    <string name="link_explanation_2">Si noti che, a causa di restrizioni di sistema, il collegamento del file non funziona sempre. Pertanto, non è possibile scegliere questa modalità quando si avvia l\'applicazione tramite «Aprire con…» da un file.</string>
     <string name="optional">%s (opzionale)</string>
     <plurals name="servings">
         <item quantity="one">porzione</item>

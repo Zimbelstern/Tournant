@@ -1,14 +1,53 @@
 <resources>
+
 	<style name="Theme.Tournant" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-		<item name="colorPrimary">@color/amber_primary</item>
-		<item name="colorPrimaryVariant">@color/amber_dark</item>
-		<item name="colorOnPrimary">@color/black</item>
-		<item name="colorSecondary">@color/blue_secondary</item>
-		<item name="colorSecondaryVariant">@color/blue_dark</item>
+
+		<!-- Primary colors -->
+		<item name="colorPrimary">@color/blue_dark</item>
+		<item name="colorOnPrimary">@color/white</item>
+
+		<!-- Secondary colors -->
+		<item name="colorSecondary">@color/blue</item>
 		<item name="colorOnSecondary">@color/white</item>
-		<item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+
+		<!-- Bar colors -->
+		<item name="actionBarStyle">@style/Tournant.ActionBar</item>
+		<item name="android:statusBarColor">@color/amber_dark</item>
+		<item name="android:navigationBarColor">@color/amber_dark</item>
+
+		<!-- Surfaces -->
+		<item name="colorSurface">@color/light_surface</item>
+		<item name="android:windowBackground">?attr/colorSurface</item>
+		<item name="materialCardViewStyle">@style/Tournant.CardViewStyle</item>
+
+		<!-- Text color of action bar menu items -->
+		<item name="android:itemTextAppearance">@style/Tournant.MenuItemTextAppearance</item>
+
 	</style>
+
+	<!-- Action bar color -->
+	<style name="Tournant.ActionBar" parent="Theme.Tournant">
+		<item name="background">@color/amber</item>
+	</style>
+
+	<!-- Menu item color -->
+	<style name="Tournant.MenuItemTextAppearance" parent="Theme.Tournant">
+		<item name="android:textColor">@android:color/primary_text_light</item>
+	</style>
+
+	<color name="heading_color">@color/blue_text</color>
+	<color name="highlight_color">@color/blue</color>
+	<color name="normal_text_color">@color/dark_gray</color>
+	<color name="checked_text_color">@color/dark_gray_alpha</color>
+
+	<!-- For light and dark theme -->
 	<style name="Theme.Tournant.KitchenBackground" parent="Theme.Tournant">
 		<item name="android:windowBackground">@drawable/background_repeat</item>
 	</style>
+
+	<!-- For light and dark theme -->
+	<style name="Tournant.CardViewStyle" parent="Theme.Tournant">
+		<item name="cardBackgroundColor">?attr/colorSurface</item>
+	</style>
+
 </resources>

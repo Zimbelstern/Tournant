@@ -23,10 +23,10 @@ class InstructionsTextAdapter(text: String) : RecyclerView.Adapter<InstructionsT
 		holder.binding.instructionText.text = paragraphs[position]
 		if (paragraphs[position].isNotEmpty()) holder.binding.root.setOnClickListener {
 			if (holder.binding.instructionChecked.isVisible) {
-				holder.binding.instructionText.setTextColor(ContextCompat.getColor(holder.binding.root.context, android.R.color.tab_indicator_text))
+				holder.binding.instructionText.setTextColor(ContextCompat.getColor(holder.binding.root.context, R.color.normal_text_color))
 				holder.binding.instructionChecked.visibility =  View.INVISIBLE
 			} else {
-				holder.binding.instructionText.setTextColor(ContextCompat.getColor(holder.binding.root.context, R.color.gray))
+				holder.binding.instructionText.setTextColor(ContextCompat.getColor(holder.binding.root.context, R.color.checked_text_color))
 				holder.binding.instructionChecked.visibility =  View.VISIBLE
 			}
 		}

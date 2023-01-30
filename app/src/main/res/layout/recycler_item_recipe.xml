@@ -34,7 +34,7 @@
 			android:layout_marginStart="12dp"
 			android:maxLines="2"
 			android:ellipsize="end"
-			android:textColor="@color/blue_text"
+			android:textColor="@color/heading_color"
 			android:textSize="@dimen/font_size_heading"
 			android:textStyle="bold"
 			app:layout_constraintStart_toEndOf="@id/recipe_card_image"

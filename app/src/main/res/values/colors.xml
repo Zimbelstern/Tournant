@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-	<color name="amber_primary">#FFFFB300</color>
-	<color name="amber_light">#FFFFE54C</color>
-	<color name="amber_dark">#FFC68400</color>
-	<color name="amber_pale">#fff3d3</color>
+	<color name="amber">#ffb300</color>
+	<color name="amber_dark">#ff9d0a</color>
 
-	<color name="blue_secondary">#FF1565C0</color>
-	<color name="blue_light">#FF5E92F3</color>
-	<color name="blue_dark">#FF003C8F</color>
-	<color name="blue_text">#FF405678</color>
+	<color name="blue_light">#5e92f3</color>
+	<color name="blue">#1565c0</color>
+	<color name="blue_text">#284c82</color>
+	<color name="blue_dark">#003c8f</color>
+	<color name="blue_darker">#1c253e</color>
 
-	<color name="black">#FF000000</color>
-	<color name="white">#FFFFFFFF</color>
-	<color name="gray">#FFCCCCCC</color>
-	<color name="transparent">#00000000</color>
+	<color name="light_surface">#fff5dc</color>
+	<color name="dark_surface">#25231f</color>
+
+	<color name="black">#000000</color>
+	<color name="dark_gray">#808080</color>
+	<color name="dark_gray_alpha">#77808080</color>
+	<color name="light_gray">#cccccc</color>
+	<color name="light_gray_alpha">#55cccccc</color>
+	<color name="white">#ffffff</color>
+	<color name="transparent">#00123456</color>
 
 	<array name="material_colors_700" tools:ignore="UnusedResources">
 		<item name="red_700" type="color">#d01716</item>

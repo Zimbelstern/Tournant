@@ -6,13 +6,14 @@
     <string name="instructions">Instructions</string>
     <string name="optional">%s (optionnel)</string>
     <string name="preptime">Temps de préparation</string>
-    <string name="file_modes_explanation"><p>Vous pouvez ensuite choisir l\'un des modes de fichier suivants :</p>
-\n\t\t<h6>Aperçu</h6>
-\n\t\t<p>Le fichier sera analysé une seule fois et vos recettes seront affichées jusqu\'à ce que vous choisissiez de fermer le fichier ou de fermer l\'application.</p>
-\n\t\t<h6>Importer</h6>
-\n\t\t<p>Le fichier sera copié dans le stockage de l\'application et son contenu sera affiché comme votre liste de recettes par défaut.</p>
-\n\t\t<h6>Lien</h6>
-\n\t\t<p>Le fichier sera analysé à nouveau chaque fois que vous ouvrirez l\'application. Cette fonction est particulièrement utile si vous souhaitez synchroniser le fichier avec votre ordinateur. Notez qu\'en raison des restrictions du système, lier le fichier ne fonctionnera pas toujours. Par conséquent, vous ne pouvez pas choisir ce mode lorsque vous démarrez l\'application via <i>Ouvrir avec</i> à partir d\'un fichier.</p></string>
+    <string name="file_modes_explanation">Vous pouvez ensuite choisir l\'un des modes de fichier suivants :</string>
+    <string name="preview">Aperçu</string>
+    <string name="preview_explanation">Le fichier sera analysé une seule fois et vos recettes seront affichées jusqu\'à ce que vous choisissiez de fermer le fichier ou de fermer l\'application.</string>
+    <string name="import_">Importer</string>
+    <string name="import_explanation">Le fichier sera copié dans le stockage de l\'application et son contenu sera affiché comme votre liste de recettes par défaut.</string>
+    <string name="link">Lien</string>
+    <string name="link_explanation_1">Le fichier sera analysé à nouveau chaque fois que vous ouvrirez l\'application. Cette fonction est particulièrement utile si vous souhaitez synchroniser le fichier avec votre ordinateur.</string>
+    <string name="link_explanation_2">Notez qu\'en raison des restrictions du système, lier le fichier ne fonctionnera pas toujours. Par conséquent, vous ne pouvez pas choisir ce mode lorsque vous démarrez l\'application via «Ouvrir avec…» à partir d\'un fichier.</string>
     <string name="recipes">Recettes</string>
     <string name="libraries">Bibliothèques</string>
     <string name="rating">Évaluation</string>
@@ -21,7 +22,7 @@
     <string name="cuisine">Cuisine</string>
     <string name="ingredients">Ingrédients</string>
     <string name="choose_file">Choisir le fichier</string>
-    <string name="link">Page web</string>
+    <string name="webpage">Page web</string>
     <string name="yield">pour</string>
     <plurals name="lots">
         <item quantity="one" tools:ignore="ImpliedQuantity">lot</item>

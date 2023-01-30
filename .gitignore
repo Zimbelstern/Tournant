@@ -3,6 +3,7 @@
 .idea/
 app/build/
 app/release/
+build/
 fastlane/*
 !fastlane/metadata/
 gradle/

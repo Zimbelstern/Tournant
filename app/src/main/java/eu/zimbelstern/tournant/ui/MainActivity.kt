@@ -1,4 +1,4 @@
-package eu.zimbelstern.tournant
+package eu.zimbelstern.tournant.ui
 
 import android.content.Context
 import android.content.Intent
@@ -13,15 +13,16 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.core.net.toUri
-import androidx.core.text.HtmlCompat
-import androidx.core.text.HtmlCompat.FROM_HTML_MODE_COMPACT
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import eu.zimbelstern.tournant.*
+import eu.zimbelstern.tournant.Constants.Companion.PREF_COLOR_THEME
 import eu.zimbelstern.tournant.databinding.ActivityMainBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -34,19 +35,25 @@ import java.io.InputStream
 class MainActivity : AppCompatActivity() {
 
 	companion object {
-		const val FILE_MODE_PREVIEW = 0
+		const val FILE_MODE_UNSET = 0
 		const val FILE_MODE_IMPORT = 1
 		const val FILE_MODE_LINK = 2
+		const val FILE_MODE_PREVIEW = 3
 	}
 
 	private lateinit var binding: ActivityMainBinding
 	private var searchView: SearchView? = null
 	private var titleView: TextView? = null
 	private var recipes = MutableLiveData<List<Recipe>>()
-	private var fileMode = -1
+	private var fileMode = FILE_MODE_UNSET
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
+
+		getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE).getInt(PREF_COLOR_THEME, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM).let {
+			if (it == AppCompatDelegate.MODE_NIGHT_YES || it == AppCompatDelegate.MODE_NIGHT_NO)
+				AppCompatDelegate.setDefaultNightMode(it)
+		}
 
 		binding = ActivityMainBinding.inflate(layoutInflater)
 		setContentView(binding.root)
@@ -72,12 +79,9 @@ class MainActivity : AppCompatActivity() {
 			}
 		}
 
-		binding.activityMainChooseFile.setOnClickListener {
+		binding.activityMainStart.chooseFile.setOnClickListener {
 			chooseFile()
 		}
-
-		binding.activityMainFileModesExplanation.text =
-			HtmlCompat.fromHtml(getString(R.string.file_modes_explanation), FROM_HTML_MODE_COMPACT)
 
 		if (intent.action == Intent.ACTION_VIEW)
 			showOpenOptions(intent.data as Uri, 2)
@@ -128,7 +132,7 @@ class MainActivity : AppCompatActivity() {
 	/** Checks for an imported or linked recipe file and - if available - parses its contents.
 	 * If mode is null, it uses the file mode stored in the preferences. **/
 	private fun openSavedRecipes(mode: Int? = null) {
-		fileMode = mode ?: getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE).getInt("FILE_MODE", -1)
+		fileMode = mode ?: getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE).getInt("FILE_MODE", FILE_MODE_UNSET)
 		when (fileMode) {
 			FILE_MODE_PREVIEW -> parseRecipes(FileInputStream(File(filesDir, "tmp.xml")))
 			FILE_MODE_IMPORT -> parseRecipes(FileInputStream(File(filesDir, "import.xml")))
@@ -313,7 +317,7 @@ class MainActivity : AppCompatActivity() {
 
 	/** Opens the recipe view. **/
 	fun openRecipeDetail(recipe: Recipe) {
-		val intent = Intent(this, RecipeDetail::class.java).apply {
+		val intent = Intent(this, RecipeActivity::class.java).apply {
 			putExtra("RECIPE", recipe)
 			putExtra("FILE_MODE", fileMode)
 		}
@@ -321,10 +325,8 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	override fun onSaveInstanceState(outState: Bundle) {
-		recipes.value?.let {
-			outState.putInt("FILE_MODE", fileMode)
-			outState.putCharSequence("SEARCH_QUERY", searchView?.query)
-		}
+		outState.putInt("FILE_MODE", fileMode)
+		outState.putCharSequence("SEARCH_QUERY", searchView?.query)
 		super.onSaveInstanceState(outState)
 	}
 

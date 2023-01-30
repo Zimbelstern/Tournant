@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import eu.zimbelstern.tournant.databinding.RecyclerItemChipBinding
+import eu.zimbelstern.tournant.ui.MainActivity
 import kotlin.random.Random
 
 class ChipGroupAdapter(private val mainActivity: MainActivity, private val allChips: List<String>) : RecyclerView.Adapter<ChipGroupAdapter.ChipGroupViewHolder>() {

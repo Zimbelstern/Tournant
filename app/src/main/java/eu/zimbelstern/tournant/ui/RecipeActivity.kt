@@ -1,4 +1,4 @@
-package eu.zimbelstern.tournant
+package eu.zimbelstern.tournant.ui
 
 import android.content.Context
 import android.content.Intent
@@ -13,10 +13,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.parseAsHtml
 import androidx.core.widget.addTextChangedListener
+import eu.zimbelstern.tournant.*
 import eu.zimbelstern.tournant.databinding.ActivityRecipeDetailBinding
 import kotlin.random.Random
 
-class RecipeDetail : AppCompatActivity() {
+class RecipeActivity : AppCompatActivity() {
 
 	companion object {
 		private const val TAG = "Activity RecipeDetail"
@@ -40,7 +41,10 @@ class RecipeDetail : AppCompatActivity() {
 		binding = ActivityRecipeDetailBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 
-		supportActionBar?.setDisplayHomeAsUpEnabled(true)
+		supportActionBar?.apply {
+			setDisplayHomeAsUpEnabled(true)
+			setDisplayShowTitleEnabled(true)
+		}
 
 		if (getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE).getBoolean("SCREEN_ON", true))
 			window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -101,7 +105,7 @@ class RecipeDetail : AppCompatActivity() {
 				fillYieldsUnit()
 				addTextChangedListener { editable ->
 					recipe.ingredientList?.scale(editable.toString().toFloatOrNull()?.div(recipe.getYieldsValue() ?: 1f))?.let { list ->
-						binding.recipeDetailIngredientsRecycler.adapter = IngredientTableAdapter(this@RecipeDetail, list)
+						binding.recipeDetailIngredientsRecycler.adapter = IngredientTableAdapter(this@RecipeActivity, list)
 						fillYieldsUnit()
 					}
 				}
@@ -114,7 +118,7 @@ class RecipeDetail : AppCompatActivity() {
 		}
 		recipe.ingredientList?.let { list ->
 			binding.recipeDetailIngredients.visibility = View.VISIBLE
-			binding.recipeDetailIngredientsRecycler.adapter = IngredientTableAdapter(this@RecipeDetail, list)
+			binding.recipeDetailIngredientsRecycler.adapter = IngredientTableAdapter(this@RecipeActivity, list)
 		}
 		recipe.instructions?.let {
 			binding.recipeDetailInstructions.visibility = View.VISIBLE

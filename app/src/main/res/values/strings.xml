@@ -12,7 +12,7 @@
 	<string name="cuisine">Cuisine</string>
 	<string name="rating">Rating</string>
 	<string name="source">Source</string>
-	<string name="link">Webpage</string>
+	<string name="webpage">Webpage</string>
 	<string name="cooktime">Cooking time</string>
 	<string name="preptime">Preparation time</string>
 	<string name="yield">Yield:</string>
@@ -31,19 +31,21 @@
 
 	<!-- First start UI & file choose options -->
 	<string name="choose_file_long">Choose a Gourmet/Gourmand XML file from your device.</string>
-	<string name="file_modes_explanation">"&lt;p>You can then choose between the following file modes:&lt;/p>
-		&lt;h6>Preview&lt;/h6>
-		&lt;p>The file will be parsed just once and your recipes will be displayed until you choose to close the file or close the app.&lt;/p>
-		&lt;h6>Import&lt;/h6>
-		&lt;p>The file will be copied into the storage of the app and the content will be displayed as your default recipe list.&lt;/p>
-		&lt;h6>Link&lt;/h6>
-		&lt;p>The file will be parsed anew every time you open the app. This is especially useful if you want to sync the file with your computer.
-Note that due to system restrictions, linking the file will not always work. Hence, you can't choose this mode when starting the app via &lt;i>Open with&lt;/i> from a file.&lt;/p>"</string>
+	<string name="file_modes_explanation">You can then choose between the following file modes:</string>
+	<string name="preview">Preview</string>
+	<string name="preview_explanation">The file will be parsed just once and your recipes will be displayed until you choose to close the file or close the app.</string>
+	<string name="import_">Import</string>
+	<string name="import_explanation">The file will be copied into the storage of the app and the content will be displayed as your default recipe list.</string>
+	<string name="link">Link</string>
+	<string name="link_explanation_1">The file will be parsed anew every time you open the app. This is especially useful if you want to sync the file with your computer.</string>
+	<string name="link_explanation_2">Note that due to system restrictions, linking the file will not always work. Hence, you can\'t choose this mode when starting the app via “Open with…” from a file.</string>
+
 	<string-array name="file_modes">
-		<item>Preview</item>
-		<item>Import</item>
-		<item>Link</item>
+		<item>@string/preview</item>
+		<item>@string/import_</item>
+		<item>@string/link</item>
 	</string-array>
+
 	<string-array name="file_modes_participles">
 		<item>Preview</item>
 		<item>Imported</item>
@@ -68,6 +70,12 @@ Note that due to system restrictions, linking the file will not always work. Hen
 	<!-- Settings -->
 	<string name="general_settings">General settings</string>
 	<string name="keep_screen_on">Keep the display on in the single recipe view</string>
+	<string name="color_theme">Color theme</string>
+	<string-array name="color_theme_options">
+		<item>Auto (follow system)</item>
+		<item>Light</item>
+		<item>Dark</item>
+	</string-array>
 
 	<!-- About -->
 	<string name="website">Website</string>

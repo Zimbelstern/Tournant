@@ -10,17 +10,17 @@
 		android:supportsRtl="true"
 		android:theme="@style/Theme.Tournant">
 		<activity
-			android:name=".AboutActivity"
-			android:exported="false" />
+			android:name=".ui.AboutActivity"
+			android:exported="false"/>
 		<activity
-			android:name=".SettingsActivity"
-			android:exported="false" />
+			android:name=".ui.SettingsActivity"
+			android:exported="false"/>
 		<activity
-			android:name=".RecipeDetail"
+			android:name=".ui.RecipeActivity"
 			android:exported="false"
 			android:theme="@style/Theme.Tournant.KitchenBackground"/>
 		<activity
-			android:name=".MainActivity"
+			android:name=".ui.MainActivity"
 			android:exported="true"
 			android:theme="@style/Theme.Tournant.KitchenBackground">
 			<intent-filter>

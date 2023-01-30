@@ -1,15 +1,17 @@
-package eu.zimbelstern.tournant
+package eu.zimbelstern.tournant.ui
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.get
+import eu.zimbelstern.tournant.R
 
 class AboutActivity : AppCompatActivity() {
 
@@ -25,6 +27,7 @@ class AboutActivity : AppCompatActivity() {
 		supportActionBar?.apply {
 			title = getString(R.string.about_app_name, getString(R.string.app_name))
 			setDisplayHomeAsUpEnabled(true)
+			setDisplayShowTitleEnabled(true)
 		}
 	}
 
@@ -71,9 +74,12 @@ class AboutActivity : AppCompatActivity() {
 
 	}
 
-	override fun onSupportNavigateUp(): Boolean {
-		onBackPressed()
-		return true
+	override fun onOptionsItemSelected(item: MenuItem): Boolean {
+		return if (item.itemId == android.R.id.home) {
+			finish()
+			true
+		} else
+			super.onOptionsItemSelected(item)
 	}
 
 }

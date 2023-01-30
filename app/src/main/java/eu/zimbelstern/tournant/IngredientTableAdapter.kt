@@ -7,8 +7,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import eu.zimbelstern.tournant.databinding.RecyclerItemIngredientsBinding
+import eu.zimbelstern.tournant.ui.RecipeActivity
 
-class IngredientTableAdapter(private val recipeActivity: RecipeDetail, ingredientList: List<IngredientListElement>) : RecyclerView.Adapter<IngredientTableAdapter.IngredientTableViewHolder>() {
+class IngredientTableAdapter(private val recipeActivity: RecipeActivity, ingredientList: List<IngredientListElement>) : RecyclerView.Adapter<IngredientTableAdapter.IngredientTableViewHolder>() {
 
 	private val tableRows = createTableRows(ingredientList)
 
@@ -52,12 +53,12 @@ class IngredientTableAdapter(private val recipeActivity: RecipeDetail, ingredien
 			holder.binding.root.setOnClickListener {
 				if (holder.binding.ingredientChecked.isVisible) {
 					textViews.forEach {
-						it.setTextColor(ContextCompat.getColor(holder.binding.root.context, android.R.color.tab_indicator_text))
+						it.setTextColor(ContextCompat.getColor(holder.binding.root.context, R.color.normal_text_color))
 					}
 					holder.binding.ingredientChecked.isVisible = false
 				} else {
 					textViews.forEach {
-						it.setTextColor(ContextCompat.getColor(holder.binding.root.context, R.color.gray))
+						it.setTextColor(ContextCompat.getColor(holder.binding.root.context, R.color.checked_text_color))
 					}
 					holder.binding.ingredientChecked.isVisible = true
 				}

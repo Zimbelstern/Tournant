@@ -4,7 +4,7 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	tools:context=".RecipeDetail">
+	tools:context=".ui.RecipeActivity">
 
 	<LinearLayout
 		android:layout_width="match_parent"
@@ -52,7 +52,7 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_marginBottom="4dp"
-					android:textColor="@color/blue_text"
+					android:textColor="@color/heading_color"
 					android:textSize="24sp"
 					android:textStyle="bold"/>
 
@@ -117,7 +117,7 @@
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
 							android:text="@string/source"
-							android:textColor="@color/blue_text"
+							android:textColor="@color/heading_color"
 							android:textSize="@dimen/font_size_text"
 							android:textStyle="bold"/>
 
@@ -141,8 +141,8 @@
 						<TextView
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
-							android:text="@string/link"
-							android:textColor="@color/blue_text"
+							android:text="@string/webpage"
+							android:textColor="@color/heading_color"
 							android:textSize="@dimen/font_size_text"
 							android:textStyle="bold"/>
 
@@ -180,7 +180,7 @@
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
 							android:text="@string/cooktime"
-							android:textColor="@color/blue_text"
+							android:textColor="@color/heading_color"
 							android:textSize="@dimen/font_size_text"
 							android:textStyle="bold"/>
 
@@ -205,7 +205,7 @@
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
 							android:text="@string/preptime"
-							android:textColor="@color/blue_text"
+							android:textColor="@color/heading_color"
 							android:textSize="@dimen/font_size_text"
 							android:textStyle="bold"/>
 
@@ -245,7 +245,7 @@
 					android:layout_height="wrap_content"
 					android:layout_marginBottom="4dp"
 					android:text="@string/ingredients"
-					android:textColor="@color/blue_text"
+					android:textColor="@color/heading_color"
 					android:textSize="@dimen/font_size_heading"
 					android:textStyle="bold"/>
 
@@ -292,23 +292,25 @@
 
 					<ImageButton
 						android:id="@+id/recipe_detail_less"
+						android:contentDescription="@string/less"
 						android:layout_width="32dp"
 						android:layout_height="32dp"
 						android:layout_gravity="center"
 						android:layout_margin="4dp"
 						android:background="@drawable/button_round"
 						android:src="@drawable/ic_minus"
-						android:contentDescription="@string/less"/>
+						app:tint="?attr/colorSurface"/>
 
 					<ImageButton
 						android:id="@+id/recipe_detail_more"
+						android:contentDescription="@string/more"
 						android:layout_width="32dp"
 						android:layout_height="32dp"
 						android:layout_gravity="center"
 						android:layout_margin="4dp"
 						android:background="@drawable/button_round"
 						android:src="@drawable/ic_plus"
-						android:contentDescription="@string/more"/>
+						app:tint="?attr/colorSurface"/>
 
 				</LinearLayout>
 
@@ -345,7 +347,7 @@
 					android:layout_height="wrap_content"
 					android:layout_marginBottom="4dp"
 					android:text="@string/instructions"
-					android:textColor="@color/blue_text"
+					android:textColor="@color/heading_color"
 					android:textSize="@dimen/font_size_heading"
 					android:textStyle="bold"/>
 
@@ -382,7 +384,7 @@
 					android:layout_height="wrap_content"
 					android:layout_marginBottom="4dp"
 					android:text="@string/notes"
-					android:textColor="@color/blue_text"
+					android:textColor="@color/heading_color"
 					android:textSize="@dimen/font_size_heading"
 					android:textStyle="bold" />
 

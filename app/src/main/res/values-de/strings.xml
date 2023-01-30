@@ -9,7 +9,7 @@
 	<string name="cuisine">Küche</string>
 	<string name="rating">Bewertung</string>
 	<string name="source">Quelle</string>
-	<string name="link">Webseite</string>
+	<string name="webpage">Webseite</string>
 	<string name="cooktime">Garzeit</string>
 	<string name="preptime">Vorbereitungszeit</string>
 	<string name="yield">für</string>
@@ -28,19 +28,15 @@
 
 	<!-- First start UI & file choose options -->
 	<string name="choose_file_long">Wählen Sie eine Gourmet/Gourmand-XML-Datei vom Gerät aus.</string>
-	<string name="file_modes_explanation">"&lt;p>Sie können dann zwischen folgenden Dateimodi wählen:&lt;/p>
-		&lt;h6>Vorschau&lt;/h6>
-		&lt;p>Die Datei wird einmalig eingelesen und die Rezepte werden angezeigt, bis Sie die Datei oder die App schließen.&lt;/p>
-		&lt;h6>Importieren&lt;/h6>
-		&lt;p>Die Datei wird in den App-Speicher kopiert und der Inhalt als Ihre Standard-Rezepteliste angezeigt.&lt;/p>
-		&lt;h6>Verlinken&lt;/h6>
-		&lt;p>Die Datei wird bei jedem Start der App neu eingelesen, sodass die angezeigten Rezepte immer aktuell sind. Dies ist vor allem dann nützlich, wenn Sie die Rezepte-Datei mit Ihrem PC synchronisieren wollen.
-Aufgrund von Systembeschränkungen funktioniert das Verlinken jedoch nicht immer. Dieser Modus steht deshalb nicht zur Verfügung, wenn Sie die App über die &lt;i>Öffnen-mit&lt;/i>-Option einer Datei aufrufen.&lt;/p>"</string>
-	<string-array name="file_modes">
-		<item>Vorschau</item>
-		<item>Importieren</item>
-		<item>Verlinken</item>
-	</string-array>
+	<string name="file_modes_explanation">Sie können dann zwischen folgenden Dateimodi wählen:</string>
+	<string name="preview">Vorschau</string>
+	<string name="preview_explanation">Die Datei wird einmalig eingelesen und die Rezepte werden angezeigt, bis Sie die Datei oder die App schließen.</string>
+	<string name="import_">Importieren</string>
+	<string name="import_explanation">Die Datei wird in den App-Speicher kopiert und der Inhalt als Ihre Standard-Rezepteliste angezeigt.</string>
+	<string name="link">Verlinken</string>
+	<string name="link_explanation_1">Die Datei wird bei jedem Start der App neu eingelesen, sodass die angezeigten Rezepte immer aktuell sind. Dies ist vor allem dann nützlich, wenn Sie die Rezepte-Datei mit Ihrem PC synchronisieren wollen.</string>
+	<string name="link_explanation_2">Aufgrund von Systembeschränkungen funktioniert das Verlinken jedoch nicht immer. Dieser Modus steht deshalb nicht zur Verfügung, wenn Sie die App über „Öffnen mit…“ aufrufen.</string>
+
 	<string-array name="file_modes_participles">
 		<item>Vorschau</item>
 		<item>Importiert</item>
@@ -65,6 +61,12 @@ Aufgrund von Systembeschränkungen funktioniert das Verlinken jedoch nicht immer
 	<!-- Settings -->
 	<string name="general_settings">Allgemeine Einstellungen</string>
 	<string name="keep_screen_on">Bildschirm in der Rezeptansicht angeschaltet lassen</string>
+	<string name="color_theme">Farbpalette</string>
+	<string-array name="color_theme_options">
+		<item>Automatisch (dem System folgen)</item>
+		<item>Hell</item>
+		<item>Dunkel</item>
+	</string-array>
 
 	<!-- About -->
 	<string name="website">Webseite</string>
