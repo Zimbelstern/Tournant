@@ -42,6 +42,12 @@
 		<TextView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
+			android:text="@string/file_modes_explanation"
+			android:layout_marginBottom="8dp"/>
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
 			android:text="@string/preview"
 			android:textColor="@color/highlight_color"
 			android:textStyle="bold"/>

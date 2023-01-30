@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -14,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.parseAsHtml
 import androidx.core.widget.addTextChangedListener
 import eu.zimbelstern.tournant.*
-import eu.zimbelstern.tournant.databinding.ActivityRecipeDetailBinding
+import eu.zimbelstern.tournant.databinding.ActivityRecipeBinding
 import kotlin.random.Random
 
 class RecipeActivity : AppCompatActivity() {
@@ -23,7 +24,7 @@ class RecipeActivity : AppCompatActivity() {
 		private const val TAG = "Activity RecipeDetail"
 	}
 
-	private lateinit var binding: ActivityRecipeDetailBinding
+	private lateinit var binding: ActivityRecipeBinding
 	private lateinit var recipe: Recipe
 
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +39,7 @@ class RecipeActivity : AppCompatActivity() {
 			recipe = it
 		}
 
-		binding = ActivityRecipeDetailBinding.inflate(layoutInflater)
+		binding = ActivityRecipeBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 
 		supportActionBar?.apply {
@@ -167,9 +168,12 @@ class RecipeActivity : AppCompatActivity() {
 		}
 	}
 
-	override fun onSupportNavigateUp(): Boolean {
-		onBackPressed()
-		return true
+	override fun onOptionsItemSelected(item: MenuItem): Boolean {
+		return if (item.itemId == android.R.id.home) {
+			finish()
+			true
+		} else
+			super.onOptionsItemSelected(item)
 	}
 
 }
