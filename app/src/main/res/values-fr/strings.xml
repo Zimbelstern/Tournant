@@ -56,4 +56,9 @@
     <string name="ok">OK</string>
     <string name="egg">Prenez un cookie : 🍪</string>
     <string name="less">moins</string>
+    <string name="not_available_in_preview">Impossible dans le mode d\'aperçu</string>
+    <string name="recipe_not_found">Recette introuvable</string>
+    <string name="color_theme">Schéma de couleur</string>
+    <string name="checked">coché</string>
+    <string name="type_or_tap_to_search">Tapez ou sélectionnez …</string>
 </resources>

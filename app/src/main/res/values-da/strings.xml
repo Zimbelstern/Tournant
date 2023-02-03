@@ -29,7 +29,7 @@
     <string name="instructions">Instruks</string>
     <string name="choose_file_long">Vælg en Gormet/Gormand-XML-fil fra din enhed.</string>
     <string name="close_file">Luk fil</string>
-    <string name="color_theme">Farvedragt</string>
+    <string name="color_theme">Farveskema</string>
     <string name="license">Licens</string>
     <string name="libraries">Bibliotek</string>
     <string name="file_modes_explanation">Du kan derefter vælge blandt følgende modus:</string>

@@ -38,6 +38,7 @@
     <string name="optional">%s (opzionale)</string>
     <plurals name="servings">
         <item quantity="one">porzione</item>
+        <item quantity="many"></item>
         <item quantity="other">porzioni</item>
     </plurals>
     <plurals name="lots">

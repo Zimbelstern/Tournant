@@ -38,7 +38,7 @@
     <string name="file_modes_explanation">Sedan kan du välja mellan följande filmodus:</string>
     <string name="link_explanation_1">Filen analyseras på nytt varje gång du öppnar programmet. Särskilt användbart om du vill synkronisera den med din dator.</string>
     <string name="link_explanation_2">Systemet gör det så att man tyvärr måste välja det man här gjord när man startar programmet via \"Öppna med…\" från en fil.</string>
-    <string name="color_theme">Färgtema</string>
+    <string name="color_theme">Färgschema</string>
     <string name="link">Länk</string>
     <string name="no_recipes_found">Fann ingen recept</string>
     <string name="recipe_not_found">Fann inte receptet</string>
