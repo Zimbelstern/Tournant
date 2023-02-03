@@ -1,0 +1,2 @@
+- Feilretting: Krasj ved skalering av ikke-numeriske ingrediensmengder
+- Feilretting: Feiljustering av ingrediensmengder og -navn

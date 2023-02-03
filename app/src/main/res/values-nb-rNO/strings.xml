@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cooktime">Koketid</string>
+    <string name="source">Kilde</string>
+    <string name="file_modes_explanation">Tilgjengelige filmodus:</string>
+    <string name="recipes_with_file_mode">Oppskrifter (%s)</string>
+    <string name="preptime">Forberedelsestid</string>
+    <string name="webpage">Nettside</string>
+    <string name="import_">Importer</string>
+    <string name="cuisine">Kjøkken</string>
+    <string name="notes">Merknader</string>
+    <string name="choose_file_long">Velg en Gourmet/Gourmand-XML-fil fra enheten din.</string>
+    <string name="ok">OK</string>
+    <string name="recipes">Oppskrifter</string>
+    <string name="category">Kategori</string>
+    <string name="rating">Vurdering</string>
+    <string name="optional">%s (valgfritt)</string>
+    <string name="instructions">Instruks</string>
+    <plurals name="lots">
+        <item quantity="one">enhet</item>
+        <item quantity="other">enheter</item>
+    </plurals>
+    <string name="link">Lenke</string>
+    <string name="ingredients">Ingredienser</string>
+    <plurals name="servings">
+        <item quantity="one">porsjon</item>
+        <item quantity="other">porsjoner</item>
+    </plurals>
+    <string name="preview_explanation">Filen vil fortolkes én gang og oppskriftene dine vises til du velger å lukke filen eller programmet.</string>
+    <string name="preview">Forhåndsvis</string>
+    <string name="import_explanation">Filen kopieres til programlagring og innholdet vises i forvalgt oppskriftsliste.</string>
+    <string name="link_explanation_1">Filen tolkes på ny hver gang du åpner programmet. Dette er spesielt nyttig hvis du ønsker å synkronisere filen med datamaskinen din.</string>
+    <string name="file_does_not_exist">Filen finnes ikke</string>
+    <string name="no_recipes_found">Fant ingen oppskrifter</string>
+    <string name="recipe_not_found">Fant ikke oppskriften</string>
+    <string name="general_settings">Generelle innstillinger</string>
+    <string name="unknown_file_error">Ukjent filfeil: %s</string>
+    <string name="inputstream_null">Kunne ikke åpne filen</string>
+    <string name="not_available_in_preview">Ikke tilgjengelig i forhåndsvisning</string>
+    <string name="choose_file_option">Velg filaternativ</string>
+    <string name="close_file">Lukk fil</string>
+    <string name="about_app_name">Om %s</string>
+    <string name="donate">Doner</string>
+    <string name="libraries">Bibliotek</string>
+    <string name="type_or_tap_to_search">Skriv eller trykk for å søke …</string>
+    <string name="cancel">Avbryt</string>
+    <string name="less">mindre</string>
+    <string name="choose_file">Velg fil</string>
+    <string name="more">mer</string>
+    <string name="settings">Innstillinger</string>
+    <string name="color_theme">Fargedrakt</string>
+    <string name="license">Lisens</string>
+    <string name="code">Kilde</string>
+    <string name="website">Nettside</string>
+    <string name="issues">Feilsporer</string>
+    <string name="checked">avhuket</string>
+    <string name="version">Versjon</string>
+    <string name="yield">Nyttemengde:</string>
+    <string name="link_explanation_2">Systemet begrenser når lenking av filer fungerer slik at du må velge et annet modus når du starter programmet via «Åpne med …» fra en fil.</string>
+    <string name="keep_screen_on">Behold skjerm påslått i enkeltoppskriftsvisning</string>
+    <string name="egg">Her har du en kjeks: 🍪</string>
+</resources>

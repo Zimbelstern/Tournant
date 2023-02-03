@@ -1,0 +1,2 @@
+- Ny funksjon i 1.1.5: Del som viser alle kategorier og retter i søk.
+- Feilretting

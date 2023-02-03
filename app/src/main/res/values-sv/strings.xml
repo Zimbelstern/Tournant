@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rating">Betyg</string>
+    <string name="checked">valt</string>
+    <plurals name="servings">
+        <item quantity="one">portion</item>
+        <item quantity="other">portioner</item>
+    </plurals>
+    <string name="file_does_not_exist">Filen finnes inte</string>
+    <string name="about_app_name">Om %s</string>
+    <string name="general_settings">Generella inställningar</string>
+    <string name="version">Version</string>
+    <string name="license">Licens</string>
+    <string name="code">Källa</string>
+    <string name="donate">Donera</string>
+    <string name="libraries">Bibliotek</string>
+    <string name="type_or_tap_to_search">Skriva eller tryck for att söka …</string>
+    <string name="cancel">Avbryt</string>
+    <string name="recipes">Recept</string>
+    <string name="recipes_with_file_mode">Recept (%s)</string>
+    <string name="category">Kategori</string>
+    <string name="cuisine">Kök</string>
+    <string name="cooktime">Koktid</string>
+    <string name="preptime">Beredningstid</string>
+    <string name="ingredients">Ingredienser</string>
+    <string name="import_">Importer</string>
+    <string name="inputstream_null">Problem med att öppna filen</string>
+    <string name="source">Källa</string>
+    <string name="webpage">Webbsida</string>
+    <string name="notes">Anmärkningar</string>
+    <string name="preview">Visa</string>
+    <string name="choose_file_option">Välj filalternativ</string>
+    <string name="optional">%s (valfritt)</string>
+    <string name="instructions">Instruktioner</string>
+    <string name="not_available_in_preview">Inte tillgängligt i visningsmodus</string>
+    <string name="choose_file">Välj fil</string>
+    <string name="less">mindre</string>
+    <string name="file_modes_explanation">Sedan kan du välja mellan följande filmodus:</string>
+    <string name="link_explanation_1">Filen analyseras på nytt varje gång du öppnar programmet. Särskilt användbart om du vill synkronisera den med din dator.</string>
+    <string name="link_explanation_2">Systemet gör det så att man tyvärr måste välja det man här gjord när man startar programmet via \"Öppna med…\" från en fil.</string>
+    <string name="color_theme">Färgtema</string>
+    <string name="link">Länk</string>
+    <string name="no_recipes_found">Fann ingen recept</string>
+    <string name="recipe_not_found">Fann inte receptet</string>
+    <string name="unknown_file_error">Okänt filproblem: %s</string>
+    <string name="close_file">Stäng filen</string>
+    <string name="egg">Här har ni en käks: 🍪</string>
+    <string name="settings">Inställningar</string>
+    <string name="ok">OK</string>
+    <string name="more">mera</string>
+    <string name="choose_file_long">Välj en Gourmet/Gourmand-XML-fil från din enhet.</string>
+    <string name="keep_screen_on">Håll skärmen på i visning for enkeltrecept</string>
+    <string name="issues">Felrapportering</string>
+    <string name="yield">Resultatmängd:</string>
+    <plurals name="lots">
+        <item quantity="one">enhet</item>
+        <item quantity="other">enheter</item>
+    </plurals>
+    <string name="preview_explanation">Filen analyseras en gång och recepten visas tills du väljer stänga filen eller programmet.</string>
+    <string name="import_explanation">Filen kopieras till programmets lagringsutrymme och innehållet visas som din vanliga receptlista.</string>
+    <string name="website">Nätsida</string>
+</resources>
