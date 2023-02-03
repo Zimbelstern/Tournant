@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rating">Vurdering</string>
+    <string name="cuisine">Køkken</string>
+    <string name="cancel">Afbryd</string>
+    <string name="ok">OK</string>
+    <string name="recipes">Opskrifter</string>
+    <string name="recipes_with_file_mode">Opskrifter (%s)</string>
+    <string name="category">Kategori</string>
+    <string name="source">Kilde</string>
+    <string name="cooktime">Kogetid</string>
+    <string name="preptime">Forberedelsestid</string>
+    <string name="ingredients">Ingredienser</string>
+    <string name="notes">Notater</string>
+    <plurals name="servings">
+        <item quantity="one">portion</item>
+        <item quantity="other">portioner</item>
+    </plurals>
+    <plurals name="lots">
+        <item quantity="one">mængde</item>
+        <item quantity="other">mængder</item>
+    </plurals>
+    <string name="webpage">Websted</string>
+    <string name="import_">Importer</string>
+    <string name="not_available_in_preview">Ikke tilgængelig i forhåndsvisningsmodus</string>
+    <string name="general_settings">Generelle indstillinger</string>
+    <string name="yield">Nyttemængde:</string>
+    <string name="optional">%s (valgfrit)</string>
+    <string name="instructions">Instruks</string>
+    <string name="choose_file_long">Vælg en Gormet/Gormand-XML-fil fra din enhed.</string>
+    <string name="close_file">Luk fil</string>
+    <string name="color_theme">Farveskema</string>
+    <string name="license">Licens</string>
+    <string name="libraries">Bibliotek</string>
+    <string name="file_modes_explanation">Du kan derefter vælge blandt følgende modus:</string>
+    <string name="link">Lænke</string>
+    <string name="recipe_not_found">Fandt ikke opskriften</string>
+    <string name="preview">Forhåndsvis</string>
+    <string name="no_recipes_found">Fandt ingen opskrifter</string>
+    <string name="inputstream_null">Kunne ikke åbne filen</string>
+    <string name="choose_file">Vælg fil</string>
+    <string name="choose_file_option">Vælg filalternativ</string>
+    <string name="issues">Fejlrapportering</string>
+    <string name="file_does_not_exist">Filen finnes ikke</string>
+    <string name="about_app_name">Om %s</string>
+    <string name="unknown_file_error">Ukendt filproblem: %s</string>
+    <string name="settings">Indstillinger</string>
+    <string name="website">Website</string>
+    <string name="version">Version</string>
+    <string name="code">Kilde</string>
+    <string name="donate">Doner</string>
+    <string name="type_or_tap_to_search">Skriv eller tryk for å søge …</string>
+    <string name="more">mer</string>
+    <string name="less">mindre</string>
+    <string name="egg">Her har du en kage: 🍪</string>
+    <string name="link_explanation_1">Filen omfortolkes hver gang programmet åbnes. Specielt nyttig når du vil synkronisere den med din computer.</string>
+    <string name="checked">aftjekket</string>
+    <string name="keep_screen_on">Behold skærm slået på i enkeltopskriftsvisning</string>
+    <string name="preview_explanation">Filen vil tolkes én gang og dine opskrifter vil vises til du vælger å lukke filen eller programmet.</string>
+    <string name="import_explanation">Filen vil kopieres ind i programlageret i programmet, og indholdet vil vises som din vanlige opskriftsliste.</string>
+    <string name="link_explanation_2">Systemet begrenser når lænkning av filer fungerer slik at du må vælge et andet modus når du starter programmet via «Åbne med …» fra en fil.</string>
+</resources>

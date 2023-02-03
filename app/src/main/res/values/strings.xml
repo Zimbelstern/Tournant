@@ -1,100 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-	<!-- Non-translatable names -->
-	<string name="app_name" translatable="false">Tournant</string>
-
-	<!-- App bar titles -->
-	<string name="recipes">Recipes</string>
-	<string name="recipes_with_file_mode">Recipes (%s)</string>
-
-	<!-- Recipe -->
-	<string name="category">Category</string>
-	<string name="cuisine">Cuisine</string>
-	<string name="rating">Rating</string>
-	<string name="source">Source</string>
-	<string name="webpage">Webpage</string>
-	<string name="cooktime">Cooking time</string>
-	<string name="preptime">Preparation time</string>
-	<string name="yield">Yield:</string>
-	<string name="ingredients">Ingredients</string>
-	<string name="optional">%s (optional)</string>
-	<string name="instructions">Instructions</string>
-	<string name="notes">Notes</string>
-	<plurals name="servings">
-		<item quantity="one">serving</item>
-		<item quantity="other">servings</item>
-	</plurals>
-	<plurals name="lots">
-		<item quantity="one">lot</item>
-		<item quantity="other">lots</item>
-	</plurals>
-
-	<!-- First start UI & file choose options -->
-	<string name="choose_file_long">Choose a Gourmet/Gourmand XML file from your device.</string>
-	<string name="file_modes_explanation">You can then choose between the following file modes:</string>
-	<string name="preview">Preview</string>
-	<string name="preview_explanation">The file will be parsed just once and your recipes will be displayed until you choose to close the file or close the app.</string>
-	<string name="import_">Import</string>
-	<string name="import_explanation">The file will be copied into the storage of the app and the content will be displayed as your default recipe list.</string>
-	<string name="link">Link</string>
-	<string name="link_explanation_1">The file will be parsed anew every time you open the app. This is especially useful if you want to sync the file with your computer.</string>
-	<string name="link_explanation_2">Note that due to system restrictions, linking the file will not always work. Hence, you can\'t choose this mode when starting the app via “Open with…” from a file.</string>
-
-	<string-array name="file_modes">
-		<item>@string/preview</item>
-		<item>@string/import_</item>
-		<item>@string/link</item>
-	</string-array>
-
-	<string-array name="file_modes_participles">
-		<item>Preview</item>
-		<item>Imported</item>
-		<item>Linked</item>
-	</string-array>
-
-	<!-- Messages -->
-	<string name="file_does_not_exist">The file does not exist</string>
-	<string name="no_recipes_found">No recipes found</string>
-	<string name="recipe_not_found">Recipe not found</string>
-	<string name="inputstream_null">Error while opening the file</string>
-	<string name="unknown_file_error">Unknown file error: %s</string>
-	<string name="not_available_in_preview">Not available in preview mode</string>
-
-	<!-- Options menu -->
-	<string name="choose_file">Choose file</string>
-	<string name="choose_file_option">Choose file option</string>
-	<string name="close_file">Close file</string>
-	<string name="settings">Settings</string>
-	<string name="about_app_name">About %s</string>
-
-	<!-- Settings -->
-	<string name="general_settings">General settings</string>
-	<string name="keep_screen_on">Keep the display on in the single recipe view</string>
-	<string name="color_theme">Color theme</string>
-	<string-array name="color_theme_options">
-		<item>Auto (follow system)</item>
-		<item>Light</item>
-		<item>Dark</item>
-	</string-array>
-
-	<!-- About -->
-	<string name="website">Website</string>
-	<string name="version">Version</string>
-	<string name="license">License</string>
-	<string name="code">Source</string>
-	<string name="issues">Bug tracker</string>
-	<string name="donate">Donate</string>
-	<string name="libraries">Libraries</string>
-
-	<!-- Search -->
-	<string name="type_or_tap_to_search">Type or tap to search…</string>
-
-	<!-- General purpose -->
-	<string name="cancel">Cancel</string>
-	<string name="ok">OK</string>
-	<string name="egg">Have a cookie: 🍪</string>
-	<string name="less">less</string>
-	<string name="more">more</string>
-	<string name="checked">checked</string>
-
+    <!-- Non-translatable names -->
+    <string name="app_name" translatable="false">Tournant</string>
+    <!-- App bar titles -->
+    <string name="recipes">Recipes</string>
+    <string name="recipes_with_file_mode">Recipes (%s)</string>
+    <!-- Recipe -->
+    <string name="category">Category</string>
+    <string name="cuisine">Cuisine</string>
+    <string name="rating">Rating</string>
+    <string name="source">Source</string>
+    <string name="webpage">Webpage</string>
+    <string name="cooktime">Cooking time</string>
+    <string name="preptime">Preparation time</string>
+    <string name="yield">Yield:</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="optional">%s (optional)</string>
+    <string name="instructions">Instructions</string>
+    <string name="notes">Notes</string>
+    <plurals name="servings">
+        <item quantity="one">serving</item>
+        <item quantity="other">servings</item>
+    </plurals>
+    <plurals name="lots">
+        <item quantity="one">lot</item>
+        <item quantity="other">lots</item>
+    </plurals>
+    <!-- First start UI & file choose options -->
+    <string name="choose_file_long">Choose a Gourmet/Gourmand XML file from your device.</string>
+    <string name="file_modes_explanation">You can then choose between the following file modes:</string>
+    <string name="preview">Preview</string>
+    <string name="preview_explanation">The file will be parsed just once and your recipes will be displayed until you choose to close the file or close the app.</string>
+    <string name="import_">Import</string>
+    <string name="import_explanation">The file will be copied into the storage of the app and the content will be displayed as your default recipe list.</string>
+    <string name="link">Link</string>
+    <string name="link_explanation_1">The file will be parsed anew every time you open the app. This is especially useful if you want to sync the file with your computer.</string>
+    <string name="link_explanation_2">Note that due to system restrictions, linking the file will not always work. Hence, you can\'t choose this mode when starting the app via “Open with…” from a file.</string>
+    <string-array name="file_modes">
+        <item>@string/preview</item>
+        <item>@string/import_</item>
+        <item>@string/link</item>
+    </string-array>
+    <string-array name="file_modes_participles">
+        <item>Preview</item>
+        <item>Imported</item>
+        <item>Linked</item>
+    </string-array>
+    <!-- Messages -->
+    <string name="file_does_not_exist">The file does not exist</string>
+    <string name="no_recipes_found">No recipes found</string>
+    <string name="recipe_not_found">Recipe not found</string>
+    <string name="inputstream_null">Error while opening the file</string>
+    <string name="unknown_file_error">Unknown file error: %s</string>
+    <string name="not_available_in_preview">Not available in preview mode</string>
+    <!-- Options menu -->
+    <string name="choose_file">Choose file</string>
+    <string name="choose_file_option">Choose file option</string>
+    <string name="close_file">Close file</string>
+    <string name="settings">Settings</string>
+    <string name="about_app_name">About %s</string>
+    <!-- Settings -->
+    <string name="general_settings">General settings</string>
+    <string name="keep_screen_on">Keep the display on in the single recipe view</string>
+    <string name="color_theme">Color scheme</string>
+    <string-array name="color_theme_options">
+        <item>Auto (follow system)</item>
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+    <!-- About -->
+    <string name="website">Website</string>
+    <string name="version">Version</string>
+    <string name="license">License</string>
+    <string name="code">Source</string>
+    <string name="issues">Bug tracker</string>
+    <string name="donate">Donate</string>
+    <string name="libraries">Libraries</string>
+    <!-- Search -->
+    <string name="type_or_tap_to_search">Type or tap to search…</string>
+    <!-- General purpose -->
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="egg">Have a cookie: 🍪</string>
+    <string name="less">less</string>
+    <string name="more">more</string>
+    <string name="checked">checked</string>
 </resources>
