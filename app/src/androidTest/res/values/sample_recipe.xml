@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="sample_title">Muffins</string>
+	<string name="sample_category">Pastries</string>
+	<string name="sample_cuisine">American</string>
+	<string name="sample_source" translatable="false">Wikibooks</string>
+	<string name="sample_yields">12 muffins</string>
+	<string name="sample_preptime">25 min</string>
+	<string name="sample_cooktime">20 min</string>
+	<string-array name="sample_ingredients">
+		<item>250 g flour</item>
+		<item>65 g sugar</item>
+		<item>2 tsp baking powder</item>
+		<item>1/4 tsp salt</item>
+		<item>1 egg</item>
+		<item>180 ml milk</item>
+		<item>60 ml cooking oil</item>
+		<item>3/4 cup blueberries, fresh or frozen</item>
+	</string-array>
+	<string name="sample_instructions">
+		1. Grease muffin cups or line with paper cups; set aside.
+		\n2. Preheat the oven to 400°F (200°C).
+		\n3. In a medium bowl, combine flour, sugar, baking powder, and salt. Make a well in the center of the mixture and set aside.
+		\n4. In a small bowl, combine beaten egg, milk, and oil. Add this mixture all at once to the flour mixture. Fold in blueberries and stir just until combined. Do not overstir.
+		\n5. Spoon batter into prepared cups, filling each about two-thirds full.
+		\n6. Bake for 18 to 20 minutes or until golden. When a wooden toothpick is inserted near the middle, it should come out clean.
+		\n7. Remove from muffin cups and let cool on a wire rack for 5 minutes.
+	</string>
+	<string name="sample_modifications">To make jumbo muffins, reduce the temperature to 350°F (180°C) and bake for 30 minutes. To make mini muffins, bake for about 10 minutes at 400°F (200°C). Recipe text licensed under CC BY-SA 3.0.</string>
+</resources>

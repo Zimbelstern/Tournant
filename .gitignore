@@ -6,6 +6,8 @@ app/release/
 build/
 fastlane/*
 !fastlane/metadata/
+fastlane/metadata/android/*
+!fastlane/metadata/android/*/
 gradle/
 local.properties
 *.iml

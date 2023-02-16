@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="sample_title">Muffins</string>
+	<string name="sample_category">Süßgebäck</string>
+	<string name="sample_cuisine">amerikanisch</string>
+	<string name="sample_yields">12 Stück</string>
+	<string name="sample_preptime">25 min</string>
+	<string name="sample_cooktime">20 min</string>
+	<string-array name="sample_ingredients">
+		<item>250 g Mehl</item>
+		<item>65 g Zucker</item>
+		<item>2 EL Backplver</item>
+		<item>1/4 TL Salz</item>
+		<item>1 Ei</item>
+		<item>180 ml Milch</item>
+		<item>60 ml Speiseöl</item>
+		<item>3/4 cup Blaubeeren, frisch or gefroren</item>
+	</string-array>
+	<string name="sample_instructions">
+		1. Muffinförmchen oder -blech bereitstellen.
+		\n2. Backofen auf 200°C vorheizen.
+		\n3. In einer großen Schüssel das Mehl, Zucker, Backpulver und Salz vermengen.
+		\n4. In einer kleinen Schüssel das Ei aufschlagen und mit Milch und Öl verrühren. Zu den trockenen Zutaten geben und zu einem Rührteig verarbeiten. Blaubeeren vorsichtig und nur kurz untermengen.
+		\n5. Die vorbereiteten Förmchen zu etwa zwei Dritteln mit Teig füllen.
+		\n6. Etwa 18 bis 20 Minuten backen, bis an einem hineingestochenen Holzspieß kein flüssiger Teig mehr kleben bleibt.
+		\n7. Auf einem Kuchengitter mindestens fünf Minuten abkühlen lassen.
+	</string>
+	<string name="sample_modifications">Für Riesenmuffins bei 180°C 30 Minuten backen. Für Minimuffins 10 Minuten bei 200°C backen. Rezepttext lizensiert unter CC BY-SA 3.0.</string>
+</resources>

@@ -1,10 +1,16 @@
 <a href="https://tournant.zimbelstern.eu"><img src="https://tournant.zimbelstern.eu/favicon-152.png" alt="Tournant" style="display: block; margin: 0 auto"/></a>
 
 # Tournant
-Gourmand/Gourmet recipe parser
+<p style="font-size: 1.25em;">Gourmand/Gourmet recipe parser</p>
 
 Tournant serves your favorite dishes on your Android device!  
 With Tournant, you can open XML recipe files from [Gourmand Recipe Manager](https://github.com/GourmandRecipeManager/gourmand) (previously known as Gourmet Recipe Manager).
+
+<div style="text-align: center;">
+    <img src="https://raw.githubusercontent.com/zimbelstern/Tournant/master/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" alt="Start screen" style="margin: 5px; min-width: 200px; width: 30%"/>
+    <img src="https://raw.githubusercontent.com/zimbelstern/Tournant/master/fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" alt="Recipe View 1" style="margin: 5px; min-width: 200px; width: 30%"/>
+    <img src="https://raw.githubusercontent.com/zimbelstern/Tournant/master/fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" alt="Recipe View 2" style="margin: 5px; min-width: 200px; width: 30%"/>
+</div>
 
 ## Installation
 You can get your copy from different repositories:
@@ -27,6 +33,8 @@ The source code is [freely available on Github](https://github.com/zimbelstern/T
 Tournant is licensed under the Apache License Version 2.0. See [LICENSE](https://github.com/zimbelstern/Tournant/blob/master/LICENSE).
 Please note that the logo and name of the app are trademarks in terms of section 6 of the license.
 If you make substantial changes to the app, please change the logo and name before publishing.
+
+The sample recipe is from [Wikibooks](https://en.wikibooks.org/wiki/Cookbook:Blueberry_Muffin) and licensed under CC BY-SA 3.0.
 
 ## Issues
 Please use the [bug tracker](https://github.com/zimbelstern/Tournant/issues). Feature requests are welcome.
