@@ -1,22 +1,41 @@
-<a href="https://tournant.zimbelstern.eu"><img src="https://tournant.zimbelstern.eu/favicon-152.png" alt="Tournant" style="display: block; margin: 0 auto"/></a>
+<div style="text-align: center">
+
+  <a href="https://tournant.zimbelstern.eu"><img src="https://tournant.zimbelstern.eu/favicon-192.png" alt="Tournant"></a>
+
+  ![Latest release date](https://img.shields.io/endpoint?url=https://zimbelstern.eu/fdroid/tournant-date.json)
+  ![Latest version](https://img.shields.io/endpoint?url=https://zimbelstern.eu/fdroid/tournant-version.json)
+  ![F-Droid version](https://img.shields.io/f-droid/v/eu.zimbelstern.tournant)
+
+  ![Platform: Android](https://img.shields.io/badge/platform-android-brightgreen)
+  ![Language: Kotlin](https://img.shields.io/github/languages/top/zimbelstern/tournant?color=purple)
+  ![Dishes served](https://img.shields.io/github/commits-since/zimbelstern/tournant/1.0?label=dishes%20served&color=00557f)
+
+  [![GitHub sponsors](https://img.shields.io/github/sponsors/zimbelstern?label=GitHub%20sponsors)](https://github.com/sponsors/zimbelstern)
+  [![Liberapay donations](https://img.shields.io/liberapay/receives/zimbelstern?label=Liberapay)](https://liberapay.com/Zimbelstern/donate)
+
+</div>
 
 # Tournant
-<p style="font-size: 1.25em;">Gourmand/Gourmet recipe parser</p>
+<p style="font-size: 1.25em;">
+  Gourmand/Gourmet recipe parser
+</p>
 
 Tournant serves your favorite dishes on your Android device!  
 With Tournant, you can open XML recipe files from [Gourmand Recipe Manager](https://github.com/GourmandRecipeManager/gourmand) (previously known as Gourmet Recipe Manager).
 
 <div style="text-align: center;">
-    <img src="https://raw.githubusercontent.com/zimbelstern/Tournant/master/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" alt="Start screen" style="margin: 5px; min-width: 200px; width: 30%"/>
-    <img src="https://raw.githubusercontent.com/zimbelstern/Tournant/master/fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" alt="Recipe View 1" style="margin: 5px; min-width: 200px; width: 30%"/>
-    <img src="https://raw.githubusercontent.com/zimbelstern/Tournant/master/fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" alt="Recipe View 2" style="margin: 5px; min-width: 200px; width: 30%"/>
+  <img src="https://raw.githubusercontent.com/zimbelstern/Tournant/master/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" alt="Start screen" style="margin: 5px; min-width: 200px; width: 30%"/>
+  <img src="https://raw.githubusercontent.com/zimbelstern/Tournant/master/fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" alt="Recipe View 1" style="margin: 5px; min-width: 200px; width: 30%"/>
+  <img src="https://raw.githubusercontent.com/zimbelstern/Tournant/master/fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" alt="Recipe View 2" style="margin: 5px; min-width: 200px; width: 30%"/>
 </div>
 
 ## Installation
 You can get your copy from different repositories:
 - With an F-Droid compatible client (recommended)<br/>
-<a href="https://zimbelstern.eu/fdroid/repo"><img alt="Official repository" src="https://zimbelstern.eu/badge.svg" style="height: 80px"/></a>
-<a href="https://apt.izzysoft.de/fdroid/repo"><img alt="IzzyOnDroid" src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" style="height: 80px"/></a>
+<a href="https://zimbelstern.eu/fdroid/repo"><img alt="Official repository" src="https://zimbelstern.eu/badge.svg" style="height: 75px"/></a> <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" style="height: 75px">
+<br/>*Note: F-Droid's main repository will be at least 2–3 days behind the official repo.*
+
+
 - Alternatively, you can download the latest APK directly from <https://tournant.zimbelstern.eu/tournant-latest.apk>
 
 ## How to get recipes on your device
@@ -44,10 +63,10 @@ Translations of the app and metadata (description, documentation, samples) are m
 Feel free to [improve translations or add your language](https://hosted.weblate.org/engage/tournant/).
 
 <figure>
-<figcaption>App translation status</figcaption>
+<figcaption>App translation status (without metadata)</figcaption>
 <img src="https://hosted.weblate.org/widgets/tournant/-/app/multi-blue.svg" alt="App translation status"/>
 
 </figure>
 
 ## Donate
-If you would like to spread some love and buy the developer a hot chocolate (or chocolate bar), please [follow him here](https://zimbelstern.eu/donate).
+If you would like to spread some love and buy the developer some chocolate, please [follow him here](https://zimbelstern.eu/donate).
