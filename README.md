@@ -31,12 +31,12 @@ With Tournant, you can open XML recipe files from [Gourmand Recipe Manager](http
 
 ## Installation
 You can get your copy from different repositories:
-- With an F-Droid compatible client (recommended)<br/>
-
-<a href="https://zimbelstern.eu/fdroid/repo"><img alt="Official repository" src="https://zimbelstern.eu/badge.svg" style="height:75px"/></a>
-<a href="https://f-droid.org/packages/eu.zimbelstern.tournant/"><img alt="Get it on F-Droid" src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" style="height:75px"/></a>
-
+- With an F-Droid compatible client (recommended)
+<br/>
+<a href="https://zimbelstern.eu/fdroid/repo"><img alt="Official repository" src="https://zimbelstern.eu/badge.svg" style="height:75px"/></a><a href="https://f-droid.org/packages/eu.zimbelstern.tournant/"><img alt="Get it on F-Droid" src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" style="height:75px"/></a>
+<br/>
 *Note: F-Droid's main repository will be at least 2–3 days behind the official repo.*
+
 
 - Alternatively, you can download the latest APK directly from <https://tournant.zimbelstern.eu/tournant-latest.apk>
 
