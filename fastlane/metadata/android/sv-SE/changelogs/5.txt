@@ -1,0 +1,2 @@
+- Buggfix: Krasch vid skalning av icke-numeriska ingrediensmängder
+- Buggfix: Feljustering av ingrediensmängder och namn
