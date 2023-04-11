@@ -1,0 +1,2 @@
+- Buggfix: Krasch när större kokböcker läses in.
+- Förbättring: Sökfrågan återställs vid orienteringsändringar.

@@ -1,0 +1,2 @@
+- Ny funktion i 1.1.5: En sektion som visar alla kategorier och ursprungsland i sökningen
+- Buggfix

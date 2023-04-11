@@ -60,5 +60,5 @@
     <string name="recipe_not_found">Recette introuvable</string>
     <string name="color_theme">Schéma de couleur</string>
     <string name="checked">coché</string>
-    <string name="type_or_tap_to_search">Tapez ou sélectionnez …</string>
+    <string name="type_or_tap_to_search">Tapez ou sélectionnez…</string>
 </resources>
