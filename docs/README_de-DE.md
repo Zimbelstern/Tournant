@@ -33,7 +33,7 @@ Mit Tournant können Sie Rezeptdateien des [Gourmand-Rezeptmanagers](https://git
 Sie können die App aus verschiedenen Quellen bekommen:
 - F-Droid-kompatible Paketquellen (empfohlen)
 <br/>
-<a href="https://zimbelstern.eu/fdroid/repo"><img alt="Zimbelsterns offizielle Paketquelle" src="https://zimbelstern.eu/badge.svg" style="height:75px"/></a><a href="https://f-droid.org/packages/eu.zimbelstern.tournant/"><img alt="Jetzt bei Droid" src="https://fdroid.gitlab.io/artwork/badge/get-it-on-de.png" style="height:75px"/></a>
+<a href="https://zimbelstern.eu/fdroid/repo"><img alt="Zimbelsterns offizielle Paketquelle" src="https://zimbelstern.eu/badge.svg" style="height:75px"/></a><a href="https://f-droid.org/packages/eu.zimbelstern.tournant/"><img alt="Jetzt bei F-Droid" src="https://fdroid.gitlab.io/artwork/badge/get-it-on-de.png" style="height:75px"/></a>
 <br/>
 *Hinweis: Die Hauptpaketquellen von F-Droid haben eine Verzögerung von mindestens 2–3 Tagen.*
 
@@ -60,11 +60,11 @@ Wenn Sie einen Fehler bemerken oder einen Verbesserungsvorschlag haben, verwende
 
 ## Übersetzungen
 Übersetzungen der App and der Metadaten (Beschreibung, Beispiele) werden mit Weblate verwaltet.
-Sie können gerne [Übersetzungen verbessern oder Ihre Sprache hinzufügen](https://hosted.weblate.org/engage/tournant/).
+Sie können gerne [Übersetzungen verbessern oder Ihre Sprache hinzufügen](https://translate.codeberg.org/engage/tournant/).
 
 <figure>
   <figcaption>Übersetzungsstatus der App (ohne Metadaten)</figcaption>
-  <img src="https://hosted.weblate.org/widgets/tournant/-/app/multi-blue.svg" alt="Übersetzungsstatus der App"/>
+  <img src="https://translate.codeberg.org/widgets/tournant/-/app/multi-blue.svg" alt="Übersetzungsstatus der App"/>
 </figure>
 
 ## Spenden

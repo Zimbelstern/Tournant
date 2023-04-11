@@ -71,12 +71,12 @@ The sample recipe is from [Wikibooks](https://en.wikibooks.org/wiki/Cookbook:Blu
 Please use the [bug tracker](https://github.com/Zimbelstern/Tournant/issues). Feature requests are welcome.
 
 ## Translations
-Translations of the app and metadata (description, documentation, samples) are managed with Weblate.
-Feel free to [improve translations or add your language](https://hosted.weblate.org/engage/tournant/).
+Translations of the app and metadata (description, documentation, samples) are managed with Weblate hosted on Codeberg.
+Feel free to [improve translations or add your language](https://translate.codeberg.org/engage/tournant/).
 
 <figure>
   <figcaption>App translation status (without metadata)</figcaption>
-  <img src="https://hosted.weblate.org/widgets/tournant/-/app/multi-blue.svg" alt="App translation status"/>
+  <img src="https://translate.codeberg.org/widgets/tournant/-/app/multi-blue.svg" alt="App translation status"/>
 </figure>
 
 ## Donate
