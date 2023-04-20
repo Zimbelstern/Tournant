@@ -47,13 +47,14 @@ data class Ingredient(
 	// TODO: Set position
 	constructor(
 		amount: Float?,
+		amountRange: Float?,
 		unit: String?,
 		item: String,
 		group: String?,
 		optional: Boolean
 	) : this(0, 0, 0,
 		amount,
-		null,
+		amountRange,
 		unit,
 		item,
 		null,
@@ -66,13 +67,14 @@ data class Ingredient(
 	// TODO: Replace gourmand's refId with ours
 	constructor(
 		amount: Float?,
+		amountRange: Float?,
 		unit: String?,
 		refId: Long,
 		group: String?,
 		optional: Boolean
 	) : this(0, 0, 0,
 		amount,
-		null,
+		amountRange,
 		unit,
 		null,
 		refId,

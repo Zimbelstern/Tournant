@@ -35,10 +35,37 @@ fun String.getQuantityIntForPlurals(): Int? {
 
 fun String.withFractionsToFloat(): Float? {
 	return try {
-		if (this.contains("/")) {
-			this.split("/")[0].toFloat() / this.split("/")[1].toFloat()
-		} else {
-			this.toFloat()
+		 when {
+			 this.contains(" ") -> {
+				 this.split(" ")[1].withFractionsToFloat()
+					 ?.plus(this.split(" ")[0].toFloat())
+			 }
+
+			 this.contains("/") -> {
+				 this.split("/")[0].toFloat() / this.split("/")[1].toFloat()
+			 }
+
+			 else -> this.toFloat()
+		 }
+	} catch (_: Exception) {
+		null
+	}
+}
+
+fun String.withTimeWordsToMinInt(): Int? {
+	return try {
+		when {
+			this.contains("hours") -> {
+				if (this.contains("minutes")) {
+					this.split(" ")[0].withFractionsToFloat()!!.times(60)
+						.plus(this.split(" ")[2].withFractionsToFloat()!!)
+						.toInt()
+				} else {
+					this.split(" ")[0].withFractionsToFloat()?.times(60)?.toInt()
+				}
+			}
+			this.contains("minutes") -> this.split(" ")[0].withFractionsToFloat()?.toInt()
+			else -> this.withFractionsToFloat()?.toInt()
 		}
 	} catch (_: Exception) {
 		null

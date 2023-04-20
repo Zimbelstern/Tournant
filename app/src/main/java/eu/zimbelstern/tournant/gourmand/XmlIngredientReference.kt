@@ -32,7 +32,24 @@ data class XmlIngredientReference(
 	}
 
 	fun toIngredient(inGroup: String? = null): Ingredient {
-		return Ingredient(amount.withFractionsToFloat(), null, refId.toLong(), inGroup, false)
+		return if (amount.contains("-")) {
+			Ingredient(
+				amount.split("-")[0].withFractionsToFloat(),
+				amount.split("-")[1].withFractionsToFloat(),
+				null,
+				refId.toLong(),
+				inGroup,
+				false
+			)
+		} else {
+			Ingredient(
+				amount.withFractionsToFloat(),
+				null,
+				null,
+				refId.toLong(),
+				inGroup,
+				false)
+		}
 	}
 
 }

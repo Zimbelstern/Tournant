@@ -5,6 +5,7 @@ import androidx.core.text.isDigitsOnly
 import eu.zimbelstern.tournant.data.Recipe
 import eu.zimbelstern.tournant.data.RecipeWithIngredients
 import eu.zimbelstern.tournant.toIngredientList
+import eu.zimbelstern.tournant.withTimeWordsToMinInt
 import kotlinx.parcelize.Parcelize
 import kotlin.math.ceil
 import kotlin.math.roundToInt
@@ -81,7 +82,7 @@ data class XmlRecipe(
 			null,
 			category, cuisine, source, link,
 			rating?.times(2)?.toInt(),
-			preptime?.toInt(), cooktime?.toInt(),
+			preptime?.withTimeWordsToMinInt(), cooktime?.withTimeWordsToMinInt(),
 			getYieldsValue(), getYieldsUnit(),
 			instructions, modifications, image
 		),

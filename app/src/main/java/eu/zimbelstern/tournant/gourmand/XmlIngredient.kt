@@ -34,7 +34,24 @@ data class XmlIngredient(
 	}
 
 	fun toIngredient(inGroup: String? = null): Ingredient {
-		return Ingredient(amount?.withFractionsToFloat(), unit, item ?: "", inGroup, optional ?: false)
+		return if (amount?.contains("-") == true) {
+			Ingredient(
+				amount.split("-")[0].withFractionsToFloat(),
+				amount.split("-")[1].withFractionsToFloat(),
+				unit,
+				item ?: "",
+				inGroup,
+				optional ?: false
+			)
+		} else {
+			Ingredient(
+				amount?.withFractionsToFloat(),
+				null,
+				unit,
+				item ?: "",
+				inGroup,
+				optional ?: false)
+		}
 	}
 
 }
