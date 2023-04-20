@@ -16,6 +16,7 @@ import androidx.core.text.parseAsHtml
 import androidx.core.widget.addTextChangedListener
 import eu.zimbelstern.tournant.*
 import eu.zimbelstern.tournant.databinding.ActivityRecipeBinding
+import eu.zimbelstern.tournant.gourmand.XmlRecipe
 import kotlin.random.Random
 
 class RecipeActivity : AppCompatActivity() {
@@ -25,12 +26,12 @@ class RecipeActivity : AppCompatActivity() {
 	}
 
 	private lateinit var binding: ActivityRecipeBinding
-	private lateinit var recipe: Recipe
+	private lateinit var recipe: XmlRecipe
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
-		intent.extras?.getParcelable<Recipe>("RECIPE").let {
+		intent.extras?.getParcelable<XmlRecipe>("RECIPE").let {
 			if (it == null) {
 				Log.e(TAG, "No recipe provided")
 				finish()

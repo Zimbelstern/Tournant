@@ -1,15 +1,34 @@
 package eu.zimbelstern.tournant
 
-fun List<IngredientListElement>.scale(factor: Float?): List<IngredientListElement> {
+import android.util.Log
+import eu.zimbelstern.tournant.data.Ingredient
+import eu.zimbelstern.tournant.gourmand.XmlIngredient
+import eu.zimbelstern.tournant.gourmand.XmlIngredientGroup
+import eu.zimbelstern.tournant.gourmand.XmlIngredientListElement
+import eu.zimbelstern.tournant.gourmand.XmlIngredientReference
+
+fun List<XmlIngredientListElement>.scale(factor: Float?): List<XmlIngredientListElement> {
 	return if (factor != null) {
 		map {
 			when (it) {
-				is Ingredient -> it.withScaledAmount(factor)
-				is IngredientReference -> it.withScaledAmount(factor)
-				is IngredientGroup -> IngredientGroup(it.name, it.list.scale(factor))
+				is XmlIngredient -> it.withScaledAmount(factor)
+				is XmlIngredientReference -> it.withScaledAmount(factor)
+				is XmlIngredientGroup -> XmlIngredientGroup(it.name, it.list.scale(factor))
 				else -> it
 			}
 		}
 	}
 	else this
+}
+
+fun List<XmlIngredientListElement>.toIngredientList(inGroup: String? = null): MutableList<Ingredient> {
+	val ingredients = mutableListOf<Ingredient>()
+	for (element in this) {
+		when (element) {
+			is XmlIngredient -> ingredients.add(element.toIngredient(inGroup))
+			is XmlIngredientReference -> ingredients.add(element.toIngredient(inGroup))
+			is XmlIngredientGroup -> ingredients.addAll(element.list.toIngredientList(element.name))
+		}
+	}
+	return ingredients
 }

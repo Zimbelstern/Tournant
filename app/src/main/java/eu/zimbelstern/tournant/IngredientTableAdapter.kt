@@ -7,9 +7,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import eu.zimbelstern.tournant.databinding.RecyclerItemIngredientsBinding
+import eu.zimbelstern.tournant.gourmand.XmlIngredient
+import eu.zimbelstern.tournant.gourmand.XmlIngredientGroup
+import eu.zimbelstern.tournant.gourmand.XmlIngredientListElement
+import eu.zimbelstern.tournant.gourmand.XmlIngredientReference
 import eu.zimbelstern.tournant.ui.RecipeActivity
 
-class IngredientTableAdapter(private val recipeActivity: RecipeActivity, ingredientList: List<IngredientListElement>) : RecyclerView.Adapter<IngredientTableAdapter.IngredientTableViewHolder>() {
+class IngredientTableAdapter(private val recipeActivity: RecipeActivity, ingredientList: List<XmlIngredientListElement>) : RecyclerView.Adapter<IngredientTableAdapter.IngredientTableViewHolder>() {
 
 	private val tableRows = createTableRows(ingredientList)
 
@@ -70,11 +74,11 @@ class IngredientTableAdapter(private val recipeActivity: RecipeActivity, ingredi
 		return tableRows.size
 	}
 
-	private fun createTableRows(ingredientList: List<IngredientListElement>): List<Pair<List<String>, Int?>> {
+	private fun createTableRows(ingredientList: List<XmlIngredientListElement>): List<Pair<List<String>, Int?>> {
 		return mutableListOf<Pair<List<String>, Int?>>().apply {
 			ingredientList.forEach {
 				when (it) {
-					is Ingredient -> {
+					is XmlIngredient -> {
 						add(Pair(listOf(
 							"",
 							it.amount?.plus(" ") ?: "",
@@ -85,13 +89,13 @@ class IngredientTableAdapter(private val recipeActivity: RecipeActivity, ingredi
 								it.item ?: ""
 						), null))
 					}
-					is IngredientReference -> {
+					is XmlIngredientReference -> {
 						add(Pair(
 							listOf("", it.amount.plus(" "), "", it.name),
 							it.refId)
 						)
 					}
-					is IngredientGroup -> {
+					is XmlIngredientGroup -> {
 						add(Pair(
 							listOf(it.name ?: "", "", "", ""),
 							null

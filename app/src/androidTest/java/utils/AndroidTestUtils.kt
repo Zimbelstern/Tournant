@@ -1,19 +1,17 @@
 package utils
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
-import eu.zimbelstern.tournant.Ingredient
-import eu.zimbelstern.tournant.Recipe
+import eu.zimbelstern.tournant.gourmand.XmlIngredient
+import eu.zimbelstern.tournant.gourmand.XmlRecipe
 import eu.zimbelstern.tournant.test.R
 import java.io.ByteArrayOutputStream
 
 class AndroidTestUtils {
 	companion object {
 		fun buildTestRecipeFromResources() = InstrumentationRegistry.getInstrumentation().context.run {
-			Recipe(null,
+			XmlRecipe(null,
 				getString(R.string.sample_title),
 				getString(R.string.sample_category),
 				getString(R.string.sample_cuisine),
@@ -27,12 +25,12 @@ class AndroidTestUtils {
 					if (it[0].isDigit()) {
 						val ingredient = it.split(" ")
 						if (ingredient.size > 2) {
-							Ingredient(ingredient[0], ingredient[1], ingredient.drop(2).joinToString(" "), null, null)
+							XmlIngredient(ingredient[0], ingredient[1], ingredient.drop(2).joinToString(" "), null, null)
 						} else {
-							Ingredient(ingredient[0], null, ingredient[1], null, null)
+							XmlIngredient(ingredient[0], null, ingredient[1], null, null)
 						}
 					} else {
-						Ingredient(null, null, it, null, null)
+						XmlIngredient(null, null, it, null, null)
 					}
 				},
 				getString(R.string.sample_instructions),

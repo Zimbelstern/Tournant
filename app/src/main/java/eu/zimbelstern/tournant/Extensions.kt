@@ -32,3 +32,15 @@ fun String.getQuantityIntForPlurals(): Int? {
 		float.toInt()
 	}
 }
+
+fun String.withFractionsToFloat(): Float? {
+	return try {
+		if (this.contains("/")) {
+			this.split("/")[0].toFloat() / this.split("/")[1].toFloat()
+		} else {
+			this.toFloat()
+		}
+	} catch (_: Exception) {
+		null
+	}
+}

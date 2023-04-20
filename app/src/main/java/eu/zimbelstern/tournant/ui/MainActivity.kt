@@ -12,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -24,7 +25,10 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import eu.zimbelstern.tournant.*
 import eu.zimbelstern.tournant.Constants.Companion.PREF_COLOR_THEME
+import eu.zimbelstern.tournant.data.RecipeWithIngredients
 import eu.zimbelstern.tournant.databinding.ActivityMainBinding
+import eu.zimbelstern.tournant.gourmand.GourmetXmlParser
+import eu.zimbelstern.tournant.gourmand.XmlRecipe
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -43,9 +47,14 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	private lateinit var binding: ActivityMainBinding
+	private val viewModel: MainViewModel by viewModels {
+		MainViewModelFactory(
+			(application as TournantApplication).database.recipeDao()
+		)
+	}
 	private var searchView: SearchView? = null
 	private var titleView: TextView? = null
-	private var recipes = MutableLiveData<List<Recipe>>()
+	private var recipes = MutableLiveData<List<XmlRecipe>>()
 	private var fileMode = FILE_MODE_UNSET
 
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -264,8 +273,13 @@ class MainActivity : AppCompatActivity() {
 		}
 	}
 
+	private fun fillDatabase(recipes: List<RecipeWithIngredients>) {
+		viewModel.insertRecipes(recipes)
+	}
+
 	/** Fills the recycler with a RecipeListAdapter, sets the title according to the file mode and enables the search view. **/
-	private fun showRecipes(recipes: List<Recipe>, fileMode: Int, filter: CharSequence?) {
+	private fun showRecipes(recipes: List<XmlRecipe>, fileMode: Int, filter: CharSequence?) {
+		fillDatabase(recipes.map { it.toRecipeWithIngredients() })
 		binding.activityMainWelcome.visibility = View.INVISIBLE
 
 		val recipeListAdapter = RecipeListAdapter(this, recipes)
@@ -318,7 +332,7 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	/** Opens the recipe view. **/
-	fun openRecipeDetail(recipe: Recipe) {
+	fun openRecipeDetail(recipe: XmlRecipe) {
 		val intent = Intent(this, RecipeActivity::class.java).apply {
 			putExtra("RECIPE", recipe)
 			putExtra("FILE_MODE", fileMode)

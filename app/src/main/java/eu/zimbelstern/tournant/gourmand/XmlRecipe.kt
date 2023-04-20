@@ -1,13 +1,16 @@
-package eu.zimbelstern.tournant
+package eu.zimbelstern.tournant.gourmand
 
 import android.os.Parcelable
 import androidx.core.text.isDigitsOnly
+import eu.zimbelstern.tournant.data.Recipe
+import eu.zimbelstern.tournant.data.RecipeWithIngredients
+import eu.zimbelstern.tournant.toIngredientList
 import kotlinx.parcelize.Parcelize
 import kotlin.math.ceil
 import kotlin.math.roundToInt
 
 @Parcelize
-data class Recipe(
+data class XmlRecipe(
 	val id: Int?,
 	val title: String?,
 	val category: String?,
@@ -18,7 +21,7 @@ data class Recipe(
 	val preptime: String?,
 	val cooktime: String?,
 	val yields: String?,
-	val ingredientList: List<IngredientListElement>?,
+	val ingredientList: List<XmlIngredientListElement>?,
 	val instructions: String?,
 	val modifications: String?,
 	val image: ByteArray?
@@ -71,9 +74,23 @@ data class Recipe(
 		}
 	}
 
+	fun toRecipeWithIngredients() = RecipeWithIngredients(
+		Recipe(
+			id,
+			title ?: "",
+			null,
+			category, cuisine, source, link,
+			rating?.times(2)?.toInt(),
+			preptime?.toInt(), cooktime?.toInt(),
+			getYieldsValue(), getYieldsUnit(),
+			instructions, modifications, image
+		),
+		ingredientList?.toIngredientList() ?: mutableListOf()
+	)
+
 	override fun equals(other: Any?): Boolean {
 		if (this === other) return true
-		if (other !is Recipe) return false
+		if (other !is XmlRecipe) return false
 
 		if (id != other.id) return false
 		if (title != other.title) return false
