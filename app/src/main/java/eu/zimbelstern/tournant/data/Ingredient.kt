@@ -30,7 +30,7 @@ data class Ingredient(
 	var recipeId: Long,
 
 	@NonNull
-	val position: Int,
+	var position: Int,
 
 	val amount: Float?,
 	val amountRange: Float?,
@@ -44,15 +44,16 @@ data class Ingredient(
 	) {
 
 	// Constructor for simple ingredient
-	// TODO: Set position
 	constructor(
+		position: Int,
 		amount: Float?,
 		amountRange: Float?,
 		unit: String?,
 		item: String,
 		group: String?,
 		optional: Boolean
-	) : this(0, 0, 0,
+	) : this(0, 0,
+		position,
 		amount,
 		amountRange,
 		unit,
@@ -63,16 +64,17 @@ data class Ingredient(
 	)
 
 	// Constructor for reference ingredient
-	// TODO: Set position
 	// TODO: Replace gourmand's refId with ours
 	constructor(
+		position: Int,
 		amount: Float?,
 		amountRange: Float?,
 		unit: String?,
 		refId: Long,
 		group: String?,
 		optional: Boolean
-	) : this(0, 0, 0,
+	) : this(0, 0,
+		position,
 		amount,
 		amountRange,
 		unit,

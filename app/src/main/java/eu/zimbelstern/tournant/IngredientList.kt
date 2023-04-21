@@ -21,13 +21,13 @@ fun List<XmlIngredientListElement>.scale(factor: Float?): List<XmlIngredientList
 	else this
 }
 
-fun List<XmlIngredientListElement>.toIngredientList(inGroup: String? = null): MutableList<Ingredient> {
+fun List<XmlIngredientListElement>.toIngredientList(startPosition: Int = 0, inGroup: String? = null): MutableList<Ingredient> {
 	val ingredients = mutableListOf<Ingredient>()
 	for (element in this) {
 		when (element) {
-			is XmlIngredient -> ingredients.add(element.toIngredient(inGroup))
-			is XmlIngredientReference -> ingredients.add(element.toIngredient(inGroup))
-			is XmlIngredientGroup -> ingredients.addAll(element.list.toIngredientList(element.name))
+			is XmlIngredient -> ingredients.add(element.toIngredient(startPosition + ingredients.size, inGroup))
+			is XmlIngredientReference -> ingredients.add(element.toIngredient(startPosition + ingredients.size, inGroup))
+			is XmlIngredientGroup -> ingredients.addAll(element.list.toIngredientList(startPosition + ingredients.size, element.name))
 		}
 	}
 	return ingredients
