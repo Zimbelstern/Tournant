@@ -1,12 +1,9 @@
 package eu.zimbelstern.tournant.data
 
 import android.content.Context
-import android.util.Log
-import androidx.lifecycle.ViewModelProvider.NewInstanceFactory.Companion.instance
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import java.util.concurrent.Executors
 
 @Database(entities = [Recipe::class, Ingredient::class], version = 1, exportSchema = false)
 abstract class RecipeRoomDatabase : RoomDatabase() {

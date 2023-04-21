@@ -1,16 +1,8 @@
 package eu.zimbelstern.tournant.data
 
-import android.os.Parcel
-import android.os.Parcelable
-import androidx.annotation.NonNull
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import eu.zimbelstern.tournant.getNumberOfDigits
-import eu.zimbelstern.tournant.roundToNDigits
-import eu.zimbelstern.tournant.toStringForCooks
-import kotlinx.parcelize.Parcelize
-import kotlin.text.Typography.times
 
 @Entity(foreignKeys = [
 	ForeignKey(
@@ -26,20 +18,14 @@ data class Ingredient(
 	@PrimaryKey(autoGenerate = true)
 	val id: Long,
 
-	@NonNull
 	var recipeId: Long,
-
-	@NonNull
 	var position: Int,
-
 	val amount: Float?,
 	val amountRange: Float?,
 	val unit: String?,
 	val item: String?,
-	val refId: Long?,
+	var refId: Long?,
 	val group: String?,
-
-	@NonNull
 	val optional: Boolean
 	) {
 
@@ -64,7 +50,6 @@ data class Ingredient(
 	)
 
 	// Constructor for reference ingredient
-	// TODO: Replace gourmand's refId with ours
 	constructor(
 		position: Int,
 		amount: Float?,

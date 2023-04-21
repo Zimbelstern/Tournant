@@ -11,9 +11,7 @@ class MainViewModel(private val recipeDao: RecipeDao) : ViewModel() {
 
 	fun insertRecipes(recipes: List<RecipeWithIngredients>) {
 		viewModelScope.launch {
-			recipes.forEach {
-				recipeDao.insertRecipeWithIngredients(it)
-			}
+			recipeDao.insertRecipesWithIngredients(recipes)
 		}
 	}
 

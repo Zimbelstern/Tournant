@@ -1,25 +1,32 @@
 package eu.zimbelstern.tournant.data
 
-import android.util.Log
 import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.DeleteTable
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 abstract class RecipeDao {
 
-	suspend fun insertRecipeWithIngredients(recipe: RecipeWithIngredients) {
-		val id = insertRecipe(recipe.recipe)
-		recipe.ingredients.forEach {
-			it.recipeId = id
+	suspend fun insertRecipesWithIngredients(recipes: List<RecipeWithIngredients>) {
+		recipes.forEach {
+			it.recipe.id = insertRecipe(it.recipe)
 		}
-		insertIngredients(recipe.ingredients)
+		recipes.forEach {
+			it.ingredients.forEach { ingredient ->
+				ingredient.recipeId = it.recipe.id
+				if (ingredient.refId != null) {
+					val newRef = getRecipeIdByGourmandId(ingredient.refId!!)
+					if (newRef != null)
+						ingredient.refId = getRecipeIdByGourmandId(ingredient.refId!!)
+					else
+						throw Error("Error while saving ${it.recipe.title} to database: Referenced recipe not found")
+				}
+			}
+			insertIngredients(it.ingredients)
+		}
 	}
 
 	@Insert(onConflict = OnConflictStrategy.ABORT)
@@ -37,7 +44,10 @@ abstract class RecipeDao {
 
 	@Transaction
 	@Query("SELECT * FROM recipe WHERE id = :id")
-	abstract fun getRecipe(id: Int): Flow<RecipeWithIngredients>
+	abstract fun getRecipeById(id: Int): Flow<RecipeWithIngredients>
+
+	@Query("SELECT id FROM recipe WHERE gourmandId = :gourmandId")
+	abstract fun getRecipeIdByGourmandId(gourmandId: Long): Long?
 
 	@Transaction
 	@Query("SELECT * FROM recipe ORDER BY title ASC")

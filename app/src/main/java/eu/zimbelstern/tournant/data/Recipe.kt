@@ -1,25 +1,16 @@
 package eu.zimbelstern.tournant.data
 
-import android.os.Parcelable
-import androidx.annotation.NonNull
 import androidx.room.Entity
-import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import kotlinx.parcelize.Parcelize
-import kotlin.math.ceil
-import kotlin.math.roundToInt
 
 @Entity
 data class Recipe(
 	// Constructor for Room entity
 	@PrimaryKey(autoGenerate = true)
-	val id: Long,
+	var id: Long,
 
 	val gourmandId: Int?,
-
-	@NonNull
 	val title: String,
-
 	val description: String?,
 	val category: String?,
 	val cuisine: String?,

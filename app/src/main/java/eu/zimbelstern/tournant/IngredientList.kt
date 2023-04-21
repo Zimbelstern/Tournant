@@ -1,6 +1,5 @@
 package eu.zimbelstern.tournant
 
-import android.util.Log
 import eu.zimbelstern.tournant.data.Ingredient
 import eu.zimbelstern.tournant.gourmand.XmlIngredient
 import eu.zimbelstern.tournant.gourmand.XmlIngredientGroup
