@@ -4,13 +4,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.text.parseAsHtml
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import eu.zimbelstern.tournant.databinding.RecyclerItemTextBinding
 
 class InstructionsTextAdapter(text: String) : RecyclerView.Adapter<InstructionsTextAdapter.InstructionTextViewHolder>() {
 
-	private val paragraphs = text.split("\n")
+	private val paragraphs = text.split("<br/>")
 
 	class InstructionTextViewHolder(val binding: RecyclerItemTextBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -20,7 +21,7 @@ class InstructionsTextAdapter(text: String) : RecyclerView.Adapter<InstructionsT
 	}
 
 	override fun onBindViewHolder(holder: InstructionTextViewHolder, position: Int) {
-		holder.binding.instructionText.text = paragraphs[position]
+		holder.binding.instructionText.text = paragraphs[position].parseAsHtml()
 		if (paragraphs[position].isNotEmpty()) holder.binding.root.setOnClickListener {
 			if (holder.binding.instructionChecked.isVisible) {
 				holder.binding.instructionText.setTextColor(ContextCompat.getColor(holder.binding.root.context, R.color.normal_text_color))

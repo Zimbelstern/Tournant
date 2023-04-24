@@ -19,16 +19,17 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.core.net.toUri
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import eu.zimbelstern.tournant.*
+import eu.zimbelstern.tournant.ChipGroupAdapter
 import eu.zimbelstern.tournant.Constants.Companion.PREF_COLOR_THEME
+import eu.zimbelstern.tournant.R
+import eu.zimbelstern.tournant.RecipeListAdapter
+import eu.zimbelstern.tournant.TournantApplication
 import eu.zimbelstern.tournant.data.RecipeWithIngredients
 import eu.zimbelstern.tournant.databinding.ActivityMainBinding
 import eu.zimbelstern.tournant.gourmand.GourmetXmlParser
-import eu.zimbelstern.tournant.gourmand.XmlRecipe
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -54,7 +55,6 @@ class MainActivity : AppCompatActivity() {
 	}
 	private var searchView: SearchView? = null
 	private var titleView: TextView? = null
-	private var recipes = MutableLiveData<List<XmlRecipe>>()
 	private var fileMode = FILE_MODE_UNSET
 
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,11 +99,11 @@ class MainActivity : AppCompatActivity() {
 		else
 			openSavedRecipes(savedInstanceState?.getInt("FILE_MODE"))
 
-		recipes.observe(this) { recipeList ->
-			intent.extras?.getInt("RECIPE_ID")?.let { id ->
-				val recipe = recipeList.find { it.id == id }
+		viewModel.recipes.observe(this) { recipeList ->
+			intent.extras?.getLong("RECIPE_ID")?.let { id ->
+				val recipe = recipeList.find { it.recipe.id == id }
 				if (recipe != null) {
-					openRecipeDetail(recipe)
+					openRecipeDetail(recipe.recipe.id)
 				}
 				else {
 					Toast.makeText(this, getString(R.string.recipe_not_found), Toast.LENGTH_LONG).show()
@@ -259,7 +259,7 @@ class MainActivity : AppCompatActivity() {
 			}
 			withContext(Dispatchers.IO) {
 				try {
-					recipes.postValue(GourmetXmlParser().parse(inputStream).also {
+					fillDatabase(GourmetXmlParser().parse(inputStream).also {
 						if (it.isEmpty())
 							Toast.makeText(applicationContext, getString(R.string.no_recipes_found), Toast.LENGTH_LONG).show()
 					})
@@ -278,19 +278,18 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	/** Fills the recycler with a RecipeListAdapter, sets the title according to the file mode and enables the search view. **/
-	private fun showRecipes(recipes: List<XmlRecipe>, fileMode: Int, filter: CharSequence?) {
-		fillDatabase(recipes.map { it.toRecipeWithIngredients() })
+	private fun showRecipes(recipes: List<RecipeWithIngredients>, fileMode: Int, filter: CharSequence?) {
 		binding.activityMainWelcome.visibility = View.INVISIBLE
 
-		val recipeListAdapter = RecipeListAdapter(this, recipes)
+		val recipeListAdapter = RecipeListAdapter(this, recipes.map { it.recipe })
 		binding.activityMainRecipes.visibility = View.VISIBLE
 		binding.activityMainRecipeRecycler.adapter = recipeListAdapter
 
-		val categoryChipGroupAdapter = ChipGroupAdapter(this, recipes.mapNotNull { it.category }.distinct().sorted())
+		val categoryChipGroupAdapter = ChipGroupAdapter(this, recipes.mapNotNull { it.recipe.category }.distinct().sorted())
 		binding.activityMainCcSearchCategoryRecycler.adapter = categoryChipGroupAdapter
 		binding.activityMainCcSearchCategoryRecycler.layoutManager = FlexboxLayoutManager(this)
 
-		val cuisineChipGroupAdapter = ChipGroupAdapter(this, recipes.mapNotNull { it.cuisine }.distinct().sorted())
+		val cuisineChipGroupAdapter = ChipGroupAdapter(this, recipes.mapNotNull { it.recipe.cuisine }.distinct().sorted())
 		binding.activityMainCcSearchCuisineRecycler.adapter = cuisineChipGroupAdapter
 		binding.activityMainCcSearchCuisineRecycler.layoutManager = FlexboxLayoutManager(this)
 
@@ -332,9 +331,9 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	/** Opens the recipe view. **/
-	fun openRecipeDetail(recipe: XmlRecipe) {
+	fun openRecipeDetail(recipeId: Long) {
 		val intent = Intent(this, RecipeActivity::class.java).apply {
-			putExtra("RECIPE", recipe)
+			putExtra("RECIPE_ID", recipeId)
 			putExtra("FILE_MODE", fileMode)
 		}
 		startActivity(intent)
@@ -360,7 +359,7 @@ class MainActivity : AppCompatActivity() {
 				true
 			}
 			R.id.close_file -> {
-				recipes.postValue(listOf())
+				viewModel.recipes.postValue(listOf())
 				true
 			}
 			R.id.show_settings -> {

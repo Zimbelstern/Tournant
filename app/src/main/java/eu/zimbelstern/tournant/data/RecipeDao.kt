@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 abstract class RecipeDao {
@@ -44,13 +43,16 @@ abstract class RecipeDao {
 
 	@Transaction
 	@Query("SELECT * FROM recipe WHERE id = :id")
-	abstract fun getRecipeById(id: Int): Flow<RecipeWithIngredients>
+	abstract fun getRecipeById(id: Long): RecipeWithIngredients
+
+	@Query("SELECT title FROM recipe WHERE id = :id")
+	abstract fun getRecipeTitleById(id: Long): String?
 
 	@Query("SELECT id FROM recipe WHERE gourmandId = :gourmandId")
 	abstract fun getRecipeIdByGourmandId(gourmandId: Long): Long?
 
 	@Transaction
 	@Query("SELECT * FROM recipe ORDER BY title ASC")
-	abstract fun getRecipes(): Flow<List<RecipeWithIngredients>>
+	abstract fun getAllRecipes(): List<RecipeWithIngredients>
 
 }

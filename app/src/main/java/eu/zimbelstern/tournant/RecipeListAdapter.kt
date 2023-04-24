@@ -7,12 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.setPadding
 import androidx.recyclerview.widget.RecyclerView
+import eu.zimbelstern.tournant.data.Recipe
 import eu.zimbelstern.tournant.databinding.RecyclerItemRecipeBinding
-import eu.zimbelstern.tournant.gourmand.XmlRecipe
 import eu.zimbelstern.tournant.ui.MainActivity
 import kotlin.random.Random
 
-class RecipeListAdapter(private val mainActivity: MainActivity, private val allRecipes: List<XmlRecipe>) : RecyclerView.Adapter<RecipeListAdapter.RecipeListViewHolder>() {
+class RecipeListAdapter(private val mainActivity: MainActivity, private val allRecipes: List<Recipe>) : RecyclerView.Adapter<RecipeListAdapter.RecipeListViewHolder>() {
 
 	private var filteredRecipes = allRecipes
 
@@ -69,7 +69,7 @@ class RecipeListAdapter(private val mainActivity: MainActivity, private val allR
 		}
 		holder.binding.recipeCardTitle.text = recipe.title
 		holder.binding.root.setOnClickListener {
-			mainActivity.openRecipeDetail(recipe)
+			mainActivity.openRecipeDetail(recipe.id)
 		}
 	}
 
@@ -80,7 +80,7 @@ class RecipeListAdapter(private val mainActivity: MainActivity, private val allR
 	@SuppressLint("NotifyDataSetChanged")
 	fun filterRecipes(query: CharSequence?) {
 		filteredRecipes = if (query != null) allRecipes.filter {
-			(it.title?.contains(query, true) ?: false)
+			(it.title.contains(query, true))
 					|| (it.category?.contains(query, true) ?: false)
 					|| (it.cuisine?.contains(query, true) ?: false)
 		} else allRecipes

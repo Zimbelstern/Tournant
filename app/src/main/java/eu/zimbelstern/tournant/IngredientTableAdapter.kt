@@ -6,16 +6,17 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import eu.zimbelstern.tournant.data.Ingredient
 import eu.zimbelstern.tournant.databinding.RecyclerItemIngredientsBinding
-import eu.zimbelstern.tournant.gourmand.XmlIngredient
-import eu.zimbelstern.tournant.gourmand.XmlIngredientGroup
-import eu.zimbelstern.tournant.gourmand.XmlIngredientListElement
-import eu.zimbelstern.tournant.gourmand.XmlIngredientReference
 import eu.zimbelstern.tournant.ui.RecipeActivity
 
-class IngredientTableAdapter(private val recipeActivity: RecipeActivity, ingredientList: List<XmlIngredientListElement>) : RecyclerView.Adapter<IngredientTableAdapter.IngredientTableViewHolder>() {
+class IngredientTableAdapter(
+	private val recipeActivity: RecipeActivity,
+	ingredientList: List<Ingredient>,
+	scale: Float? = null
+) : RecyclerView.Adapter<IngredientTableAdapter.IngredientTableViewHolder>() {
 
-	private val tableRows = createTableRows(ingredientList)
+	private val tableRows = createTableRows(ingredientList, scale)
 
 	class IngredientTableViewHolder(val binding: RecyclerItemIngredientsBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -53,7 +54,7 @@ class IngredientTableAdapter(private val recipeActivity: RecipeActivity, ingredi
 			}
 		}
 
-		if (textViews[0].text == "") {
+		if (textViews.slice(1..3).any { it.text.isNotEmpty() }) {
 			holder.binding.root.setOnClickListener {
 				if (holder.binding.ingredientChecked.isVisible) {
 					textViews.forEach {
@@ -74,41 +75,43 @@ class IngredientTableAdapter(private val recipeActivity: RecipeActivity, ingredi
 		return tableRows.size
 	}
 
-	private fun createTableRows(ingredientList: List<XmlIngredientListElement>): List<Pair<List<String>, Int?>> {
-		return mutableListOf<Pair<List<String>, Int?>>().apply {
+	private fun createTableRows(ingredientList: List<Ingredient>, scale: Float?): List<Pair<List<String>, Long?>> {
+		val scaleOrEmpty = if (scale != null && scale != 1f) {
+			"(${scale.toStringForCooks()}x)"
+		} else ""
+		return mutableListOf<Pair<List<String>, Long?>>().apply {
+			var group: String? = null
 			ingredientList.forEach {
-				when (it) {
-					is XmlIngredient -> {
-						add(Pair(listOf(
-							"",
-							it.amount?.plus(" ") ?: "",
-							it.unit?.plus(" ") ?: "",
-							if (it.optional == true)
-								recipeActivity.getString(R.string.optional, it.item)
-							else
-								it.item ?: ""
-						), null))
-					}
-					is XmlIngredientReference -> {
-						add(Pair(
-							listOf("", it.amount.plus(" "), "", it.name),
-							it.refId)
+				if (it.group != group) {
+					if (it.position != 0) {
+						add(
+							Pair(
+								listOf("", "", "", ""),
+								null
+							)
 						)
 					}
-					is XmlIngredientGroup -> {
+					if (!it.group.isNullOrEmpty()) {
 						add(Pair(
-							listOf(it.name ?: "", "", "", ""),
+							listOf(it.group ?: "", "", "", ""),
 							null
 						))
-
-						addAll(createTableRows(it.list))
-
-						// Condense empty rows
-						if (last().first.any { s -> s != "" })
-							add(Pair(listOf("","","",""), null))
 					}
-					else -> listOf("", null)
+					group = it.group
 				}
+				var amountString = it.amount?.toStringForCooks() ?: scaleOrEmpty
+				it.amountRange?.let { maxAmount ->
+					amountString += "-${maxAmount.toStringForCooks()}"
+				}
+				add(Pair(listOf(
+					"",
+					"$amountString ",
+					it.unit?.plus(" ") ?: "",
+					if (it.optional)
+						recipeActivity.getString(R.string.optional, it.item ?: it.refId.toString())
+					else
+						it.item ?: "¬"
+				), it.refId))
 			}
 		}
 	}

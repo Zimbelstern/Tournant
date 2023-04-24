@@ -1,5 +1,6 @@
 package eu.zimbelstern.tournant
 
+import eu.zimbelstern.tournant.data.Ingredient
 import kotlin.math.pow
 import kotlin.math.roundToInt
 
@@ -52,22 +53,11 @@ fun String.withFractionsToFloat(): Float? {
 	}
 }
 
-fun String.withTimeWordsToMinInt(): Int? {
-	return try {
-		when {
-			this.contains("hours") -> {
-				if (this.contains("minutes")) {
-					this.split(" ")[0].withFractionsToFloat()!!.times(60)
-						.plus(this.split(" ")[2].withFractionsToFloat()!!)
-						.toInt()
-				} else {
-					this.split(" ")[0].withFractionsToFloat()?.times(60)?.toInt()
-				}
-			}
-			this.contains("minutes") -> this.split(" ")[0].withFractionsToFloat()?.toInt()
-			else -> this.withFractionsToFloat()?.toInt()
+fun MutableList<Ingredient>.scale(factor: Float?): List<Ingredient> {
+	return if (factor != null) {
+		map {
+			it.withScaledAmount(factor)
 		}
-	} catch (_: Exception) {
-		null
 	}
+	else this
 }

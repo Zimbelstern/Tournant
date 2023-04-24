@@ -1,9 +1,14 @@
 package eu.zimbelstern.tournant.data
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import eu.zimbelstern.tournant.getNumberOfDigits
+import eu.zimbelstern.tournant.roundToNDigits
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(foreignKeys = [
 	ForeignKey(
 		entity = Recipe::class,
@@ -20,14 +25,14 @@ data class Ingredient(
 
 	var recipeId: Long,
 	var position: Int,
-	val amount: Float?,
-	val amountRange: Float?,
-	val unit: String?,
-	val item: String?,
+	var amount: Float?,
+	var amountRange: Float?,
+	var unit: String?,
+	var item: String?,
 	var refId: Long?,
-	val group: String?,
-	val optional: Boolean
-	) {
+	var group: String?,
+	var optional: Boolean
+) : Parcelable {
 
 	// Constructor for simple ingredient
 	constructor(
@@ -68,5 +73,18 @@ data class Ingredient(
 		group,
 		optional
 	)
+
+	fun withScaledAmount(factor: Float): Ingredient {
+		if (factor == 1f) {
+			return this
+		}
+
+		val amountScaled = amount.let {
+			it?.times(factor)
+			?.roundToNDigits(it.getNumberOfDigits() + 2)
+		}
+
+		return this.copy(amount = amountScaled)
+	}
 
 }

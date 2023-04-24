@@ -1,8 +1,11 @@
 package eu.zimbelstern.tournant.data
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity
 data class Recipe(
 	// Constructor for Room entity
@@ -16,7 +19,7 @@ data class Recipe(
 	val cuisine: String?,
 	val source: String?,
 	val link: String?,
-	val rating: Int?,
+	val rating: Float?,
 	val preptime: Int?,
 	val cooktime: Int?,
 	val yieldValue: Float?,
@@ -24,7 +27,7 @@ data class Recipe(
 	val instructions: String?,
 	val notes: String?,
 	val image: ByteArray?
-) {
+) : Parcelable {
 
 	// Constructor for outdoor (non-room) usage
 	constructor(
@@ -35,7 +38,7 @@ data class Recipe(
 		cuisine: String?,
 		source: String?,
 		link: String?,
-		rating: Int?,
+		rating: Float?,
 		preptime: Int?,
 		cooktime: Int?,
 		yieldValue: Float?,

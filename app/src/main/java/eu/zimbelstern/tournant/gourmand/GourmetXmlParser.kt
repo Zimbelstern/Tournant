@@ -2,6 +2,12 @@ package eu.zimbelstern.tournant.gourmand
 
 import android.util.Base64
 import android.util.Xml
+import androidx.core.text.isDigitsOnly
+import androidx.core.text.parseAsHtml
+import eu.zimbelstern.tournant.data.Ingredient
+import eu.zimbelstern.tournant.data.Recipe
+import eu.zimbelstern.tournant.data.RecipeWithIngredients
+import eu.zimbelstern.tournant.withFractionsToFloat
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import java.io.IOException
@@ -10,7 +16,7 @@ import java.io.InputStream
 class GourmetXmlParser {
 
 	@Throws(XmlPullParserException::class, IOException::class)
-	fun parse(inputStream: InputStream): List<XmlRecipe> {
+	fun parse(inputStream: InputStream): List<RecipeWithIngredients> {
 		inputStream.use {
 			val parser: XmlPullParser = Xml.newPullParser()
 			parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false)
@@ -21,8 +27,8 @@ class GourmetXmlParser {
 	}
 
 	@Throws(XmlPullParserException::class, IOException::class)
-	private fun readGourmetDoc(parser: XmlPullParser): List<XmlRecipe> {
-		val recipes = mutableListOf<XmlRecipe>()
+	private fun readGourmetDoc(parser: XmlPullParser): List<RecipeWithIngredients> {
+		val recipes = mutableListOf<RecipeWithIngredients>()
 		parser.require(XmlPullParser.START_TAG, null, "gourmetDoc")
 		while (parser.next() != XmlPullParser.END_TAG) {
 			if (parser.eventType != XmlPullParser.START_TAG) {
@@ -38,19 +44,20 @@ class GourmetXmlParser {
 	}
 
 	@Throws(XmlPullParserException::class, IOException::class)
-	private fun readRecipe(parser: XmlPullParser): XmlRecipe {
+	private fun readRecipe(parser: XmlPullParser): RecipeWithIngredients {
 		parser.require(XmlPullParser.START_TAG, null, "recipe")
-		val id = parser.getAttributeValue(null, "id").toInt()
-		var title: String? = null
+		val gourmandId = parser.getAttributeValue(null, "id").toInt()
+		var title = ""
 		var category: String? = null
 		var cuisine: String? = null
 		var source: String? = null
 		var link: String? = null
 		var rating: Float? = null
-		var preptime: String? = null
-		var cooktime: String? = null
-		var yields: String? = null
-		var ingredientList: List<XmlIngredientListElement>? = null
+		var preptime: Int? = null
+		var cooktime: Int? = null
+		var yieldValue: Float? = null
+		var yieldUnit: String? = null
+		var ingredientList: MutableList<Ingredient> = mutableListOf()
 		var instructions: String? = null
 		var modifications: String? = null
 		var image: ByteArray? = null
@@ -65,9 +72,13 @@ class GourmetXmlParser {
 				"rating" -> rating = readStars(parser)
 				"source" -> source = readStringField(parser)
 				"link" -> link = readStringField(parser)
-				"preptime" -> preptime = readStringField(parser)
-				"cooktime" -> cooktime = readStringField(parser)
-				"yields" -> yields = readStringField(parser)
+				"preptime" -> preptime = readTime(parser)
+				"cooktime" -> cooktime = readTime(parser)
+				"yields" -> {
+					val yield = readYield(parser)
+					yieldValue = yield.first
+					yieldUnit = yield.second
+				}
 				"ingredient-list" -> ingredientList = readIngredientList(parser)
 				"instructions" -> instructions = readStringField(parser)
 				"modifications" -> modifications = readStringField(parser)
@@ -75,21 +86,27 @@ class GourmetXmlParser {
 				else -> skip(parser)
 			}
 		}
-		return XmlRecipe(id, title, category, cuisine, source, link, rating, preptime, cooktime, yields, ingredientList, instructions, modifications, image)
+		return RecipeWithIngredients(
+			Recipe(
+				gourmandId, title, null, category, cuisine, source, link, rating, preptime, cooktime,
+				yieldValue, yieldUnit, instructions, modifications, image
+			),
+			ingredientList
+		)
 	}
 
 	@Throws(XmlPullParserException::class, IOException::class)
-	private fun readIngredientList(parser: XmlPullParser): List<XmlIngredientListElement> {
-		val ingredients = mutableListOf<XmlIngredientListElement>()
+	private fun readIngredientList(parser: XmlPullParser): MutableList<Ingredient> {
+		val ingredients = mutableListOf<Ingredient>()
 		parser.require(XmlPullParser.START_TAG, null, "ingredient-list")
 		while (parser.next() != XmlPullParser.END_TAG) {
 			if (parser.eventType != XmlPullParser.START_TAG) {
 				continue
 			}
 			when (parser.name) {
-				"ingredient" -> ingredients.add(readIngredient(parser))
-				"inggroup" -> ingredients.add(readIngredientGroup(parser))
-				"ingref" -> ingredients.add(readIngredientReference(parser))
+				"ingredient" -> ingredients.add(readIngredient(parser, ingredients.size))
+				"ingref" -> ingredients.add(readIngredientReference(parser, ingredients.size))
+				"inggroup" -> ingredients.addAll(readIngredientGroup(parser, ingredients.size))
 				else -> skip(parser)
 			}
 		}
@@ -97,55 +114,69 @@ class GourmetXmlParser {
 	}
 
 	@Throws(XmlPullParserException::class, IOException::class)
-	private fun readIngredient(parser: XmlPullParser): XmlIngredient {
-		parser.require(XmlPullParser.START_TAG, null, "ingredient")
-		var amount: String? = null
-		var unit: String? = null
-		var item: String? = null
-		var key: String? = null
-		val optional = parser.getAttributeValue(null, "optional") == "yes"
-		while (parser.next() != XmlPullParser.END_TAG) {
-			if (parser.eventType != XmlPullParser.START_TAG) {
-				continue
-			}
-			when (parser.name) {
-				"amount" -> amount = readStringField(parser)
-				"unit" -> unit = readStringField(parser)
-				"item" -> item = readStringField(parser)
-				"key" -> key = readStringField(parser)
-				else -> skip(parser)
-			}
-		}
-		return XmlIngredient(amount, unit, item, key, optional)
-	}
-
-	@Throws(XmlPullParserException::class, IOException::class)
-	private fun readIngredientReference(parser: XmlPullParser): XmlIngredientReference {
-		parser.require(XmlPullParser.START_TAG, null, "ingref")
-		val refId = parser.getAttributeValue(null, "refid").toInt()
-		val amount = parser.getAttributeValue(null, "amount")
-		val name: String = readStringField(parser)
-		return XmlIngredientReference(refId, amount, name)
-	}
-
-	@Throws(XmlPullParserException::class, IOException::class)
-	private fun readIngredientGroup(parser: XmlPullParser): XmlIngredientGroup {
+	private fun readIngredientGroup(parser: XmlPullParser, startPosition: Int): List<Ingredient> {
 		parser.require(XmlPullParser.START_TAG, null, "inggroup")
 		var name: String? = null
-		val list = mutableListOf<XmlIngredientListElement>()
+		val ingredients = mutableListOf<Ingredient>()
 		while (parser.next() != XmlPullParser.END_TAG) {
 			if (parser.eventType != XmlPullParser.START_TAG) {
 				continue
 			}
 			when (parser.name) {
 				"groupname" -> name = readStringField(parser)
-				"ingredient" -> list.add(readIngredient(parser))
-				"inggroup" -> list.add(readIngredientGroup(parser))
-				"ingref" -> list.add(readIngredientReference(parser))
+				"ingredient" -> ingredients.add(readIngredient(parser, startPosition + ingredients.size))
+				"ingref" -> ingredients.add(readIngredientReference(parser, startPosition + ingredients.size))
+				"inggroup" -> ingredients.addAll(readIngredientGroup(parser, startPosition + ingredients.size))
 				else -> skip(parser)
 			}
 		}
-		return XmlIngredientGroup(name, list)
+		ingredients.forEach {
+			it.group = name
+		}
+		return ingredients
+	}
+
+	@Throws(XmlPullParserException::class, IOException::class)
+	private fun readIngredient(parser: XmlPullParser, position: Int): Ingredient {
+		parser.require(XmlPullParser.START_TAG, null, "ingredient")
+		var amountString: String? = null
+		var unit: String? = null
+		var item = ""
+		val optional = parser.getAttributeValue(null, "optional") == "yes"
+		while (parser.next() != XmlPullParser.END_TAG) {
+			if (parser.eventType != XmlPullParser.START_TAG) {
+				continue
+			}
+			when (parser.name) {
+				"amount" -> amountString = readStringField(parser)
+				"unit" -> unit = readStringField(parser)
+				"item" -> item = readStringField(parser)
+				else -> skip(parser)
+			}
+		}
+		val amount = amountString?.split("-")?.get(0)?.withFractionsToFloat()
+		val amountRange = if (amountString?.contains("-") == true)
+			amountString.split("-")[1].withFractionsToFloat()
+		else null
+
+		return Ingredient(position, amount, amountRange, unit, item, null, optional)
+	}
+
+	@Throws(XmlPullParserException::class, IOException::class)
+	private fun readIngredientReference(parser: XmlPullParser, position: Int): Ingredient {
+		parser.require(XmlPullParser.START_TAG, null, "ingref")
+		val amountString = parser.getAttributeValue(null, "amount")
+		val refId = parser.getAttributeValue(null, "refid").toLong()
+
+		val amount = amountString?.split("-")?.get(0)?.withFractionsToFloat()
+		val amountRange = if (amountString?.contains("-") == true)
+			amountString.split("-")[1].withFractionsToFloat()
+		else null
+
+		readStringField(parser)
+		parser.require(XmlPullParser.END_TAG, null, "ingref")
+
+		return Ingredient(position, amount, amountRange, null, refId, null, false)
 	}
 
 	@Throws(XmlPullParserException::class, IOException::class)
@@ -177,10 +208,59 @@ class GourmetXmlParser {
 	}
 
 	@Throws(XmlPullParserException::class, IOException::class)
+	private fun readTime(parser: XmlPullParser): Int? {
+		val tag = parser.name
+		parser.require(XmlPullParser.START_TAG, null, tag)
+		val timeString = readText(parser)
+		parser.require(XmlPullParser.END_TAG, null, tag)
+		return try {
+			when {
+				timeString.contains("hours") -> {
+					if (timeString.contains("minutes")) {
+						timeString.split(" ")[0].withFractionsToFloat()!!.times(60)
+							.plus(timeString.split(" ")[2].withFractionsToFloat()!!)
+							.toInt()
+					} else {
+						timeString.split(" ")[0].withFractionsToFloat()?.times(60)?.toInt()
+					}
+				}
+				timeString.contains("minutes") -> timeString.split(" ")[0].withFractionsToFloat()?.toInt()
+				else -> timeString.withFractionsToFloat()?.toInt()
+			}
+		} catch (_: Exception) {
+			null
+		}
+	}
+
+	@Throws(XmlPullParserException::class, IOException::class)
+	private fun readYield(parser: XmlPullParser): Pair<Float?, String?> {
+		val tag = parser.name
+		parser.require(XmlPullParser.START_TAG, null, tag)
+		val yieldString = readText(parser)
+		parser.require(XmlPullParser.END_TAG, null, tag)
+		if (yieldString[0].isDigit()) {
+			if (yieldString.isDigitsOnly()) {
+				return Pair(
+					yieldString.split(" ")[0].toFloat(),
+					null
+				)
+			}
+			return Pair(
+				yieldString.split(" ")[0].toFloat(),
+				yieldString.split(" ").drop(1).joinToString(" ")
+			)
+		}
+		return Pair(
+			null,
+			yieldString
+		)
+	}
+
+	@Throws(XmlPullParserException::class, IOException::class)
 	private fun readStringField(parser: XmlPullParser): String {
 		val tag = parser.name
 		parser.require(XmlPullParser.START_TAG, null, tag)
-		val title = readText(parser)
+		val title = readText(parser).replace("\n", "&lt;br/>").parseAsHtml().toString()
 		parser.require(XmlPullParser.END_TAG, null, tag)
 		return title
 	}

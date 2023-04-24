@@ -1,5 +1,6 @@
 package eu.zimbelstern.tournant.ui
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -9,10 +10,17 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(private val recipeDao: RecipeDao) : ViewModel() {
 
-	fun insertRecipes(recipes: List<RecipeWithIngredients>) {
+	var recipes = MutableLiveData<List<RecipeWithIngredients>>()
+
+	fun insertRecipes(recipeList: List<RecipeWithIngredients>) {
 		viewModelScope.launch {
-			recipeDao.insertRecipesWithIngredients(recipes)
+			recipeDao.insertRecipesWithIngredients(recipeList)
+			pullRecipes()
 		}
+	}
+
+	private fun pullRecipes() {
+		recipes.postValue(recipeDao.getAllRecipes())
 	}
 
 }
