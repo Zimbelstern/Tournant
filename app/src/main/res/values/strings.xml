@@ -29,20 +29,16 @@
     <!-- First start UI & file choose options -->
     <string name="choose_file_long">Choose a Gourmet/Gourmand XML file from your device.</string>
     <string name="file_modes_explanation">You can then choose between the following file modes:</string>
-    <string name="preview">Preview</string>
-    <string name="preview_explanation">The file will be parsed just once and your recipes will be displayed until you choose to close the file or close the app.</string>
     <string name="import_">Import</string>
     <string name="import_explanation">The file will be copied into the storage of the app and the content will be displayed as your default recipe list.</string>
     <string name="link">Link</string>
     <string name="link_explanation_1">The file will be parsed anew every time you open the app. This is especially useful if you want to sync the file with your computer.</string>
     <string name="link_explanation_2">Note that due to system restrictions, linking the file will not always work. Hence, you can\'t choose this mode when starting the app via “Open with…” from a file.</string>
     <string-array name="file_modes">
-        <item>@string/preview</item>
         <item>@string/import_</item>
         <item>@string/link</item>
     </string-array>
     <string-array name="file_modes_participles">
-        <item>Preview</item>
         <item>Imported</item>
         <item>Linked</item>
     </string-array>
@@ -52,8 +48,8 @@
     <string name="recipe_not_found">Recipe not found</string>
     <string name="inputstream_null">Error while opening the file</string>
     <string name="unknown_file_error">Unknown file error: %s</string>
-    <string name="not_available_in_preview">Not available in preview mode</string>
     <!-- Options menu -->
+    <string name="import_recipes">Import</string>
     <string name="choose_file">Choose file</string>
     <string name="choose_file_option">Choose file option</string>
     <string name="close_file">Close file</string>
@@ -62,6 +58,16 @@
     <!-- Settings -->
     <string name="general_settings">General settings</string>
     <string name="keep_screen_on">Keep the display on in the single recipe view</string>
+    <string name="mode">Mode</string>
+    <string-array name="mode_options">
+        <item>Standalone</item>
+        <item>Synced</item>
+    </string-array>
+    <string-array name="mode_options_summary">
+        <item>Standalone: Own database with recipe editing capabilities</item>
+        <item>Synced: Always synchronous with an XML file (read-only)</item>
+    </string-array>
+    <string name="synced_file">Synced Gourmand XML file</string>
     <string name="color_theme">Color scheme</string>
     <string-array name="color_theme_options">
         <item>Auto (follow system)</item>

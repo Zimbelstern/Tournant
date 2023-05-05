@@ -2,8 +2,10 @@ package eu.zimbelstern.tournant.ui
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -18,55 +20,63 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
-import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import eu.zimbelstern.tournant.ChipGroupAdapter
+import eu.zimbelstern.tournant.Constants.Companion.MODE_STANDALONE
 import eu.zimbelstern.tournant.Constants.Companion.PREF_COLOR_THEME
+import eu.zimbelstern.tournant.Constants.Companion.PREF_MODE
 import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.RecipeListAdapter
 import eu.zimbelstern.tournant.TournantApplication
-import eu.zimbelstern.tournant.data.RecipeWithIngredients
+import eu.zimbelstern.tournant.data.RecipeDescription
 import eu.zimbelstern.tournant.databinding.ActivityMainBinding
 import eu.zimbelstern.tournant.gourmand.GourmetXmlParser
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.io.InputStream
 
 class MainActivity : AppCompatActivity() {
 
 	companion object {
-		const val FILE_MODE_UNSET = 0
-		const val FILE_MODE_IMPORT = 1
-		const val FILE_MODE_LINK = 2
-		const val FILE_MODE_PREVIEW = 3
+		private const val TAG = "MainActivity"
+		private const val LOADING_SCREEN = 0
+		private const val WELCOME_SCREEN = 1
+		private const val RECIPES_SCREEN = 2
 	}
 
 	private lateinit var binding: ActivityMainBinding
 	private val viewModel: MainViewModel by viewModels {
 		MainViewModelFactory(
-			(application as TournantApplication).database.recipeDao()
+			application as TournantApplication
 		)
 	}
 	private var searchView: SearchView? = null
 	private var titleView: TextView? = null
-	private var fileMode = FILE_MODE_UNSET
+	private var fileMode = 0
+
+	private var restartPending = false
+	private val sharedPrefsListener = OnSharedPreferenceChangeListener { _, key ->
+		if (key == PREF_MODE) {
+			restartPending = true
+		}
+	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
-		getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE).getInt(PREF_COLOR_THEME, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM).let {
+		val sharedPrefs = getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE)
+		sharedPrefs.getInt(PREF_COLOR_THEME, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM).let {
 			if (it == AppCompatDelegate.MODE_NIGHT_YES || it == AppCompatDelegate.MODE_NIGHT_NO)
 				AppCompatDelegate.setDefaultNightMode(it)
 		}
+		fileMode = sharedPrefs.getInt(PREF_MODE, MODE_STANDALONE)
+		sharedPrefs.registerOnSharedPreferenceChangeListener(sharedPrefsListener)
 
 		binding = ActivityMainBinding.inflate(layoutInflater)
 		setContentView(binding.root)
+		binding.root.displayedChild = LOADING_SCREEN
 
 		supportActionBar?.also {
 			it.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
@@ -75,238 +85,115 @@ class MainActivity : AppCompatActivity() {
 			searchView = it.customView?.findViewById<SearchView>(R.id.action_bar_search)?.apply {
 				if (!isIconified) {
 					titleView?.visibility = View.GONE
-					binding.activityMainCcSearch.visibility = View.VISIBLE
+					binding.recipesView.activityMainCcSearch.visibility = View.VISIBLE
 				}
 				setOnSearchClickListener {
 					titleView?.visibility = View.GONE
-					binding.activityMainCcSearch.visibility = View.VISIBLE
+					binding.recipesView.activityMainCcSearch.visibility = View.VISIBLE
 					onBackPressedDispatcher.addCallback(this@MainActivity, closeSearchOnBackPressedCallback)
 				}
 				setOnCloseListener {
 					titleView?.visibility = View.VISIBLE
-					binding.activityMainCcSearch.visibility = View.GONE
+					binding.recipesView.activityMainCcSearch.visibility = View.GONE
 					false
 				}
 			}
 		}
 
-		binding.activityMainStart.chooseFile.setOnClickListener {
-			chooseFile()
-		}
-
-		if (intent.action == Intent.ACTION_VIEW)
-			showOpenOptions(intent.data as Uri, 2)
-		else
-			openSavedRecipes(savedInstanceState?.getInt("FILE_MODE"))
-
-		viewModel.recipes.observe(this) { recipeList ->
-			intent.extras?.getLong("RECIPE_ID")?.let { id ->
-				val recipe = recipeList.find { it.recipe.id == id }
-				if (recipe != null) {
-					openRecipeDetail(recipe.recipe.id)
+		lifecycleScope.launch {
+			viewModel.allRecipes().collectLatest { allRecipes ->
+				Log.d(TAG, "Recipes updated")
+				searchView?.apply {
+					setQuery(null, false)
+					isIconified = true
+					visibility = View.GONE
 				}
-				else {
-					Toast.makeText(this, getString(R.string.recipe_not_found), Toast.LENGTH_LONG).show()
+				titleView?.apply {
+					text = getString(R.string.app_name)
+					titleView?.visibility = View.VISIBLE
 				}
-				finish()
-				return@observe
-			}
-			binding.activityMainWelcome.visibility = View.VISIBLE
-			binding.activityMainLoading.visibility = View.GONE
-			binding.activityMainRecipes.visibility = View.GONE
-			searchView?.apply {
-				setQuery(null, false)
-				isIconified = true
-				visibility = View.GONE
-			}
-			titleView?.apply {
-				text = getString(R.string.app_name)
-				titleView?.visibility = View.VISIBLE
-			}
-			if (recipeList != null) {
-				if (recipeList.isEmpty()) {
-					if (fileMode == FILE_MODE_PREVIEW)
-						openSavedRecipes()
-				} else {
-					showRecipes(recipeList, fileMode, savedInstanceState?.getCharSequence("SEARCH_QUERY"))
+				if (allRecipes.isNotEmpty()) {
+					showRecipes(allRecipes, savedInstanceState?.getCharSequence("SEARCH_QUERY"))
 					savedInstanceState?.putCharSequence("SEARCH_QUERY", null)
+					binding.root.displayedChild = RECIPES_SCREEN
+				} else {
+					binding.root.displayedChild = WELCOME_SCREEN
 				}
-			} else {
-				if (fileMode == FILE_MODE_PREVIEW)
-					openSavedRecipes()
 			}
-			invalidateOptionsMenu()
+		}
+
+		if (intent.action == Intent.ACTION_VIEW) {
+			parseAndInsertRecipes(intent.data as Uri)
 		}
 
 	}
 
-	/** Checks for an imported or linked recipe file and - if available - parses its contents.
-	 * If mode is null, it uses the file mode stored in the preferences. **/
-	private fun openSavedRecipes(mode: Int? = null) {
-		fileMode = mode ?: getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE).getInt("FILE_MODE", FILE_MODE_UNSET)
-		when (fileMode) {
-			FILE_MODE_PREVIEW -> parseRecipes(FileInputStream(File(filesDir, "tmp.xml")))
-			FILE_MODE_IMPORT -> parseRecipes(FileInputStream(File(filesDir, "import.xml")))
-			FILE_MODE_LINK -> {
-				val uri = getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE).getString("LINKED_FILE_URI", null)?.toUri()
-				if (uri != null) {
-					try {
-						val inputStream = contentResolver.openInputStream(uri)
-						if (inputStream == null) {
-							Toast.makeText(this, getString(R.string.inputstream_null), Toast.LENGTH_LONG).show()
-						} else {
-							parseRecipes(inputStream)
-						}
-					} catch (e: Exception) {
-						Toast.makeText(this, getString(R.string.unknown_file_error, e.message), Toast.LENGTH_LONG).show()
-					}
-				}
-			}
-			else -> binding.activityMainLoading.visibility = View.GONE
-		}
+	private fun importRecipesFromFile() {
+		activityResultLauncher.launch(
+			arrayOf("application/octet-stream", "application/xml", "text/html", "text/xml")
+		)
 	}
-
-	/** When launched, takes a URI from an OpenDocument intent, caches the (not always) persistable permission
-	 * and triggers the choice dialog. **/
-	private val getRecipeFileUri = registerForActivityResult(ActivityResultContracts.OpenDocument()) {
+	private val activityResultLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) {
 		if (it != null) {
-			contentResolver.takePersistableUriPermission(it, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-			showOpenOptions(it)
+			parseAndInsertRecipes(it)
 		}
 	}
 
-	/** Launches [getRecipeFileUri] to get a file. **/
-	private fun chooseFile() {
-		getRecipeFileUri.launch(arrayOf("application/octet-stream", "application/xml", "text/html", "text/xml"))
-	}
-
-	/** Shows the options Preview, Import and Link depending on the context
-	 * (link should not show when opened from an ACTION_VIEW intent) and triggers the corresponding methods. **/
-	private fun showOpenOptions(uri: Uri, numOfOptions: Int = 3) {
-		var choice = 0
-		val options = resources.getStringArray(R.array.file_modes).dropLast( 3 - numOfOptions).toTypedArray()
-		MaterialAlertDialogBuilder(this)
-			.setTitle(getString(R.string.choose_file_option))
-			.setSingleChoiceItems(options, 0) { _, which ->
-				choice = which
-			}
-			.setNegativeButton(getString(R.string.cancel)) { _, _ -> }
-			.setPositiveButton(getString(R.string.ok)) { _, _ ->
-				try {
-					val inputStream = contentResolver.openInputStream(uri)
-					if (inputStream == null) {
-						Toast.makeText(this, getString(R.string.inputstream_null), Toast.LENGTH_LONG).show()
-					} else {
-						fileMode = choice
-						when (choice) {
-							FILE_MODE_PREVIEW -> previewRecipes(inputStream)
-							FILE_MODE_IMPORT -> importRecipes(inputStream)
-							FILE_MODE_LINK -> linkRecipes(inputStream, uri)
+	private fun parseAndInsertRecipes(uri: Uri) { // TODO: Move to ViewModel
+		try {
+			val inputStream = contentResolver.openInputStream(uri)
+			if (inputStream == null) {
+				Toast.makeText(this, getString(R.string.inputstream_null), Toast.LENGTH_LONG).show()
+			} else {
+				lifecycleScope.launch {
+					binding.root.displayedChild = LOADING_SCREEN
+					withContext(Dispatchers.IO) {
+						try {
+							val parsedRecipes = GourmetXmlParser().parse(inputStream)
+							if (parsedRecipes.isEmpty())
+								Toast.makeText(applicationContext, getString(R.string.no_recipes_found), Toast.LENGTH_LONG).show()
+							else
+								viewModel.insertRecipes(parsedRecipes)
+						} catch (e: Exception) {
+							withContext(Dispatchers.Main) {
+								Toast.makeText(applicationContext, getString(R.string.unknown_file_error, e.message), Toast.LENGTH_LONG).show()
+							}
 						}
-					}
-				} catch (e: Exception) {
-					Toast.makeText(this, getString(R.string.unknown_file_error, e.message), Toast.LENGTH_LONG).show()
-				}
-			}
-			.show()
-	}
-
-	/** Stores the inputStream in a temporary file and parses this file. **/
-	private fun previewRecipes(inputStream: InputStream) {
-		lifecycleScope.launch {
-			withContext(Dispatchers.IO) {
-				inputStream.copyTo(FileOutputStream(File(filesDir, "tmp.xml")))
-				parseRecipes(FileInputStream(File(filesDir, "tmp.xml")))
-			}
-		}
-	}
-
-	/** Stores the inputStream in a file, parses the file and stores the file mode in the preferences. **/
-	private fun importRecipes(inputStream: InputStream) {
-		lifecycleScope.launch {
-			withContext(Dispatchers.IO) {
-				inputStream.copyTo(FileOutputStream(File(filesDir, "import.xml")))
-				parseRecipes(FileInputStream(File(filesDir, "import.xml")))
-			}
-		}
-		getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE)
-			.edit()
-			.putInt("FILE_MODE", FILE_MODE_IMPORT)
-			.apply()
-	}
-
-	/** Parses the inputStream, stores the file mode in the preferences and drops obsolete persistedUriPermissions. **/
-	private fun linkRecipes(inputStream: InputStream, uri: Uri) {
-		parseRecipes(inputStream)
-		getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE)
-			.edit()
-			.putInt("FILE_MODE", FILE_MODE_LINK)
-			.putString("LINKED_FILE_URI", uri.toString())
-			.apply()
-		for (permission in contentResolver.persistedUriPermissions.dropLast(1)) {
-			contentResolver.releasePersistableUriPermission(permission.uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-		}
-	}
-
-	/** Parses the inputStream with Dispatchers.IO and posts the recipe list to the live data variable recipes.
-	 * In case of errors, posts null to the live data variable. **/
-	private fun parseRecipes(inputStream: InputStream) {
-		lifecycleScope.launch {
-			withContext(Dispatchers.Main) {
-				binding.activityMainWelcome.visibility = View.INVISIBLE
-				binding.activityMainLoading.visibility = View.VISIBLE
-				binding.activityMainRecipes.visibility = View.INVISIBLE
-			}
-			withContext(Dispatchers.IO) {
-				try {
-					fillDatabase(GourmetXmlParser().parse(inputStream).also {
-						if (it.isEmpty())
-							Toast.makeText(applicationContext, getString(R.string.no_recipes_found), Toast.LENGTH_LONG).show()
-					})
-				} catch (e: Exception) {
-					withContext(Dispatchers.Main) {
-						Toast.makeText(applicationContext, getString(R.string.unknown_file_error, e.message), Toast.LENGTH_LONG).show()
+						inputStream.close()
 					}
 				}
-				inputStream.close()
 			}
+		} catch (e: Exception) {
+			Toast.makeText(this, getString(R.string.unknown_file_error, e.message), Toast.LENGTH_LONG).show()
 		}
 	}
 
-	private fun fillDatabase(recipes: List<RecipeWithIngredients>) {
-		viewModel.insertRecipes(recipes)
-	}
+	private fun showRecipes(recipes: List<RecipeDescription>, filter: CharSequence?) {
 
-	/** Fills the recycler with a RecipeListAdapter, sets the title according to the file mode and enables the search view. **/
-	private fun showRecipes(recipes: List<RecipeWithIngredients>, fileMode: Int, filter: CharSequence?) {
-		binding.activityMainWelcome.visibility = View.INVISIBLE
+		val recipeListAdapter = RecipeListAdapter(this, recipes)
+		binding.recipesView.activityMainRecipeRecycler.adapter = recipeListAdapter
 
-		val recipeListAdapter = RecipeListAdapter(this, recipes.map { it.recipe })
-		binding.activityMainRecipes.visibility = View.VISIBLE
-		binding.activityMainRecipeRecycler.adapter = recipeListAdapter
+		val categoryChipGroupAdapter = ChipGroupAdapter(this, recipes.mapNotNull { it.category }.distinct().sorted())
+		binding.recipesView.activityMainCcSearchCategoryRecycler.adapter = categoryChipGroupAdapter
+		binding.recipesView.activityMainCcSearchCategoryRecycler.layoutManager = FlexboxLayoutManager(this)
 
-		val categoryChipGroupAdapter = ChipGroupAdapter(this, recipes.mapNotNull { it.recipe.category }.distinct().sorted())
-		binding.activityMainCcSearchCategoryRecycler.adapter = categoryChipGroupAdapter
-		binding.activityMainCcSearchCategoryRecycler.layoutManager = FlexboxLayoutManager(this)
+		val cuisineChipGroupAdapter = ChipGroupAdapter(this, recipes.mapNotNull { it.cuisine }.distinct().sorted())
+		binding.recipesView.activityMainCcSearchCuisineRecycler.adapter = cuisineChipGroupAdapter
+		binding.recipesView.activityMainCcSearchCuisineRecycler.layoutManager = FlexboxLayoutManager(this)
 
-		val cuisineChipGroupAdapter = ChipGroupAdapter(this, recipes.mapNotNull { it.recipe.cuisine }.distinct().sorted())
-		binding.activityMainCcSearchCuisineRecycler.adapter = cuisineChipGroupAdapter
-		binding.activityMainCcSearchCuisineRecycler.layoutManager = FlexboxLayoutManager(this)
-
-		titleView?.text = getString(R.string.recipes_with_file_mode, resources.getStringArray(R.array.file_modes_participles)[fileMode])
 		searchView?.apply {
 			visibility = View.VISIBLE
 			isIconified = filter.isNullOrEmpty()
 			setOnQueryTextListener(object : OnQueryTextListener {
 				override fun onQueryTextChange(query: String?): Boolean {
 					recipeListAdapter.filterRecipes(query)
-					binding.activityMainRecipeNoRecipes.visibility = if (recipeListAdapter.itemCount == 0) View.VISIBLE else View.GONE
+					binding.recipesView.activityMainRecipeNoRecipes.visibility = if (recipeListAdapter.itemCount == 0) View.VISIBLE else View.GONE
 					categoryChipGroupAdapter.filterChips(query)
-					binding.activityMainCcSearchCategory.visibility = if (categoryChipGroupAdapter.itemCount != 0) View.VISIBLE else View.GONE
+					binding.recipesView.activityMainCcSearchCategory.visibility = if (categoryChipGroupAdapter.itemCount != 0) View.VISIBLE else View.GONE
 					cuisineChipGroupAdapter.filterChips(query)
-					binding.activityMainCcSearchCuisine.visibility = if (cuisineChipGroupAdapter.itemCount != 0) View.VISIBLE else View.GONE
-					binding.activityMainCcSearch.visibility = minOf(binding.activityMainCcSearchCategory.visibility, binding.activityMainCcSearchCuisine.visibility)
-					binding.activityMainRecipes.fullScroll(View.FOCUS_UP)
+					binding.recipesView.activityMainCcSearchCuisine.visibility = if (cuisineChipGroupAdapter.itemCount != 0) View.VISIBLE else View.GONE
+					binding.recipesView.activityMainCcSearch.visibility = minOf(binding.recipesView.activityMainCcSearchCategory.visibility, binding.recipesView.activityMainCcSearchCuisine.visibility)
+					binding.recipesView.activityMainRecipes.fullScroll(View.FOCUS_UP)
 					searchView?.requestFocus()
 					if (query.isNullOrEmpty())
 						findViewById<ImageView>(R.id.search_close_btn).setImageResource(R.drawable.ic_close)
@@ -321,7 +208,6 @@ class MainActivity : AppCompatActivity() {
 		}
 	}
 
-	/** Searches for something. **/
 	fun searchForSomething(query: CharSequence?) {
 		supportActionBar?.customView?.findViewById<SearchView>(R.id.action_bar_search)?.apply {
 			setQuery(query, true)
@@ -330,36 +216,43 @@ class MainActivity : AppCompatActivity() {
 		}
 	}
 
-	/** Opens the recipe view. **/
 	fun openRecipeDetail(recipeId: Long) {
 		val intent = Intent(this, RecipeActivity::class.java).apply {
 			putExtra("RECIPE_ID", recipeId)
-			putExtra("FILE_MODE", fileMode)
 		}
 		startActivity(intent)
 	}
 
 	override fun onSaveInstanceState(outState: Bundle) {
-		outState.putInt("FILE_MODE", fileMode)
 		outState.putCharSequence("SEARCH_QUERY", searchView?.query)
 		super.onSaveInstanceState(outState)
 	}
 
+	override fun onStart() {
+		super.onStart()
+		if (restartPending) {
+			val intent = Intent(this, MainActivity::class.java).apply {
+				addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+			}
+			startActivity(intent)
+			finish()
+			Runtime.getRuntime().exit(0)
+		}
+	}
+
 	override fun onCreateOptionsMenu(menu: Menu): Boolean {
-		menuInflater.inflate(R.menu.options, menu)
-		menu.findItem(R.id.close_file)?.isEnabled = fileMode == FILE_MODE_PREVIEW
+		menuInflater.inflate(
+			if (fileMode == MODE_STANDALONE) R.menu.options_standalone else R.menu.options_synced,
+			menu
+		)
 		menu.findItem(R.id.show_about)?.title = getString(R.string.about_app_name, getString(R.string.app_name))
 		return true
 	}
 
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
 		return when (item.itemId) {
-			R.id.open_file -> {
-				chooseFile()
-				true
-			}
-			R.id.close_file -> {
-				viewModel.recipes.postValue(listOf())
+			R.id.import_recipes -> {
+				importRecipesFromFile()
 				true
 			}
 			R.id.show_settings -> {

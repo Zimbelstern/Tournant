@@ -7,27 +7,27 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import eu.zimbelstern.tournant.data.RecipeDao
 import eu.zimbelstern.tournant.data.RecipeWithIngredients
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RecipeViewModel(private val recipeDao: RecipeDao) : ViewModel() {
 
-	private var _recipe = MutableLiveData<RecipeWithIngredients>()
-	val recipe: LiveData<RecipeWithIngredients> get() = _recipe
+	private var _recipe = MutableLiveData<RecipeWithIngredients?>()
+	val recipe: LiveData<RecipeWithIngredients?> get() = _recipe // TODO: Migrate to Flow
 
 	fun pullRecipe(recipeId: Long) {
 		viewModelScope.launch {
-			val targetRecipe = recipeDao.getRecipeById(recipeId)
-			targetRecipe.ingredients.forEach {
-				it.refId?.let { refId ->
-					it.item = recipeDao.getRecipeTitleById(refId)
+			withContext(Dispatchers.IO) {
+				val targetRecipe = recipeDao.getRecipeById(recipeId)
+				targetRecipe?.ingredients?.forEach {
+					it.refId?.let { refId ->
+						it.item = recipeDao.getRecipeTitleById(refId)
+					}
 				}
+				_recipe.postValue(targetRecipe)
 			}
-			_recipe.postValue(targetRecipe)
 		}
-	}
-
-	fun setRecipe(recipeWithIngredients: RecipeWithIngredients) {
-		_recipe.postValue(recipeWithIngredients)
 	}
 
 }

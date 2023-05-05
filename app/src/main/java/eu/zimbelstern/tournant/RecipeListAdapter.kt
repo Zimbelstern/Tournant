@@ -7,12 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.setPadding
 import androidx.recyclerview.widget.RecyclerView
-import eu.zimbelstern.tournant.data.Recipe
+import eu.zimbelstern.tournant.data.RecipeDescription
 import eu.zimbelstern.tournant.databinding.RecyclerItemRecipeBinding
 import eu.zimbelstern.tournant.ui.MainActivity
 import kotlin.random.Random
 
-class RecipeListAdapter(private val mainActivity: MainActivity, private val allRecipes: List<Recipe>) : RecyclerView.Adapter<RecipeListAdapter.RecipeListViewHolder>() {
+class RecipeListAdapter(private val mainActivity: MainActivity, private val allRecipes: List<RecipeDescription>) : RecyclerView.Adapter<RecipeListAdapter.RecipeListViewHolder>() {
 
 	private var filteredRecipes = allRecipes
 

@@ -15,4 +15,12 @@ data class RecipeWithIngredients(
 		entityColumn = "recipeId"
 	)
 	val ingredients: MutableList<Ingredient>
-) : Parcelable
+) : Parcelable {
+
+	init {
+		ingredients.sortBy {
+			it.position
+		}
+	}
+
+}

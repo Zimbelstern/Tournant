@@ -4,18 +4,27 @@
 		app:title="@string/general_settings">
 
 		<ListPreference
+			app:key="mode"
+			app:title="@string/mode"
+			app:entries="@array/mode_options"
+			app:icon="@drawable/ic_settings"/>
+
+		<Preference
+			app:key="file"
+			app:title="@string/synced_file"
+			app:icon="@drawable/ic_link"/>
+
+		<SwitchPreference
+			app:key="keep_screen_on"
+			app:title="@string/keep_screen_on"
+			app:singleLineTitle="false"
+			app:icon="@drawable/ic_screen"/>
+
+		<ListPreference
 			app:key="color_theme"
 			app:title="@string/color_theme"
 			app:entries="@array/color_theme_options"
-			app:defaultValue="AUTO"
 			app:icon="@drawable/ic_colors"/>
-
-		<CheckBoxPreference
-			app:key="keep_screen_on"
-			app:title="@string/keep_screen_on"
-			app:defaultValue="true"
-			app:singleLineTitle="false"
-			app:icon="@drawable/ic_screen"/>
 
 	</PreferenceCategory>
 

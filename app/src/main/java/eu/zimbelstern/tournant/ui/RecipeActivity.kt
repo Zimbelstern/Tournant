@@ -16,6 +16,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.parseAsHtml
 import androidx.core.widget.addTextChangedListener
+import eu.zimbelstern.tournant.Constants.Companion.PREF_SCREEN_ON
 import eu.zimbelstern.tournant.IngredientTableAdapter
 import eu.zimbelstern.tournant.InstructionsTextAdapter
 import eu.zimbelstern.tournant.R
@@ -62,10 +63,17 @@ class RecipeActivity : AppCompatActivity() {
 			setDisplayShowTitleEnabled(true)
 		}
 
-		if (getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE).getBoolean("SCREEN_ON", true))
+		if (getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE).getBoolean(PREF_SCREEN_ON, true))
 			window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
 		viewModel.recipe.observe(this) { recipeWithIngredients ->
+
+			if (recipeWithIngredients == null) {
+				Toast.makeText(applicationContext, getString(R.string.recipe_not_found), Toast.LENGTH_LONG).show()
+				finish()
+				return@observe
+			}
+
 			recipeWithIngredients.recipe.let { recipe ->
 				title = recipe.title
 				binding.recipeDetailTitle.text = recipe.title
@@ -189,14 +197,9 @@ class RecipeActivity : AppCompatActivity() {
 	}
 
 	fun findReferencedRecipe(refId: Long) {
-		if (intent.extras?.getInt("FILE_MODE") == MainActivity.FILE_MODE_PREVIEW) {
-			Toast.makeText(this, getString(R.string.not_available_in_preview), Toast.LENGTH_LONG).show()
-		}
-		else {
-			startActivity(Intent(this, MainActivity::class.java).apply {
-				putExtra("RECIPE_ID", refId)
-			})
-		}
+		startActivity(Intent(this, RecipeActivity::class.java).apply {
+			putExtra("RECIPE_ID", refId)
+		})
 	}
 
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {

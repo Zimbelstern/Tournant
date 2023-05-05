@@ -35,7 +35,6 @@
     <string name="link_explanation_1">Die Datei wird bei jedem Start der App neu eingelesen, sodass die angezeigten Rezepte immer aktuell sind. Dies ist vor allem dann nützlich, wenn Sie die Rezepte-Datei mit Ihrem PC synchronisieren wollen.</string>
     <string name="link_explanation_2">Aufgrund von Systembeschränkungen funktioniert das Verlinken jedoch nicht immer. Dieser Modus steht deshalb nicht zur Verfügung, wenn Sie die App über „Öffnen mit…“ aufrufen.</string>
     <string-array name="file_modes_participles">
-        <item>Vorschau</item>
         <item>Importiert</item>
         <item>Verlinkt</item>
     </string-array>
@@ -47,6 +46,7 @@
     <string name="unknown_file_error">Unbekannter Dateifehler: %s</string>
     <string name="not_available_in_preview">Im Vorschau-Modus nicht verfügbar</string>
     <!-- Options menu -->
+    <string name="import_recipes">Importieren</string>
     <string name="choose_file">Datei wählen</string>
     <string name="choose_file_option">Dateioption wählen</string>
     <string name="close_file">Datei schließen</string>
@@ -55,6 +55,16 @@
     <!-- Settings -->
     <string name="general_settings">Allgemeine Einstellungen</string>
     <string name="keep_screen_on">Bildschirm in der Rezeptansicht angeschaltet lassen</string>
+    <string name="mode">Modus</string>
+    <string-array name="mode_options">
+        <item>Eigenständig</item>
+        <item>Dateisynchron</item>
+    </string-array>
+    <string-array name="mode_options_summary">
+        <item>Eigenständig: Eigene Datenbank, Rezepte bearbeitbar</item>
+        <item>Dateisynchron: Mit einer XML-Datei synchronisiert (Lesemodus)</item>
+    </string-array>
+    <string name="synced_file">Synchronisierte Gourmand-XML-Datei</string>
     <string name="color_theme">Farbschema</string>
     <string-array name="color_theme_options">
         <item>Automatisch (dem System folgen)</item>

@@ -21,7 +21,7 @@ import kotlinx.parcelize.Parcelize
 data class Ingredient(
 	// Constructor for Room entity
 	@PrimaryKey(autoGenerate = true)
-	val id: Long,
+	var id: Long,
 
 	var recipeId: Long,
 	var position: Int,

@@ -4,6 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import eu.zimbelstern.tournant.Constants.Companion.MODE_STANDALONE
+import eu.zimbelstern.tournant.Constants.Companion.MODE_SYNCED
+import eu.zimbelstern.tournant.Constants.Companion.PREF_MODE
 
 @Database(entities = [Recipe::class, Ingredient::class], version = 1, exportSchema = false)
 abstract class RecipeRoomDatabase : RoomDatabase() {
@@ -17,19 +20,22 @@ abstract class RecipeRoomDatabase : RoomDatabase() {
 				val instance = Room.databaseBuilder(
 					context.applicationContext,
 					RecipeRoomDatabase::class.java,
-					"recipe_database"
+					if (context.getSharedPreferences(context.packageName + "_preferences", Context.MODE_PRIVATE)
+						.getInt(PREF_MODE, MODE_STANDALONE) == MODE_SYNCED)
+							"synced_recipe_database"
+					else "recipe_database"
 				)
-					// Uncomment for verbose SQL logging:
-/*					.setQueryCallback(object : RoomDatabase.QueryCallback {
+					// Verbose SQL logging
+/*					.setQueryCallback(
+					 	object : QueryCallback {
 						override fun onQuery(sqlQuery: String, bindArgs: List<Any?>) {
 							Log.d("SQL", "QUERY $sqlQuery ARGS $bindArgs")
 						}
-					}, Executors.newSingleThreadExecutor())*/
+					}, Executors.newSingleThreadExecutor()
+					)
+*/
 					.fallbackToDestructiveMigration()
-					.allowMainThreadQueries()
 					.build()
-				// For debugging purposes TODO: Remove the following line and the one two above
-				instance.clearAllTables()
 				INSTANCE = instance
 				return instance
 			}
