@@ -19,21 +19,23 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
-import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.lifecycle.lifecycleScope
-import com.google.android.flexbox.FlexboxLayoutManager
-import eu.zimbelstern.tournant.ChipGroupAdapter
+import androidx.paging.LoadState
+import androidx.paging.filter
+import androidx.recyclerview.widget.ConcatAdapter
+import eu.zimbelstern.tournant.CategoriesCuisinesAdapter
 import eu.zimbelstern.tournant.Constants.Companion.MODE_STANDALONE
 import eu.zimbelstern.tournant.Constants.Companion.PREF_COLOR_THEME
 import eu.zimbelstern.tournant.Constants.Companion.PREF_MODE
 import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.RecipeListAdapter
 import eu.zimbelstern.tournant.TournantApplication
-import eu.zimbelstern.tournant.data.RecipeDescription
 import eu.zimbelstern.tournant.databinding.ActivityMainBinding
 import eu.zimbelstern.tournant.gourmand.GourmetXmlParser
+import eu.zimbelstern.tournant.pagination.RecipeDescriptionLoadStateAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -52,8 +54,9 @@ class MainActivity : AppCompatActivity() {
 			application as TournantApplication
 		)
 	}
-	private var searchView: SearchView? = null
-	private var titleView: TextView? = null
+
+	private lateinit var titleView: TextView
+	private lateinit var searchView: SearchView
 	private var fileMode = 0
 
 	private var restartPending = false
@@ -78,49 +81,123 @@ class MainActivity : AppCompatActivity() {
 		setContentView(binding.root)
 		binding.root.displayedChild = LOADING_SCREEN
 
-		supportActionBar?.also {
-			it.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
-			it.setCustomView(R.layout.action_bar)
-			titleView = it.customView?.findViewById(R.id.action_bar_title)
-			searchView = it.customView?.findViewById<SearchView>(R.id.action_bar_search)?.apply {
-				if (!isIconified) {
-					titleView?.visibility = View.GONE
-					binding.recipesView.activityMainCcSearch.visibility = View.VISIBLE
+		val ccAdapter = CategoriesCuisinesAdapter(this)
+		val recipeListAdapter = RecipeListAdapter(this).also {
+			it.addLoadStateListener { loadStates ->
+				if (loadStates.refresh is LoadState.NotLoading && it.itemCount == 0) {
+					binding.root.displayedChild = WELCOME_SCREEN
+					searchView.visibility = View.GONE
 				}
-				setOnSearchClickListener {
-					titleView?.visibility = View.GONE
-					binding.recipesView.activityMainCcSearch.visibility = View.VISIBLE
-					onBackPressedDispatcher.addCallback(this@MainActivity, closeSearchOnBackPressedCallback)
+				else {
+					binding.root.displayedChild = RECIPES_SCREEN
+					searchView.visibility = View.VISIBLE
 				}
-				setOnCloseListener {
-					titleView?.visibility = View.VISIBLE
-					binding.recipesView.activityMainCcSearch.visibility = View.GONE
-					false
+			}
+			it.addOnPagesUpdatedListener {
+				binding.recipesView.noRecipesMessage.visibility = if (it.itemCount == 0)
+					View.VISIBLE
+				else
+					View.GONE
+			}
+		}
+
+
+		binding.recipesView.recipeListRecycler.adapter = ConcatAdapter(
+			ccAdapter,
+			recipeListAdapter.withLoadStateFooter(RecipeDescriptionLoadStateAdapter())
+		)
+
+		supportActionBar?.apply {
+			displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+			setCustomView(R.layout.action_bar)
+		}
+
+		titleView = supportActionBar!!.customView!!.findViewById(R.id.action_bar_title)
+
+
+		// SEARCH
+		searchView = supportActionBar!!.customView!!.findViewById<SearchView>(R.id.action_bar_search).apply {
+			setOnSearchClickListener {
+				viewModel.search(query.toString())
+			}
+			setOnCloseListener {
+				viewModel.search(null)
+				false
+			}
+			setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+				override fun onQueryTextChange(query: String?): Boolean {
+					viewModel.search(query)
+					return true
+				}
+				override fun onQueryTextSubmit(query: String?): Boolean {
+					clearFocus()
+					return true
+				}
+			})
+		}
+
+		onBackPressedDispatcher.addCallback(this@MainActivity, object : OnBackPressedCallback(true) {
+			override fun handleOnBackPressed() {
+				searchView.apply {
+					if (query != null) {
+						if (query.isNotEmpty() && hasFocus()) {
+							setQuery("", false)
+						}
+						else {
+							setQuery(null, true)
+							isIconified = true
+						}
+					}
+				}
+			}
+		})
+
+		lifecycleScope.launch {
+			viewModel.searchQuery.collectLatest {
+				if (it != null) {
+					searchView.isIconified = false
+					findViewById<ImageView>(R.id.search_close_btn).setImageResource(
+						if (it.isEmpty()) R.drawable.ic_close
+						else R.drawable.ic_backspace
+					)
+					titleView.visibility = View.GONE
+					binding.recipesView.recipeListRecycler.layoutManager?.scrollToPosition(0)
+				} else {
+					searchView.isIconified = true
+					titleView.visibility = View.VISIBLE
 				}
 			}
 		}
 
+
+		// CATEGORIES & CUISINES
 		lifecycleScope.launch {
-			viewModel.allRecipes().collectLatest { allRecipes ->
-				Log.d(TAG, "Recipes updated")
-				searchView?.apply {
-					setQuery(null, false)
-					isIconified = true
-					visibility = View.GONE
-				}
-				titleView?.apply {
-					text = getString(R.string.app_name)
-					titleView?.visibility = View.VISIBLE
-				}
-				if (allRecipes.isNotEmpty()) {
-					showRecipes(allRecipes, savedInstanceState?.getCharSequence("SEARCH_QUERY"))
-					savedInstanceState?.putCharSequence("SEARCH_QUERY", null)
-					binding.root.displayedChild = RECIPES_SCREEN
-				} else {
-					binding.root.displayedChild = WELCOME_SCREEN
-				}
+			viewModel.filteredCategories.combine(viewModel.filteredCuisines) { categories, cuisines ->
+				listOf(categories, cuisines)
+			}.collectLatest {
+				ccAdapter.updateChipAdapters(it)
 			}
 		}
+
+
+		// RECIPES
+		lifecycleScope.launch {
+			viewModel.recipeDescriptions
+				.combine(viewModel.allCategoriesAndCuisines) { recipes, colors ->
+					if (colors.isNotEmpty()) recipes else recipes.filter { false }
+				}
+				.collectLatest {
+					Log.d(TAG, "Recipes updated")
+					recipeListAdapter.submitData(it)
+				}
+		}
+
+		lifecycleScope.launch {
+			viewModel.allCategoriesAndCuisines.collectLatest {
+				recipeListAdapter.updateColors(it)
+			}
+		}
+
 
 		if (intent.action == Intent.ACTION_VIEW) {
 			parseAndInsertRecipes(intent.data as Uri)
@@ -168,51 +245,9 @@ class MainActivity : AppCompatActivity() {
 		}
 	}
 
-	private fun showRecipes(recipes: List<RecipeDescription>, filter: CharSequence?) {
-
-		val recipeListAdapter = RecipeListAdapter(this, recipes)
-		binding.recipesView.activityMainRecipeRecycler.adapter = recipeListAdapter
-
-		val categoryChipGroupAdapter = ChipGroupAdapter(this, recipes.mapNotNull { it.category }.distinct().sorted())
-		binding.recipesView.activityMainCcSearchCategoryRecycler.adapter = categoryChipGroupAdapter
-		binding.recipesView.activityMainCcSearchCategoryRecycler.layoutManager = FlexboxLayoutManager(this)
-
-		val cuisineChipGroupAdapter = ChipGroupAdapter(this, recipes.mapNotNull { it.cuisine }.distinct().sorted())
-		binding.recipesView.activityMainCcSearchCuisineRecycler.adapter = cuisineChipGroupAdapter
-		binding.recipesView.activityMainCcSearchCuisineRecycler.layoutManager = FlexboxLayoutManager(this)
-
-		searchView?.apply {
-			visibility = View.VISIBLE
-			isIconified = filter.isNullOrEmpty()
-			setOnQueryTextListener(object : OnQueryTextListener {
-				override fun onQueryTextChange(query: String?): Boolean {
-					recipeListAdapter.filterRecipes(query)
-					binding.recipesView.activityMainRecipeNoRecipes.visibility = if (recipeListAdapter.itemCount == 0) View.VISIBLE else View.GONE
-					categoryChipGroupAdapter.filterChips(query)
-					binding.recipesView.activityMainCcSearchCategory.visibility = if (categoryChipGroupAdapter.itemCount != 0) View.VISIBLE else View.GONE
-					cuisineChipGroupAdapter.filterChips(query)
-					binding.recipesView.activityMainCcSearchCuisine.visibility = if (cuisineChipGroupAdapter.itemCount != 0) View.VISIBLE else View.GONE
-					binding.recipesView.activityMainCcSearch.visibility = minOf(binding.recipesView.activityMainCcSearchCategory.visibility, binding.recipesView.activityMainCcSearchCuisine.visibility)
-					binding.recipesView.activityMainRecipes.fullScroll(View.FOCUS_UP)
-					searchView?.requestFocus()
-					if (query.isNullOrEmpty())
-						findViewById<ImageView>(R.id.search_close_btn).setImageResource(R.drawable.ic_close)
-					else
-						findViewById<ImageView>(R.id.search_close_btn).setImageResource(R.drawable.ic_backspace)
-					return true
-				}
-				override fun onQueryTextSubmit(query: String?) = onQueryTextChange(query)
-			})
-			setQuery(filter, true)
-			clearFocus()
-		}
-	}
-
 	fun searchForSomething(query: CharSequence?) {
-		supportActionBar?.customView?.findViewById<SearchView>(R.id.action_bar_search)?.apply {
+		searchView.apply {
 			setQuery(query, true)
-			isIconified = false
-			clearFocus()
 		}
 	}
 
@@ -221,11 +256,6 @@ class MainActivity : AppCompatActivity() {
 			putExtra("RECIPE_ID", recipeId)
 		}
 		startActivity(intent)
-	}
-
-	override fun onSaveInstanceState(outState: Bundle) {
-		outState.putCharSequence("SEARCH_QUERY", searchView?.query)
-		super.onSaveInstanceState(outState)
 	}
 
 	override fun onStart() {
@@ -264,14 +294,6 @@ class MainActivity : AppCompatActivity() {
 				true
 			}
 			else -> false
-		}
-	}
-
-	private val closeSearchOnBackPressedCallback = object : OnBackPressedCallback(true) {
-		override fun handleOnBackPressed() {
-			searchView?.setQuery("", false)
-			searchView?.isIconified = true
-			remove()
 		}
 	}
 

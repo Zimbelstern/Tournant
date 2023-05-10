@@ -1,6 +1,7 @@
 package eu.zimbelstern.tournant.data
 
 import android.util.Log
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -136,9 +137,14 @@ abstract class RecipeDao {
 	@Query("SELECT * FROM recipe WHERE gourmandId NOT IN (:gourmandIds)")
 	abstract fun getDeprecatedRecipes(gourmandIds: List<Int>): List<RecipeWithIngredients>
 
-	@Transaction
 	@Query("SELECT id, title, category, cuisine, rating, image FROM recipe ORDER BY title ASC")
-	abstract fun getAllRecipes(): Flow<List<RecipeDescription>>
+	abstract fun getPagedRecipeDescriptions(): PagingSource<Int, RecipeDescription>
+
+	@Query("SELECT DISTINCT category FROM recipe")
+	abstract fun getCategories(): Flow<List<String?>>
+
+	@Query("SELECT DISTINCT cuisine FROM recipe")
+	abstract fun getCuisines(): Flow<List<String?>>
 
 
 	// INSERTING

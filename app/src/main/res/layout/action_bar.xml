@@ -18,7 +18,7 @@
 			android:layout_gravity="start"
 			android:maxLines="1"
 			android:ellipsize="end"
-			android:text="@string/app_name"
+			android:text="@string/recipes"
 			style="@style/TextAppearance.AppCompat.Title"/>
 
 		<androidx.appcompat.widget.SearchView

@@ -1,92 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
-	android:id="@+id/activity_main_recipes"
 	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
-	android:orientation="vertical"
-	android:paddingHorizontal="8dp">
+	android:layout_height="match_parent">
 
-	<LinearLayout
+	<TextView
+		android:id="@+id/no_recipes_message"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:orientation="vertical">
+		android:layout_margin="16dp"
+		android:text="@string/no_recipes_found"
+		android:textAlignment="center"/>
 
-		<LinearLayout
-			android:id="@+id/activity_main_cc_search"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:background="@drawable/round_corners_bottom"
-			android:backgroundTint="?attr/colorSurface"
-			android:orientation="vertical"
-			android:padding="12dp"
-			android:visibility="gone"
-			tools:visibility="visible">
+	<androidx.recyclerview.widget.RecyclerView
+		android:id="@+id/recipe_list_recycler"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:paddingHorizontal="8dp"
+		android:paddingVertical="12dp"
+		android:clipToPadding="false"
+		app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
-			<LinearLayout
-				android:id="@+id/activity_main_cc_search_category"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:orientation="vertical"
-				android:padding="4dp">
-
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:text="@string/category"
-					android:textColor="@color/highlight_color"
-					android:textStyle="bold"/>
-
-				<androidx.recyclerview.widget.RecyclerView
-					android:id="@+id/activity_main_cc_search_category_recycler"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"/>
-
-			</LinearLayout>
-
-			<LinearLayout
-				android:id="@+id/activity_main_cc_search_cuisine"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:orientation="vertical"
-				android:padding="4dp">
-
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:text="@string/cuisine"
-					android:textColor="@color/highlight_color"
-					android:textStyle="bold"/>
-
-				<androidx.recyclerview.widget.RecyclerView
-					android:id="@+id/activity_main_cc_search_cuisine_recycler"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"/>
-
-			</LinearLayout>
-
-		</LinearLayout>
-
-		<androidx.recyclerview.widget.RecyclerView
-			android:id="@+id/activity_main_recipe_recycler"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginVertical="4dp"
-			android:padding="8dp"
-			android:clipToPadding="false"
-			app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
-		<TextView
-			android:id="@+id/activity_main_recipe_no_recipes"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_margin="16dp"
-			android:text="@string/no_recipes_found"
-			android:textAlignment="center"
-			android:visibility="gone"
-			tools:visibility="visible"/>
-
-	</LinearLayout>
-
-</androidx.core.widget.NestedScrollView>
+</FrameLayout>

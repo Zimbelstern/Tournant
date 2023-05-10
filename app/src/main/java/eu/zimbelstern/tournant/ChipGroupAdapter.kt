@@ -1,53 +1,61 @@
 package eu.zimbelstern.tournant
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import eu.zimbelstern.tournant.data.ColorfulString
 import eu.zimbelstern.tournant.databinding.RecyclerItemChipBinding
 import eu.zimbelstern.tournant.ui.MainActivity
-import kotlin.random.Random
 
-class ChipGroupAdapter(private val mainActivity: MainActivity, private val allChips: List<String>) : RecyclerView.Adapter<ChipGroupAdapter.ChipGroupViewHolder>() {
+class ChipGroupAdapter(private val mainActivity: MainActivity) : RecyclerView.Adapter<ChipGroupAdapter.ChipGroupViewHolder>() {
 
-	private var filteredChips = allChips
+	private var chips = listOf<ColorfulString>()
 
-	private val colors = mainActivity.resources.obtainTypedArray(R.array.material_colors_700)
-	private val colorsRipple = mainActivity.resources.obtainTypedArray(R.array.material_colors_900)
-	private val ccPseudoRandomInt = allChips.associateWith {
-		Random(it.hashCode()).nextInt(mainActivity.resources.getStringArray(R.array.material_colors_700).size)
+	class ChipDiffCallback(
+		private val oldChips: List<ColorfulString>,
+		private val newChips: List<ColorfulString>
+	) : DiffUtil.Callback() {
+
+		override fun getOldListSize() = oldChips.size
+		override fun getNewListSize() = newChips.size
+
+		override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+			return oldChips[oldItemPosition].string == newChips[newItemPosition].string
+		}
+
+		override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+			return oldChips[oldItemPosition] == newChips[newItemPosition]
+		}
+
 	}
-	private val ccColors = ccPseudoRandomInt.mapValues { colors.getColorStateList(it.value) }
-	private val ccRippleColors = ccPseudoRandomInt.mapValues { colorsRipple.getColorStateList(it.value) }
 
 	class ChipGroupViewHolder(val binding: RecyclerItemChipBinding) : RecyclerView.ViewHolder(binding.root)
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChipGroupViewHolder {
-		val binding = RecyclerItemChipBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-		return ChipGroupViewHolder(binding)
+		return ChipGroupViewHolder(
+			RecyclerItemChipBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+		)
 	}
 
 	override fun onBindViewHolder(holder: ChipGroupViewHolder, position: Int) {
+		val chip = chips[position]
 		holder.binding.root.apply {
-			text = filteredChips[position]
-			chipBackgroundColor = ccColors[text]
-			rippleColor = ccRippleColors[text]
+			text = chip.string
+			chipBackgroundColor = chip.color
+			rippleColor = chip.rippleColor
 			setOnClickListener {
-				mainActivity.searchForSomething(text)
+				mainActivity.searchForSomething(chip.string)
 			}
 		}
 	}
 
-	override fun getItemCount(): Int {
-		return filteredChips.size
-	}
+	override fun getItemCount() = chips.size
 
-	@SuppressLint("NotifyDataSetChanged")
-	fun filterChips(query: CharSequence?) {
-		filteredChips = if (query != null) allChips.filter {
-			it.contains(query, true)
-		} else allChips
-		notifyDataSetChanged()
+	fun updateChips(newChips: List<ColorfulString>) {
+		val diff = DiffUtil.calculateDiff(ChipDiffCallback(chips, newChips))
+		chips = newChips
+		diff.dispatchUpdatesTo(this)
 	}
 
 }

@@ -1,32 +1,34 @@
 package eu.zimbelstern.tournant
 
-import android.annotation.SuppressLint
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.setPadding
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import eu.zimbelstern.tournant.data.ColorfulString
 import eu.zimbelstern.tournant.data.RecipeDescription
 import eu.zimbelstern.tournant.databinding.RecyclerItemRecipeBinding
 import eu.zimbelstern.tournant.ui.MainActivity
-import kotlin.random.Random
 
-class RecipeListAdapter(private val mainActivity: MainActivity, private val allRecipes: List<RecipeDescription>) : RecyclerView.Adapter<RecipeListAdapter.RecipeListViewHolder>() {
+class RecipeListAdapter(private val mainActivity: MainActivity)
+	: PagingDataAdapter<RecipeDescription, RecipeListAdapter.RecipeListViewHolder>(DIFF_CALLBACK) {
 
-	private var filteredRecipes = allRecipes
+	companion object {
+		val DIFF_CALLBACK = object : DiffUtil.ItemCallback<RecipeDescription>() {
+			override fun areItemsTheSame(old: RecipeDescription, new: RecipeDescription): Boolean =
+				old.id == new.id
 
-	private val colors = mainActivity.resources.obtainTypedArray(R.array.material_colors_700)
-	private val colorsRipple = mainActivity.resources.obtainTypedArray(R.array.material_colors_900)
-	private val ccPseudoRandomInt = allRecipes.mapNotNull { it.category }.plus(allRecipes.mapNotNull { it.cuisine })
-		.distinct()
-		.associateWith {
-			Random(it.hashCode()).nextInt(mainActivity.resources.getStringArray(R.array.material_colors_700).size)
+			override fun areContentsTheSame(old: RecipeDescription, new: RecipeDescription): Boolean =
+				old == new
 		}
-	private val ccColors = ccPseudoRandomInt.mapValues { colors.getColorStateList(it.value) }
-	private val ccRippleColors = ccPseudoRandomInt.mapValues { colorsRipple.getColorStateList(it.value) }
+	}
 
-	class RecipeListViewHolder(val binding: RecyclerItemRecipeBinding) : RecyclerView.ViewHolder(binding.root)
+	private var ccColors = mapOf<String, ColorfulString>()
+
+	inner class RecipeListViewHolder(val binding: RecyclerItemRecipeBinding) : RecyclerView.ViewHolder(binding.root)
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeListViewHolder {
 		val binding = RecyclerItemRecipeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -34,7 +36,7 @@ class RecipeListAdapter(private val mainActivity: MainActivity, private val allR
 	}
 
 	override fun onBindViewHolder(holder: RecipeListViewHolder, position: Int) {
-		val recipe = filteredRecipes[position]
+		val recipe = getItem(position) ?: return
 		holder.binding.recipeCardImage.apply {
 			if (recipe.image != null) {
 				setImageBitmap(BitmapFactory.decodeByteArray(recipe.image, 0, recipe.image.size))
@@ -47,8 +49,8 @@ class RecipeListAdapter(private val mainActivity: MainActivity, private val allR
 		}
 		holder.binding.recipeCardCategory.apply {
 			text = recipe.category
-			chipBackgroundColor = ccColors[text]
-			rippleColor = ccRippleColors[text]
+			chipBackgroundColor = ccColors[text]?.color
+			rippleColor = ccColors[text]?.rippleColor
 			visibility = if (recipe.category != null) View.VISIBLE else View.GONE
 			setOnClickListener {
 				mainActivity.searchForSomething(text)
@@ -56,8 +58,8 @@ class RecipeListAdapter(private val mainActivity: MainActivity, private val allR
 		}
 		holder.binding.recipeCardCuisine.apply {
 			text = recipe.cuisine
-			chipBackgroundColor = ccColors[text]
-			rippleColor = ccRippleColors[text]
+			chipBackgroundColor = ccColors[text]?.color
+			rippleColor = ccColors[text]?.rippleColor
 			visibility = if (recipe.cuisine != null) View.VISIBLE else View.GONE
 			setOnClickListener {
 				mainActivity.searchForSomething(text)
@@ -73,18 +75,10 @@ class RecipeListAdapter(private val mainActivity: MainActivity, private val allR
 		}
 	}
 
-	override fun getItemCount(): Int {
-		return filteredRecipes.size
-	}
-
-	@SuppressLint("NotifyDataSetChanged")
-	fun filterRecipes(query: CharSequence?) {
-		filteredRecipes = if (query != null) allRecipes.filter {
-			(it.title.contains(query, true))
-					|| (it.category?.contains(query, true) ?: false)
-					|| (it.cuisine?.contains(query, true) ?: false)
-		} else allRecipes
-		notifyDataSetChanged()
+	fun updateColors(colorfulStrings: List<ColorfulString>) {
+		ccColors = colorfulStrings.associateBy {
+			it.string
+		}
 	}
 
 }
