@@ -24,46 +24,31 @@
         <item quantity="one">-fache Rezeptmenge</item>
         <item quantity="other">-fache Rezeptmenge</item>
     </plurals>
-    <!-- First start UI & file choose options -->
+    <!-- Modes -->
+    <string name="mode">Modus</string>
+    <string name="mode_standalone">Eigenständig</string>
+    <string name="mode_standalone_description_short">Eigenständig: Eigene Datenbank, Rezepte bearbeitbar</string>
+    <string name="mode_standalone_description_long">Tournant erstellt eine eigene Rezepte-Datenbank. Rezepte können aus einer XML-Datei importiert und bearbeitet werden (in Entwicklung).</string>
+    <string name="mode_synced">Synchronisiert</string>
+    <string name="mode_synced_description_short">Synchronisiert: Mit einer XML-Datei synchronisiert (Lesemodus)</string>
+    <string name="mode_synced_description_long">Tournant synchronisiert die Rezeptliste mit einer XML-Datei auf dem Gerät. Bearbeiten ist deaktiviert, da Änderungen nicht wieder an Gourmand übertragen werden könnten.</string>
+   <!-- First start UI & file choose options -->
     <string name="choose_file_long">Wählen Sie eine Gourmet/Gourmand-XML-Datei vom Gerät aus.</string>
-    <string name="file_modes_explanation">Sie können dann zwischen folgenden Dateimodi wählen:</string>
-    <string name="preview">Vorschau</string>
-    <string name="preview_explanation">Die Datei wird einmalig eingelesen und die Rezepte werden angezeigt, bis Sie die Datei oder die App schließen.</string>
-    <string name="import_">Importieren</string>
-    <string name="import_explanation">Die Datei wird in den App-Speicher kopiert und der Inhalt als Ihre Standard-Rezepteliste angezeigt.</string>
-    <string name="link">Verlinken</string>
-    <string name="link_explanation_1">Die Datei wird bei jedem Start der App neu eingelesen, sodass die angezeigten Rezepte immer aktuell sind. Dies ist vor allem dann nützlich, wenn Sie die Rezepte-Datei mit Ihrem PC synchronisieren wollen.</string>
-    <string name="link_explanation_2">Aufgrund von Systembeschränkungen funktioniert das Verlinken jedoch nicht immer. Dieser Modus steht deshalb nicht zur Verfügung, wenn Sie die App über „Öffnen mit…“ aufrufen.</string>
-    <string-array name="file_modes_participles">
-        <item>Importiert</item>
-        <item>Verlinkt</item>
-    </string-array>
-    <!-- Messages -->
+    <string name="change_synced_file">Datei auswählen</string>
+    <string name="change_mode_explanation">Sie können den Modus in den Einstellungen ändern.</string>
+   <!-- Messages -->
     <string name="file_does_not_exist">Die Datei existiert nicht</string>
     <string name="no_recipes_found">Keine Rezepte gefunden</string>
     <string name="recipe_not_found">Rezept nicht gefunden</string>
     <string name="inputstream_null">Fehler beim Öffnen der Datei</string>
     <string name="unknown_file_error">Unbekannter Dateifehler: %s</string>
-    <string name="not_available_in_preview">Im Vorschau-Modus nicht verfügbar</string>
     <!-- Options menu -->
-    <string name="import_recipes">Importieren</string>
-    <string name="choose_file">Datei wählen</string>
-    <string name="choose_file_option">Dateioption wählen</string>
-    <string name="close_file">Datei schließen</string>
+    <string name="import_recipes">Rezepte importieren</string>
     <string name="settings">Einstellungen</string>
     <string name="about_app_name">Über %s</string>
     <!-- Settings -->
     <string name="general_settings">Allgemeine Einstellungen</string>
     <string name="keep_screen_on">Bildschirm in der Rezeptansicht angeschaltet lassen</string>
-    <string name="mode">Modus</string>
-    <string-array name="mode_options">
-        <item>Eigenständig</item>
-        <item>Dateisynchron</item>
-    </string-array>
-    <string-array name="mode_options_summary">
-        <item>Eigenständig: Eigene Datenbank, Rezepte bearbeitbar</item>
-        <item>Dateisynchron: Mit einer XML-Datei synchronisiert (Lesemodus)</item>
-    </string-array>
     <string name="synced_file">Synchronisierte Gourmand-XML-Datei</string>
     <string name="color_theme">Farbschema</string>
     <string-array name="color_theme_options">

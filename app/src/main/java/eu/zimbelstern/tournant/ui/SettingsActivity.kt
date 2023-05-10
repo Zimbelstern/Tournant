@@ -64,7 +64,7 @@ class SettingsActivity : AppCompatActivity() {
 						.apply()
 					summary = context.resources.getStringArray(R.array.mode_options_summary)[opt - 1]
 					findPreference<Preference>("file")?.isEnabled = opt == MODE_SYNCED
-					if (sharedPrefs.getString(PREF_FILE, "").isNullOrEmpty()) {
+					if (opt == MODE_SYNCED && sharedPrefs.getString(PREF_FILE, "").isNullOrEmpty()) {
 						(activity as SettingsActivity).chooseFile()
 					}
 					true

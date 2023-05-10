@@ -1,5 +1,6 @@
 package eu.zimbelstern.tournant.ui
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
@@ -25,6 +26,7 @@ import androidx.paging.filter
 import androidx.recyclerview.widget.ConcatAdapter
 import eu.zimbelstern.tournant.CategoriesCuisinesAdapter
 import eu.zimbelstern.tournant.Constants.Companion.MODE_STANDALONE
+import eu.zimbelstern.tournant.Constants.Companion.MODE_SYNCED
 import eu.zimbelstern.tournant.Constants.Companion.PREF_COLOR_THEME
 import eu.zimbelstern.tournant.Constants.Companion.PREF_MODE
 import eu.zimbelstern.tournant.R
@@ -57,7 +59,7 @@ class MainActivity : AppCompatActivity() {
 
 	private lateinit var titleView: TextView
 	private lateinit var searchView: SearchView
-	private var fileMode = 0
+	private var mode = 0
 
 	private var restartPending = false
 	private val sharedPrefsListener = OnSharedPreferenceChangeListener { _, key ->
@@ -74,12 +76,28 @@ class MainActivity : AppCompatActivity() {
 			if (it == AppCompatDelegate.MODE_NIGHT_YES || it == AppCompatDelegate.MODE_NIGHT_NO)
 				AppCompatDelegate.setDefaultNightMode(it)
 		}
-		fileMode = sharedPrefs.getInt(PREF_MODE, MODE_STANDALONE)
+		mode = sharedPrefs.getInt(PREF_MODE, MODE_STANDALONE)
 		sharedPrefs.registerOnSharedPreferenceChangeListener(sharedPrefsListener)
 
 		binding = ActivityMainBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 		binding.root.displayedChild = LOADING_SCREEN
+
+		binding.welcomeView.apply {
+			@SuppressLint("SetTextI18n")
+			appNameAndVersion.text = "${getString(R.string.app_name)} ${getString(R.string.versionName)}"
+			chooseFile.apply {
+				if (mode == MODE_SYNCED) text = getString(R.string.change_synced_file)
+				setOnClickListener {
+					if (mode == MODE_STANDALONE)
+						importRecipesFromFile()
+					else
+						startActivity(Intent(context, SettingsActivity::class.java))
+				}
+			}
+			if (mode == MODE_SYNCED) modeInfo.text = getString(R.string.mode_synced_description_short)
+		}
+
 
 		val ccAdapter = CategoriesCuisinesAdapter(this)
 		val recipeListAdapter = RecipeListAdapter(this).also {
@@ -272,7 +290,7 @@ class MainActivity : AppCompatActivity() {
 
 	override fun onCreateOptionsMenu(menu: Menu): Boolean {
 		menuInflater.inflate(
-			if (fileMode == MODE_STANDALONE) R.menu.options_standalone else R.menu.options_synced,
+			if (mode == MODE_STANDALONE) R.menu.options_standalone else R.menu.options_synced,
 			menu
 		)
 		menu.findItem(R.id.show_about)?.title = getString(R.string.about_app_name, getString(R.string.app_name))

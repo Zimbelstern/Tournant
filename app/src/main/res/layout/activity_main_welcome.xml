@@ -1,25 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:id="@+id/activity_main_welcome"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:clipToPadding="false">
+	android:layout_height="match_parent">
 
 	<LinearLayout
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
+		android:layout_height="wrap_content"
 		android:orientation="vertical"
 		android:gravity="center_horizontal"
 		android:padding="32dp">
 
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:padding="16dp"
+			android:background="@drawable/round_corners"
+			android:backgroundTint="?attr/colorSurface">
+
+			<TextView
+				android:id="@+id/app_name_and_version"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/app_name"
+				android:textColor="@color/highlight_color"
+				android:textSize="24sp"
+				android:textStyle="bold"/>
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/no_recipes_found"
+				android:textSize="18sp"
+				android:layout_marginBottom="8dp"/>
+
 		<TextView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:padding="16dp"
+			android:padding="8dp"
 			android:background="@drawable/round_corners"
 			android:backgroundTint="?attr/colorSurface"
 			android:text="@string/choose_file_long"/>
+
+		</LinearLayout>
 
 		<TextView
 			android:id="@+id/choose_file"
@@ -29,7 +54,7 @@
 			android:padding="16dp"
 			android:background="@drawable/round_corners"
 			android:backgroundTint="?attr/colorSurface"
-			android:text="@string/choose_file"
+			android:text="@string/import_recipes"
 			android:textColor="@color/heading_color"
 			android:textSize="20sp"
 			android:textStyle="bold"
@@ -41,44 +66,71 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:orientation="vertical"
+			android:layout_marginBottom="16dp"
 			android:padding="16dp"
 			android:background="@drawable/round_corners"
 			android:backgroundTint="?attr/colorSurface">
 
 			<TextView
+				android:id="@+id/mode_info"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/file_modes_explanation"
-				android:layout_marginBottom="8dp"/>
-
-			<TextView
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:text="@string/import_"
+				android:text="@string/mode_standalone_description_short"
 				android:textColor="@color/highlight_color"
+				android:textSize="18sp"
 				android:textStyle="bold"/>
 
 			<TextView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/import_explanation"
+				android:text="@string/change_mode_explanation"
+				android:textSize="16sp"
+				android:layout_marginVertical="8dp"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:padding="16dp"
+			android:background="@drawable/round_corners"
+			android:backgroundTint="?attr/colorSurface">
+
+		<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/mode_standalone"
+				android:textColor="@color/highlight_color"
+				android:textSize="16sp"
+				android:textStyle="bold"
+				android:layout_marginBottom="2dp"/>
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/mode_standalone_description_long"
+				android:textSize="15sp"
 				android:layout_marginBottom="8dp"/>
 
 			<TextView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/link"
+				android:text="@string/mode_synced"
 				android:textColor="@color/highlight_color"
-				android:textStyle="bold"/>
+				android:textSize="16sp"
+				android:textStyle="bold"
+				android:layout_marginBottom="2dp"/>
 
 			<TextView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/link_explanation_1"
+				android:text="@string/mode_synced_description_long"
+				android:textSize="15sp"
 				android:layout_marginBottom="8dp"/>
 
 		</LinearLayout>
 
 	</LinearLayout>
 
-</androidx.core.widget.NestedScrollView>
+</ScrollView>
