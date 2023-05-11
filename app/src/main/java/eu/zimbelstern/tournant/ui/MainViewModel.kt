@@ -24,8 +24,10 @@ import eu.zimbelstern.tournant.data.RecipeWithIngredients
 import eu.zimbelstern.tournant.gourmand.GourmetXmlParser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.random.Random
@@ -47,6 +49,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 		}
 	}
 
+
 	// RECIPES
 	val recipeDescriptions = Pager(
 		PagingConfig(pageSize = 10, enablePlaceholders = false)
@@ -63,6 +66,8 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 				}
 			} else recipeDescriptions
 		}
+
+	val recipeCount = recipeDao.getRecipeCount().stateIn(viewModelScope, SharingStarted.Lazily, 0)
 
 
 	// CATEGORIES & CUISINES

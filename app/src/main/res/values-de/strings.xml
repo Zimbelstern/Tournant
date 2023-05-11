@@ -65,6 +65,7 @@
     <string name="donate">Spenden</string>
     <string name="libraries">Bibliotheken</string>
     <!-- Search -->
+    <string name="search">Suche</string>
     <string name="type_or_tap_to_search">Tippen oder antippen…</string>
     <!-- General purpose -->
     <string name="cancel">Abbrechen</string>

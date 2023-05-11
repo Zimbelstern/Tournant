@@ -140,6 +140,9 @@ abstract class RecipeDao {
 	@Query("SELECT id, title, category, cuisine, rating, image FROM recipe ORDER BY title ASC")
 	abstract fun getPagedRecipeDescriptions(): PagingSource<Int, RecipeDescription>
 
+	@Query("SELECT COUNT(*) FROM recipe")
+	abstract fun getRecipeCount(): Flow<Int>
+
 	@Query("SELECT DISTINCT category FROM recipe")
 	abstract fun getCategories(): Flow<List<String?>>
 

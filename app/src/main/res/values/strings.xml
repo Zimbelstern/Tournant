@@ -75,6 +75,7 @@
     <string name="donate">Donate</string>
     <string name="libraries">Libraries</string>
     <!-- Search -->
+    <string name="search">Search</string>
     <string name="type_or_tap_to_search">Type or tap to search…</string>
     <!-- General purpose -->
     <string name="cancel">Cancel</string>
