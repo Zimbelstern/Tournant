@@ -24,6 +24,7 @@ import eu.zimbelstern.tournant.CategoriesCuisinesAdapter
 import eu.zimbelstern.tournant.Constants.Companion.MODE_STANDALONE
 import eu.zimbelstern.tournant.Constants.Companion.MODE_SYNCED
 import eu.zimbelstern.tournant.Constants.Companion.PREF_COLOR_THEME
+import eu.zimbelstern.tournant.Constants.Companion.PREF_FILE
 import eu.zimbelstern.tournant.Constants.Companion.PREF_MODE
 import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.RecipeListAdapter
@@ -59,9 +60,15 @@ class MainActivity : AppCompatActivity() {
 	private var mode = 0
 
 	private var restartPending = false
-	private val sharedPrefsListener = OnSharedPreferenceChangeListener { _, key ->
+	private var syncedFileChanged = false
+	private val sharedPrefsListener = OnSharedPreferenceChangeListener { prefs, key ->
 		if (key == PREF_MODE) {
+			Log.e(TAG, "Mode changed, restart pending")
 			restartPending = true
+		}
+		if (key == PREF_FILE && prefs.getInt(PREF_MODE, MODE_STANDALONE) == MODE_SYNCED) {
+			Log.e(TAG, "Synced file changed, resync pending")
+			syncedFileChanged = true
 		}
 	}
 
@@ -120,9 +127,11 @@ class MainActivity : AppCompatActivity() {
 			viewModel.recipeCount.collectLatest {
 				if (it > 0) {
 					supportActionBar?.title = getString(R.string.recipes_with_file_mode, it.toString())
+					delay(250)
 					binding.root.displayedChild = RECIPES_SCREEN
 				} else {
 					supportActionBar?.title = getString(R.string.app_name)
+					delay(250)
 					binding.root.displayedChild = WELCOME_SCREEN
 				}
 			}
@@ -221,14 +230,21 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	override fun onStart() {
-		super.onStart()
 		if (restartPending) {
-			val intent = Intent(this, MainActivity::class.java).apply {
+			Log.d(TAG, "Restarting...")
+			startActivity(Intent(this, MainActivity::class.java).apply {
 				addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-			}
-			startActivity(intent)
+			})
 			finish()
 			Runtime.getRuntime().exit(0)
+		}
+		else {
+			super.onStart()
+			if (syncedFileChanged) {
+				binding.root.displayedChild = LOADING_SCREEN
+				viewModel.syncWithFile()
+				syncedFileChanged = false
+			}
 		}
 	}
 

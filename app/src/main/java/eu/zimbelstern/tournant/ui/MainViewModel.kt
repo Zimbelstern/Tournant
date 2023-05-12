@@ -12,10 +12,10 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import androidx.paging.filter
-import eu.zimbelstern.tournant.Constants.Companion.FILE_LAST_MODIFIED
 import eu.zimbelstern.tournant.Constants.Companion.MODE_STANDALONE
 import eu.zimbelstern.tournant.Constants.Companion.MODE_SYNCED
 import eu.zimbelstern.tournant.Constants.Companion.PREF_FILE
+import eu.zimbelstern.tournant.Constants.Companion.PREF_FILE_LAST_MODIFIED
 import eu.zimbelstern.tournant.Constants.Companion.PREF_MODE
 import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.TournantApplication
@@ -121,13 +121,14 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 				syncWithFile()
 	}
 
-	private fun syncWithFile() {
+	fun syncWithFile() {
 		val sharedPrefs = application.getSharedPreferences(application.packageName + "_preferences", Context.MODE_PRIVATE)
 		val path = sharedPrefs.getString(PREF_FILE, "")
+		Log.e(TAG, "Syncing with $path")
 		if (!path.isNullOrEmpty()) {
 			val uri = Uri.parse(path)
 			val lastModified = DocumentFile.fromSingleUri(application, uri)?.lastModified()
-			if (lastModified != null && lastModified > sharedPrefs.getLong(FILE_LAST_MODIFIED, -1)) {
+			if (lastModified != null && lastModified > sharedPrefs.getLong(PREF_FILE_LAST_MODIFIED, -1)) {
 				try {
 					val inputStream = application.contentResolver.openInputStream(uri)
 					if (inputStream == null) {
@@ -143,7 +144,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 				} catch (e: Exception) {
 					Log.e(TAG, "Couldn't update; $e")
 				}
-				sharedPrefs.edit().putLong(FILE_LAST_MODIFIED, lastModified).apply()
+				sharedPrefs.edit().putLong(PREF_FILE_LAST_MODIFIED, lastModified).apply()
 			}
 		}
 	}

@@ -9,7 +9,7 @@ class Constants {
 		const val PREF_FILE = "SYNCED_FILE_URI"
 		const val PREF_SCREEN_ON = "SCREEN_ON"
 		const val PREF_COLOR_THEME = "COLOR_THEME"
-		const val FILE_LAST_MODIFIED = "FILE_LAST_MODIFIED"
+		const val PREF_FILE_LAST_MODIFIED = "FILE_LAST_MODIFIED"
 	}
 	
 }

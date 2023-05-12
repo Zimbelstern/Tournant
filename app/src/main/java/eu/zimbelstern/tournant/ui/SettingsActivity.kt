@@ -19,6 +19,7 @@ import eu.zimbelstern.tournant.Constants.Companion.MODE_STANDALONE
 import eu.zimbelstern.tournant.Constants.Companion.MODE_SYNCED
 import eu.zimbelstern.tournant.Constants.Companion.PREF_COLOR_THEME
 import eu.zimbelstern.tournant.Constants.Companion.PREF_FILE
+import eu.zimbelstern.tournant.Constants.Companion.PREF_FILE_LAST_MODIFIED
 import eu.zimbelstern.tournant.Constants.Companion.PREF_MODE
 import eu.zimbelstern.tournant.Constants.Companion.PREF_SCREEN_ON
 import eu.zimbelstern.tournant.R
@@ -132,6 +133,7 @@ class SettingsActivity : AppCompatActivity() {
 					getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE)
 						.edit()
 						.putString(PREF_FILE, it.toString())
+						.putLong(PREF_FILE_LAST_MODIFIED, -1)
 						.apply()
 					for (permission in contentResolver.persistedUriPermissions.dropLast(1)) {
 						// Permissions from files before
