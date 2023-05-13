@@ -1,0 +1,3 @@
+Tournant 2.0 basiert auf komplett neugeschriebenem Code, der das Bearbeiten von Rezepten in der App ermöglichen soll.
+Die Einstellung für den Modus (eigenständig or synchronisiert) findet sich jetzt in den App-Einstellungen. Funktionen zum Bearbeiten von Rezepten kommen in späteren Versionen hinzu.
+Diese Version bringt schon jetzt viele Verbesserungen: Sehr viel kürzere Ladezeiten, Unterstützung von Mengenintervallen, Import mehrerer Dateien und vieles mehr.
