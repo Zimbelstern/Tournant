@@ -10,6 +10,7 @@
 			app:title="@string/website"
 			app:icon="@drawable/ic_website"/>
 
+		<!--suppress AndroidDomInspection -->
 		<Preference
 			app:key="version"
 			app:title="@string/version"
