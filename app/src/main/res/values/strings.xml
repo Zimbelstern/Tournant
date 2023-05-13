@@ -50,6 +50,7 @@
     <string name="about_app_name">About %s</string>
     <!-- Settings -->
     <string name="general_settings">General settings</string>
+    <string name="be_careful">Be careful</string>
     <string name="keep_screen_on">Keep the display on in the single recipe view</string>
    <string-array name="mode_options">
         <item>@string/mode_standalone</item>
@@ -66,6 +67,8 @@
         <item>Light</item>
         <item>Dark</item>
     </string-array>
+    <string name="delete_all_recipes">Delete all recipes</string>
+    <string name="delete_all_recipes_sure">This will permanently erase all imported recipes in the database (but no files). Are you sure?</string>
     <!-- About -->
     <string name="website">Website</string>
     <string name="version">Version</string>
@@ -80,6 +83,7 @@
     <!-- General purpose -->
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
+    <string name="done">Done</string>
     <string name="egg">Have a cookie: 🍪</string>
     <string name="less">less</string>
     <string name="more">more</string>

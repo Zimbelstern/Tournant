@@ -173,4 +173,7 @@ abstract class RecipeDao {
 	@Delete
 	abstract suspend fun deleteIngredient(ingredient: Ingredient)
 
+	@Query("DELETE FROM Recipe")
+	abstract suspend fun deleteAllRecipes()
+
 }

@@ -15,6 +15,7 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import eu.zimbelstern.tournant.Constants.Companion.MODE_STANDALONE
 import eu.zimbelstern.tournant.Constants.Companion.MODE_SYNCED
 import eu.zimbelstern.tournant.Constants.Companion.PREF_COLOR_THEME
@@ -23,6 +24,11 @@ import eu.zimbelstern.tournant.Constants.Companion.PREF_FILE_LAST_MODIFIED
 import eu.zimbelstern.tournant.Constants.Companion.PREF_MODE
 import eu.zimbelstern.tournant.Constants.Companion.PREF_SCREEN_ON
 import eu.zimbelstern.tournant.R
+import eu.zimbelstern.tournant.TournantApplication
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -112,6 +118,34 @@ class SettingsActivity : AppCompatActivity() {
 						.putInt(PREF_COLOR_THEME, opt)
 						.apply()
 					AppCompatDelegate.setDefaultNightMode(opt)
+					true
+				}
+			}
+
+			findPreference<Preference>("delete_all_recipes")?.apply {
+				isEnabled = sharedPrefs.getInt(PREF_MODE, MODE_STANDALONE) == MODE_STANDALONE
+				setOnPreferenceClickListener {
+					MaterialAlertDialogBuilder(context)
+						.setTitle(R.string.delete_all_recipes)
+						.setMessage(R.string.delete_all_recipes_sure)
+						.setPositiveButton(R.string.ok) { _, _ ->
+							(activity?.application as? TournantApplication)?.run {
+								MainScope().launch {
+									withContext(Dispatchers.IO) {
+										database.recipeDao().deleteAllRecipes()
+									}
+									withContext(Dispatchers.Main) {
+										Toast.makeText(
+											applicationContext,
+											R.string.done,
+											Toast.LENGTH_SHORT
+										).show()
+									}
+								}
+							}
+						}
+						.setNegativeButton(R.string.cancel, null)
+						.show()
 					true
 				}
 			}

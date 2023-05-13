@@ -48,9 +48,12 @@
     <string name="about_app_name">Über %s</string>
     <!-- Settings -->
     <string name="general_settings">Allgemeine Einstellungen</string>
+    <string name="be_careful">Vorsicht</string>
     <string name="keep_screen_on">Bildschirm in der Rezeptansicht angeschaltet lassen</string>
     <string name="synced_file">Synchronisierte Gourmand-XML-Datei</string>
     <string name="color_theme">Farbschema</string>
+    <string name="delete_all_recipes">Alle Rezepte löschen</string>
+    <string name="delete_all_recipes_sure">Das wird alle importierten Rezepte aus der Datenbank löschen (aber keine Dateien). Sicher?</string>
     <string-array name="color_theme_options">
         <item>Automatisch (dem System folgen)</item>
         <item>Hell</item>
@@ -70,6 +73,7 @@
     <!-- General purpose -->
     <string name="cancel">Abbrechen</string>
     <string name="ok">OK</string>
+    <string name="done">Fertig</string>
     <string name="egg">Hier, ein Keks: 🍪</string>
     <string name="less">Weniger</string>
     <string name="more">Mehr</string>

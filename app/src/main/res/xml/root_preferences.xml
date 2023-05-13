@@ -28,4 +28,14 @@
 
 	</PreferenceCategory>
 
+	<PreferenceCategory
+		app:title="@string/be_careful">
+
+		<Preference
+			app:key="delete_all_recipes"
+			app:title="@string/delete_all_recipes"
+			app:icon="@drawable/ic_delete"/>
+
+	</PreferenceCategory>
+
 </PreferenceScreen>
