@@ -30,6 +30,12 @@ class RecipeViewModel(private val recipeDao: RecipeDao) : ViewModel() {
 		}
 	}
 
+	fun useRecipe(recipe: RecipeWithIngredients) {
+		viewModelScope.launch {
+			_recipe.postValue(recipe)
+		}
+	}
+
 }
 
 class RecipeViewModelFactory(private val recipeDao: RecipeDao) : ViewModelProvider.Factory {

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.util.Log
@@ -22,6 +23,7 @@ import eu.zimbelstern.tournant.InstructionsTextAdapter
 import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.RecipeUtils
 import eu.zimbelstern.tournant.TournantApplication
+import eu.zimbelstern.tournant.data.RecipeWithIngredients
 import eu.zimbelstern.tournant.databinding.ActivityRecipeBinding
 import eu.zimbelstern.tournant.getQuantityIntForPlurals
 import eu.zimbelstern.tournant.scale
@@ -49,9 +51,23 @@ class RecipeActivity : AppCompatActivity() {
 			if (it > 0)
 				viewModel.pullRecipe(it)
 			else {
-				Log.e(TAG, "No recipe provided")
-				finish()
-				return
+				// TODO: This is only for testing. Maybe change?
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+					intent.getParcelableExtra("RECIPE", RecipeWithIngredients::class.java)
+				} else {
+					@Suppress("DEPRECATION")
+					intent.getParcelableExtra("RECIPE") as? RecipeWithIngredients
+				}.let { recipe ->
+					if (recipe != null) {
+						viewModel.useRecipe(recipe)
+					}
+					else {
+				// End of code for testing
+						Log.e(TAG, "No recipe provided")
+						finish()
+						return
+					}
+				}
 			}
 		}
 

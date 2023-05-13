@@ -4,7 +4,9 @@ import android.content.Intent
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.scrollTo
+import androidx.test.espresso.action.ViewActions.swipeUp
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.filters.LargeTest
@@ -19,7 +21,6 @@ import tools.fastlane.screengrab.Screengrab
 import tools.fastlane.screengrab.cleanstatusbar.CleanStatusBar
 import tools.fastlane.screengrab.locale.LocaleTestRule
 import utils.AndroidTestUtils
-import java.util.Locale
 
 @LargeTest
 class CaptureRecipeActivity {
@@ -43,14 +44,15 @@ class CaptureRecipeActivity {
 
 	@Test
 	fun captureRecipeView() {
+
+		Screengrab.screenshot("2")
+
 		onView(withId(R.id.recipe_detail_ingredients_recycler)).perform(scrollTo())
 			.perform(
 				*listOf(0, 1, 3, 4).map {
 					actionOnItemAtPosition<InstructionsTextAdapter.InstructionTextViewHolder>(it, click())
 				}.toTypedArray()
 			)
-
-		Screengrab.screenshot("2")
 
 		onView(withId(R.id.recipe_detail_instructions_recycler)).perform(scrollTo(), swipeUp())
 			.perform(

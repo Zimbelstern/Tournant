@@ -2,6 +2,7 @@ package utils
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import androidx.core.text.parseAsHtml
 import androidx.test.platform.app.InstrumentationRegistry
 import eu.zimbelstern.tournant.data.Ingredient
 import eu.zimbelstern.tournant.data.Recipe
@@ -22,16 +23,17 @@ class AndroidTestUtils {
 					getString(R.string.sample_source),
 					null,
 					5f,
-					25,
 					20,
+					25,
 					getString(R.string.sample_yields).split(" ")[0].toFloat(),
 					getString(R.string.sample_yields).split(" ")[1],
-					getString(R.string.sample_instructions),
-					getString(R.string.sample_modifications),
+					getString(R.string.sample_instructions).replace("\n", "&lt;br/>").parseAsHtml().toString(),
+					getString(R.string.sample_modifications).replace("\n", "&lt;br/>").parseAsHtml().toString(),
 					ByteArrayOutputStream().also {
 						BitmapFactory.decodeResource(resources, R.drawable.image)
 							.compress(Bitmap.CompressFormat.JPEG, 75, it)
-					}.toByteArray()
+					}.toByteArray(),
+					null
 				),
 				resources.getStringArray(R.array.sample_ingredients).mapIndexed { i, it ->
 					if (it[0].isDigit()) {
