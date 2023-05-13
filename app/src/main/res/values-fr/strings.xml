@@ -6,14 +6,6 @@
     <string name="instructions">Instructions</string>
     <string name="optional">%s (optionnel)</string>
     <string name="preptime">Temps de préparation</string>
-    <string name="file_modes_explanation">Vous pouvez ensuite choisir l\'un des modes de fichier suivants :</string>
-    <string name="preview">Aperçu</string>
-    <string name="preview_explanation">Le fichier sera analysé une seule fois et vos recettes seront affichées jusqu\'à ce que vous choisissiez de fermer le fichier ou de fermer l\'application.</string>
-    <string name="import_">Importer</string>
-    <string name="import_explanation">Le fichier sera copié dans le stockage de l\'application et son contenu sera affiché comme votre liste de recettes par défaut.</string>
-    <string name="link">Lien</string>
-    <string name="link_explanation_1">Le fichier sera analysé à nouveau chaque fois que vous ouvrirez l\'application. Cette fonction est particulièrement utile si vous souhaitez synchroniser le fichier avec votre ordinateur.</string>
-    <string name="link_explanation_2">Notez qu\'en raison des restrictions du système, lier le fichier ne fonctionnera pas toujours. Par conséquent, vous ne pouvez pas choisir ce mode lorsque vous démarrez l\'application via «Ouvrir avec…» à partir d\'un fichier.</string>
     <string name="recipes">Recettes</string>
     <string name="libraries">Bibliothèques</string>
     <string name="rating">Évaluation</string>
@@ -21,7 +13,6 @@
     <string name="category">Catégorie</string>
     <string name="cuisine">Cuisine</string>
     <string name="ingredients">Ingrédients</string>
-    <string name="choose_file">Choisir le fichier</string>
     <string name="webpage">Page web</string>
     <string name="yield">pour</string>
     <plurals name="lots">
@@ -39,8 +30,6 @@
     <string name="choose_file_long">Choisissez un fichier XML Gourmet/Gourmand à partir de votre appareil.</string>
     <string name="file_does_not_exist">Le fichier n\'existe pas</string>
     <string name="inputstream_null">Erreur lors de l\'ouverture du fichier</string>
-    <string name="choose_file_option">Choisir l\'option de fichier</string>
-    <string name="close_file">Fermer le fichier</string>
     <string name="keep_screen_on">Maintenir l\'affichage dans la vue de recette unique</string>
     <string name="version">Version</string>
     <string name="donate">Faire un don</string>
@@ -56,7 +45,6 @@
     <string name="ok">OK</string>
     <string name="egg">Prenez un cookie : 🍪</string>
     <string name="less">moins</string>
-    <string name="not_available_in_preview">Impossible dans le mode d\'aperçu</string>
     <string name="recipe_not_found">Recette introuvable</string>
     <string name="color_theme">Schéma de couleur</string>
     <string name="checked">coché</string>

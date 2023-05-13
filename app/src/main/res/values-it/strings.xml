@@ -15,11 +15,8 @@
     <string name="no_recipes_found">Nessuna ricetta trovata</string>
     <string name="inputstream_null">Errore durante l\'apertura del file</string>
     <string name="unknown_file_error">Errore di file sconosciuto: %s</string>
-    <string name="choose_file">Scegli il file</string>
-    <string name="choose_file_option">Scegli l\'opzione file</string>
     <string name="rating">Valutazione</string>
     <string name="category">Categoria</string>
-    <string name="close_file">Chiudi il file</string>
     <string name="settings">Impostazioni</string>
     <string name="about_app_name">Informazioni su %s</string>
     <string name="general_settings">Impostazioni generali</string>
@@ -27,14 +24,6 @@
     <string name="website">Sito web</string>
     <string name="version">Versione</string>
     <string name="source">Fonte</string>
-    <string name="file_modes_explanation">È possibile scegliere una delle seguenti modalità:</string>
-    <string name="preview">Anteprima</string>
-    <string name="preview_explanation">Il file viene analizzato una sola volta e le ricette vengono visualizzate finché non si sceglie di chiudere il file o l\'applicazione.</string>
-    <string name="import_">Importazione</string>
-    <string name="import_explanation">Il file verrà copiato nella memoria dell\'applicazione e il contenuto verrà visualizzato come elenco di ricette predefinito.</string>
-    <string name="link">Collegamento</string>
-    <string name="link_explanation_1">Il file verrà analizzato nuovamente ogni volta che si apre l\'applicazione. Questo è particolarmente utile se si desidera sincronizzare il file con il computer.</string>
-    <string name="link_explanation_2">Si noti che, a causa di restrizioni di sistema, il collegamento del file non funziona sempre. Pertanto, non è possibile scegliere questa modalità quando si avvia l\'applicazione tramite «Aprire con…» da un file.</string>
     <string name="optional">%s (opzionale)</string>
     <plurals name="servings">
         <item quantity="one">porzione</item>
@@ -56,7 +45,6 @@
     <string name="less">meno</string>
     <string name="more">più</string>
     <string name="recipe_not_found">Ricetta non trovata</string>
-    <string name="not_available_in_preview">Non disponibile in modalità anteprima</string>
     <string name="type_or_tap_to_search">Scrivi o tocca per cercare…</string>
     <string name="checked">controllato</string>
     <string name="color_theme">Schema colori</string>
