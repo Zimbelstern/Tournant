@@ -42,6 +42,7 @@
     <string name="recipe_not_found">Rezept nicht gefunden</string>
     <string name="inputstream_null">Fehler beim Öffnen der Datei</string>
     <string name="unknown_file_error">Unbekannter Dateifehler: %s</string>
+    <string name="importing_only_in_standalone_mode">Importieren nur im eigenständigen Modus</string>
     <!-- Options menu -->
     <string name="import_recipes">Rezepte importieren</string>
     <string name="settings">Einstellungen</string>

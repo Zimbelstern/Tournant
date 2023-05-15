@@ -44,6 +44,7 @@
     <string name="recipe_not_found">Recipe not found</string>
     <string name="inputstream_null">Error while opening the file</string>
     <string name="unknown_file_error">Unknown file error: %s</string>
+    <string name="importing_only_in_standalone_mode">Importing only in standalone mode</string>
     <!-- Options menu -->
     <string name="import_recipes">Import recipes</string>
     <string name="settings">Settings</string>

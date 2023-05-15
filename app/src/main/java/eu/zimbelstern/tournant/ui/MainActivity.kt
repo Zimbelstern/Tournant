@@ -17,15 +17,18 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
+import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.filter
 import androidx.recyclerview.widget.ConcatAdapter
+import eu.zimbelstern.tournant.BuildConfig
 import eu.zimbelstern.tournant.CategoriesCuisinesAdapter
 import eu.zimbelstern.tournant.Constants.Companion.MODE_STANDALONE
 import eu.zimbelstern.tournant.Constants.Companion.MODE_SYNCED
 import eu.zimbelstern.tournant.Constants.Companion.PREF_COLOR_THEME
 import eu.zimbelstern.tournant.Constants.Companion.PREF_FILE
 import eu.zimbelstern.tournant.Constants.Companion.PREF_MODE
+import eu.zimbelstern.tournant.Constants.Companion.PREF_VERSION
 import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.RecipeListAdapter
 import eu.zimbelstern.tournant.TournantApplication
@@ -38,6 +41,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
@@ -86,6 +90,10 @@ class MainActivity : AppCompatActivity() {
 		binding = ActivityMainBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 		binding.root.displayedChild = LOADING_SCREEN
+
+		if (sharedPrefs.getInt(PREF_VERSION, 0) < BuildConfig.VERSION_CODE) {
+			migrate()
+		}
 
 		binding.welcomeView.apply {
 			@SuppressLint("SetTextI18n")
@@ -170,7 +178,10 @@ class MainActivity : AppCompatActivity() {
 
 
 		if (intent.action == Intent.ACTION_VIEW) {
-			parseAndInsertRecipes(intent.data as Uri)
+			if (mode == MODE_STANDALONE)
+				parseAndInsertRecipes(intent.data as Uri)
+			else
+				Toast.makeText(this, R.string.importing_only_in_standalone_mode, Toast.LENGTH_LONG).show()
 		}
 
 	}
@@ -231,12 +242,7 @@ class MainActivity : AppCompatActivity() {
 
 	override fun onStart() {
 		if (restartPending) {
-			Log.d(TAG, "Restarting...")
-			startActivity(Intent(this, MainActivity::class.java).apply {
-				addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-			})
-			finish()
-			Runtime.getRuntime().exit(0)
+			restartApplication()
 		}
 		else {
 			super.onStart()
@@ -346,6 +352,50 @@ class MainActivity : AppCompatActivity() {
 			}
 			else -> false
 		}
+	}
+
+	private fun migrate() {
+		val prefs = getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE)
+		if (prefs.getInt(PREF_VERSION, 0) < 11) {
+			File(filesDir, "tmp.xml").let {
+				if (it.exists())
+					it.delete()
+			}
+			prefs.getString("LINKED_FILE_URI", null)?.let {
+				prefs.edit().remove("LINKED_FILE_URI").apply()
+				if (mode == MODE_SYNCED) {
+					prefs.edit().putString(PREF_FILE, it).apply()
+					viewModel.syncWithFile()
+				}
+			}
+			if (prefs.getInt(PREF_MODE, 0) !in (MODE_STANDALONE..MODE_SYNCED)) {
+				prefs.edit().putInt(PREF_MODE, MODE_STANDALONE).apply()
+			}
+			File(filesDir, "import.xml").let {
+				if (it.exists()) {
+					if (mode == MODE_STANDALONE) {
+						parseAndInsertRecipes(it.toUri())
+						lifecycleScope.launch {
+							viewModel.recipeCount.collectLatest { count ->
+								if (count > 0 && it.exists())
+									it.delete()
+							}
+						}
+					}
+					else it.delete()
+				}
+			}
+		}
+		prefs.edit().putInt(PREF_VERSION, BuildConfig.VERSION_CODE).apply()
+	}
+
+	private fun restartApplication() {
+		Log.d(TAG, "Restarting application...")
+		startActivity(Intent(this, MainActivity::class.java).apply {
+			addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+		})
+		finish()
+		Runtime.getRuntime().exit(0)
 	}
 
 }
