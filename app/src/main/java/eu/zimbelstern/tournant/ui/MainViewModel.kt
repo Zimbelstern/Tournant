@@ -3,6 +3,7 @@ package eu.zimbelstern.tournant.ui
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
@@ -35,6 +36,9 @@ import kotlin.random.Random
 class MainViewModel(private val application: TournantApplication) : AndroidViewModel(application) {
 
 	companion object { private const val TAG = "MainViewModel" }
+
+
+	val waitingForRecipes = MutableStateFlow(false)
 
 
 	// DAO
@@ -107,7 +111,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 	}
 
 
-	fun insertRecipes(recipeList: List<RecipeWithIngredients>) {
+	private fun insertRecipes(recipeList: List<RecipeWithIngredients>) {
 		viewModelScope.launch {
 			withContext(Dispatchers.IO) {
 				recipeDao.insertRecipesWithIngredients(recipeList)
@@ -121,30 +125,78 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 				syncWithFile()
 	}
 
-	fun syncWithFile() {
-		val sharedPrefs = application.getSharedPreferences(application.packageName + "_preferences", Context.MODE_PRIVATE)
-		val path = sharedPrefs.getString(PREF_FILE, "")
-		Log.e(TAG, "Syncing with $path")
-		if (!path.isNullOrEmpty()) {
-			val uri = Uri.parse(path)
-			val lastModified = DocumentFile.fromSingleUri(application, uri)?.lastModified()
-			if (lastModified != null && lastModified > sharedPrefs.getLong(PREF_FILE_LAST_MODIFIED, -1)) {
+	fun parseAndInsertRecipes(uri: Uri) {
+		viewModelScope.launch {
+			withContext(Dispatchers.IO) {
+				waitingForRecipes.emit(true)
 				try {
 					val inputStream = application.contentResolver.openInputStream(uri)
 					if (inputStream == null) {
 						Log.e(TAG, "Couldn't update; inputstream null")
+						withContext(Dispatchers.Main) {
+							Toast.makeText(application, application.getString(R.string.inputstream_null), Toast.LENGTH_LONG).show()
+						}
 					} else {
-						viewModelScope.launch {
-							withContext(Dispatchers.IO) {
-								val recipesFromFile = GourmetXmlParser().parse(inputStream)
-								recipeDao.compareAndUpdateGourmandRecipes(recipesFromFile)
+						val parsedRecipes = GourmetXmlParser().parse(inputStream).also {
+							if (it.isEmpty()) {
+								withContext(Dispatchers.Main) {
+									Toast.makeText(application, application.getString(R.string.no_recipes_found), Toast.LENGTH_LONG).show()
+								}
 							}
 						}
+						insertRecipes(parsedRecipes)
 					}
 				} catch (e: Exception) {
 					Log.e(TAG, "Couldn't update; $e")
+					withContext(Dispatchers.Main) {
+						Toast.makeText(application, application.getString(R.string.unknown_file_error, e.message), Toast.LENGTH_LONG).show()
+					}
+				} finally {
+					waitingForRecipes.emit(false)
 				}
-				sharedPrefs.edit().putLong(PREF_FILE_LAST_MODIFIED, lastModified).apply()
+			}
+		}
+	}
+
+	fun syncWithFile() {
+		val sharedPrefs = application.getSharedPreferences(application.packageName + "_preferences", Context.MODE_PRIVATE)
+		val path = sharedPrefs.getString(PREF_FILE, "")
+		if (!path.isNullOrEmpty()) {
+			Log.d(TAG, "Syncing with $path")
+			val uri = Uri.parse(path)
+			val lastModified = DocumentFile.fromSingleUri(application, uri)?.lastModified()
+			if (lastModified != null && lastModified > sharedPrefs.getLong(PREF_FILE_LAST_MODIFIED, -1)) {
+				viewModelScope.launch {
+					withContext(Dispatchers.IO) {
+						waitingForRecipes.emit(true)
+						try {
+							val inputStream = application.contentResolver.openInputStream(uri)
+							if (inputStream == null) {
+								Log.e(TAG, "Couldn't update; inputstream null")
+								withContext(Dispatchers.Main) {
+									Toast.makeText(application, application.getString(R.string.inputstream_null), Toast.LENGTH_LONG).show()
+								}
+							} else {
+								val recipesFromFile = GourmetXmlParser().parse(inputStream).also {
+									if (it.isEmpty()) {
+										withContext(Dispatchers.Main) {
+											Toast.makeText(application, application.getString(R.string.no_recipes_found), Toast.LENGTH_LONG).show()
+										}
+									}
+								}
+								recipeDao.compareAndUpdateGourmandRecipes(recipesFromFile)
+							}
+							sharedPrefs.edit().putLong(PREF_FILE_LAST_MODIFIED, lastModified).apply()
+						} catch (e: Exception) {
+							Log.e(TAG, "Couldn't update; $e")
+							withContext(Dispatchers.Main) {
+								Toast.makeText(application, application.getString(R.string.unknown_file_error, e.message), Toast.LENGTH_LONG).show()
+							}
+						} finally {
+							waitingForRecipes.emit(false)
+						}
+					}
+				}
 			}
 		}
 	}

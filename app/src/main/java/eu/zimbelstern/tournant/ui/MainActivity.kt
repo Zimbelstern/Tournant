@@ -33,14 +33,11 @@ import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.RecipeListAdapter
 import eu.zimbelstern.tournant.TournantApplication
 import eu.zimbelstern.tournant.databinding.ActivityMainBinding
-import eu.zimbelstern.tournant.gourmand.GourmetXmlParser
 import eu.zimbelstern.tournant.pagination.RecipeDescriptionLoadStateAdapter
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
@@ -84,16 +81,16 @@ class MainActivity : AppCompatActivity() {
 			if (it == AppCompatDelegate.MODE_NIGHT_YES || it == AppCompatDelegate.MODE_NIGHT_NO)
 				AppCompatDelegate.setDefaultNightMode(it)
 		}
+
+		if (sharedPrefs.getInt(PREF_VERSION, 0) < BuildConfig.VERSION_CODE) {
+			migrate()
+		}
+
 		mode = sharedPrefs.getInt(PREF_MODE, MODE_STANDALONE)
 		sharedPrefs.registerOnSharedPreferenceChangeListener(sharedPrefsListener)
 
 		binding = ActivityMainBinding.inflate(layoutInflater)
 		setContentView(binding.root)
-		binding.root.displayedChild = LOADING_SCREEN
-
-		if (sharedPrefs.getInt(PREF_VERSION, 0) < BuildConfig.VERSION_CODE) {
-			migrate()
-		}
 
 		binding.welcomeView.apply {
 			@SuppressLint("SetTextI18n")
@@ -135,12 +132,29 @@ class MainActivity : AppCompatActivity() {
 			viewModel.recipeCount.collectLatest {
 				if (it > 0) {
 					supportActionBar?.title = getString(R.string.recipes_with_file_mode, it.toString())
-					delay(250)
-					binding.root.displayedChild = RECIPES_SCREEN
-				} else {
+					if (!viewModel.waitingForRecipes.value)
+						binding.root.displayedChild = RECIPES_SCREEN
+				}
+			    else  {
 					supportActionBar?.title = getString(R.string.app_name)
-					delay(250)
-					binding.root.displayedChild = WELCOME_SCREEN
+					if (!viewModel.waitingForRecipes.value)
+						binding.root.displayedChild = WELCOME_SCREEN
+				}
+			}
+		}
+
+		lifecycleScope.launch {
+			viewModel.waitingForRecipes.collectLatest {
+				if (it) {
+					Log.d(TAG, "Waiting for recipes")
+					binding.root.displayedChild = LOADING_SCREEN
+				}
+				else {
+					Log.d(TAG, "Recipes ready")
+					if (viewModel.recipeCount.value > 0)
+						binding.root.displayedChild = RECIPES_SCREEN
+					else
+						binding.root.displayedChild = WELCOME_SCREEN
 				}
 			}
 		}
@@ -179,9 +193,10 @@ class MainActivity : AppCompatActivity() {
 
 		if (intent.action == Intent.ACTION_VIEW) {
 			if (mode == MODE_STANDALONE)
-				parseAndInsertRecipes(intent.data as Uri)
+				viewModel.parseAndInsertRecipes(intent.data as Uri)
 			else
 				Toast.makeText(this, R.string.importing_only_in_standalone_mode, Toast.LENGTH_LONG).show()
+			intent.action = ""
 		}
 
 	}
@@ -193,38 +208,10 @@ class MainActivity : AppCompatActivity() {
 	}
 	private val activityResultLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) {
 		if (it != null) {
-			parseAndInsertRecipes(it)
+			viewModel.parseAndInsertRecipes(it)
 		}
 	}
 
-	private fun parseAndInsertRecipes(uri: Uri) { // TODO: Move to ViewModel
-		try {
-			val inputStream = contentResolver.openInputStream(uri)
-			if (inputStream == null) {
-				Toast.makeText(this, getString(R.string.inputstream_null), Toast.LENGTH_LONG).show()
-			} else {
-				lifecycleScope.launch {
-					binding.root.displayedChild = LOADING_SCREEN
-					withContext(Dispatchers.IO) {
-						try {
-							val parsedRecipes = GourmetXmlParser().parse(inputStream)
-							if (parsedRecipes.isEmpty())
-								Toast.makeText(applicationContext, getString(R.string.no_recipes_found), Toast.LENGTH_LONG).show()
-							else
-								viewModel.insertRecipes(parsedRecipes)
-						} catch (e: Exception) {
-							withContext(Dispatchers.Main) {
-								Toast.makeText(applicationContext, getString(R.string.unknown_file_error, e.message), Toast.LENGTH_LONG).show()
-							}
-						}
-						inputStream.close()
-					}
-				}
-			}
-		} catch (e: Exception) {
-			Toast.makeText(this, getString(R.string.unknown_file_error, e.message), Toast.LENGTH_LONG).show()
-		}
-	}
 
 	fun searchForSomething(query: CharSequence?) {
 		if (!query.isNullOrEmpty()) {
@@ -247,9 +234,13 @@ class MainActivity : AppCompatActivity() {
 		else {
 			super.onStart()
 			if (syncedFileChanged) {
-				binding.root.displayedChild = LOADING_SCREEN
 				viewModel.syncWithFile()
 				syncedFileChanged = false
+			}
+			if (!viewModel.waitingForRecipes.value) {
+				binding.root.displayedChild =
+					if (viewModel.recipeCount.value > 0) RECIPES_SCREEN
+					else WELCOME_SCREEN
 			}
 		}
 	}
@@ -357,24 +348,17 @@ class MainActivity : AppCompatActivity() {
 	private fun migrate() {
 		val prefs = getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE)
 		if (prefs.getInt(PREF_VERSION, 0) < 11) {
+			if (prefs.getInt(PREF_MODE, 0) !in (MODE_STANDALONE..MODE_SYNCED)) {
+				prefs.edit().putInt(PREF_MODE, MODE_STANDALONE).apply()
+			}
 			File(filesDir, "tmp.xml").let {
 				if (it.exists())
 					it.delete()
 			}
-			prefs.getString("LINKED_FILE_URI", null)?.let {
-				prefs.edit().remove("LINKED_FILE_URI").apply()
-				if (mode == MODE_SYNCED) {
-					prefs.edit().putString(PREF_FILE, it).apply()
-					viewModel.syncWithFile()
-				}
-			}
-			if (prefs.getInt(PREF_MODE, 0) !in (MODE_STANDALONE..MODE_SYNCED)) {
-				prefs.edit().putInt(PREF_MODE, MODE_STANDALONE).apply()
-			}
 			File(filesDir, "import.xml").let {
 				if (it.exists()) {
-					if (mode == MODE_STANDALONE) {
-						parseAndInsertRecipes(it.toUri())
+					if (prefs.getInt(PREF_MODE, MODE_STANDALONE) == MODE_STANDALONE) {
+						viewModel.parseAndInsertRecipes(it.toUri())
 						lifecycleScope.launch {
 							viewModel.recipeCount.collectLatest { count ->
 								if (count > 0 && it.exists())
@@ -383,6 +367,13 @@ class MainActivity : AppCompatActivity() {
 						}
 					}
 					else it.delete()
+				}
+			}
+			prefs.getString("LINKED_FILE_URI", null)?.let {
+				prefs.edit().remove("LINKED_FILE_URI").apply()
+				if (prefs.getInt(PREF_MODE, MODE_STANDALONE) == MODE_SYNCED) {
+					prefs.edit().putString(PREF_FILE, it).apply()
+					viewModel.syncWithFile()
 				}
 			}
 		}

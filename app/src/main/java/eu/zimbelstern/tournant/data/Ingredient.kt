@@ -1,6 +1,7 @@
 package eu.zimbelstern.tournant.data
 
 import android.os.Parcelable
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
@@ -23,6 +24,7 @@ data class Ingredient(
 	@PrimaryKey(autoGenerate = true)
 	var id: Long,
 
+	@ColumnInfo(index = true)
 	var recipeId: Long,
 	var position: Int,
 	var amount: Float?,
@@ -84,7 +86,12 @@ data class Ingredient(
 			?.roundToNDigits(it.getNumberOfDigits() + 2)
 		}
 
-		return this.copy(amount = amountScaled)
+		val amountRangeScaled = amountRange.let {
+			it?.times(factor)
+			?.roundToNDigits(it.getNumberOfDigits() + 2)
+		}
+
+		return this.copy(amount = amountScaled, amountRange = amountRangeScaled)
 	}
 
 }
