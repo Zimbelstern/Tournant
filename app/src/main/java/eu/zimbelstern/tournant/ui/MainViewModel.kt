@@ -23,6 +23,7 @@ import eu.zimbelstern.tournant.TournantApplication
 import eu.zimbelstern.tournant.data.ColorfulString
 import eu.zimbelstern.tournant.data.RecipeWithIngredients
 import eu.zimbelstern.tournant.gourmand.GourmetXmlParser
+import eu.zimbelstern.tournant.gourmand.GourmetXmlWriter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -31,6 +32,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 import kotlin.random.Random
 
 class MainViewModel(private val application: TournantApplication) : AndroidViewModel(application) {
@@ -71,8 +73,13 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 			} else recipeDescriptions
 		}
 
-	val recipeCount = recipeDao.getRecipeCount().stateIn(viewModelScope, SharingStarted.Lazily, 0)
+	val countAllRecipes = recipeDao.getRecipeCount().stateIn(viewModelScope, SharingStarted.Lazily, 0)
 
+	val idsRecipesFiltered = countAllRecipes.combine(searchQuery) { _, query ->
+		withContext(Dispatchers.IO) {
+			recipeDao.getRecipeIds(query ?: "").toSet()
+		}
+	}.stateIn(viewModelScope, SharingStarted.Lazily, setOf())
 
 	// CATEGORIES & CUISINES
 	private val colors = application.resources.obtainTypedArray(R.array.material_colors_700)
@@ -196,6 +203,40 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 							waitingForRecipes.emit(false)
 						}
 					}
+				}
+			}
+		}
+	}
+
+	suspend fun getRecipeTitle(id: Long) = recipeDao.getRecipeTitleById(id)
+
+	suspend fun writeRecipesToExportDir(recipeIds: Set<Long>, filename: String) {
+		val recipes = recipeDao.getRecipesById(recipeIds)
+		File(application.filesDir, "export").mkdir()
+		File(File(application.filesDir, "export"), "$filename.xml").outputStream().use {
+			it.write(GourmetXmlWriter().serialize(recipes))
+		}
+	}
+
+	fun copyRecipesFromExportDir(filename: String, toUri: Uri) {
+		viewModelScope.launch {
+			withContext(Dispatchers.IO) {
+				application.contentResolver.openOutputStream(toUri)?.use { outputStream ->
+					File(File(application.filesDir, "export"), "$filename.xml").inputStream().copyTo(outputStream)
+				}
+				withContext(Dispatchers.Main) {
+					Toast.makeText(application, R.string.done, Toast.LENGTH_SHORT).show()
+				}
+			}
+		}
+	}
+
+	fun deleteRecipes(recipeIds: Set<Long>) {
+		viewModelScope.launch {
+			withContext(Dispatchers.IO) {
+				recipeDao.deleteRecipesByIds(recipeIds)
+				withContext(Dispatchers.Main) {
+					Toast.makeText(application, R.string.done, Toast.LENGTH_SHORT).show()
 				}
 			}
 		}

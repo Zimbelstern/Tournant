@@ -7,54 +7,60 @@
 	android:layout_marginHorizontal="8dp"
 	android:layout_marginTop="8dp"
 	android:elevation="4dp"
-	app:cardCornerRadius="8dp">
+	app:cardCornerRadius="8dp"
+	app:strokeColor="@color/card_border_color"
+	app:strokeWidth="4dp">
 
-	<androidx.constraintlayout.widget.ConstraintLayout
+	<FrameLayout
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:padding="12dp">
+		android:layout_height="match_parent">
 
-		<ImageView
-			android:id="@+id/recipe_card_image"
-			android:layout_width="96dp"
-			android:layout_height="96dp"
-			android:layout_margin="4dp"
-			android:background="@drawable/round_corners"
-			android:importantForAccessibility="no"
-			android:scaleType="centerCrop"
-			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toTopOf="parent"
-			app:layout_constraintVertical_bias="0"
-			tools:src="@drawable/ic_dining"/>
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:padding="12dp">
 
-		<TextView
-			android:id="@+id/recipe_card_title"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:layout_marginStart="12dp"
-			android:maxLines="2"
-			android:ellipsize="end"
-			android:textColor="@color/heading_color"
-			android:textSize="@dimen/font_size_heading"
-			android:textStyle="bold"
-			app:layout_constraintStart_toEndOf="@id/recipe_card_image"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintTop_toTopOf="parent"
-			tools:text="Recipe title"/>
+			<ImageView
+				android:id="@+id/recipe_card_image"
+				android:layout_width="96dp"
+				android:layout_height="96dp"
+				android:layout_margin="4dp"
+				android:background="@drawable/round_corners"
+				android:importantForAccessibility="no"
+				android:scaleType="centerCrop"
+				app:layout_constraintBottom_toBottomOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toTopOf="parent"
+				app:layout_constraintVertical_bias="0"
+				tools:src="@drawable/ic_dining"/>
 
-		<RatingBar
-			android:id="@+id/recipe_card_rating"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="4dp"
-			app:layout_constraintStart_toStartOf="@id/recipe_card_title"
-			app:layout_constraintTop_toBottomOf="@id/recipe_card_title"
-			android:numStars="5"
-			android:isIndicator="true"
-			android:visibility="gone"
-			tools:visibility="visible"
-			style="@style/Widget.AppCompat.RatingBar.Small"/>
+			<TextView
+				android:id="@+id/recipe_card_title"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="12dp"
+				android:maxLines="2"
+				android:ellipsize="end"
+				android:textColor="@color/heading_color"
+				android:textSize="@dimen/font_size_heading"
+				android:textStyle="bold"
+				app:layout_constraintStart_toEndOf="@id/recipe_card_image"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintTop_toTopOf="parent"
+				tools:text="Recipe title"/>
+
+			<RatingBar
+				android:id="@+id/recipe_card_rating"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="4dp"
+				app:layout_constraintStart_toStartOf="@id/recipe_card_title"
+				app:layout_constraintTop_toBottomOf="@id/recipe_card_title"
+				android:numStars="5"
+				android:isIndicator="true"
+				android:visibility="gone"
+				tools:visibility="visible"
+				style="@style/Widget.AppCompat.RatingBar.Small"/>
 
 			<com.google.android.material.chip.ChipGroup
 				android:layout_width="0dp"
@@ -79,6 +85,14 @@
 
 			</com.google.android.material.chip.ChipGroup>
 
-	</androidx.constraintlayout.widget.ConstraintLayout>
+		</androidx.constraintlayout.widget.ConstraintLayout>
+
+		<View
+			android:id="@+id/selector_view"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"/>
+
+	</FrameLayout>
+
 
 </com.google.android.material.card.MaterialCardView>

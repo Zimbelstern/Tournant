@@ -11,16 +11,20 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.MenuItem.OnActionExpandListener
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
+import androidx.core.app.ShareCompat
+import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.filter
 import androidx.recyclerview.widget.ConcatAdapter
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import eu.zimbelstern.tournant.BuildConfig
 import eu.zimbelstern.tournant.CategoriesCuisinesAdapter
 import eu.zimbelstern.tournant.Constants.Companion.MODE_STANDALONE
@@ -34,13 +38,15 @@ import eu.zimbelstern.tournant.RecipeListAdapter
 import eu.zimbelstern.tournant.TournantApplication
 import eu.zimbelstern.tournant.databinding.ActivityMainBinding
 import eu.zimbelstern.tournant.pagination.RecipeDescriptionLoadStateAdapter
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface {
 
 	companion object {
 		private const val TAG = "MainActivity"
@@ -56,6 +62,7 @@ class MainActivity : AppCompatActivity() {
 		)
 	}
 
+	private lateinit var recipeListAdapter: RecipeListAdapter
 	private var searchMenuItem: MenuItem? = null
 	private var searchView: SearchView? = null
 	private var mode = 0
@@ -109,7 +116,7 @@ class MainActivity : AppCompatActivity() {
 
 
 		val ccAdapter = CategoriesCuisinesAdapter(this)
-		val recipeListAdapter = RecipeListAdapter(this).also {
+		recipeListAdapter = RecipeListAdapter(this).also {
 			it.addOnPagesUpdatedListener {
 				binding.recipesView.noRecipesMessage.visibility =
 					if (it.itemCount == 0)
@@ -129,14 +136,12 @@ class MainActivity : AppCompatActivity() {
 		// RECIPE COUNT
 		supportActionBar?.setDisplayShowTitleEnabled(true)
 		lifecycleScope.launch {
-			viewModel.recipeCount.collectLatest {
+			viewModel.countAllRecipes.collectLatest {
 				if (it > 0) {
-					supportActionBar?.title = getString(R.string.recipes_with_file_mode, it.toString())
 					if (!viewModel.waitingForRecipes.value)
 						binding.root.displayedChild = RECIPES_SCREEN
 				}
 			    else  {
-					supportActionBar?.title = getString(R.string.app_name)
 					if (!viewModel.waitingForRecipes.value)
 						binding.root.displayedChild = WELCOME_SCREEN
 				}
@@ -151,7 +156,7 @@ class MainActivity : AppCompatActivity() {
 				}
 				else {
 					Log.d(TAG, "Recipes ready")
-					if (viewModel.recipeCount.value > 0)
+					if (viewModel.countAllRecipes.value > 0)
 						binding.root.displayedChild = RECIPES_SCREEN
 					else
 						binding.root.displayedChild = WELCOME_SCREEN
@@ -212,19 +217,90 @@ class MainActivity : AppCompatActivity() {
 		}
 	}
 
+	// RecipeListInterface
 
-	fun searchForSomething(query: CharSequence?) {
+	override fun getFilteredRecipesIds(): Set<Long> {
+		return viewModel.idsRecipesFiltered.value
+	}
+
+	override fun searchForSomething(query: CharSequence?) {
 		if (!query.isNullOrEmpty()) {
 			searchMenuItem?.expandActionView()
 			searchView?.setQuery(query, true)
 		}
 	}
 
-	fun openRecipeDetail(recipeId: Long) {
+	override fun isReadOnly(): Boolean {
+		return mode == MODE_SYNCED
+	}
+
+	override fun openRecipeDetail(recipeId: Long) {
 		val intent = Intent(this, RecipeActivity::class.java).apply {
 			putExtra("RECIPE_ID", recipeId)
 		}
 		startActivity(intent)
+	}
+
+	override fun startActionMode(adapter: RecipeListAdapter) {
+		startSupportActionMode(adapter)
+	}
+
+	override fun exportRecipes(recipeIds: Set<Long>) {
+		Log.d(TAG, "Exporting recipes $recipeIds")
+		lifecycleScope.launch {
+			val filename = if (recipeIds.size == 1) viewModel.getRecipeTitle(recipeIds.first()) ?: getString(R.string.recipes) else getString(R.string.recipes)
+			viewModel.writeRecipesToExportDir(recipeIds, "export")
+			exportRecipesActivityResultLauncher.launch("$filename.xml")
+			recipeListAdapter.finishActionMode()
+		}
+	}
+
+	private val exportRecipesActivityResultLauncher = registerForActivityResult(ActivityResultContracts.CreateDocument("application/xml")) {
+		if (it != null) {
+			viewModel.copyRecipesFromExportDir("export", it)
+		}
+	}
+
+	override fun shareRecipes(recipeIds: Set<Long>) {
+		lifecycleScope.launch {
+			withContext(Dispatchers.IO) {
+				val filename = if (recipeIds.size == 1) viewModel.getRecipeTitle(recipeIds.first()) ?: getString(R.string.recipes) else getString(R.string.recipes)
+				viewModel.writeRecipesToExportDir(recipeIds, filename)
+				val uri = FileProvider.getUriForFile(
+					this@MainActivity,
+					"eu.zimbelstern.tournant.fileprovider",
+					File(File(filesDir, "export"), "$filename.xml")
+				)
+				ShareCompat.IntentBuilder(this@MainActivity)
+					.setStream(uri)
+					.setType("application/xml")
+					.startChooser()
+			}
+			recipeListAdapter.finishActionMode()
+		}
+	}
+
+	override fun showDeleteDialog(recipeIds: Set<Long>) {
+		lifecycleScope.launch {
+			withContext(Dispatchers.IO) {
+				val message = if (recipeIds.size == 1)
+						getString(R.string.delete_selected_sure_named, viewModel.getRecipeTitle(recipeIds.first()))
+					else
+						resources.getQuantityString(R.plurals.delete_selected_sure, recipeIds.size, recipeIds.size)
+				withContext(Dispatchers.Main) {
+					MaterialAlertDialogBuilder(this@MainActivity)
+						.setTitle(R.string.delete_selected)
+						.setMessage(message)
+						.setPositiveButton(R.string.ok) { _, _ ->
+							Log.d(TAG, "Deleting recipes $recipeIds")
+							viewModel.deleteRecipes(recipeIds)
+							recipeListAdapter.finishActionMode()
+						}
+						.setNegativeButton(R.string.cancel, null)
+						.show()
+				}
+			}
+		}
 	}
 
 	override fun onStart() {
@@ -239,7 +315,7 @@ class MainActivity : AppCompatActivity() {
 			}
 			if (!viewModel.waitingForRecipes.value) {
 				binding.root.displayedChild =
-					if (viewModel.recipeCount.value > 0) RECIPES_SCREEN
+					if (viewModel.countAllRecipes.value > 0) RECIPES_SCREEN
 					else WELCOME_SCREEN
 			}
 		}
@@ -296,13 +372,20 @@ class MainActivity : AppCompatActivity() {
 		}
 
 		lifecycleScope.launch {
-			viewModel.recipeCount.collectLatest {
-				searchMenuItem?.apply {
-					if (isVisible != (it > 1)) {
-						isVisible = it > 1
-						invalidateOptionsMenu()
+			viewModel.countAllRecipes.collectLatest { count ->
+				var revalidate = false
+				for (item in mapOf(
+					searchMenuItem to (count > 1),
+					menu.findItem(R.id.recipe_count) to (count > 0),
+					menu.findItem(R.id.select_all) to (count > 0),
+				)) {
+					if (item.key?.isVisible != item.value) {
+						item.key?.isVisible = item.value
+						revalidate = true
 					}
 				}
+				if (revalidate)
+					invalidateOptionsMenu()
 			}
 		}
 
@@ -324,6 +407,12 @@ class MainActivity : AppCompatActivity() {
 			}
 		}
 
+		lifecycleScope.launch {
+			viewModel.idsRecipesFiltered.collectLatest {
+				menu.findItem(R.id.recipe_count).actionView?.findViewById<TextView>(R.id.number)?.text = it.size.toString()
+			}
+		}
+
 		return true
 	}
 
@@ -331,6 +420,19 @@ class MainActivity : AppCompatActivity() {
 		return when (item.itemId) {
 			R.id.import_recipes -> {
 				importRecipesFromFile()
+				true
+			}
+			R.id.share_all -> {
+				shareRecipes(getFilteredRecipesIds())
+				true
+			}
+			R.id.export_all -> {
+				exportRecipes(getFilteredRecipesIds())
+				true
+			}
+			R.id.select_all -> {
+				startSupportActionMode(recipeListAdapter)
+				recipeListAdapter.selectAll()
 				true
 			}
 			R.id.show_settings -> {
@@ -360,7 +462,7 @@ class MainActivity : AppCompatActivity() {
 					if (prefs.getInt(PREF_MODE, MODE_STANDALONE) == MODE_STANDALONE) {
 						viewModel.parseAndInsertRecipes(it.toUri())
 						lifecycleScope.launch {
-							viewModel.recipeCount.collectLatest { count ->
+							viewModel.countAllRecipes.collectLatest { count ->
 								if (count > 0 && it.exists())
 									it.delete()
 							}

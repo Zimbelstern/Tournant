@@ -202,7 +202,7 @@ class GourmetXmlParser {
 	private fun readStars(parser: XmlPullParser): Float? {
 		val tag = parser.name
 		parser.require(XmlPullParser.START_TAG, null, tag)
-		val stars = readText(parser).substringBefore("/5 ", "").toFloatOrNull()
+		val stars = readText(parser).substringBefore("/5", "").toFloatOrNull()
 		parser.require(XmlPullParser.END_TAG, null, tag)
 		return stars
 	}

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+<menu xmlns:tools="http://schemas.android.com/tools"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:android="http://schemas.android.com/apk/res/android">
 
 	<item android:id="@+id/search"
@@ -11,8 +12,27 @@
 		android:visible="false"/>
 
 	<item
+		android:id="@+id/recipe_count"
+		android:title="@string/recipe_count"
+		app:actionLayout="@layout/recipe_count"
+		app:showAsAction="always"
+		tools:ignore="AlwaysShowAction"/>
+
+	<item
 		android:id="@+id/import_recipes"
 		android:title="@string/import_recipes"/>
+
+	<item
+		android:id="@+id/export_all"
+		android:title="@string/export_all"/>
+
+	<item
+		android:id="@+id/share_all"
+		android:title="@string/share_all"/>
+
+	<item
+		android:id="@+id/select_all"
+		android:title="@string/select_all"/>
 
 	<item
 		android:id="@+id/show_settings"

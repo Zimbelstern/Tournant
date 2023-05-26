@@ -12,6 +12,7 @@
 
 		<!-- Bar colors -->
 		<item name="actionBarStyle">@style/Tournant.ActionBar</item>
+		<item name="actionModeStyle">@style/Tournant.ActionMode</item>
 		<item name="android:statusBarColor">@color/amber_dark</item>
 		<item name="android:navigationBarColor">@color/amber_dark</item>
 
@@ -23,18 +24,24 @@
 		<!-- Text color of action bar menu items -->
 		<item name="android:itemTextAppearance">@style/Tournant.MenuItemTextAppearance</item>
 
+		<item name="popupMenuBackground">@drawable/popup_background</item>
 	</style>
 
 	<!-- Action bar color -->
 	<style name="Tournant.ActionBar" parent="Theme.Tournant">
-		<item name="background">@color/amber</item>
+		<item name="background">@color/bar_color</item>
 	</style>
 
+	<style name="Tournant.ActionMode" parent="Widget.AppCompat.ActionMode">
+		<item name="background">@color/bar_color</item>
+	</style>
+	
 	<!-- Menu item color -->
 	<style name="Tournant.MenuItemTextAppearance" parent="Theme.Tournant">
 		<item name="android:textColor">@android:color/primary_text_light</item>
 	</style>
 
+	<color name="bar_color">@color/amber</color>
 	<color name="heading_color">@color/blue_text</color>
 	<color name="highlight_color">@color/blue</color>
 	<color name="normal_text_color">@color/dark_gray</color>
