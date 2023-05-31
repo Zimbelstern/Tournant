@@ -127,6 +127,17 @@ abstract class RecipeDao {
 	@Query("SELECT * FROM recipe WHERE id IN (:ids)")
 	abstract suspend fun getRecipesById(ids: Set<Long>): List<RecipeWithIngredients>
 
+	@Transaction
+	@Query("""
+		WITH RECURSIVE refs(id) AS (
+			SELECT refId FROM ingredient WHERE ingredient.recipeId IN (:recipeIds)
+			UNION
+			SELECT refId FROM ingredient, refs WHERE ingredient.recipeId = refs.id
+		)
+		SELECT * FROM recipe WHERE id IN refs AND id NOT IN (:recipeIds)
+	""")
+	abstract suspend fun getReferencedRecipes(recipeIds: Set<Long>): List<RecipeWithIngredients>
+
 	@Query("SELECT title FROM recipe WHERE id = :id")
 	abstract suspend fun getRecipeTitleById(id: Long): String?
 

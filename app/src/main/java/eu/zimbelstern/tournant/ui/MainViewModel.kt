@@ -217,9 +217,10 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 
 	suspend fun writeRecipesToExportDir(recipeIds: Set<Long>, filename: String) {
 		val recipes = recipeDao.getRecipesById(recipeIds)
+		val refs = recipeDao.getReferencedRecipes(recipeIds)
 		File(application.filesDir, "export").mkdir()
 		File(File(application.filesDir, "export"), "$filename.xml").outputStream().use {
-			it.write(GourmetXmlWriter().serialize(recipes))
+			it.write(GourmetXmlWriter().serialize(recipes + refs))
 		}
 	}
 
