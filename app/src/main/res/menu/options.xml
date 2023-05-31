@@ -23,6 +23,11 @@
 		android:title="@string/import_recipes"/>
 
 	<item
+		android:id="@+id/refresh"
+		android:title="@string/refresh"
+		android:visible="false"/>
+
+	<item
 		android:id="@+id/export_all"
 		android:title="@string/export_all"/>
 

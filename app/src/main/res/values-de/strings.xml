@@ -51,10 +51,12 @@
 	<string name="inputstream_null">Fehler beim Öffnen der Datei</string>
 	<string name="unknown_file_error">Unbekannter Dateifehler: %s</string>
 	<string name="importing_only_in_standalone_mode">Importieren nur im eigenständigen Modus</string>
+	<string name="file_not_changed">Synchronisierte Datei unverändert</string>
 
 	<!-- Options menu -->
 	<string name="recipe_count">Rezeptanzahl</string>
 	<string name="import_recipes">Rezepte importieren</string>
+	<string name="refresh">Aktualisieren</string>
 	<string name="settings">Einstellungen</string>
 	<string name="about_app_name">Über %s</string>
 

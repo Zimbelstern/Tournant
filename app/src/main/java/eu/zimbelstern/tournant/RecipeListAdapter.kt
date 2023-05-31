@@ -143,7 +143,7 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 		Log.d(TAG, "Selected views: $selectedItems")
 		if (payloads.isEmpty()) return super.onBindViewHolder(holder, position, payloads)
 
-		Log.i(TAG, "View #$position, payloads: $payloads")
+		Log.d(TAG, "View #$position, payloads: $payloads")
 
 		if (payloads.contains(PAYLOAD_UPDATE_SELECTED)) {
 			val recipe = getItem(position) ?: return

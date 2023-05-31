@@ -165,14 +165,16 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 		}
 	}
 
-	fun syncWithFile() {
+	fun syncWithFile(notify: Boolean = false) {
 		val sharedPrefs = application.getSharedPreferences(application.packageName + "_preferences", Context.MODE_PRIVATE)
 		val path = sharedPrefs.getString(PREF_FILE, "")
 		if (!path.isNullOrEmpty()) {
 			Log.d(TAG, "Syncing with $path")
 			val uri = Uri.parse(path)
 			val lastModified = DocumentFile.fromSingleUri(application, uri)?.lastModified()
-			if (lastModified != null && lastModified > sharedPrefs.getLong(PREF_FILE_LAST_MODIFIED, -1)) {
+			val lastUpdated = sharedPrefs.getLong(PREF_FILE_LAST_MODIFIED, -1)
+			Log.d(TAG, "Updated: $lastUpdated – Modified: $lastModified")
+			if (lastModified != null && lastModified > lastUpdated) {
 				viewModelScope.launch {
 					withContext(Dispatchers.IO) {
 						waitingForRecipes.emit(true)
@@ -204,6 +206,9 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 						}
 					}
 				}
+			} else {
+				if (notify)
+					Toast.makeText(application, application.getString(R.string.file_not_changed), Toast.LENGTH_LONG).show()
 			}
 		}
 	}

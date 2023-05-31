@@ -54,10 +54,12 @@
 	<string name="inputstream_null">Error while opening the file</string>
 	<string name="unknown_file_error">Unknown file error: %s</string>
 	<string name="importing_only_in_standalone_mode">Importing only in standalone mode</string>
+	<string name="file_not_changed">Synced file has not changed</string>
 
 	<!-- Options menu -->
 	<string name="recipe_count">Number of recipes</string>
 	<string name="import_recipes">Import recipes</string>
+	<string name="refresh">Refresh</string>
 	<string name="settings">Settings</string>
 	<string name="about_app_name">About %s</string>
 

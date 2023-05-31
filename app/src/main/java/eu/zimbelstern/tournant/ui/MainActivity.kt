@@ -326,6 +326,7 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 
 		if (mode == MODE_SYNCED) {
 			menu.findItem(R.id.import_recipes)?.isVisible = false
+			menu.findItem(R.id.refresh)?.isVisible = true
 			invalidateOptionsMenu()
 		}
 
@@ -422,12 +423,16 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 				importRecipesFromFile()
 				true
 			}
-			R.id.share_all -> {
-				shareRecipes(getFilteredRecipesIds())
+			R.id.refresh -> {
+				viewModel.syncWithFile(true)
 				true
 			}
 			R.id.export_all -> {
 				exportRecipes(getFilteredRecipesIds())
+				true
+			}
+			R.id.share_all -> {
+				shareRecipes(getFilteredRecipesIds())
 				true
 			}
 			R.id.select_all -> {

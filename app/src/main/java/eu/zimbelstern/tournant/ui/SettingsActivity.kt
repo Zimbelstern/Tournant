@@ -158,6 +158,10 @@ class SettingsActivity : AppCompatActivity() {
 	}
 	private val getRecipeFileUri = registerForActivityResult(ActivityResultContracts.OpenDocument()) {
 		if (it != null) {
+			for (permission in contentResolver.persistedUriPermissions) {
+				// Permissions from files before
+				contentResolver.releasePersistableUriPermission(permission.uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+			}
 			contentResolver.takePersistableUriPermission(it, Intent.FLAG_GRANT_READ_URI_PERMISSION)
 			try {
 				val inputStream = contentResolver.openInputStream(it)
@@ -169,10 +173,6 @@ class SettingsActivity : AppCompatActivity() {
 						.putString(PREF_FILE, it.toString())
 						.putLong(PREF_FILE_LAST_MODIFIED, -1)
 						.apply()
-					for (permission in contentResolver.persistedUriPermissions.dropLast(1)) {
-						// Permissions from files before
-						contentResolver.releasePersistableUriPermission(permission.uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-					}
 				}
 			} catch (e: Exception) {
 				Toast.makeText(this, getString(R.string.unknown_file_error, e.message), Toast.LENGTH_LONG).show()
