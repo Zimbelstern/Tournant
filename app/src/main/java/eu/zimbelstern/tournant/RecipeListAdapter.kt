@@ -193,7 +193,7 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 				recipeListInterface.showDeleteDialog(selectedItems.keys.toSet())
 			}
 			R.id.select_all -> {
-				selectAll()
+				select(recipeListInterface.getFilteredRecipesIds())
 			}
 		}
 		return true
@@ -213,8 +213,8 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 		mode?.title = recipeListInterface.getResources().getString(R.string.selected, selectedItems.size)
 	}
 
-	fun selectAll() {
-		val newItems = recipeListInterface.getFilteredRecipesIds().filter { it !in selectedItems.keys }.associateWith { -1 }
+	fun select(recipeIds: Set<Long>) {
+		val newItems = recipeIds.filter { it !in selectedItems.keys }.associateWith { -1 }
 		selectedItems.putAll(newItems)
 		(0..itemCount).minus(selectedItems.values.toSet()).forEach {
 			notifyItemChanged(it, PAYLOAD_UPDATE_SELECTED)

@@ -69,6 +69,8 @@
 		<item quantity="other">Das wird %d Rezepte aus der Datenbank löschen. Sicher?</item>
 	</plurals>
 	<string name="delete_selected_sure_named">Das wird %s aus der Datenbank löschen. Sicher?</string>
+	<string name="dependent_recipes">Abhängige Rezepte</string>
+	<string name="dependent_recipes_found">Die Auswahl enthält ein oder mehrere Rezepte, die in anderen Rezepten verwendet werden. Lösen Sie die Abhängigkeiten oder löschen Sie auch diese Rezepte.\nAbhängige Rezepte: %s</string>
 	<string name="share_all">Alle teilen</string>
 	<string name="export_all">Alle exportieren</string>
 	<string name="select_all">Alle auswählen</string>
@@ -109,5 +111,6 @@
 	<string name="more">Mehr</string>
 	<string name="checked">abgehakt</string>
 	<string name="selected">%d ausgewählt</string>
+	<string name="add_to_selection">Zur Auswahl hinzufügen</string>
 
 </resources>

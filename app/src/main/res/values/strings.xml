@@ -72,6 +72,8 @@
 		<item quantity="other">This will permanently erase %d recipes from the database. Are you sure?</item>
 	</plurals>
 	<string name="delete_selected_sure_named">This will permanently erase %s from the database. Are you sure?</string>
+	<string name="dependent_recipes">Dependent recipes</string>
+	<string name="dependent_recipes_found">The selection contains one or more recipes which are used in other recipes. You must resolve these dependencies or delete them as well.\nDependent recipes: %s</string>
 	<string name="share_all">Share all</string>
 	<string name="export_all">Export all</string>
 	<string name="select_all">Select all</string>
@@ -120,5 +122,6 @@
 	<string name="more">more</string>
 	<string name="checked">checked</string>
 	<string name="selected">%d selected</string>
+	<string name="add_to_selection">Add to selection</string>
 
 </resources>

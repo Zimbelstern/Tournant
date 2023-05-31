@@ -150,6 +150,16 @@ abstract class RecipeDao {
 	@Query("SELECT id FROM recipe WHERE title LIKE '%' || :query || '%' OR category LIKE '%' || :query || '%' OR cuisine LIKE '%' || :query || '%'")
 	abstract fun getRecipeIds(query: String): List<Long>
 
+	@Query("""
+		WITH RECURSIVE deps(id) AS (
+			SELECT recipeId FROM ingredient WHERE ingredient.refId IN (:recipeIds)
+			UNION
+			SELECT recipeId FROM ingredient, deps WHERE ingredient.refId = deps.id
+		)
+		SELECT * FROM deps WHERE id NOT IN (:recipeIds)
+	""")
+	abstract fun getDependentRecipeIds(recipeIds: Set<Long>): List<Long>
+
 	@Query("SELECT DISTINCT category FROM recipe")
 	abstract fun getCategories(): Flow<List<String?>>
 

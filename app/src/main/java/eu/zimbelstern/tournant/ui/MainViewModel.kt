@@ -236,6 +236,8 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 		}
 	}
 
+	fun getDepRecipes(recipeIds: Set<Long>) = recipeDao.getDependentRecipeIds(recipeIds).toSet()
+
 	fun deleteRecipes(recipeIds: Set<Long>) {
 		viewModelScope.launch {
 			withContext(Dispatchers.IO) {

@@ -283,21 +283,43 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 	override fun showDeleteDialog(recipeIds: Set<Long>) {
 		lifecycleScope.launch {
 			withContext(Dispatchers.IO) {
-				val message = if (recipeIds.size == 1)
-						getString(R.string.delete_selected_sure_named, viewModel.getRecipeTitle(recipeIds.first()))
+				val depRecipes = viewModel.getDepRecipes(recipeIds)
+				if (depRecipes.isEmpty()) {
+					val message = if (recipeIds.size == 1)
+						getString(
+							R.string.delete_selected_sure_named,
+							viewModel.getRecipeTitle(recipeIds.first())
+						)
 					else
-						resources.getQuantityString(R.plurals.delete_selected_sure, recipeIds.size, recipeIds.size)
-				withContext(Dispatchers.Main) {
-					MaterialAlertDialogBuilder(this@MainActivity)
-						.setTitle(R.string.delete_selected)
-						.setMessage(message)
-						.setPositiveButton(R.string.ok) { _, _ ->
-							Log.d(TAG, "Deleting recipes $recipeIds")
-							viewModel.deleteRecipes(recipeIds)
-							recipeListAdapter.finishActionMode()
-						}
-						.setNegativeButton(R.string.cancel, null)
-						.show()
+						resources.getQuantityString(
+							R.plurals.delete_selected_sure,
+							recipeIds.size,
+							recipeIds.size
+						)
+					withContext(Dispatchers.Main) {
+						MaterialAlertDialogBuilder(this@MainActivity)
+							.setTitle(R.string.delete_selected)
+							.setMessage(message)
+							.setPositiveButton(R.string.ok) { _, _ ->
+								Log.d(TAG, "Deleting recipes $recipeIds")
+								viewModel.deleteRecipes(recipeIds)
+								recipeListAdapter.finishActionMode()
+							}
+							.setNegativeButton(R.string.cancel, null)
+							.show()
+					}
+				} else {
+					val message = getString(R.string.dependent_recipes_found, depRecipes.map { viewModel.getRecipeTitle(it) }.joinToString(", "))
+					withContext(Dispatchers.Main) {
+						MaterialAlertDialogBuilder(this@MainActivity)
+							.setTitle(R.string.dependent_recipes)
+							.setMessage(message)
+							.setPositiveButton(R.string.add_to_selection) { _, _ ->
+								recipeListAdapter.select(depRecipes)
+							}
+							.setNegativeButton(R.string.cancel, null)
+							.show()
+					}
 				}
 			}
 		}
@@ -437,7 +459,7 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 			}
 			R.id.select_all -> {
 				startSupportActionMode(recipeListAdapter)
-				recipeListAdapter.selectAll()
+				recipeListAdapter.select(getFilteredRecipesIds())
 				true
 			}
 			R.id.show_settings -> {
