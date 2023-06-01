@@ -2,8 +2,7 @@
 <resources>
     <string name="cooktime">Koketid</string>
     <string name="source">Kilde</string>
-    <string name="recipes_with_file_mode">Oppskrifter (%s)</string>
-    <string name="preptime">Forberedelsestid</string>
+	<string name="preptime">Forberedelsestid</string>
     <string name="webpage">Nettside</string>
     <string name="cuisine">Kjøkken</string>
     <string name="notes">Merknader</string>

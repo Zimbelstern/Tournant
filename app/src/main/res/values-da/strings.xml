@@ -5,7 +5,6 @@
     <string name="cancel">Afbryd</string>
     <string name="ok">OK</string>
     <string name="recipes">Opskrifter</string>
-    <string name="recipes_with_file_mode">Opskrifter (%s)</string>
     <string name="category">Kategori</string>
     <string name="source">Kilde</string>
     <string name="cooktime">Kogetid</string>

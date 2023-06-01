@@ -17,8 +17,7 @@
     <string name="type_or_tap_to_search">Skriva eller tryck for att söka …</string>
     <string name="cancel">Avbryt</string>
     <string name="recipes">Recept</string>
-    <string name="recipes_with_file_mode">Recept (%s)</string>
-    <string name="category">Kategori</string>
+	<string name="category">Kategori</string>
     <string name="cuisine">Kök</string>
     <string name="cooktime">Koktid</string>
     <string name="preptime">Beredningstid</string>

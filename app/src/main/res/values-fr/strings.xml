@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="notes">Notes</string>
-    <string name="recipes_with_file_mode">Recettes (%s)</string>
-    <string name="cooktime">Temps de cuisson</string>
+	<string name="cooktime">Temps de cuisson</string>
     <string name="instructions">Instructions</string>
     <string name="optional">%s (optionnel)</string>
     <string name="preptime">Temps de préparation</string>

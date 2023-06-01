@@ -2,7 +2,6 @@
 <resources>
     <string name="ingredients">Ingredienti</string>
     <string name="instructions">Istruzioni</string>
-    <string name="recipes_with_file_mode">Ricette (%s)</string>
     <string name="cuisine">Cucina</string>
     <string name="notes">Note</string>
     <string name="choose_file_long">Scegliere un file XML Gourmet/Gourmand dal dispositivo.</string>
