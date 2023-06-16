@@ -14,9 +14,12 @@ import androidx.core.view.setPadding
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.signature.ObjectKey
 import eu.zimbelstern.tournant.data.ColorfulString
 import eu.zimbelstern.tournant.data.RecipeDescription
 import eu.zimbelstern.tournant.databinding.RecyclerItemRecipeBinding
+import java.io.File
 
 class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 	: PagingDataAdapter<RecipeDescription, RecipeListAdapter.RecipeListViewHolder>(DIFF_CALLBACK),
@@ -100,7 +103,14 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 		}
 
 		holder.binding.recipeCardImage.apply {
-			if (recipe.image != null) {
+			val imageFile = File(File(context.applicationContext.filesDir, "images"), "${recipe.id}.jpg")
+			if (imageFile.exists()) {
+				Glide.with(context)
+					.load(imageFile)
+					.signature(ObjectKey(imageFile.lastModified()))
+					.into(this)
+			}
+			else if (recipe.image != null) {
 				setImageBitmap(BitmapFactory.decodeByteArray(recipe.image, 0, recipe.image.size))
 				clipToOutline = true
 				setPadding(0)
@@ -211,6 +221,12 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 
 	private fun updateTitle() {
 		mode?.title = recipeListInterface.getResources().getString(R.string.selected, selectedItems.size)
+	}
+
+	fun recipeClosed() {
+		(0..itemCount).forEach {
+			notifyItemChanged(it)
+		}
 	}
 
 	fun select(recipeIds: Set<Long>) {

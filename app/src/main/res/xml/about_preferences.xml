@@ -55,6 +55,11 @@
 			app:icon="@drawable/ic_library"/>
 
 		<Preference
+			app:title="Glide"
+			app:summary="Licensed by Google"
+			app:icon="@drawable/ic_library"/>
+
+		<Preference
 			app:title="Kotlin"
 			app:summary="Apache License, Version 2.0"
 			app:icon="@drawable/ic_library"/>

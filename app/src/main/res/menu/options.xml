@@ -19,6 +19,10 @@
 		tools:ignore="AlwaysShowAction"/>
 
 	<item
+		android:id="@+id/new_recipe"
+		android:title="@string/new_recipe"/>
+
+	<item
 		android:id="@+id/import_recipes"
 		android:title="@string/import_recipes"/>
 

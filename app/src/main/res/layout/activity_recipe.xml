@@ -1,404 +1,395 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:id="@+id/recipe_detail_root"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	tools:context=".ui.RecipeActivity">
+<layout>
 
-	<LinearLayout
+	<data>
+		<import type="android.view.View"/>
+		<import type="eu.zimbelstern.tournant.utils.Converter"/>
+		<variable name="recipe" type="eu.zimbelstern.tournant.data.Recipe" />
+	</data>
+	
+	<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		xmlns:tools="http://schemas.android.com/tools"
+		android:id="@+id/recipe_detail_root"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="vertical"
-		android:paddingVertical="8dp">
+		android:layout_height="match_parent"
+		tools:context=".ui.RecipeActivity">
 
-		<com.google.android.material.card.MaterialCardView
-			android:id="@+id/recipe_detail_image"
+		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_marginHorizontal="16dp"
-			android:layout_marginVertical="8dp"
-			android:elevation="4dp"
-			android:padding="8dp"
-			android:visibility="gone"
-			tools:visibility="visible">
+			android:orientation="vertical"
+			android:paddingVertical="8dp"
+			android:divider="@drawable/divider_vertical"
+			android:showDividers="middle">
 
-			<ImageView
-				android:id="@+id/recipe_detail_image_drawable"
-				android:importantForAccessibility="no"
+			<com.google.android.material.card.MaterialCardView
+				android:id="@+id/recipe_detail_image"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:scaleType="fitCenter"
-				android:adjustViewBounds="true"/>
+				android:layout_marginHorizontal="16dp"
+				android:layout_marginVertical="8dp"
+				android:elevation="4dp">
 
-		</com.google.android.material.card.MaterialCardView>
+				<ImageView
+					android:id="@+id/recipe_detail_image_drawable"
+					android:importantForAccessibility="no"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:scaleType="fitCenter"
+					android:adjustViewBounds="true"/>
 
-		<com.google.android.material.card.MaterialCardView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginHorizontal="16dp"
-			android:layout_marginVertical="8dp"
-			android:elevation="4dp"
-			android:padding="8dp">
+			</com.google.android.material.card.MaterialCardView>
 
-			<LinearLayout
+			<com.google.android.material.card.MaterialCardView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:orientation="vertical"
-				android:padding="16dp">
-
-				<TextView
-					android:id="@+id/recipe_detail_title"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginBottom="4dp"
-					android:textColor="@color/heading_color"
-					android:textSize="24sp"
-					android:textStyle="bold"/>
-
-				<RatingBar
-					android:id="@+id/recipe_detail_rating"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:numStars="5"
-					android:isIndicator="true"
-					android:visibility="gone"
-					tools:visibility="visible"
-					style="@style/Widget.AppCompat.RatingBar.Small"/>
-
-				<com.google.android.material.chip.ChipGroup
-					android:id="@+id/recipe_detail_category_and_cuisine"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginBottom="8dp"
-					android:visibility="gone"
-					tools:visibility="visible">
-
-					<com.google.android.material.chip.Chip
-						android:id="@+id/recipe_detail_category"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						app:rippleColor="@color/transparent"
-						android:textColor="@color/white"
-						android:visibility="gone"
-						tools:visibility="visible"/>
-
-					<com.google.android.material.chip.Chip
-						android:id="@+id/recipe_detail_cuisine"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						app:rippleColor="@color/transparent"
-						android:textColor="@color/white"
-						android:visibility="gone"
-						tools:visibility="visible"/>
-
-				</com.google.android.material.chip.ChipGroup>
+				android:layout_marginHorizontal="16dp"
+				android:layout_marginVertical="8dp"
+				android:elevation="4dp"
+				android:padding="8dp">
 
 				<LinearLayout
-					android:id="@+id/recipe_detail_source_and_link"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:layout_marginBottom="8dp"
-					android:orientation="horizontal"
-					android:baselineAligned="false"
-					android:visibility="gone"
-					tools:visibility="visible">
-
-					<LinearLayout
-						android:id="@+id/recipe_detail_source"
-						android:layout_width="0dp"
-						android:layout_weight="1"
-						android:layout_height="wrap_content"
-						android:orientation="vertical"
-						android:visibility="gone"
-						tools:visibility="visible">
-
-						<TextView
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:text="@string/source"
-							android:textColor="@color/heading_color"
-							android:textSize="@dimen/font_size_text"
-							android:textStyle="bold"/>
-
-						<TextView
-							android:id="@+id/recipe_detail_source_text"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:textSize="@dimen/font_size_text"/>
-
-					</LinearLayout>
-
-					<LinearLayout
-						android:id="@+id/recipe_detail_link"
-						android:layout_width="0dp"
-						android:layout_weight="1"
-						android:layout_height="wrap_content"
-						android:orientation="vertical"
-						android:visibility="gone"
-						tools:visibility="visible">
-
-						<TextView
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:text="@string/webpage"
-							android:textColor="@color/heading_color"
-							android:textSize="@dimen/font_size_text"
-							android:textStyle="bold"/>
-
-						<TextView
-							android:id="@+id/recipe_detail_link_text"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:textSize="@dimen/font_size_text"
-							android:autoLink="all"/>
-
-					</LinearLayout>
-
-				</LinearLayout>
-
-				<LinearLayout
-					android:id="@+id/recipe_detail_times"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginBottom="8dp"
-					android:orientation="horizontal"
-					android:baselineAligned="false"
-					android:visibility="gone"
-					tools:visibility="visible">
-
-					<LinearLayout
-						android:id="@+id/recipe_detail_cooktime"
-						android:layout_width="0dp"
-						android:layout_weight="1"
-						android:layout_height="wrap_content"
-						android:orientation="vertical"
-						android:visibility="gone"
-						tools:visibility="visible">
-
-						<TextView
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:text="@string/cooktime"
-							android:textColor="@color/heading_color"
-							android:textSize="@dimen/font_size_text"
-							android:textStyle="bold"/>
-
-						<TextView
-							android:id="@+id/recipe_detail_cooktime_text"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:textSize="@dimen/font_size_text"/>
-
-					</LinearLayout>
-
-					<LinearLayout
-						android:id="@+id/recipe_detail_preptime"
-						android:layout_width="0dp"
-						android:layout_weight="1"
-						android:layout_height="wrap_content"
-						android:orientation="vertical"
-						android:visibility="gone"
-						tools:visibility="visible">
-
-						<TextView
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:text="@string/preptime"
-							android:textColor="@color/heading_color"
-							android:textSize="@dimen/font_size_text"
-							android:textStyle="bold"/>
-
-						<TextView
-							android:id="@+id/recipe_detail_preptime_text"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:textSize="@dimen/font_size_text"/>
-
-					</LinearLayout>
-
-				</LinearLayout>
-
-			</LinearLayout>
-
-		</com.google.android.material.card.MaterialCardView>
-
-		<com.google.android.material.card.MaterialCardView
-			android:id="@+id/recipe_detail_ingredients"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginHorizontal="16dp"
-			android:layout_marginVertical="8dp"
-			android:elevation="4dp"
-			android:padding="8dp"
-			android:visibility="gone"
-			tools:visibility="visible">
-
-			<LinearLayout
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:orientation="vertical"
-				android:padding="16dp">
-
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginBottom="4dp"
-					android:text="@string/ingredients"
-					android:textColor="@color/heading_color"
-					android:textSize="@dimen/font_size_heading"
-					android:textStyle="bold"/>
-
-				<LinearLayout
-					android:id="@+id/recipe_detail_yields"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginBottom="4dp"
-					android:orientation="horizontal"
-					android:visibility="gone"
-					tools:visibility="visible"
-					android:descendantFocusability="beforeDescendants"
-					android:focusableInTouchMode="true">
+					android:orientation="vertical"
+					android:padding="16dp"
+					android:divider="@drawable/divider_vertical"
+					android:showDividers="middle">
 
 					<TextView
-						android:layout_width="wrap_content"
+						android:id="@+id/recipe_detail_title"
+						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:labelFor="@id/recipe_detail_yields_value"
-						android:text="@string/yield"
-						android:textSize="@dimen/font_size_text"
-						android:textStyle="italic"/>
+						android:layout_marginBottom="4dp"
+						android:text="@{recipe.title}"
+						android:textColor="@color/heading_color"
+						android:textSize="24sp"
+						android:textStyle="bold"/>
 
-					<EditText
-						android:id="@+id/recipe_detail_yields_value"
+					<RatingBar
+						android:id="@+id/recipe_detail_rating"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:layout_marginStart="4sp"
-						android:inputType="numberDecimal"
-						android:importantForAutofill="no"
+						android:numStars="5"
+						android:isIndicator="true"
+						android:rating="@{recipe.rating}"
+						android:visibility="@{recipe.rating != null ? View.VISIBLE : View.GONE}"
+						style="@style/Widget.AppCompat.RatingBar.Small"/>
+
+					<com.google.android.material.chip.ChipGroup
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content">
+
+						<com.google.android.material.chip.Chip
+							android:id="@+id/recipe_detail_category"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:clickable="false"
+							android:text="@{recipe.category}"
+							android:textColor="@color/white"
+							android:visibility="@{recipe.category != null ? View.VISIBLE : View.GONE}"/>
+
+						<com.google.android.material.chip.Chip
+							android:id="@+id/recipe_detail_cuisine"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:clickable="false"
+							android:text="@{recipe.cuisine}"
+							android:textColor="@color/white"
+							android:visibility="@{recipe.cuisine != null ? View.VISIBLE : View.GONE}"/>
+
+					</com.google.android.material.chip.ChipGroup>
+
+						<LinearLayout
+							android:id="@+id/recipe_detail_source"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:orientation="vertical"
+							android:visibility="@{recipe.source != null ? View.VISIBLE : View.GONE}">
+
+							<TextView
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:text="@string/source"
+								android:textColor="@color/heading_color"
+								android:textSize="@dimen/font_size_text"
+								android:textStyle="bold"/>
+
+							<TextView
+								android:id="@+id/recipe_detail_source_text"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:text="@{recipe.source}"
+								android:textSize="@dimen/font_size_text"/>
+
+						</LinearLayout>
+
+						<LinearLayout
+							android:id="@+id/recipe_detail_link"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:orientation="vertical"
+							android:visibility="@{recipe.link != null ? View.VISIBLE : View.GONE}">
+
+							<TextView
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:text="@string/webpage"
+								android:textColor="@color/heading_color"
+								android:textSize="@dimen/font_size_text"
+								android:textStyle="bold"/>
+
+							<TextView
+								android:id="@+id/recipe_detail_link_text"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:text="@{recipe.link}"
+								android:textSize="@dimen/font_size_text"
+								android:autoLink="all"/>
+
+						</LinearLayout>
+
+
+					<LinearLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:orientation="horizontal"
+						android:baselineAligned="false">
+
+						<LinearLayout
+							android:id="@+id/recipe_detail_preptime"
+							android:layout_width="0dp"
+							android:layout_weight="1"
+							android:layout_height="wrap_content"
+							android:orientation="vertical"
+							android:visibility="@{recipe.preptime != null ? View.VISIBLE : View.GONE}">
+
+							<TextView
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:text="@string/preptime"
+								android:textColor="@color/heading_color"
+								android:textSize="@dimen/font_size_text"
+								android:textStyle="bold"/>
+
+							<TextView
+								android:id="@+id/recipe_detail_preptime_text"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:text="@{Converter.timeToString(recipe.preptime)}"
+								android:textSize="@dimen/font_size_text"/>
+
+						</LinearLayout>
+
+						<LinearLayout
+							android:id="@+id/recipe_detail_cooktime"
+							android:layout_width="0dp"
+							android:layout_weight="1"
+							android:layout_height="wrap_content"
+							android:orientation="vertical"
+							android:visibility="@{recipe.cooktime != null ? View.VISIBLE : View.GONE}">
+
+							<TextView
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:text="@string/cooktime"
+								android:textColor="@color/heading_color"
+								android:textSize="@dimen/font_size_text"
+								android:textStyle="bold"/>
+
+							<TextView
+								android:id="@+id/recipe_detail_cooktime_text"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:text="@{Converter.timeToString(recipe.cooktime)}"
+								android:textSize="@dimen/font_size_text"/>
+
+						</LinearLayout>
+
+					</LinearLayout>
+
+				</LinearLayout>
+
+			</com.google.android.material.card.MaterialCardView>
+
+			<com.google.android.material.card.MaterialCardView
+				android:id="@+id/recipe_detail_ingredients"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginHorizontal="16dp"
+				android:layout_marginVertical="8dp"
+				android:elevation="4dp"
+				android:padding="8dp"
+				android:visibility="gone"
+				tools:visibility="visible">
+
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="vertical"
+					android:padding="16dp">
+
+					<TextView
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginBottom="4dp"
+						android:text="@string/ingredients"
+						android:textColor="@color/heading_color"
+						android:textSize="@dimen/font_size_heading"
+						android:textStyle="bold"/>
+
+					<LinearLayout
+						android:id="@+id/recipe_detail_yields"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginBottom="4dp"
+						android:orientation="horizontal"
+						android:visibility="gone"
+						tools:visibility="visible"
+						android:descendantFocusability="beforeDescendants"
+						android:focusableInTouchMode="true">
+
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:labelFor="@id/recipe_detail_yields_value"
+							android:text="@string/yield"
+							android:textSize="@dimen/font_size_text"
+							android:textStyle="italic"/>
+
+						<EditText
+							android:id="@+id/recipe_detail_yields_value"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_marginStart="4sp"
+							android:inputType="numberDecimal"
+							android:importantForAutofill="no"
+							android:textSize="@dimen/font_size_text"/>
+
+						<TextView
+							android:id="@+id/recipe_detail_yields_text"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textSize="@dimen/font_size_text"
+							android:textStyle="italic"
+							tools:text="portions"/>
+
+						<View
+							android:layout_width="0dp"
+							android:layout_height="match_parent"
+							android:layout_weight="1"/>
+
+						<ImageButton
+							android:id="@+id/recipe_detail_less"
+							android:contentDescription="@string/less"
+							android:layout_width="32dp"
+							android:layout_height="32dp"
+							android:layout_gravity="center"
+							android:layout_margin="4dp"
+							android:background="@drawable/button_round"
+							android:src="@drawable/ic_minus"
+							app:tint="?attr/colorSurface"/>
+
+						<ImageButton
+							android:id="@+id/recipe_detail_more"
+							android:contentDescription="@string/more"
+							android:layout_width="32dp"
+							android:layout_height="32dp"
+							android:layout_gravity="center"
+							android:layout_margin="4dp"
+							android:background="@drawable/button_round"
+							android:src="@drawable/ic_plus"
+							app:tint="?attr/colorSurface"/>
+
+					</LinearLayout>
+
+					<androidx.recyclerview.widget.RecyclerView
+						android:id="@+id/recipe_detail_ingredients_recycler"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:nestedScrollingEnabled="false"
+						app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+				</LinearLayout>
+
+			</com.google.android.material.card.MaterialCardView>
+
+			<com.google.android.material.card.MaterialCardView
+				android:id="@+id/recipe_detail_instructions"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginHorizontal="16dp"
+				android:layout_marginVertical="8dp"
+				android:elevation="4dp"
+				android:visibility="gone"
+				tools:visibility="visible">
+
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="vertical"
+					android:padding="16dp"
+					android:clipToPadding="false">
+
+					<TextView
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginBottom="4dp"
+						android:text="@string/instructions"
+						android:textColor="@color/heading_color"
+						android:textSize="@dimen/font_size_heading"
+						android:textStyle="bold"/>
+
+					<androidx.recyclerview.widget.RecyclerView
+						android:id="@+id/recipe_detail_instructions_recycler"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginEnd="-4dp"
+						android:nestedScrollingEnabled="false"
+						app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+				</LinearLayout>
+
+			</com.google.android.material.card.MaterialCardView>
+
+			<com.google.android.material.card.MaterialCardView
+				android:id="@+id/recipe_detail_notes"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginHorizontal="16dp"
+				android:layout_marginVertical="8dp"
+				android:elevation="4dp"
+				android:visibility="gone"
+				tools:visibility="visible">
+
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="vertical"
+					android:padding="16dp">
+
+					<TextView
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginBottom="4dp"
+						android:text="@string/notes"
+						android:textColor="@color/heading_color"
+						android:textSize="@dimen/font_size_heading"
+						android:textStyle="bold" />
+
+					<TextView
+						android:id="@+id/recipe_detail_notes_text"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
 						android:textSize="@dimen/font_size_text"/>
 
-					<TextView
-						android:id="@+id/recipe_detail_yields_text"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:textSize="@dimen/font_size_text"
-						android:textStyle="italic"
-						tools:text="portions"/>
-
-					<View
-						android:layout_width="0dp"
-						android:layout_height="match_parent"
-						android:layout_weight="1"/>
-
-					<ImageButton
-						android:id="@+id/recipe_detail_less"
-						android:contentDescription="@string/less"
-						android:layout_width="32dp"
-						android:layout_height="32dp"
-						android:layout_gravity="center"
-						android:layout_margin="4dp"
-						android:background="@drawable/button_round"
-						android:src="@drawable/ic_minus"
-						app:tint="?attr/colorSurface"/>
-
-					<ImageButton
-						android:id="@+id/recipe_detail_more"
-						android:contentDescription="@string/more"
-						android:layout_width="32dp"
-						android:layout_height="32dp"
-						android:layout_gravity="center"
-						android:layout_margin="4dp"
-						android:background="@drawable/button_round"
-						android:src="@drawable/ic_plus"
-						app:tint="?attr/colorSurface"/>
-
 				</LinearLayout>
 
-				<androidx.recyclerview.widget.RecyclerView
-					android:id="@+id/recipe_detail_ingredients_recycler"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:nestedScrollingEnabled="false"
-					app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+			</com.google.android.material.card.MaterialCardView>
 
 		</LinearLayout>
 
-		</com.google.android.material.card.MaterialCardView>
+	</androidx.core.widget.NestedScrollView>
 
-		<com.google.android.material.card.MaterialCardView
-			android:id="@+id/recipe_detail_instructions"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginHorizontal="16dp"
-			android:layout_marginVertical="8dp"
-			android:elevation="4dp"
-			android:visibility="gone"
-			tools:visibility="visible">
-
-			<LinearLayout
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:orientation="vertical"
-				android:padding="16dp"
-				android:clipToPadding="false">
-
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginBottom="4dp"
-					android:text="@string/instructions"
-					android:textColor="@color/heading_color"
-					android:textSize="@dimen/font_size_heading"
-					android:textStyle="bold"/>
-
-				<androidx.recyclerview.widget.RecyclerView
-					android:id="@+id/recipe_detail_instructions_recycler"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginEnd="-4dp"
-					android:nestedScrollingEnabled="false"
-					app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
-			</LinearLayout>
-
-		</com.google.android.material.card.MaterialCardView>
-
-		<com.google.android.material.card.MaterialCardView
-			android:id="@+id/recipe_detail_notes"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginHorizontal="16dp"
-			android:layout_marginVertical="8dp"
-			android:elevation="4dp"
-			android:visibility="gone"
-			tools:visibility="visible">
-
-			<LinearLayout
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:orientation="vertical"
-				android:padding="16dp">
-
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginBottom="4dp"
-					android:text="@string/notes"
-					android:textColor="@color/heading_color"
-					android:textSize="@dimen/font_size_heading"
-					android:textStyle="bold" />
-
-				<TextView
-					android:id="@+id/recipe_detail_notes_text"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:textSize="@dimen/font_size_text"/>
-
-			</LinearLayout>
-
-		</com.google.android.material.card.MaterialCardView>
-
-	</LinearLayout>
-
-</androidx.core.widget.NestedScrollView>
+</layout>

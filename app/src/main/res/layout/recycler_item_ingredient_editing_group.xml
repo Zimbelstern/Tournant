@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto">
+
+	<data>
+		<import type="android.view.View"/>
+		<variable name="group" type="eu.zimbelstern.tournant.data.IngredientGroupTitle"/>
+	</data>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:gravity="center">
+
+		<ImageButton
+			android:id="@+id/edit_position"
+			android:layout_width="42dp"
+			android:layout_height="match_parent"
+			android:background="@color/transparent"
+			android:src="@drawable/ic_drag"
+			android:scaleType="center"
+			android:importantForAccessibility="no"
+			android:visibility="invisible"/>
+
+		<com.google.android.material.textfield.TextInputLayout
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:visibility="@{group.title != null ? View.VISIBLE : View.GONE}"
+			style="@style/Tournant.TextInputLayout.OutlinedBox.Dense">
+
+			<com.google.android.material.textfield.TextInputEditText
+				android:id="@+id/edit_title"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_margin="0dp"
+				android:imeOptions="actionNext"
+				android:inputType="textMultiLine"
+				android:maxLines="2"
+				android:text="@={group.title}"/>
+
+		</com.google.android.material.textfield.TextInputLayout>
+
+		<TextView
+			android:id="@+id/show_title"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:layout_marginVertical="8dp"
+			android:textColor="?attr/colorControlNormal"
+			app:drawableStartCompat="@drawable/ic_group_stop"
+			android:visibility="@{group.title == null ? View.VISIBLE : View.GONE}"/>
+
+		<ImageButton
+			android:id="@+id/edit_options"
+			android:layout_width="42dp"
+			android:layout_height="match_parent"
+			android:background="?attr/actionBarItemBackground"
+			android:src="@drawable/ic_options"
+			android:scaleType="center"
+			android:contentDescription="@string/options"
+			android:visibility="@{group.title != null ? View.VISIBLE : View.INVISIBLE}"/>
+
+	</LinearLayout>
+
+</layout>

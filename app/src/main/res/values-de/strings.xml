@@ -5,10 +5,12 @@
 	<string name="recipes">Rezepte</string>
 
 	<!-- Recipe -->
+	<string name="recipe">Rezept</string>
 	<plurals name="recipes">
 		<item quantity="one">%d Rezept</item>
 		<item quantity="other">%d Rezepte</item>
 	</plurals>
+	<string name="title">Titel</string>
 	<string name="category">Kategorie</string>
 	<string name="cuisine">Küche</string>
 	<string name="rating">Bewertung</string>
@@ -17,7 +19,10 @@
 	<string name="cooktime">Garzeit</string>
 	<string name="preptime">Vorbereitungszeit</string>
 	<string name="yield">für</string>
+	<string name="unit">Einheit</string>
+	<string name="ingredient">Zutat</string>
 	<string name="ingredients">Zutaten</string>
+	<string name="group">Zutatengruppe</string>
 	<string name="optional">%s (optional)</string>
 	<string name="instructions">Anleitung</string>
 	<string name="notes">Notizen</string>
@@ -55,6 +60,7 @@
 
 	<!-- Options menu -->
 	<string name="recipe_count">Rezeptanzahl</string>
+	<string name="new_recipe">Neues Rezept</string>
 	<string name="import_recipes">Rezepte importieren</string>
 	<string name="refresh">Aktualisieren</string>
 	<string name="settings">Einstellungen</string>
@@ -112,5 +118,16 @@
 	<string name="checked">abgehakt</string>
 	<string name="selected">%d ausgewählt</string>
 	<string name="add_to_selection">Zur Auswahl hinzufügen</string>
+	<string name="remove">Entfernen</string>
+	<string name="options">Optionen</string>
+
+	<!-- Editing -->
+	<string name="edit">Bearbeiten</string>
+	<string name="save">Speichern</string>
+	<string name="add_photo">Foto hinzufügen</string>
+	<string name="remove_photo">Foto entfernen</string>
+	<string name="unset_rating">Bewertung zurückziehen</string>
+	<string name="make_optional">Als optional markieren</string>
+	<string name="make_mandatory">Als nicht optional markieren</string>
 
 </resources>

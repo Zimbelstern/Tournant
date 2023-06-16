@@ -57,4 +57,42 @@
 		<item name="cardBackgroundColor">?attr/colorSurface</item>
 	</style>
 
+	<!-- Custom TextInputLayouts with smaller padding -->
+	<style name="Tournant.TextInputLayout.OutlinedBox.Dense" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+		<item name="materialThemeOverlay">@style/ThemeOverlayOutlinedDense</item>
+	</style>
+
+	<style name="ThemeOverlayOutlinedDense">
+		<item name="editTextStyle">@style/TextInputEditText.OutlinedBox.Dense</item>
+	</style>
+
+	<style name="TextInputEditText.OutlinedBox.Dense" parent="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox.Dense">
+		<item name="android:paddingStart">8dp</item>
+		<item name="android:paddingEnd">8dp</item>
+		<item name="android:paddingLeft">8dp</item>
+		<item name="android:paddingRight">8dp</item>
+		<item name="android:paddingTop">10dp</item>
+		<item name="android:paddingBottom">10dp</item>
+	</style>
+
+	<!-- Custom TextInputLayouts (with dropdown menu) with smaller padding -->
+	<style name="Tournant.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu">
+		<item name="materialThemeOverlay">@style/ThemeOverlayOutlinedDenseExposedDropdownMenu</item>
+	</style>
+
+	<style name="ThemeOverlayOutlinedDenseExposedDropdownMenu">
+		<item name="autoCompleteTextViewStyle">@style/TextInputEditText.OutlinedBox.Dense.ExposedDropdownMenu</item>
+	</style>
+
+	<style name="TextInputEditText.OutlinedBox.Dense.ExposedDropdownMenu" parent="@style/Widget.MaterialComponents.AutoCompleteTextView.OutlinedBox.Dense">
+		<item name="android:paddingStart">8dp</item>
+		<item name="android:paddingEnd">8dp</item>
+		<item name="android:paddingLeft">8dp</item>
+		<item name="android:paddingRight">8dp</item>
+		<item name="android:paddingTop">10dp</item>
+		<item name="android:paddingBottom">10dp</item>
+	</style>
+
+
+
 </resources>

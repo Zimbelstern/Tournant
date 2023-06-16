@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
+
+	<data>
+		<import type="eu.zimbelstern.tournant.utils.Converter"/>
+		<variable name="recipe" type="eu.zimbelstern.tournant.data.Recipe"/>
+	</data>
+
+	<androidx.core.widget.NestedScrollView
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+
+		<com.google.android.material.card.MaterialCardView
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_margin="16dp"
+			android:clipChildren="false"
+			android:clipToPadding="false"
+			app:contentPadding="16dp">
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:divider="@drawable/divider_vertical"
+				android:showDividers="middle"
+				android:clipChildren="false">
+
+				<androidx.constraintlayout.widget.ConstraintLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content">
+
+					<ImageView
+						android:id="@+id/edit_image"
+						android:layout_width="match_parent"
+						android:layout_height="0dp"
+						android:importantForAccessibility="no"
+						app:layout_constraintTop_toTopOf="parent"
+						app:layout_constraintBottom_toBottomOf="parent"
+						app:layout_constraintDimensionRatio="1:1"/>
+
+					<LinearLayout
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:orientation="horizontal"
+						app:layout_constraintTop_toTopOf="parent"
+						app:layout_constraintBottom_toBottomOf="parent"
+						app:layout_constraintLeft_toLeftOf="parent"
+						app:layout_constraintRight_toRightOf="parent">
+
+						<ImageButton
+							android:id="@+id/edit_image_add"
+							android:layout_width="72dp"
+							android:layout_height="72dp"
+							android:layout_margin="8dp"
+							android:background="@drawable/button_round"
+							android:src="@drawable/ic_photo_add"
+							android:scaleType="centerCrop"
+							android:padding="16dp"
+							android:contentDescription="@string/add_photo"/>
+
+						<ImageButton
+							android:id="@+id/edit_image_remove"
+							android:layout_width="72dp"
+							android:layout_height="72dp"
+							android:layout_margin="8dp"
+							android:background="@drawable/button_round"
+							android:src="@drawable/ic_clear"
+							android:scaleType="centerCrop"
+							android:padding="16dp"
+							android:contentDescription="@string/remove_photo"
+							android:visibility="gone"
+							tools:visibility="visible"/>
+
+					</LinearLayout>
+
+				</androidx.constraintlayout.widget.ConstraintLayout>
+
+				<com.google.android.material.textfield.TextInputLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+					<com.google.android.material.textfield.TextInputEditText
+						android:id="@+id/edit_title"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:imeOptions="actionNext"
+						android:inputType="text"
+						android:hint="@string/title"
+						android:text="@={recipe.title}"/>
+
+				</com.google.android.material.textfield.TextInputLayout>
+
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal"
+					android:divider="@drawable/divider_horizontal"
+					android:showDividers="middle">
+
+					<RatingBar
+						android:id="@+id/edit_rating"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:paddingTop="8dp"
+						android:rating="@={recipe.rating}"/>
+
+					<ImageButton
+						android:id="@+id/unset_rating"
+						android:layout_width="wrap_content"
+						android:layout_height="match_parent"
+						android:src="@drawable/ic_clear"
+						android:contentDescription="@string/unset_rating"/>
+
+				</LinearLayout>
+
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal"
+					android:divider="@drawable/divider_horizontal"
+					android:showDividers="middle"
+					android:baselineAligned="false">
+
+					<com.google.android.material.textfield.TextInputLayout
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_weight="1"
+						style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+						<com.google.android.material.textfield.TextInputEditText
+							android:id="@+id/edit_category"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:imeOptions="actionNext"
+							android:inputType="text"
+							android:hint="@string/category"
+							android:text="@={recipe.category}"/>
+
+					</com.google.android.material.textfield.TextInputLayout>
+
+					<com.google.android.material.textfield.TextInputLayout
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_weight="1"
+						style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+						<com.google.android.material.textfield.TextInputEditText
+							android:id="@+id/edit_cuisine"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:imeOptions="actionNext"
+							android:inputType="text"
+							android:hint="@string/cuisine"
+							android:text="@={recipe.cuisine}"/>
+
+					</com.google.android.material.textfield.TextInputLayout>
+
+				</LinearLayout>
+
+				<com.google.android.material.textfield.TextInputLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+					<com.google.android.material.textfield.TextInputEditText
+						android:id="@+id/edit_source"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:imeOptions="actionNext"
+						android:inputType="text"
+						android:hint="@string/source"
+						android:text="@={recipe.source}"/>
+
+				</com.google.android.material.textfield.TextInputLayout>
+
+				<com.google.android.material.textfield.TextInputLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+					<com.google.android.material.textfield.TextInputEditText
+						android:id="@+id/edit_link"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:imeOptions="actionNext"
+						android:inputType="text"
+						android:hint="@string/webpage"
+						android:text="@={recipe.link}"/>
+
+				</com.google.android.material.textfield.TextInputLayout>
+
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="vertical">
+
+					<LinearLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:orientation="horizontal">
+
+						<TextView
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:layout_weight="1"
+							android:text="@string/preptime"/>
+
+						<TextView
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:layout_weight="1"
+							android:text="@string/cooktime"/>
+
+
+					</LinearLayout>
+
+					<LinearLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:orientation="horizontal"
+						android:divider="@drawable/divider_horizontal"
+						android:showDividers="middle"
+						android:baselineAligned="false">
+
+						<com.google.android.material.textfield.TextInputLayout
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:layout_weight="0.2"
+							app:suffixText="h"
+							app:expandedHintEnabled="false"
+							style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+							<com.google.android.material.textfield.TextInputEditText
+								android:id="@+id/edit_preptime_h"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:imeOptions="actionNext"
+								android:inputType="number"
+								android:text="@={Converter.timeToHour(recipe.preptime, recipe.preptime)}"/>
+
+						</com.google.android.material.textfield.TextInputLayout>
+
+						<com.google.android.material.textfield.TextInputLayout
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:layout_weight="0.3"
+							app:suffixText="min"
+							app:expandedHintEnabled="false"
+							style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+							<com.google.android.material.textfield.TextInputEditText
+								android:id="@+id/edit_preptime_min"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:imeOptions="actionNext"
+								android:inputType="number"
+								android:text="@={Converter.timeToMin(recipe.preptime, recipe.preptime)}"/>
+
+						</com.google.android.material.textfield.TextInputLayout>
+
+						<com.google.android.material.textfield.TextInputLayout
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:layout_weight="0.2"
+							app:suffixText="h"
+							app:expandedHintEnabled="false"
+							style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+							<com.google.android.material.textfield.TextInputEditText
+								android:id="@+id/edit_cooktime_h"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:imeOptions="actionNext"
+								android:inputType="number"
+								android:text="@={Converter.timeToHour(recipe.cooktime, recipe.cooktime)}"/>
+
+						</com.google.android.material.textfield.TextInputLayout>
+
+						<com.google.android.material.textfield.TextInputLayout
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:layout_weight="0.3"
+							app:suffixText="min"
+							app:expandedHintEnabled="false"
+							style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+							<com.google.android.material.textfield.TextInputEditText
+								android:id="@+id/edit_cooktime_min"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:imeOptions="actionNext"
+								android:inputType="number"
+								android:text="@={Converter.timeToMin(recipe.cooktime, recipe.cooktime)}"/>
+
+						</com.google.android.material.textfield.TextInputLayout>
+
+					</LinearLayout>
+
+				</LinearLayout>
+
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="vertical"
+					android:divider="@drawable/divider_vertical"
+					android:showDividers="middle"
+					android:clipChildren="false">
+
+					<TextView
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:text="@string/ingredients"/>
+
+					<LinearLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:orientation="horizontal"
+						android:divider="@drawable/divider_horizontal"
+						android:showDividers="middle"
+						android:baselineAligned="false">
+
+						<com.google.android.material.textfield.TextInputLayout
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:layout_weight="0.3"
+							style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+							<com.google.android.material.textfield.TextInputEditText
+								android:id="@+id/edit_yield_value"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:imeOptions="actionNext"
+								android:inputType="numberDecimal"
+								android:hint="@string/yield"
+								android:text="@={Converter.floatToString(recipe.yieldValue, recipe.yieldValue)}"/>
+
+						</com.google.android.material.textfield.TextInputLayout>
+
+
+						<com.google.android.material.textfield.TextInputLayout
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:layout_weight="0.7"
+							style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+							<com.google.android.material.textfield.TextInputEditText
+								android:id="@+id/edit_yield_unit"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:imeOptions="actionNext"
+								android:inputType="text"
+								android:text="@={recipe.yieldUnit}"/>
+
+						</com.google.android.material.textfield.TextInputLayout>
+
+					</LinearLayout>
+
+					<androidx.recyclerview.widget.RecyclerView
+						android:id="@+id/edit_ingredients"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginHorizontal="-8dp"
+						app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+					<androidx.constraintlayout.widget.ConstraintLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:orientation="vertical">
+
+						<com.google.android.material.button.MaterialButton
+							android:id="@+id/edit_ingredients_new_ingredient"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:text="@string/ingredient"
+							app:icon="@drawable/ic_add_circle"
+							tools:ignore="MissingConstraints"/>
+
+						<com.google.android.material.button.MaterialButton
+							android:id="@+id/edit_ingredients_new_reference"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:text="@string/recipe"
+							app:icon="@drawable/ic_link_new"
+							tools:ignore="MissingConstraints"/>
+
+						<com.google.android.material.button.MaterialButton
+							android:id="@+id/edit_ingredients_new_group"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:text="@string/group"
+							app:icon="@drawable/ic_group"
+							tools:ignore="MissingConstraints"/>
+
+						<androidx.constraintlayout.helper.widget.Flow
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							app:layout_constraintTop_toTopOf="parent"
+							app:constraint_referenced_ids="edit_ingredients_new_ingredient, edit_ingredients_new_reference, edit_ingredients_new_group"
+							app:flow_horizontalBias="0.5"
+							app:flow_horizontalGap="8dp"
+							app:flow_horizontalStyle="packed"
+							app:flow_wrapMode="chain"/>
+
+					</androidx.constraintlayout.widget.ConstraintLayout>
+
+				</LinearLayout>
+
+				<com.google.android.material.textfield.TextInputLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+					<com.google.android.material.textfield.TextInputEditText
+						android:id="@+id/edit_instructions"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:minLines="5"
+						android:lineSpacingExtra="8sp"
+						android:inputType="textMultiLine"
+						android:hint="@string/instructions"
+						android:gravity="top"
+						android:text="@={Converter.htmlToString(recipe.instructions)}"/>
+
+				</com.google.android.material.textfield.TextInputLayout>
+
+				<com.google.android.material.textfield.TextInputLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+					<com.google.android.material.textfield.TextInputEditText
+						android:id="@+id/edit_notes"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:minLines="5"
+						android:lineSpacingExtra="8sp"
+						android:inputType="textMultiLine"
+						android:hint="@string/notes"
+						android:gravity="top"
+						android:text="@={Converter.htmlToString(recipe.notes)}"/>
+
+				</com.google.android.material.textfield.TextInputLayout>
+
+			</LinearLayout>
+
+		</com.google.android.material.card.MaterialCardView>
+
+	</androidx.core.widget.NestedScrollView>
+
+</layout>

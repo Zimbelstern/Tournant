@@ -1,6 +1,9 @@
 package eu.zimbelstern.tournant
 
 import eu.zimbelstern.tournant.data.Ingredient
+import eu.zimbelstern.tournant.data.IngredientGroupTitle
+import eu.zimbelstern.tournant.data.IngredientLine
+import java.text.NumberFormat
 import kotlin.math.pow
 import kotlin.math.roundToInt
 
@@ -14,8 +17,10 @@ fun Float.getNumberOfDigits(): Int {
 	return i
 }
 
-fun Float.toStringForCooks(): String {
-	return this.toString()
+fun Float?.toStringForCooks(): String {
+	if (this == null) return ""
+	if (this <= this.toInt()) return this.toInt().toString()
+	return NumberFormat.getInstance().format(this)
 		.dropLastWhile { it == '0' }
 		.dropLastWhile { !it.isDigit() }
 }
@@ -60,4 +65,53 @@ fun MutableList<Ingredient>.scale(factor: Float?): List<Ingredient> {
 		}
 	}
 	else this
+}
+
+fun MutableList<Ingredient>.inflate(): MutableList<IngredientLine> {
+	val newList = mutableListOf<IngredientLine>()
+	var group: String? = null
+	for (item in this) {
+		val newgroup = item.group
+		if (newgroup != group) {
+			if (group != null)
+				newList.add(IngredientGroupTitle(null))
+			group = newgroup
+			if (group != null)
+				newList.add(IngredientGroupTitle(group))
+		}
+		newList.add(item)
+	}
+	if (group != null)
+		newList.add(IngredientGroupTitle(null))
+	return newList
+}
+
+fun MutableList<IngredientLine>.deflate(): MutableList<Ingredient> {
+	val newList = mutableListOf<Ingredient>()
+	var group: String? = null
+	var i = 0
+	for (item in this) {
+		if (item is Ingredient && (item.item?.isBlank() == false || item.refId?.equals(0L) == false)) {
+			newList.add(item.apply {
+				item.group = group
+				item.position = i
+			})
+			i++
+		}
+		if (item is IngredientGroupTitle)
+			group = item.title
+	}
+	return newList
+}
+
+fun MutableList<IngredientLine>.move(from: Int, to: Int) {
+	val element = this.removeAt(from)
+	this.add(to, element)
+	if (element is Ingredient) {
+		if (to + 1 < this.size) {
+			val successor = this[to + 1]
+			if (successor is Ingredient)
+				(this[to] as Ingredient).group = successor.group
+		}
+	}
 }

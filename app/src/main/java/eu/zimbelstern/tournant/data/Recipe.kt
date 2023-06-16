@@ -13,41 +13,41 @@ data class Recipe(
 	var id: Long,
 
 	val gourmandId: Int?,
-	val title: String,
-	val description: String?,
-	val category: String?,
-	val cuisine: String?,
-	val source: String?,
-	val link: String?,
-	val rating: Float?,
-	val preptime: Int?,
-	val cooktime: Int?,
-	val yieldValue: Float?,
-	val yieldUnit: String?,
-	val instructions: String?,
-	val notes: String?,
-	val image: ByteArray?,
-	val thumbnail: ByteArray?
+	var title: String,
+	var description: String?,
+	var category: String?,
+	var cuisine: String?,
+	var source: String?,
+	var link: String?,
+	var rating: Float?,
+	var preptime: Int?,
+	var cooktime: Int?,
+	var yieldValue: Float?,
+	var yieldUnit: String?,
+	var instructions: String?,
+	var notes: String?,
+	var image: ByteArray?,
+	var thumbnail: ByteArray?
 ) : Parcelable {
 
 	// Constructor for outdoor (non-room) usage
 	constructor(
-		gourmandId: Int?,
-		title: String,
-		description: String?,
-		category: String?,
-		cuisine: String?,
-		source: String?,
-		link: String?,
-		rating: Float?,
-		preptime: Int?,
-		cooktime: Int?,
-		yieldValue: Float?,
-		yieldUnit: String?,
-		instructions: String?,
-		notes: String?,
-		image: ByteArray?,
-		thumbnail: ByteArray?
+		gourmandId: Int? = null,
+		title: String = "",
+		description: String? = null,
+		category: String? = null,
+		cuisine: String? = null,
+		source: String? = null,
+		link: String? = null,
+		rating: Float? = null,
+		preptime: Int? = null,
+		cooktime: Int? = null,
+		yieldValue: Float? = null,
+		yieldUnit: String? = null,
+		instructions: String? = null,
+		notes: String? = null,
+		image: ByteArray? = null,
+		thumbnail: ByteArray? = null
 	) : this(0,
 		gourmandId,
 		title,
@@ -66,6 +66,19 @@ data class Recipe(
 		image,
 		thumbnail
 	)
+
+	fun removeEmptyValues() {
+		if (category?.isBlank() == true) category = null
+		if (cuisine?.isBlank() == true) cuisine = null
+		if (source?.isBlank() == true) source = null
+		if (link?.isBlank() == true) link = null
+		if (cooktime == 0) cooktime = null
+		if (preptime == 0) preptime = null
+		if (yieldUnit?.isBlank() == true) yieldUnit = null
+		if (yieldValue == 0f) yieldValue = if (yieldUnit != null) 1f else null
+		if (instructions?.isBlank() == true) category = null
+		if (notes?.isBlank() == true) category = null
+	}
 
 	override fun equals(other: Any?): Boolean {
 		if (this === other) return true

@@ -121,7 +121,11 @@ abstract class RecipeDao {
 	// GETTING
 	@Transaction
 	@Query("SELECT * FROM recipe WHERE id = :id")
-	abstract fun getRecipeById(id: Long): RecipeWithIngredients?
+	abstract fun getRecipeById(id: Long): RecipeWithIngredients
+
+	@Transaction
+	@Query("SELECT * FROM recipe WHERE id = :id")
+	abstract fun getRecipeFlowById(id: Long): Flow<RecipeWithIngredients>
 
 	@Transaction
 	@Query("SELECT * FROM recipe WHERE id IN (:ids)")
@@ -137,6 +141,9 @@ abstract class RecipeDao {
 		SELECT * FROM recipe WHERE id IN refs AND id NOT IN (:recipeIds)
 	""")
 	abstract suspend fun getReferencedRecipes(recipeIds: Set<Long>): List<RecipeWithIngredients>
+
+	@Query("SELECT id, title FROM recipe ORDER BY title ASC")
+	abstract suspend fun getRecipeTitlesWithIds(): List<RecipeTitleId>
 
 	@Query("SELECT title FROM recipe WHERE id = :id")
 	abstract suspend fun getRecipeTitleById(id: Long): String?
@@ -203,6 +210,9 @@ abstract class RecipeDao {
 
 	@Delete
 	abstract suspend fun deleteIngredient(ingredient: Ingredient)
+
+	@Query("DELETE FROM Ingredient WHERE id IN (:ingredientIds)")
+	abstract suspend fun deleteIngredientsById(ingredientIds: Set<Long>)
 
 	@Query("DELETE FROM Recipe")
 	abstract suspend fun deleteAllRecipes()

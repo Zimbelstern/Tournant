@@ -29,6 +29,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -132,6 +133,13 @@ class SettingsActivity : AppCompatActivity() {
 							(activity?.application as? TournantApplication)?.run {
 								MainScope().launch {
 									withContext(Dispatchers.IO) {
+										val imageDir = File(context.applicationContext.filesDir, "images")
+										if (imageDir.exists()) {
+											imageDir.listFiles()?.forEach {
+												it.delete()
+											}
+											imageDir.delete()
+										}
 										database.recipeDao().deleteAllRecipes()
 									}
 									withContext(Dispatchers.Main) {

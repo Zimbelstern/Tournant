@@ -10,7 +10,9 @@
 		android:layout_height="wrap_content"
 		android:orientation="vertical"
 		android:gravity="center_horizontal"
-		android:padding="32dp">
+		android:padding="32dp"
+		android:divider="@drawable/divider_vertical_double"
+		android:showDividers="middle">
 
 		<LinearLayout
 			android:layout_width="match_parent"
@@ -36,37 +38,34 @@
 				android:textSize="18sp"
 				android:layout_marginBottom="8dp"/>
 
-		<TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:padding="8dp"
-			android:background="@drawable/round_corners"
-			android:backgroundTint="?attr/colorSurface"
-			android:text="@string/choose_file_long"/>
-
 		</LinearLayout>
-
-		<TextView
-			android:id="@+id/choose_file"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_margin="16dp"
-			android:padding="16dp"
-			android:background="@drawable/round_corners"
-			android:backgroundTint="?attr/colorSurface"
-			android:text="@string/import_recipes"
-			android:textColor="@color/heading_color"
-			android:textSize="20sp"
-			android:textStyle="bold"
-			android:drawablePadding="8dp"
-			app:drawableStartCompat="@drawable/ic_cookie"
-			app:drawableTint="@color/heading_color"/>
 
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:orientation="vertical"
-			android:layout_marginBottom="16dp"
+			android:gravity="center">
+
+			<com.google.android.material.button.MaterialButton
+				android:id="@+id/button_new_recipe"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/new_recipe"
+				app:icon="@drawable/ic_plus"/>
+
+			<com.google.android.material.button.MaterialButton
+				android:id="@+id/choose_file"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/import_recipes"
+				app:icon="@drawable/ic_folder"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
 			android:padding="16dp"
 			android:background="@drawable/round_corners"
 			android:backgroundTint="?attr/colorSurface">

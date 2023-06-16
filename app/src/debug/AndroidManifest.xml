@@ -14,4 +14,19 @@
     <!-- Allows changing SystemUI demo mode -->
     <uses-permission android:name="android.permission.DUMP" tools:ignore="ProtectedPermissions"/>
 
+	<application>
+
+		<provider
+			android:name="androidx.core.content.FileProvider"
+			android:authorities="eu.zimbelstern.tournant.debug.fileprovider"
+			android:grantUriPermissions="true"
+			android:exported="false"
+			tools:replace="android:authorities">
+			<meta-data
+				android:name="android.support.FILE_PROVIDER_PATHS"
+				android:resource="@xml/filepaths"/>
+		</provider>
+
+	</application>
+
 </manifest>

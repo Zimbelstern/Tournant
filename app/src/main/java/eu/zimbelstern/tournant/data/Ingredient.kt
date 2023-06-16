@@ -34,7 +34,7 @@ data class Ingredient(
 	var refId: Long?,
 	var group: String?,
 	var optional: Boolean
-) : Parcelable {
+) : Parcelable, IngredientLine {
 
 	// Constructor for simple ingredient
 	constructor(
@@ -75,6 +75,12 @@ data class Ingredient(
 		group,
 		optional
 	)
+
+	fun removeEmptyValues() {
+		if (unit?.isBlank() == true) unit = null
+		if (item?.isBlank() == true) item = null
+		if (refId != null) item = null
+	}
 
 	fun withScaledAmount(factor: Float): Ingredient {
 		if (factor == 1f) {

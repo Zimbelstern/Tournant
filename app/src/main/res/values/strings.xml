@@ -8,10 +8,12 @@
 	<string name="recipes">Recipes</string>
 
 	<!-- Recipe -->
+	<string name="recipe">Recipe</string>
 	<plurals name="recipes">
 		<item quantity="one">%d recipe</item>
 		<item quantity="other">%d recipes</item>
 	</plurals>
+	<string name="title">Title</string>
 	<string name="category">Category</string>
 	<string name="cuisine">Cuisine</string>
 	<string name="rating">Rating</string>
@@ -20,7 +22,10 @@
 	<string name="cooktime">Cooking time</string>
 	<string name="preptime">Preparation time</string>
 	<string name="yield">Yield:</string>
+	<string name="unit">Unit</string>
+	<string name="ingredient">Ingredient</string>
 	<string name="ingredients">Ingredients</string>
+	<string name="group">Group</string>
 	<string name="optional">%s (optional)</string>
 	<string name="instructions">Instructions</string>
 	<string name="notes">Notes</string>
@@ -58,6 +63,7 @@
 
 	<!-- Options menu -->
 	<string name="recipe_count">Number of recipes</string>
+	<string name="new_recipe">New recipe</string>
 	<string name="import_recipes">Import recipes</string>
 	<string name="refresh">Refresh</string>
 	<string name="settings">Settings</string>
@@ -123,5 +129,16 @@
 	<string name="checked">checked</string>
 	<string name="selected">%d selected</string>
 	<string name="add_to_selection">Add to selection</string>
+	<string name="remove">Remove</string>
+	<string name="options">Options</string>
+
+	<!-- Editing -->
+	<string name="edit">Edit</string>
+	<string name="save">Save</string>
+	<string name="add_photo">Add photo</string>
+	<string name="remove_photo">Remove photo</string>
+	<string name="unset_rating">Unset rating</string>
+	<string name="make_optional">Make optional</string>
+	<string name="make_mandatory">Make mandatory</string>
 
 </resources>

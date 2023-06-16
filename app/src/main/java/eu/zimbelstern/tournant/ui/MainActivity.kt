@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 	private var searchView: SearchView? = null
 	private var mode = 0
 
+	private var recipeOpen = false
 	private var restartPending = false
 	private var syncedFileChanged = false
 	private val sharedPrefsListener = OnSharedPreferenceChangeListener { prefs, key ->
@@ -114,6 +115,11 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 			if (mode == MODE_SYNCED) modeInfo.text = getString(R.string.mode_synced_description_short)
 		}
 
+		binding.welcomeView.buttonNewRecipe.setOnClickListener {
+			startActivity(Intent(this, RecipeEditingActivity::class.java).apply {
+				putExtra("RECIPE_ID", 0)
+			})
+		}
 
 		val ccAdapter = CategoriesCuisinesAdapter(this)
 		recipeListAdapter = RecipeListAdapter(this).also {
@@ -235,6 +241,7 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 	}
 
 	override fun openRecipeDetail(recipeId: Long) {
+		recipeOpen = true
 		val intent = Intent(this, RecipeActivity::class.java).apply {
 			putExtra("RECIPE_ID", recipeId)
 		}
@@ -268,7 +275,7 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 				viewModel.writeRecipesToExportDir(recipeIds, filename)
 				val uri = FileProvider.getUriForFile(
 					this@MainActivity,
-					"eu.zimbelstern.tournant.fileprovider",
+					BuildConfig.APPLICATION_ID + ".fileprovider",
 					File(File(filesDir, "export"), "$filename.xml")
 				)
 				ShareCompat.IntentBuilder(this@MainActivity)
@@ -340,6 +347,9 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 					if (viewModel.countAllRecipes.value > 0) RECIPES_SCREEN
 					else WELCOME_SCREEN
 			}
+			if (recipeOpen) {
+				recipeListAdapter.recipeClosed()
+			}
 		}
 	}
 
@@ -347,7 +357,8 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 		menuInflater.inflate(R.menu.options, menu)
 
 		if (mode == MODE_SYNCED) {
-			menu.findItem(R.id.import_recipes)?.isVisible = false
+			menu.removeItem(R.id.new_recipe)
+			menu.removeItem(R.id.import_recipes)
 			menu.findItem(R.id.refresh)?.isVisible = true
 			invalidateOptionsMenu()
 		}
@@ -441,6 +452,12 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
 		return when (item.itemId) {
+			R.id.new_recipe -> {
+				startActivity(Intent(this, RecipeEditingActivity::class.java).apply {
+					putExtra("RECIPE_ID", 0)
+				})
+				true
+			}
 			R.id.import_recipes -> {
 				importRecipesFromFile()
 				true

@@ -47,11 +47,16 @@ class AboutActivity : AppCompatActivity() {
 			findPreference<PreferenceCategory>("libraries")?.let {
 				for (i in 0 until it.preferenceCount) {
 					it[i].apply {
-						if (summary == "Apache License, Version 2.0")
-							setOnPreferenceClickListener {
+						when (summary) {
+							"Apache License, Version 2.0" -> setOnPreferenceClickListener {
 								actionViewUri("http://www.apache.org/licenses/LICENSE-2.0")
 								true
 							}
+							"Licensed by Google" -> setOnPreferenceClickListener {
+								actionViewUri("https://github.com/bumptech/glide/blob/master/LICENSE")
+								true
+							}
+						}
 					}
 				}
 			}

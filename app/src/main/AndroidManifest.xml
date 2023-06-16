@@ -21,6 +21,10 @@
 			android:exported="false"
 			android:theme="@style/Theme.Tournant.KitchenBackground"/>
 		<activity
+			android:name=".ui.RecipeEditingActivity"
+			android:exported="false"
+			android:theme="@style/Theme.Tournant.KitchenBackground"/>
+		<activity
 			android:name=".ui.MainActivity"
 			android:exported="true"
 			android:theme="@style/Theme.Tournant.KitchenBackground">
