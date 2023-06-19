@@ -29,6 +29,17 @@
 	</PreferenceCategory>
 
 	<PreferenceCategory
+		app:title="@string/import_export">
+
+		<SwitchPreference
+			app:key="decimal_separator"
+			app:title="@string/use_comma_as_decimal_separator"
+			app:singleLineTitle="false"
+			app:icon="@drawable/ic_numbers"/>
+
+	</PreferenceCategory>
+
+	<PreferenceCategory
 		app:title="@string/be_careful">
 
 		<Preference

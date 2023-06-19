@@ -7,7 +7,7 @@ import eu.zimbelstern.tournant.data.RecipeWithIngredients
 import org.xmlpull.v1.XmlSerializer
 import java.io.StringWriter
 
-class GourmetXmlWriter {
+class GourmetXmlWriter(private val separator: Char) {
 
 	private val writer = StringWriter()
 	private val serializer = Xml.newSerializer().apply {
@@ -85,7 +85,7 @@ class GourmetXmlWriter {
 
 		recipe.recipe.yieldValue?.let {
 			startTag(null, "yields")
-			text("${recipe.recipe.yieldValue} ${recipe.recipe.yieldUnit}")
+			text("${recipe.recipe.yieldValue.toString().replace(".".single(), separator)} ${recipe.recipe.yieldUnit}")
 			endTag(null, "yields")
 		}
 
@@ -138,9 +138,9 @@ class GourmetXmlWriter {
 	private fun XmlSerializer.writeIngredient(ingredient: Ingredient) {
 		val amountString =
 			if (ingredient.amountRange != null)
-				"${ingredient.amount}-${ingredient.amountRange}"
+				"${ingredient.amount}-${ingredient.amountRange}".replace(".".single(), separator)
 			else
-				"${ingredient.amount}"
+				"${ingredient.amount}".replace(".".single(), separator)
 
 		if (ingredient.refId != null) {
 			startTag(null, "ingref")

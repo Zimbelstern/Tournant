@@ -39,7 +39,7 @@ fun String.getQuantityIntForPlurals(): Int? {
 	}
 }
 
-fun String.withFractionsToFloat(): Float? {
+fun String.withFractionsToFloat(separator: Char = ".".single()): Float? {
 	return try {
 		 when {
 			 this.contains(" ") -> {
@@ -51,7 +51,7 @@ fun String.withFractionsToFloat(): Float? {
 				 this.split("/")[0].toFloat() / this.split("/")[1].toFloat()
 			 }
 
-			 else -> this.toFloat()
+			 else -> Regex("[^0-9$separator]").replace(this, "").replace(separator, ".".single()).toFloat()
 		 }
 	} catch (_: Exception) {
 		null

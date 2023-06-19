@@ -13,7 +13,7 @@ import org.xmlpull.v1.XmlPullParserException
 import java.io.IOException
 import java.io.InputStream
 
-class GourmetXmlParser {
+class GourmetXmlParser(private val separator: Char) {
 
 	@Throws(XmlPullParserException::class, IOException::class)
 	fun parse(inputStream: InputStream): List<RecipeWithIngredients> {
@@ -154,9 +154,9 @@ class GourmetXmlParser {
 				else -> skip(parser)
 			}
 		}
-		val amount = amountString?.split("-")?.get(0)?.withFractionsToFloat()
+		val amount = amountString?.split("-")?.get(0)?.withFractionsToFloat(separator)
 		val amountRange = if (amountString?.contains("-") == true)
-			amountString.split("-")[1].withFractionsToFloat()
+			amountString.split("-")[1].withFractionsToFloat(separator)
 		else null
 
 		return Ingredient(position, amount, amountRange, unit, item, null, optional)
@@ -168,9 +168,9 @@ class GourmetXmlParser {
 		val amountString = parser.getAttributeValue(null, "amount")
 		val refId = parser.getAttributeValue(null, "refid").toLong()
 
-		val amount = amountString?.split("-")?.get(0)?.withFractionsToFloat()
+		val amount = amountString?.split("-")?.get(0)?.withFractionsToFloat(separator)
 		val amountRange = if (amountString?.contains("-") == true)
-			amountString.split("-")[1].withFractionsToFloat()
+			amountString.split("-")[1].withFractionsToFloat(separator)
 		else null
 
 		readStringField(parser)
@@ -217,15 +217,15 @@ class GourmetXmlParser {
 			when {
 				timeString.contains("hours") -> {
 					if (timeString.contains("minutes")) {
-						timeString.split(" ")[0].withFractionsToFloat()!!.times(60)
-							.plus(timeString.split(" ")[2].withFractionsToFloat()!!)
+						timeString.split(" ")[0].withFractionsToFloat(separator)!!.times(60)
+							.plus(timeString.split(" ")[2].withFractionsToFloat(separator)!!)
 							.toInt()
 					} else {
-						timeString.split(" ")[0].withFractionsToFloat()?.times(60)?.toInt()
+						timeString.split(" ")[0].withFractionsToFloat(separator)?.times(60)?.toInt()
 					}
 				}
-				timeString.contains("minutes") -> timeString.split(" ")[0].withFractionsToFloat()?.toInt()
-				else -> timeString.withFractionsToFloat()?.toInt()
+				timeString.contains("minutes") -> timeString.split(" ")[0].withFractionsToFloat(separator)?.toInt()
+				else -> timeString.withFractionsToFloat(separator)?.toInt()
 			}
 		} catch (_: Exception) {
 			null
@@ -241,12 +241,12 @@ class GourmetXmlParser {
 		if (yieldString[0].isDigit()) {
 			if (yieldString.isDigitsOnly()) {
 				return Pair(
-					yieldString.split(" ")[0].toFloat(),
+					yieldString.split(" ")[0].withFractionsToFloat(separator),
 					null
 				)
 			}
 			return Pair(
-				yieldString.split(" ")[0].toFloat(),
+				yieldString.split(" ")[0].withFractionsToFloat(separator),
 				yieldString.split(" ").drop(1).joinToString(" ")
 			)
 		}

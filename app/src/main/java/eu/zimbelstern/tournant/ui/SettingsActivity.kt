@@ -19,6 +19,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import eu.zimbelstern.tournant.Constants.Companion.MODE_STANDALONE
 import eu.zimbelstern.tournant.Constants.Companion.MODE_SYNCED
 import eu.zimbelstern.tournant.Constants.Companion.PREF_COLOR_THEME
+import eu.zimbelstern.tournant.Constants.Companion.PREF_DECIMAL_SEPARATOR_COMMA
 import eu.zimbelstern.tournant.Constants.Companion.PREF_FILE
 import eu.zimbelstern.tournant.Constants.Companion.PREF_FILE_LAST_MODIFIED
 import eu.zimbelstern.tournant.Constants.Companion.PREF_MODE
@@ -30,6 +31,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.text.DecimalFormatSymbols
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -119,6 +121,17 @@ class SettingsActivity : AppCompatActivity() {
 						.putInt(PREF_COLOR_THEME, opt)
 						.apply()
 					AppCompatDelegate.setDefaultNightMode(opt)
+					true
+				}
+			}
+
+			findPreference<SwitchPreference>("decimal_separator")?.apply {
+				isChecked = sharedPrefs.getBoolean(PREF_DECIMAL_SEPARATOR_COMMA, DecimalFormatSymbols.getInstance().decimalSeparator == ",".single())
+				setOnPreferenceChangeListener { _, value ->
+					sharedPrefs
+						.edit()
+						.putBoolean(PREF_DECIMAL_SEPARATOR_COMMA, value as Boolean)
+						.apply()
 					true
 				}
 			}
