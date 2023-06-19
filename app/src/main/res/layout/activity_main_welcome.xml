@@ -60,6 +60,13 @@
 				android:text="@string/import_recipes"
 				app:icon="@drawable/ic_folder"/>
 
+			<com.google.android.material.button.MaterialButton
+				android:id="@+id/recipes_website"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/inspiration"
+				app:icon="@drawable/ic_restaurant"/>
+
 		</LinearLayout>
 
 		<LinearLayout

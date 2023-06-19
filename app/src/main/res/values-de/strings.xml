@@ -122,6 +122,7 @@
 	<string name="add_to_selection">Zur Auswahl hinzufügen</string>
 	<string name="remove">Entfernen</string>
 	<string name="options">Optionen</string>
+	<string name="inspiration">Inspiration gefällig?</string>
 
 	<!-- Editing -->
 	<string name="edit">Bearbeiten</string>

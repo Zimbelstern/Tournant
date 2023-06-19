@@ -1,6 +1,7 @@
 package eu.zimbelstern.tournant.ui
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
@@ -119,6 +120,15 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 			startActivity(Intent(this, RecipeEditingActivity::class.java).apply {
 				putExtra("RECIPE_ID", 0)
 			})
+		}
+
+		binding.welcomeView.recipesWebsite.setOnClickListener {
+			val href = "https://tournant.zimbelstern.eu/recipes"
+			try {
+				startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(href)))
+			} catch (_: ActivityNotFoundException) {
+				Toast.makeText(this, href, Toast.LENGTH_LONG).show()
+			}
 		}
 
 		val ccAdapter = CategoriesCuisinesAdapter(this)
