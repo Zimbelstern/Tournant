@@ -8,10 +8,11 @@ object Converter {
 
 	@InverseMethod("hourToTime")
 	@JvmStatic
-	fun timeToHour(oldValue: Int?, value: Int?): String {
+	fun timeToHour(@Suppress("UNUSED_PARAMETER") oldValue: Int?, value: Int?): String {
 		return value?.div(60)?.toString() ?: ""
 	}
 
+	@Suppress("UNUSED")
 	@JvmStatic
 	fun hourToTime(oldValue: Int?, value: String): Int? {
 		val hour = value.toIntOrNull()
@@ -20,10 +21,11 @@ object Converter {
 
 	@InverseMethod("minToTime")
 	@JvmStatic
-	fun timeToMin(oldValue: Int?, value: Int?): String {
+	fun timeToMin(@Suppress("UNUSED_PARAMETER") oldValue: Int?, value: Int?): String {
 		return value?.mod(60)?.toString() ?: ""
 	}
 
+	@Suppress("UNUSED")
 	@JvmStatic
 	fun minToTime(oldValue: Int?, value: String): Int? {
 		val min = value.toIntOrNull()
@@ -40,10 +42,11 @@ object Converter {
 
 	@InverseMethod("stringToFloat")
 	@JvmStatic
-	fun floatToString(oldValue: Float?, value: Float?): String {
+	fun floatToString(@Suppress("UNUSED_PARAMETER") oldValue: Float?, value: Float?): String {
 		return value?.toStringForCooks() ?: ""
 	}
 
+	@Suppress("UNUSED")
 	@JvmStatic
 	fun stringToFloat(oldValue: Float?, value: String): Float? {
 		return if (value.isEmpty()) null else try {
@@ -58,6 +61,7 @@ object Converter {
 		return value?.replace("<br/>", "\n") ?: ""
 	}
 
+	@Suppress("UNUSED")
 	@JvmStatic fun stringToHtml(value: String): String {
 		return value.replace("\n", "<br/>")
 	}
