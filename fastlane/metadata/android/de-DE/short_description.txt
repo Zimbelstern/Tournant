@@ -1,1 +1,1 @@
-Gourmand/Gourmet-Rezept-Parser
+Rezeptmanager mit Gourmand-Kompatibilität

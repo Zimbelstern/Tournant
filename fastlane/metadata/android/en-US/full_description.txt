@@ -1,5 +1,15 @@
-Tournant serves your favorite dishes on your Android device!
-With Tournant, you can open recipe files from Gourmand/Gourmet Recipe Manager.
+<b>Tournant serves your favorite dishes on your Android device!</b>
+With Tournant, you can manage your recipes for cooking and baking. You can sync the app with a recipe file from Gourmand Recipe Manager (previously known as Gourmet) or use Tournant as a standalone recipe manager.
 
-Visit the website for documentation:
+<b>Features</b>
+<ul>
+<li>Create and edit recipes</li>
+<li>Import und export XML files (Gourmand)</li>
+<li>Sync with an XML file on the Android device</li>
+<li>Search in recipes and categories</li>
+<li>Share recipes</li>
+<li>Scale ingredient lists</li>
+</ul>
+
+<b>Visit the website for documentation</b>
 https://tournant.zimbelstern.eu

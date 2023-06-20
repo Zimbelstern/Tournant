@@ -17,17 +17,25 @@
 
 # Tournant
 <p style="font-size: 1.25em;">
-  Gourmand/Gourmet-Rezept-Parser
+  Rezeptmanager mit Gourmand-Kompatibilität
 </p>
 
 Tournant serviert Ihre Lieblingsgerichte auf Ihrem Android-Gerät!
-Mit Tournant können Sie Rezeptdateien des [Gourmand-Rezeptmanagers](https://github.com/GourmandRecipeManager/gourmand) (früher als Gourmet Recipe Manager bekannt) öffnen.
+Mit Tournant können Sie Ihre Koch- und Backrezepte verwalten. Sie können die App mit einer Rezeptdatei des [Gourmand-Rezeptmanagers](https://github.com/GourmandRecipeManager/gourmand) (früher als Gourmet bekannt) synchronisieren oder Tournant als eigenständigen Rezeptemanager verwenden.
 
 <div style="text-align: center;">
   <img src="https://raw.githubusercontent.com/Zimbelstern/Tournant/master/fastlane/metadata/android/de-DE/images/phoneScreenshots/1.png" alt="Start screen" style="margin: 5px; min-width: 200px; width: 30%"/>
   <img src="https://raw.githubusercontent.com/Zimbelstern/Tournant/master/fastlane/metadata/android/de-DE/images/phoneScreenshots/2.png" alt="Recipe View 1" style="margin: 5px; min-width: 200px; width: 30%"/>
   <img src="https://raw.githubusercontent.com/Zimbelstern/Tournant/master/fastlane/metadata/android/de-DE/images/phoneScreenshots/3.png" alt="Recipe View 2" style="margin: 5px; min-width: 200px; width: 30%"/>
 </div>
+
+## Funktionen
+- Anlegen und Bearbeiten von Rezepten
+- Importieren und Exportieren von XML-Dateien (Gourmand)
+- Synchronisation mit einer XML-Datei auf dem Android-Gerät
+- Suchen in Rezepten und Kategorien
+- Teilen von Rezepten
+- Skalieren von Zutatenlisten
 
 ## Installation
 Sie können die App aus verschiedenen Quellen bekommen:
