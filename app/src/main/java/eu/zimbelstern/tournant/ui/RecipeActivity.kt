@@ -46,7 +46,7 @@ class RecipeActivity : AppCompatActivity() {
 	private val viewModel: RecipeViewModel by viewModels {
 		RecipeViewModelFactory(
 			(application as TournantApplication).database.recipeDao(),
-			intent.getLongExtra("RECIPE_ID", 0)
+			intent.getLongExtra("RECIPE_ID", 0L)
 		)
 	}
 
@@ -193,7 +193,7 @@ class RecipeActivity : AppCompatActivity() {
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
 		if (item.itemId == R.id.edit) {
 			startActivity(Intent(this, RecipeEditingActivity::class.java).apply {
-				putExtra("RECIPE_ID", intent.getLongExtra("RECIPE_ID", 0))
+				putExtra("RECIPE_ID", intent.getLongExtra("RECIPE_ID", 0L))
 			})
 			return true
 		}

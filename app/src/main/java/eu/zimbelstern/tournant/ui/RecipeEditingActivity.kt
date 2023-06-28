@@ -40,7 +40,7 @@ class RecipeEditingActivity : AppCompatActivity(), IngredientEditingAdapter.Ingr
 	private val viewModel: RecipeEditingViewModel by viewModels {
 		RecipeEditingViewModelFactory(
 			(application as TournantApplication).database.recipeDao(),
-			intent.getLongExtra("RECIPE_ID", 0)
+			intent.getLongExtra("RECIPE_ID", 0L)
 		)
 	}
 
