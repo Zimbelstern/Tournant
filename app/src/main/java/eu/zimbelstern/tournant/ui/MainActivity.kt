@@ -23,7 +23,6 @@ import androidx.core.app.ShareCompat
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.filter
 import androidx.recyclerview.widget.ConcatAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import eu.zimbelstern.tournant.BuildConfig
@@ -195,11 +194,7 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 
 		// RECIPES
 		lifecycleScope.launch {
-			viewModel.recipeDescriptions
-				.combine(viewModel.allCategoriesAndCuisines) { recipes, colors ->
-					if (colors.isNotEmpty()) recipes else recipes.filter { false }
-				}
-				.collectLatest {
+			viewModel.recipeDescriptions.collectLatest {
 					Log.d(TAG, "Recipes updated")
 					recipeListAdapter.submitData(it)
 				}
