@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.SpannableStringBuilder
+import android.text.method.DigitsKeyListener
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -34,6 +35,7 @@ import eu.zimbelstern.tournant.toStringForCooks
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.io.File
+import java.text.DecimalFormatSymbols
 import kotlin.random.Random
 
 class RecipeActivity : AppCompatActivity() {
@@ -106,13 +108,14 @@ class RecipeActivity : AppCompatActivity() {
 					recipe.yieldValue.let {
 						binding.recipeDetailYields.visibility = View.VISIBLE
 						binding.recipeDetailYieldsValue.apply {
+							keyListener = DigitsKeyListener.getInstance("0123456789" + DecimalFormatSymbols.getInstance().decimalSeparator)
 							hint = (it ?: 1f).toStringForCooks()
 							if (it != null) {
 								text = SpannableStringBuilder(hint)
 							}
 							fillYieldsUnit(it, recipe.yieldUnit)
 							addTextChangedListener { editable ->
-								val scaleFactor = editable.toString().toFloatOrNull()?.div(recipe.yieldValue ?: 1f)
+								val scaleFactor = editable.toString().replace(DecimalFormatSymbols.getInstance().decimalSeparator, ".".single()).toFloatOrNull()?.div(recipe.yieldValue ?: 1f)
 								recipeWithIngredients.ingredients.scale(scaleFactor).let { list ->
 									binding.recipeDetailIngredientsRecycler.adapter = IngredientTableAdapter(this@RecipeActivity, list, scaleFactor)
 									fillYieldsUnit(recipe.yieldValue, recipe.yieldUnit)
@@ -141,7 +144,7 @@ class RecipeActivity : AppCompatActivity() {
 				binding.recipeDetailLess.setOnClickListener {
 					binding.recipeDetailYieldsValue.text = SpannableStringBuilder(
 						RecipeUtils.lessYield(
-							binding.recipeDetailYieldsValue.text.toString().toFloatOrNull()
+							binding.recipeDetailYieldsValue.text.toString().replace(DecimalFormatSymbols.getInstance().decimalSeparator, ".".single()).toFloatOrNull()
 								?: recipeWithIngredients.recipe.yieldValue ?: 1f
 						).toStringForCooks()
 					)
@@ -149,7 +152,7 @@ class RecipeActivity : AppCompatActivity() {
 				binding.recipeDetailMore.setOnClickListener {
 					binding.recipeDetailYieldsValue.text = SpannableStringBuilder(
 						RecipeUtils.moreYield(
-							binding.recipeDetailYieldsValue.text.toString().toFloatOrNull()
+							binding.recipeDetailYieldsValue.text.toString().replace(DecimalFormatSymbols.getInstance().decimalSeparator, ".".single()).toFloatOrNull()
 								?: recipeWithIngredients.recipe.yieldValue ?: 1f
 						).toStringForCooks())
 				}
