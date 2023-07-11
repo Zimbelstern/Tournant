@@ -1,4 +1,4 @@
-package eu.zimbelstern.tournant
+package eu.zimbelstern.tournant.ui.adapter
 
 import android.graphics.Paint
 import android.view.LayoutInflater
@@ -6,8 +6,10 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.data.Ingredient
 import eu.zimbelstern.tournant.databinding.RecyclerItemIngredientsBinding
+import eu.zimbelstern.tournant.toStringForCooks
 import eu.zimbelstern.tournant.ui.RecipeActivity
 
 class IngredientTableAdapter(

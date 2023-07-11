@@ -1,4 +1,4 @@
-package eu.zimbelstern.tournant
+package eu.zimbelstern.tournant.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

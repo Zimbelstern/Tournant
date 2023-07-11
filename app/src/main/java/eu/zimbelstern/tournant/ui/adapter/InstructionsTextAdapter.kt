@@ -1,4 +1,4 @@
-package eu.zimbelstern.tournant
+package eu.zimbelstern.tournant.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.text.parseAsHtml
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.databinding.RecyclerItemTextBinding
 
 class InstructionsTextAdapter(text: String) : RecyclerView.Adapter<InstructionsTextAdapter.InstructionTextViewHolder>() {

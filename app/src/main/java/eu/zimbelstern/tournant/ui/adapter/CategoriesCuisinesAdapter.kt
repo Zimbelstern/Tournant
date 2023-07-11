@@ -1,4 +1,4 @@
-package eu.zimbelstern.tournant
+package eu.zimbelstern.tournant.ui.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexboxLayoutManager
+import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.data.ColorfulString
 import eu.zimbelstern.tournant.databinding.CategoriesAndCuisinesBinding
 import eu.zimbelstern.tournant.ui.MainActivity

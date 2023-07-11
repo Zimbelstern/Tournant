@@ -23,8 +23,6 @@ import com.bumptech.glide.signature.ObjectKey
 import eu.zimbelstern.tournant.Constants.Companion.MODE_SYNCED
 import eu.zimbelstern.tournant.Constants.Companion.PREF_MODE
 import eu.zimbelstern.tournant.Constants.Companion.PREF_SCREEN_ON
-import eu.zimbelstern.tournant.IngredientTableAdapter
-import eu.zimbelstern.tournant.InstructionsTextAdapter
 import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.RecipeUtils
 import eu.zimbelstern.tournant.TournantApplication
@@ -32,6 +30,8 @@ import eu.zimbelstern.tournant.databinding.ActivityRecipeBinding
 import eu.zimbelstern.tournant.getQuantityIntForPlurals
 import eu.zimbelstern.tournant.scale
 import eu.zimbelstern.tournant.toStringForCooks
+import eu.zimbelstern.tournant.ui.adapter.IngredientTableAdapter
+import eu.zimbelstern.tournant.ui.adapter.InstructionsTextAdapter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.io.File

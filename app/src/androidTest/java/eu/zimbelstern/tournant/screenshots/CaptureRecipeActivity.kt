@@ -10,7 +10,7 @@ import androidx.test.espresso.action.ViewActions.swipeUp
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.filters.LargeTest
-import eu.zimbelstern.tournant.InstructionsTextAdapter
+import eu.zimbelstern.tournant.ui.adapter.InstructionsTextAdapter
 import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.ui.RecipeActivity
 import org.junit.After
