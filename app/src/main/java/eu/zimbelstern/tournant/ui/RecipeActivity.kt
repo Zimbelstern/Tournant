@@ -15,11 +15,14 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ShareCompat
+import androidx.core.content.FileProvider
 import androidx.core.text.parseAsHtml
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.signature.ObjectKey
+import eu.zimbelstern.tournant.BuildConfig
 import eu.zimbelstern.tournant.Constants.Companion.MODE_SYNCED
 import eu.zimbelstern.tournant.Constants.Companion.PREF_MODE
 import eu.zimbelstern.tournant.Constants.Companion.PREF_SCREEN_ON
@@ -32,8 +35,10 @@ import eu.zimbelstern.tournant.scale
 import eu.zimbelstern.tournant.toStringForCooks
 import eu.zimbelstern.tournant.ui.adapter.IngredientTableAdapter
 import eu.zimbelstern.tournant.ui.adapter.InstructionsTextAdapter
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.text.DecimalFormatSymbols
 import kotlin.random.Random
@@ -47,7 +52,7 @@ class RecipeActivity : AppCompatActivity() {
 	private lateinit var binding: ActivityRecipeBinding
 	private val viewModel: RecipeViewModel by viewModels {
 		RecipeViewModelFactory(
-			(application as TournantApplication).database.recipeDao(),
+			application as TournantApplication,
 			intent.getLongExtra("RECIPE_ID", 0L)
 		)
 	}
@@ -194,17 +199,38 @@ class RecipeActivity : AppCompatActivity() {
 	}
 
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
-		if (item.itemId == R.id.edit) {
-			startActivity(Intent(this, RecipeEditingActivity::class.java).apply {
-				putExtra("RECIPE_ID", intent.getLongExtra("RECIPE_ID", 0L))
-			})
-			return true
+		return when (item.itemId) {
+			R.id.share -> {
+				lifecycleScope.launch {
+					withContext(Dispatchers.IO) {
+						val filename = binding.recipeDetailTitle.text.toString()
+							.ifBlank { getString(R.string.recipe) }
+						viewModel.writeRecipesToExportDir(filename)
+						val uri = FileProvider.getUriForFile(
+							application,
+							BuildConfig.APPLICATION_ID + ".fileprovider",
+							File(File(filesDir, "export"), "$filename.xml")
+						)
+						ShareCompat.IntentBuilder(this@RecipeActivity)
+							.setStream(uri)
+							.setType("application/xml")
+							.startChooser()
+					}
+				}
+				true
+			}
+			R.id.edit -> {
+				startActivity(Intent(this, RecipeEditingActivity::class.java).apply {
+					putExtra("RECIPE_ID", intent.getLongExtra("RECIPE_ID", 0L))
+				})
+				true
+			}
+			android.R.id.home -> {
+				finish()
+				true
+			}
+			else -> super.onOptionsItemSelected(item)
 		}
-		return if (item.itemId == android.R.id.home) {
-			finish()
-			true
-		} else
-			super.onOptionsItemSelected(item)
 	}
 
 }

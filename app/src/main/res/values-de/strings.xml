@@ -66,6 +66,9 @@
 	<string name="settings">Einstellungen</string>
 	<string name="about_app_name">Über %s</string>
 
+	<!-- Recipe options menu -->
+	<string name="share">Teilen</string>
+
 	<!-- Action mode menu -->
 	<string name="share_selected">Ausgewählte teilen</string>
 	<string name="export_selected">Ausgewählte exportieren</string>

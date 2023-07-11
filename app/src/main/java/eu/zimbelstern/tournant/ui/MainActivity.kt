@@ -279,7 +279,7 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 				val filename = if (recipeIds.size == 1) viewModel.getRecipeTitle(recipeIds.first()) ?: getString(R.string.recipes) else getString(R.string.recipes)
 				viewModel.writeRecipesToExportDir(recipeIds, filename)
 				val uri = FileProvider.getUriForFile(
-					this@MainActivity,
+					application,
 					BuildConfig.APPLICATION_ID + ".fileprovider",
 					File(File(filesDir, "export"), "$filename.xml")
 				)

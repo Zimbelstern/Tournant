@@ -17,7 +17,6 @@ import androidx.paging.cachedIn
 import androidx.paging.filter
 import eu.zimbelstern.tournant.Constants.Companion.MODE_STANDALONE
 import eu.zimbelstern.tournant.Constants.Companion.MODE_SYNCED
-import eu.zimbelstern.tournant.Constants.Companion.PREF_DECIMAL_SEPARATOR_COMMA
 import eu.zimbelstern.tournant.Constants.Companion.PREF_FILE
 import eu.zimbelstern.tournant.Constants.Companion.PREF_FILE_LAST_MODIFIED
 import eu.zimbelstern.tournant.Constants.Companion.PREF_MODE
@@ -37,7 +36,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.text.DecimalFormatSymbols
 import kotlin.math.roundToInt
 import kotlin.random.Random
 
@@ -50,7 +48,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 
 
 	// DAO
-	private var recipeDao = application.database.recipeDao()
+	private val recipeDao = application.database.recipeDao()
 
 
 	// SEARCH
@@ -150,7 +148,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 							Toast.makeText(application, application.getString(R.string.inputstream_null), Toast.LENGTH_LONG).show()
 						}
 					} else {
-						val parsedRecipes = GourmetXmlParser(getDecimalSeparator()).parse(inputStream).also {
+						val parsedRecipes = GourmetXmlParser(application.getDecimalSeparator()).parse(inputStream).also {
 							if (it.isEmpty()) {
 								withContext(Dispatchers.Main) {
 									Toast.makeText(application, application.getString(R.string.no_recipes_found), Toast.LENGTH_LONG).show()
@@ -192,7 +190,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 									Toast.makeText(application, application.getString(R.string.inputstream_null), Toast.LENGTH_LONG).show()
 								}
 							} else {
-								val recipesFromFile = GourmetXmlParser(getDecimalSeparator()).parse(inputStream).also {
+								val recipesFromFile = GourmetXmlParser(application.getDecimalSeparator()).parse(inputStream).also {
 									if (it.isEmpty()) {
 										withContext(Dispatchers.Main) {
 											Toast.makeText(application, application.getString(R.string.no_recipes_found), Toast.LENGTH_LONG).show()
@@ -237,7 +235,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 		}
 		File(application.filesDir, "export").mkdir()
 		File(File(application.filesDir, "export"), "$filename.xml").outputStream().use {
-			it.write(GourmetXmlWriter(getDecimalSeparator()).serialize(recipes + refs))
+			it.write(GourmetXmlWriter(application.getDecimalSeparator()).serialize(recipes + refs))
 		}
 	}
 
@@ -272,13 +270,6 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 			}
 		}
 	}
-
-	private fun getDecimalSeparator() =
-		if (application.getSharedPreferences(application.packageName + "_preferences", Context.MODE_PRIVATE)
-				.getBoolean(PREF_DECIMAL_SEPARATOR_COMMA, DecimalFormatSymbols.getInstance().decimalSeparator == ",".single()))
-			",".single()
-		else
-			".".single()
 
 }
 

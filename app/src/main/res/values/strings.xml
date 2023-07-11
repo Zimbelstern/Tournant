@@ -69,6 +69,9 @@
 	<string name="settings">Settings</string>
 	<string name="about_app_name">About %s</string>
 
+	<!-- Recipe options menu -->
+	<string name="share">Share</string>
+
 	<!-- Action mode menu -->
 	<string name="share_selected">Share selected</string>
 	<string name="export_selected">Export selected</string>
