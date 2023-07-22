@@ -1,0 +1,2 @@
+- Correction de bug : plantage lors du calcul des quantités d'ingrédients non numériques
+- Correction de bug : désalignement des quantités et des noms d'ingrédients

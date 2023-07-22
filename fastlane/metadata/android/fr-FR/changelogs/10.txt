@@ -1,0 +1,2 @@
+Nouvelle fonctionnalité : thème sombre
+Nouvelles langues : norvégien bokmål, danois, suédois (merci à Allan Nordhøy !)

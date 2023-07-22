@@ -1,0 +1,2 @@
+– Corrección de bug: crash al leer libros de cocina más grandes.
+– Mejora: la consulta de búsqueda se restaura con los cambios de orientación.

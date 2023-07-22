@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sample_category">Pasteles</string>
+    <string name="sample_cuisine">Americano</string>
+    <string name="sample_yields">20 muffins</string>
+    <string name="sample_modifications">Para muffins de chocolate, sustituya 100g de harina por 100g de cacao en polvo.</string>
+    <string name="sample_title">Muffins</string>
+    <string name="sample_instructions">1. Precaliente el horno a 200°C.
+\n2. Bata los huevos ligeramente durante 1 min.
+\n3. Agregue el aceite y la leche y bata hasta que se mezclen. A continuación, agregue el azúcar y mezcle hasta que obtener una masa suave.
+\n4. Tamice la harina, la levadura química y la sal y mezcle con cuidado hasta que quede suave.
+\n5. Agregue las pepitas de chocolate.
+\n6. Llene dos tercios de los moldes para muffins y hornee durante 20-25 minutos. Cuando se inserte una brocheta en el medio, debe salir limpia.
+\n7. Deje enfriar los muffins en su molde durante unos minutos, para luego transferirlos a una rejilla.</string>
+</resources>

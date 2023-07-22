@@ -1,5 +1,15 @@
-Tournant sert vos plats préférés sur votre appareil Android !
-Avec Tournant, vous pouvez ouvrir les fichiers de recettes du gestionnaire de recettes Gourmand/Gourmet.
+<b>Tournant sert vos plats préférés sur votre appareil Android !</b>
+Avec Tournant, vous pouvez gérer vos recettes de cuisine et de pâtisserie. Vous pouvez synchroniser l'application avec un fichier recette du gestionnaire de Reccettes Gourmand (anciennement connu sous le nom de Gourmet) ou utiliser Tournant comme gestionnaire de recettes autonome.
 
-Visitez le site web pour la documentation :
+<b>Caractéristiques</b>
+<ul>
+<li>Créer et éditer des recettes</li>
+<li>Importer et exporter des fichiers XML (Gourmand)</li>
+<li>Synchroniser avec un fichier XML sur appareil Android</li>
+<li>Rechercher dans les recettes et les catégories</li>
+<li>Partager des recettes</li>
+<li>Calculer des listes d'ingrédients</li>
+</ul>
+
+<b>Visitez le site web pour la documentation</b>
 https://tournant.zimbelstern.eu

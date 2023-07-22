@@ -1,0 +1,1 @@
+Gestionnaire de recettes avec compatibilité Gourmand

@@ -1,0 +1,4 @@
+Nouvelle fonctionnalité : appuyez sur un ingrédient ou un paragraphe des instructions pour le marquer comme coché
+Amélioration : prise en charge des références d'ingrédients et des groupes d'ingrédients
+Amélioration : Améliorations du design
+Correctionss de bugs : petites optimisations
