@@ -13,11 +13,13 @@ import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.widget.LinearLayout
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
 import androidx.core.content.FileProvider
 import androidx.core.text.parseAsHtml
+import androidx.core.view.updateLayoutParams
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -77,6 +79,14 @@ class RecipeActivity : AppCompatActivity() {
 
 		if (getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE).getBoolean(PREF_SCREEN_ON, true))
 			window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
+		binding.recipeDetailPreptime.updateLayoutParams<LinearLayout.LayoutParams> {
+			weight = getString(R.string.preptime).length.toFloat()
+		}
+
+		binding.recipeDetailCooktime.updateLayoutParams<LinearLayout.LayoutParams> {
+			weight = getString(R.string.cooktime).length.toFloat()
+		}
 
 		lifecycleScope.launch {
 			viewModel.recipe.collectLatest { recipeWithIngredients ->

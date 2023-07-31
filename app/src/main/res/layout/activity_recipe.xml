@@ -6,7 +6,7 @@
 		<import type="eu.zimbelstern.tournant.utils.Converter"/>
 		<variable name="recipe" type="eu.zimbelstern.tournant.data.Recipe" />
 	</data>
-	
+
 	<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 		xmlns:app="http://schemas.android.com/apk/res-auto"
 		xmlns:tools="http://schemas.android.com/tools"
@@ -47,13 +47,15 @@
 				android:layout_marginHorizontal="16dp"
 				android:layout_marginVertical="8dp"
 				android:elevation="4dp"
-				android:padding="8dp">
+				android:padding="8dp"
+				app:cardCornerRadius="8dp">
 
 				<LinearLayout
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:orientation="vertical"
-					android:padding="16dp"
+					android:paddingHorizontal="20dp"
+					android:paddingVertical="16dp"
 					android:divider="@drawable/divider_vertical"
 					android:showDividers="middle">
 
@@ -63,9 +65,7 @@
 						android:layout_height="wrap_content"
 						android:layout_marginBottom="4dp"
 						android:text="@{recipe.title}"
-						android:textColor="@color/heading_color"
-						android:textSize="24sp"
-						android:textStyle="bold"/>
+						style="@style/h1"/>
 
 					<RatingBar
 						android:id="@+id/recipe_detail_rating"
@@ -112,9 +112,7 @@
 								android:layout_width="match_parent"
 								android:layout_height="wrap_content"
 								android:text="@string/source"
-								android:textColor="@color/heading_color"
-								android:textSize="@dimen/font_size_text"
-								android:textStyle="bold"/>
+								style="@style/h3"/>
 
 							<TextView
 								android:id="@+id/recipe_detail_source_text"
@@ -136,9 +134,7 @@
 								android:layout_width="match_parent"
 								android:layout_height="wrap_content"
 								android:text="@string/webpage"
-								android:textColor="@color/heading_color"
-								android:textSize="@dimen/font_size_text"
-								android:textStyle="bold"/>
+								style="@style/h3"/>
 
 							<TextView
 								android:id="@+id/recipe_detail_link_text"
@@ -169,9 +165,7 @@
 								android:layout_width="match_parent"
 								android:layout_height="wrap_content"
 								android:text="@string/preptime"
-								android:textColor="@color/heading_color"
-								android:textSize="@dimen/font_size_text"
-								android:textStyle="bold"/>
+								style="@style/h3"/>
 
 							<TextView
 								android:id="@+id/recipe_detail_preptime_text"
@@ -194,9 +188,7 @@
 								android:layout_width="match_parent"
 								android:layout_height="wrap_content"
 								android:text="@string/cooktime"
-								android:textColor="@color/heading_color"
-								android:textSize="@dimen/font_size_text"
-								android:textStyle="bold"/>
+								style="@style/h3"/>
 
 							<TextView
 								android:id="@+id/recipe_detail_cooktime_text"
@@ -221,72 +213,29 @@
 				android:layout_marginVertical="8dp"
 				android:elevation="4dp"
 				android:padding="8dp"
+				app:cardCornerRadius="8dp"
 				android:visibility="gone"
 				tools:visibility="visible">
 
-				<LinearLayout
+				<androidx.coordinatorlayout.widget.CoordinatorLayout
 					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:orientation="vertical"
-					android:padding="16dp">
-
-					<TextView
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:layout_marginBottom="4dp"
-						android:text="@string/ingredients"
-						android:textColor="@color/heading_color"
-						android:textSize="@dimen/font_size_heading"
-						android:textStyle="bold"/>
+					android:layout_height="wrap_content">
 
 					<LinearLayout
-						android:id="@+id/recipe_detail_yields"
-						android:layout_width="match_parent"
+						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:layout_marginBottom="4dp"
 						android:orientation="horizontal"
-						android:visibility="gone"
-						tools:visibility="visible"
-						android:descendantFocusability="beforeDescendants"
-						android:focusableInTouchMode="true">
-
-						<TextView
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:labelFor="@id/recipe_detail_yields_value"
-							android:text="@string/yield"
-							android:textSize="@dimen/font_size_text"
-							android:textStyle="italic"/>
-
-						<EditText
-							android:id="@+id/recipe_detail_yields_value"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:layout_marginStart="4sp"
-							android:inputType="numberDecimal"
-							android:importantForAutofill="no"
-							android:textSize="@dimen/font_size_text"/>
-
-						<TextView
-							android:id="@+id/recipe_detail_yields_text"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:textSize="@dimen/font_size_text"
-							android:textStyle="italic"
-							tools:text="portions"/>
-
-						<View
-							android:layout_width="0dp"
-							android:layout_height="match_parent"
-							android:layout_weight="1"/>
+						android:padding="16dp"
+						android:divider="@drawable/divider_horizontal"
+						android:showDividers="middle"
+						android:layout_gravity="end">
 
 						<ImageButton
 							android:id="@+id/recipe_detail_less"
 							android:contentDescription="@string/less"
-							android:layout_width="32dp"
-							android:layout_height="32dp"
+							android:layout_width="36dp"
+							android:layout_height="36dp"
 							android:layout_gravity="center"
-							android:layout_margin="4dp"
 							android:background="@drawable/button_round"
 							android:src="@drawable/ic_minus"
 							app:tint="?attr/colorSurface"/>
@@ -294,24 +243,77 @@
 						<ImageButton
 							android:id="@+id/recipe_detail_more"
 							android:contentDescription="@string/more"
-							android:layout_width="32dp"
-							android:layout_height="32dp"
+							android:layout_width="36dp"
+							android:layout_height="36dp"
 							android:layout_gravity="center"
-							android:layout_margin="4dp"
 							android:background="@drawable/button_round"
 							android:src="@drawable/ic_plus"
 							app:tint="?attr/colorSurface"/>
 
 					</LinearLayout>
 
-					<androidx.recyclerview.widget.RecyclerView
-						android:id="@+id/recipe_detail_ingredients_recycler"
+					<LinearLayout
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:nestedScrollingEnabled="false"
-						app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+						android:orientation="vertical"
+						android:paddingHorizontal="20dp"
+						android:paddingVertical="16dp">
 
-				</LinearLayout>
+						<TextView
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_marginBottom="4dp"
+							android:text="@string/ingredients"
+							style="@style/h2"/>
+
+						<LinearLayout
+							android:id="@+id/recipe_detail_yields"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_marginBottom="4dp"
+							android:orientation="horizontal"
+							android:descendantFocusability="beforeDescendants"
+							android:focusableInTouchMode="true"
+							android:visibility="gone"
+							tools:visibility="visible">
+
+							<TextView
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:labelFor="@id/recipe_detail_yields_value"
+								android:text="@string/yield"
+								android:textSize="@dimen/font_size_text"
+								android:textStyle="italic"/>
+
+							<EditText
+								android:id="@+id/recipe_detail_yields_value"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:layout_marginStart="4sp"
+								android:inputType="numberDecimal"
+								android:importantForAutofill="no"
+								android:textSize="@dimen/font_size_text"/>
+
+							<TextView
+								android:id="@+id/recipe_detail_yields_text"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:textSize="@dimen/font_size_text"
+								android:textStyle="italic"
+								tools:text="portions"/>
+
+						</LinearLayout>
+
+						<androidx.recyclerview.widget.RecyclerView
+							android:id="@+id/recipe_detail_ingredients_recycler"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:nestedScrollingEnabled="false"
+							app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+					</LinearLayout>
+
+				</androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 			</com.google.android.material.card.MaterialCardView>
 
@@ -322,6 +324,7 @@
 				android:layout_marginHorizontal="16dp"
 				android:layout_marginVertical="8dp"
 				android:elevation="4dp"
+				app:cardCornerRadius="8dp"
 				android:visibility="gone"
 				tools:visibility="visible">
 
@@ -329,17 +332,16 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:orientation="vertical"
-					android:padding="16dp"
-					android:clipToPadding="false">
+					android:paddingHorizontal="20dp"
+					android:paddingVertical="16dp">
 
 					<TextView
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:layout_marginBottom="4dp"
+						android:layout_marginTop="-4dp"
 						android:text="@string/instructions"
-						android:textColor="@color/heading_color"
-						android:textSize="@dimen/font_size_heading"
-						android:textStyle="bold"/>
+						style="@style/h2"/>
 
 					<androidx.recyclerview.widget.RecyclerView
 						android:id="@+id/recipe_detail_instructions_recycler"
@@ -360,6 +362,7 @@
 				android:layout_marginHorizontal="16dp"
 				android:layout_marginVertical="8dp"
 				android:elevation="4dp"
+				app:cardCornerRadius="8dp"
 				android:visibility="gone"
 				tools:visibility="visible">
 
@@ -367,16 +370,16 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:orientation="vertical"
-					android:padding="16dp">
+					android:paddingHorizontal="20dp"
+					android:paddingVertical="16dp">
 
 					<TextView
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:layout_marginBottom="4dp"
+						android:layout_marginTop="-4dp"
 						android:text="@string/notes"
-						android:textColor="@color/heading_color"
-						android:textSize="@dimen/font_size_heading"
-						android:textStyle="bold" />
+						style="@style/h2"/>
 
 					<TextView
 						android:id="@+id/recipe_detail_notes_text"

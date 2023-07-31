@@ -69,11 +69,11 @@ Tournant can only read recipe files created by the desktop application Gourmand 
 The source code is [freely available on Github](https://github.com/Zimbelstern/Tournant/).
 
 ## License
-Tournant is licensed under the Apache License Version 2.0. See [LICENSE](https://github.com/Zimbelstern/Tournant/blob/master/LICENSE).
+Tournant is (except for the fonts) licensed under the Apache License Version 2.0. See [LICENSE](https://github.com/Zimbelstern/Tournant/blob/master/LICENSE).
 Please note that the logo and name of the app are trademarks in terms of section 6 of the license.
 If you make substantial changes to the app, please change the logo and name before publishing.
 
-The sample recipe is from [Wikibooks](https://en.wikibooks.org/wiki/Cookbook:Blueberry_Muffin) and licensed under CC BY-SA 3.0.
+For license information of the embedded fonts, please see the metadata of the corresponding font files.
 
 ## Issues
 Please use the [bug tracker](https://github.com/Zimbelstern/Tournant/issues). Feature requests are welcome.

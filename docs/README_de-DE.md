@@ -59,9 +59,9 @@ Tournant kann nur Dateien öffnen, die von der Anwendung Gourmand exportiert wer
 Der Quellcode ist [frei verfügbar auf Github](https://github.com/Zimbelstern/Tournant/).
 
 ## Lizenz
-Tournant ist unter der Apache License Version 2.0 lizensiert. Siehe [LICENSE](https://github.com/Zimbelstern/Tournant/blob/master/LICENSE).
+Tournant ist (ausgenommen die Schriftarten) unter der Apache License Version 2.0 lizensiert. Siehe [LICENSE](https://github.com/Zimbelstern/Tournant/blob/master/LICENSE).
 
-Das Rezeptbeispiel ist von [Wikibooks](https://en.wikibooks.org/wiki/Cookbook:Blueberry_Muffin) und unter CC BY-SA 3.0 lizensiert.
+Für Lizenzinformationen der eingebetteten Schriftarten, siehe die Metadaten in den entsprechenden Schriftart-Dateien.
 
 ## Probleme
 Wenn Sie einen Fehler bemerken oder einen Verbesserungsvorschlag haben, verwenden Sie bitte den [Bugtracker](https://github.com/Zimbelstern/Tournant/issues).

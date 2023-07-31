@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<dimen name="font_size_heading">18sp</dimen>
-	<dimen name="font_size_text">16sp</dimen>
+	<dimen name="font_size_text">17sp</dimen>
 </resources>

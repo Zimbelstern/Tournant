@@ -25,6 +25,24 @@
 		<item name="android:itemTextAppearance">@style/Tournant.MenuItemTextAppearance</item>
 
 		<item name="popupMenuBackground">@drawable/popup_background</item>
+
+	</style>
+
+	<style name="h" parent="@android:style/TextAppearance.Medium">
+		<item name="android:textColor">@color/heading_color</item>
+		<item name="fontFamily">@font/quicksand_bold</item>
+	</style>
+
+	<style name="h1" parent="@style/h">
+		<item name="android:textSize">24sp</item>
+	</style>
+
+	<style name="h2" parent="@style/h">
+		<item name="android:textSize">21sp</item>
+	</style>
+
+	<style name="h3" parent="@style/h">
+		<item name="android:textSize">18sp</item>
 	</style>
 
 	<!-- Action bar color -->

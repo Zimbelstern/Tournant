@@ -28,15 +28,14 @@
 				android:layout_height="wrap_content"
 				android:text="@string/app_name"
 				android:textColor="@color/highlight_color"
-				android:textSize="24sp"
-				android:textStyle="bold"/>
+				style="@style/h1"/>
 
 			<TextView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
+				android:layout_marginBottom="8dp"
 				android:text="@string/no_recipes_found"
-				android:textSize="18sp"
-				android:layout_marginBottom="8dp"/>
+				android:textSize="18sp"/>
 
 		</LinearLayout>
 
@@ -84,14 +83,14 @@
 				android:text="@string/mode_standalone_description_short"
 				android:textColor="@color/highlight_color"
 				android:textSize="18sp"
-				android:textStyle="bold"/>
+				style="@style/h"/>
 
 			<TextView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
+				android:layout_marginVertical="8dp"
 				android:text="@string/change_mode_explanation"
-				android:textSize="16sp"
-				android:layout_marginVertical="8dp"/>
+				android:textSize="16sp"/>
 
 		</LinearLayout>
 
@@ -106,11 +105,11 @@
 		<TextView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
+				android:layout_marginBottom="2dp"
 				android:text="@string/mode_standalone"
 				android:textColor="@color/highlight_color"
 				android:textSize="16sp"
-				android:textStyle="bold"
-				android:layout_marginBottom="2dp"/>
+				style="@style/h"/>
 
 			<TextView
 				android:layout_width="match_parent"
@@ -122,18 +121,18 @@
 			<TextView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
+				android:layout_marginBottom="2dp"
 				android:text="@string/mode_synced"
 				android:textColor="@color/highlight_color"
 				android:textSize="16sp"
-				android:textStyle="bold"
-				android:layout_marginBottom="2dp"/>
+				style="@style/h"/>
 
 			<TextView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
+				android:layout_marginBottom="8dp"
 				android:text="@string/mode_synced_description_long"
-				android:textSize="15sp"
-				android:layout_marginBottom="8dp"/>
+				android:textSize="15sp"/>
 
 		</LinearLayout>
 

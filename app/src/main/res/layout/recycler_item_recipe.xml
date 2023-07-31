@@ -25,13 +25,13 @@
 				android:layout_width="96dp"
 				android:layout_height="96dp"
 				android:layout_margin="4dp"
-				android:background="@drawable/round_corners"
-				android:importantForAccessibility="no"
-				android:scaleType="centerCrop"
 				app:layout_constraintBottom_toBottomOf="parent"
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintTop_toTopOf="parent"
 				app:layout_constraintVertical_bias="0"
+				android:background="@drawable/round_corners"
+				android:importantForAccessibility="no"
+				android:scaleType="centerCrop"
 				tools:src="@drawable/ic_dining"/>
 
 			<TextView
@@ -39,14 +39,12 @@
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
 				android:layout_marginStart="12dp"
-				android:maxLines="2"
-				android:ellipsize="end"
-				android:textColor="@color/heading_color"
-				android:textSize="@dimen/font_size_heading"
-				android:textStyle="bold"
 				app:layout_constraintStart_toEndOf="@id/recipe_card_image"
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintTop_toTopOf="parent"
+				android:maxLines="3"
+				android:ellipsize="end"
+				style="@style/h2"
 				tools:text="Recipe title"/>
 
 			<RatingBar
@@ -93,6 +91,5 @@
 			android:layout_height="match_parent"/>
 
 	</FrameLayout>
-
 
 </com.google.android.material.card.MaterialCardView>
