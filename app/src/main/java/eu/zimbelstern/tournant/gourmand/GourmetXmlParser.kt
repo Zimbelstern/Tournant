@@ -269,7 +269,7 @@ class GourmetXmlParser(private val separator: Char) {
 	private fun readText(parser: XmlPullParser): String {
 		var result = ""
 		if (parser.next() == XmlPullParser.TEXT) {
-			result = parser.text
+			result = parser.text.trim()
 			parser.nextTag()
 		}
 		return result
