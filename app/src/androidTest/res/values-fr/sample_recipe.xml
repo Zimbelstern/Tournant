@@ -6,12 +6,13 @@
     <string name="sample_yields">12 muffins</string>
     <string name="sample_preptime">25 min</string>
     <string name="sample_cooktime">20 min</string>
-    <string name="sample_modifications">Pour faire des muffins géants, réduire la température à 180 °C et cuire pendant 30 min. Pour faire des mini-muffins, faites-les cuire pendant environ 10 min à 200 °C. Texte de la recette sous licence CC BY-SA 3.0.</string>
-    <string name="sample_instructions">1. Graisser les moules à muffins ou les tapisser de moules en papier ; mettre de côté.
-\n2. Préchauffer le four à 200 °C.
-\n3. Dans un bol moyen, mélanger la farine, le sucre, la poudre à pâte et le sel. Faire un puits au centre du mélange et mettre de côté.
-\n4. Dans un petit bol, mélanger l\'œuf battu, le lait et l\'huile. Ajouter ce mélange en une seule fois au mélange de farine. Incorporer les myrtilles et remuer jusqu\'à ce qu\'elles soient combinées. Ne pas trop remuer.
-\n5. Déposer la pâte dans les moules préparés, en remplissant chacun d\'eux aux deux tiers environ.
-\n6. Cuire au four de 18 à 20 min ou jusqu\'à ce que le gâteau soit doré. Lorsqu\'on insère un cure-dent en bois près du centre, il doit ressortir propre.
-\n7. Retirer des moules à muffins et laisser refroidir sur une grille pendant 5 min.</string>
+    <string name="sample_modifications">Pour des muffins au chocolats, remplacer 100g de la farine par 100g de poudre de cacao.</string>
+    <string name="sample_instructions">"1. Préchauffer le four à 200 °C.
+\n2. Battre les œufs légèrement pendant 1 min.
+\n3. Ajouter l\'huile et le lait, puis mélanger jusqu\'à ce qu\'ils soient mélangés. 
+\nPuis rajouter le sucre et mélanger jusqu\'à obtenir une pâte lisse.
+\n4. Tamiser la farine, la levure chimique et le sel, puis mélanger soigneusement jusqu\'à avoir une consistance lisse.
+\n5. Incorporer les pépites de chocolat.
+\n6. Remplir les moules à muffins aux deux tiers et mettre au four pendant 20-25 minutes.  Lorsqu\'une brochette est insérée au milieu, elle doit ressortir propre.
+\n7. Laisser refroidir les muffins dans leur moule pendant quelques minutes puis les transférer sur une grille."</string>
 </resources>

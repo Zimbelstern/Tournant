@@ -1,0 +1,2 @@
+- Funcție nouă în 1.1.5: Implementarea unei secțiuni care afişează toate categoriile în căutare
+- Rezolvare bug

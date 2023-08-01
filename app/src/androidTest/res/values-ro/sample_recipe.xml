@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sample_cuisine">Americane</string>
+    <string name="sample_yields">20 de brioşe</string>
+    <string name="sample_modifications">Pentru brioşe de ciocolată, înlocuiți 10pg de făină cu 100g de cacao pudră.</string>
+    <string name="sample_title">Brioşe</string>
+    <string name="sample_category">Patiserie</string>
+    <string name="sample_instructions">1. Preîncălziți cuptorul la 200°C (400°F).
+\n2. Bateți ouăle uşor pentru 1 minut.
+\n3. Adăugați uleiul şi laptele, şi bateți până s-au combinat. Apoi adăugați zahărul şi amestecați până când aveți un aluat neted.
+\n4. Cerneți prin făină, praf de copt şi sare, şi amestecați atent până aveți un aluat abia neted.
+\n5. Dați prin fulgi de ciocolată.
+\n6. Umpleți două treimi (2/3) formele de brioşe şi coaceți pentru 20-25 minute. Când este introdusă o scobitoare, nu ar trebui să rămână nimic pe ea.
+\n7. Lăsați brioşele în tavă pentru căteva minute să se răcească, apoi transferați-le pe un uscător.</string>
+</resources>

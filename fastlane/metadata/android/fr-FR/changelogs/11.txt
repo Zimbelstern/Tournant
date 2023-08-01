@@ -1,0 +1,3 @@
+Tournant 2.0 est livré avec une base de code entièrement réécrite, ouvrant la voie à l'édition de recettes dans l'application.
+Le paramètrage de mode (autonome ou synchronisé) a été déplacé vers ceux de l'application. Des fonctionnalités d'édition seront ajoutées peu à peu après cette version.
+Avec cette version, plusieurs améliorations ont été apportées : temps de chargement beaucoup plus rapides, meilleur affichage des palettes de quantité, importation de plusieurs fichiers, et bien d'autres.

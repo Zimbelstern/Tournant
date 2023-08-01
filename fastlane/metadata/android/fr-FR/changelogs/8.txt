@@ -1,0 +1,1 @@
+- Nouvelle fonctionnalité : Implémentation d'une section affichant toutes les catégories et cuisines en recherche

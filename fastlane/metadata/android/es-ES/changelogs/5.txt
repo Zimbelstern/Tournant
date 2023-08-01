@@ -1,0 +1,2 @@
+- Corrección de bug: crash al calcular cantidades de ingredientes no numérica
+- Corrección de bug: desalineación de cantidades y nombres de ingredientes

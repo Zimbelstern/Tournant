@@ -1,0 +1,1 @@
+- Funcție nouă: Implementarea unei secțiuni afişând tiate categoriile în căutare

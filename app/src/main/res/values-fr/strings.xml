@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="notes">Notes</string>
-	<string name="cooktime">Temps de cuisson</string>
+    <string name="cooktime">Temps de cuisson</string>
     <string name="instructions">Instructions</string>
     <string name="optional">%s (optionnel)</string>
     <string name="preptime">Temps de préparation</string>
     <string name="recipes">Recettes</string>
     <string name="libraries">Bibliothèques</string>
-    <string name="rating">Évaluation</string>
+    <string name="rating">Note</string>
     <string name="source">Source</string>
     <string name="category">Catégorie</string>
     <string name="cuisine">Cuisine</string>
@@ -15,14 +15,14 @@
     <string name="webpage">Page web</string>
     <string name="yield">pour</string>
     <plurals name="lots">
-        <item quantity="one" tools:ignore="ImpliedQuantity">lot</item>
+        <item quantity="one">lot</item>
         <item quantity="many">lots</item>
         <item quantity="other">lots</item>
     </plurals>
     <string name="no_recipes_found">Aucune recette trouvée</string>
     <string name="unknown_file_error">Erreur de fichier inconnue : %s</string>
     <plurals name="servings">
-        <item quantity="one" tools:ignore="ImpliedQuantity">portion</item>
+        <item quantity="one">portion</item>
         <item quantity="many">portions</item>
         <item quantity="other">portions</item>
     </plurals>
@@ -48,4 +48,59 @@
     <string name="color_theme">Schéma de couleur</string>
     <string name="checked">coché</string>
     <string name="type_or_tap_to_search">Tapez ou sélectionnez…</string>
+    <string name="importing_only_in_standalone_mode">Importation seulement en mode autonome</string>
+    <string name="new_recipe">Nouvelle recette</string>
+    <string name="be_careful">Faites attention</string>
+    <string name="use_comma_as_decimal_separator">Utilisez une virgule comme séparateur décimal lors de l\'importation et de l\'exportation</string>
+    <string name="delete_all_recipes">Supprimer toutes les recettes</string>
+    <string name="delete_all_recipes_sure">Cela va effacer définitivement toutes les recettes importées dans la base de données (mais aucun fichier). Êtes-vous sûr \?</string>
+    <string name="synced_file">Fichier Gourmand XML synchronisé</string>
+    <string name="recipe">Recette</string>
+    <string name="title">Titre</string>
+    <string name="unit">Unité</string>
+    <string name="ingredient">Ingrédient</string>
+    <string name="group">Groupe</string>
+    <string name="import_recipes">Importer des recettes</string>
+    <string name="import_export">Compatibilité Gourmand</string>
+    <string name="selected">%d sélectionné</string>
+    <string name="add_to_selection">Ajouter à la sélection</string>
+    <string name="remove">Retirer</string>
+    <string name="options">Options</string>
+    <string name="inspiration">Vous cherchez de l\'inspiration \?</string>
+    <string name="edit">Éditer</string>
+    <string name="save">Sauvegarder</string>
+    <string name="add_photo">Ajouter photo</string>
+    <string name="remove_photo">Retirer photo</string>
+    <string name="unset_rating">Retirer notation</string>
+    <string name="make_optional">Rendre optionnel</string>
+    <string name="make_mandatory">Rendre obligatoire</string>
+    <string name="file_not_changed">Le fichier synchronisé n\'a pas été modifié</string>
+    <string name="recipe_count">Nombre de recettes</string>
+    <string name="refresh">Rafraîchir</string>
+    <string name="share_selected">Partager sélectionné</string>
+    <string name="export_selected">Exporter sélectionné</string>
+    <string name="delete_selected">Supprimer sélectionné</string>
+    <string name="delete_selected_sure_named">Cela effacera définitivement %s de la base de données. Êtes-vous sûr \?</string>
+    <string name="dependent_recipes">Recettes dépendantes</string>
+    <string name="dependent_recipes_found">La sélection contient une ou plusieurs recettes qui sont utilisées dans d\'autres recettes. Vous devez résoudre ces dépendances ou les supprimer également.
+\nRecettes dépendantes : %s</string>
+    <string name="share_all">Tout partager</string>
+    <string name="export_all">Tout exporter</string>
+    <string name="select_all">Tout sélectionner</string>
+    <plurals name="delete_selected_sure">
+        <item quantity="one">Cela effacera définitivement une recette de la base de données. Êtes-vous sûr \?</item>
+        <item quantity="many">Cela effacera définitivement %d recettes de la base de données. Êtes-vous sûr \?</item>
+        <item quantity="other">Cela effacera définitivement %d recettes de la base de données. Êtes-vous sûr \?</item>
+    </plurals>
+    <string name="mode">Mode</string>
+    <string name="mode_standalone">Autonome</string>
+    <string name="mode_standalone_description_short">Autonome : Votre propre base de données avec la possibilité d\'éditer les recettes</string>
+    <string name="mode_standalone_description_long">Tournant crée sa propre base de données pour vos recettes. Vous pouvez importer des recettes à partir de fichiers XML. Les recettes peuvent être éditées (en développement).</string>
+    <string name="mode_synced">Synchronisé</string>
+    <string name="mode_synced_description_short">Synchronisé : Toujours synchronisé avec un fichier XML (lecture-seulement)</string>
+    <string name="mode_synced_description_long">Tournant reste synchronisé avec un seul fichier XML sur votre appareil. L\'édition des recettes est désactivée car elle créerait des conflits et il n\'existe actuellement aucune fonctionnalité de synchronisation dans Gourmand pour les résoudre.</string>
+    <string name="change_synced_file">Modifier le fichier synchronisé</string>
+    <string name="change_mode_explanation">Vous pouvez changer le mode dans les réglages.</string>
+    <string name="search">Rechercher</string>
+    <string name="done">Prêt !</string>
 </resources>

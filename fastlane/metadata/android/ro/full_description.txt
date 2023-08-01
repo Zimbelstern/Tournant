@@ -1,0 +1,15 @@
+<b>Tournant vă serveşte mâncărurile preferate pe dispozitivul Android!</b>
+Cu Tournant, vă puteți gestiona rețetele într-un mod simplu şi eficient. Puteți sincroniza aplicația cu un fişier din Gourmand Recipe Manager (fost Gourmet) sau să utilizați Tournant ca un manager de rețete separat.
+
+<b>Funcții</b>
+<ul>
+<li>Creează şi editează rețete</li>
+<li>Import şi export de fişiere XML (Gourmand)</li>
+<li>Sincronizează cu un fişier XML pe dispozitivul Android</li>
+<li>Caută în rețete şi categorii</li>
+<li>Distribuie rețete</li>
+<li>Ajustează automat listele de ingrediente în funcție de porția dorită</li>
+</ul>
+
+<b>Accesează site-ul pentru documentație</b>
+https://tournant.zimbelstern.eu
