@@ -7,7 +7,7 @@
     <string name="preptime">Temps de préparation</string>
     <string name="recipes">Recettes</string>
     <string name="libraries">Bibliothèques</string>
-    <string name="rating">Évaluation</string>
+    <string name="rating">Note</string>
     <string name="source">Source</string>
     <string name="category">Catégorie</string>
     <string name="cuisine">Cuisine</string>
@@ -15,14 +15,14 @@
     <string name="webpage">Page web</string>
     <string name="yield">pour</string>
     <plurals name="lots">
-        <item quantity="one" tools:ignore="ImpliedQuantity">lot</item>
+        <item quantity="one">lot</item>
         <item quantity="many">lots</item>
         <item quantity="other">lots</item>
     </plurals>
     <string name="no_recipes_found">Aucune recette trouvée</string>
     <string name="unknown_file_error">Erreur de fichier inconnue : %s</string>
     <plurals name="servings">
-        <item quantity="one" tools:ignore="ImpliedQuantity">portion</item>
+        <item quantity="one">portion</item>
         <item quantity="many">portions</item>
         <item quantity="other">portions</item>
     </plurals>
@@ -64,14 +64,14 @@
     <string name="import_export">Compatibilité Gourmand</string>
     <string name="selected">%d sélectionné</string>
     <string name="add_to_selection">Ajouter à la sélection</string>
-    <string name="remove">Éliminer</string>
+    <string name="remove">Retirer</string>
     <string name="options">Options</string>
     <string name="inspiration">Vous cherchez de l\'inspiration \?</string>
     <string name="edit">Éditer</string>
     <string name="save">Sauvegarder</string>
     <string name="add_photo">Ajouter photo</string>
-    <string name="remove_photo">Effacer photo</string>
-    <string name="unset_rating">Réinitialiser notation</string>
+    <string name="remove_photo">Retirer photo</string>
+    <string name="unset_rating">Retirer notation</string>
     <string name="make_optional">Rendre optionnel</string>
     <string name="make_mandatory">Rendre obligatoire</string>
     <string name="file_not_changed">Le fichier synchronisé n\'a pas été modifié</string>
@@ -102,5 +102,5 @@
     <string name="change_synced_file">Modifier le fichier synchronisé</string>
     <string name="change_mode_explanation">Vous pouvez changer le mode dans les réglages.</string>
     <string name="search">Rechercher</string>
-    <string name="done">Fait</string>
+    <string name="done">Prêt !</string>
 </resources>
