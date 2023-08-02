@@ -9,7 +9,7 @@
 
 	<!-- Recipe -->
 	<string name="recipe">Recipe</string>
-	<plurals name="recipes">
+	<plurals name="n_recipes">
 		<item quantity="one">%d recipe</item>
 		<item quantity="other">%d recipes</item>
 	</plurals>

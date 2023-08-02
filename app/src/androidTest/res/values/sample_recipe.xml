@@ -6,15 +6,23 @@
 	<string name="sample_source" translatable="false">BBC goodfood</string>
 	<string name="sample_yields">20 muffins</string>
 	<string-array name="sample_ingredients">
-		<item>2 medium eggs</item>
-		<item>125 ml vegetable oil</item>
-		<item>250 ml milk</item>
-		<item>250 g sugar</item>
-		<item>400 g flour</item>
-		<item>3 tsp baking powder</item>
-		<item>1 tsp salt</item>
-		<item>100 g chocolate chips</item>
+		<item>@string/eggs</item>
+		<item>@string/vegetable_oil</item>
+		<item>@string/milk</item>
+		<item>@string/sugar</item>
+		<item>@string/flour</item>
+		<item>@string/baking_powder</item>
+		<item>@string/salt</item>
+		<item>@string/chocolate_chips</item>
 	</string-array>
+	<string name="eggs">2 medium eggs</string>
+	<string name="vegetable_oil">125 ml vegetable oil</string>
+	<string name="milk">250 ml milk</string>
+	<string name="sugar">250 g sugar</string>
+	<string name="flour">400 g flour</string>
+	<string name="baking_powder">3 tsp baking powder</string>
+	<string name="salt">1 tsp salt</string>
+	<string name="chocolate_chips">100 g chocolate chips</string>
 	<string name="sample_instructions">
 		1. Preheat the oven to 200°C (400°F).
 		\n2. Beat the eggs lightly for 1 min.

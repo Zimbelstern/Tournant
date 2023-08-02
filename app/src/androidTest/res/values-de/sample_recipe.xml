@@ -4,16 +4,14 @@
     <string name="sample_category">Süßgebäck</string>
     <string name="sample_cuisine">amerikanisch</string>
     <string name="sample_yields">20 Stück</string>
-    <string-array name="sample_ingredients">
-        <item>2 Eier</item>
-        <item>125 ml Speiseöl</item>
-        <item>250 ml Milch</item>
-        <item>250 g Zucker</item>
-        <item>400 g Mehl</item>
-        <item>3 TL Backpulver</item>
-        <item>1 TL Salz</item>
-        <item>100 g Schokotropfen</item>
-    </string-array>
+    <string name="eggs">2 Eier</string>
+    <string name="vegetable_oil">125 ml Speiseöl</string>
+    <string name="milk">250 ml Milch</string>
+    <string name="sugar">250 g Zucker</string>
+    <string name="flour">400 g Mehl</string>
+    <string name="baking_powder">3 TL Backpulver</string>
+    <string name="salt">1 TL Salz</string>
+    <string name="chocolate_chips">100 g Schokotropfen</string>
     <string name="sample_instructions">
         1. Backofen auf 200 °C vorheizen.
         \n2. Die Eier leicht schaumig rühren.
@@ -22,6 +20,6 @@
 		\n5. Schokotropfen unterrühren.
 		\n6. Mit dem Teig die Muffinförmchen zu zwei Dritteln befüllen und 20-25 Minuten backen. An einem hineingesteckten Holzstäbchen sollte kein Teig mehr kleben bleiben.
 		\n7. Die fertiggebackenen Muffins noch wenige Minuten in der Form lassen und dann zum Auskühlen auf ein Gitter stellen.
-</string>
+	</string>
     <string name="sample_modifications">Für Schokomuffins 100 g des Mehls mit 100 g Kakaopulver ersetzen.</string>
 </resources>

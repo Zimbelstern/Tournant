@@ -76,7 +76,7 @@
     <string name="unset_rating">Quitar evaluación</string>
     <string name="make_optional">Hacer opcional</string>
     <string name="make_mandatory">Hacer obligatorio</string>
-    <plurals name="recipes">
+    <plurals name="n_recipes">
         <item quantity="one">Recetas</item>
         <item quantity="many"></item>
         <item quantity="other"></item>

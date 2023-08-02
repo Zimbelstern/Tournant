@@ -81,7 +81,7 @@
     <string name="unset_rating">Elimină evaluarea</string>
     <string name="make_optional">Marchează ca opțional</string>
     <string name="make_mandatory">Marchează ca obligatoriu</string>
-    <plurals name="recipes">
+    <plurals name="n_recipes">
         <item quantity="one">Rețete</item>
         <item quantity="few"></item>
         <item quantity="other"></item>
