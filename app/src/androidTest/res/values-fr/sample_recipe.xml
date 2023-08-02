@@ -3,16 +3,24 @@
     <string name="sample_title">Muffins</string>
     <string name="sample_category">Pâtisseries</string>
     <string name="sample_cuisine">américaine</string>
-    <string name="sample_yields">12 muffins</string>
-    <string name="sample_preptime">25 min</string>
-    <string name="sample_cooktime">20 min</string>
+    <string name="sample_yields">20 muffins</string>
+    <string name="eggs">2 œufs</string>
+    <string name="vegetable_oil">125 ml d'huile</string>
+    <string name="milk">250 ml de lait</string>
+    <string name="sugar">250 g de sucre</string>
+    <string name="flour">400 g de farine</string>
+    <string name="baking_powder">3 cc de levure chimique</string>
+    <string name="salt">1 cc de sel</string>
+    <string name="chocolate_chips">100 g de pépites de chocolat</string>
+    <string name="sample_instructions">
+        1. Préchauffer le four à 200 °C.
+        \n2. Battre les œufs légèrement pendant 1 min.
+        \n3. Ajouter l\'huile et le lait, puis mélanger jusqu\'à ce qu\'ils soient mélangés.
+        \nPuis rajouter le sucre et mélanger jusqu\'à obtenir une pâte lisse.
+        \n4. Tamiser la farine, la levure chimique et le sel, puis mélanger soigneusement jusqu\'à avoir une consistance lisse.
+        \n5. Incorporer les pépites de chocolat.
+        \n6. Remplir les moules à muffins aux deux tiers et mettre au four pendant 20-25 minutes.  Lorsqu\'une brochette est insérée au milieu, elle doit ressortir propre.
+        \n7. Laisser refroidir les muffins dans leur moule pendant quelques minutes puis les transférer sur une grille.
+    </string>
     <string name="sample_modifications">Pour des muffins au chocolats, remplacer 100g de la farine par 100g de poudre de cacao.</string>
-    <string name="sample_instructions">"1. Préchauffer le four à 200 °C.
-\n2. Battre les œufs légèrement pendant 1 min.
-\n3. Ajouter l\'huile et le lait, puis mélanger jusqu\'à ce qu\'ils soient mélangés. 
-\nPuis rajouter le sucre et mélanger jusqu\'à obtenir une pâte lisse.
-\n4. Tamiser la farine, la levure chimique et le sel, puis mélanger soigneusement jusqu\'à avoir une consistance lisse.
-\n5. Incorporer les pépites de chocolat.
-\n6. Remplir les moules à muffins aux deux tiers et mettre au four pendant 20-25 minutes.  Lorsqu\'une brochette est insérée au milieu, elle doit ressortir propre.
-\n7. Laisser refroidir les muffins dans leur moule pendant quelques minutes puis les transférer sur une grille."</string>
 </resources>
