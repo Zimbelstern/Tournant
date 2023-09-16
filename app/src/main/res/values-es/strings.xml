@@ -17,7 +17,7 @@
     <plurals name="lots">
         <item quantity="one">lote</item>
         <item quantity="many">lotes</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <string name="mode">Modo</string>
     <string name="mode_standalone">Independiente</string>
@@ -77,9 +77,9 @@
     <string name="make_optional">Hacer opcional</string>
     <string name="make_mandatory">Hacer obligatorio</string>
     <plurals name="n_recipes">
-        <item quantity="one">Recetas</item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
+        <item quantity="one">receta %d</item>
+        <item quantity="many">recetas %d</item>
+        <item quantity="other">recetas %d</item>
     </plurals>
     <string name="title">Título</string>
     <string name="preptime">Tiempo de preparación</string>
@@ -87,7 +87,7 @@
     <plurals name="servings">
         <item quantity="one">porción</item>
         <item quantity="many">porciones</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <string name="mode_standalone_description_short">Independiente : Propia base de datos con la posibilidad de editar recetas</string>
     <string name="mode_synced_description_long">Tournant permanece sincronizado con un solo archivo XML en su dispositivo. La edición de recetas está deshabilitada porque crearía conflictos y actualmente no hay función de sincronización en Gourmand para resolverlos.</string>
@@ -107,4 +107,6 @@
     <string name="delete_all_recipes_sure">Esto borrará permanentemente todas las recetas importadas en la base de datos (pero no archivos) ¿Está seguro\?</string>
     <string name="save">Guardar</string>
     <string name="remove_photo">Quitar foto</string>
+    <string name="recipes">Recetas</string>
+    <string name="share">Compartir</string>
 </resources>
