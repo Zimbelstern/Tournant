@@ -1,139 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-	<!-- App bar titles -->
-	<string name="recipes">Rezepte</string>
-
-	<!-- Recipe -->
-	<string name="recipe">Rezept</string>
-	<plurals name="n_recipes">
-		<item quantity="one">%d Rezept</item>
-		<item quantity="other">%d Rezepte</item>
-	</plurals>
-	<string name="title">Titel</string>
-	<string name="category">Kategorie</string>
-	<string name="cuisine">Küche</string>
-	<string name="rating">Bewertung</string>
-	<string name="source">Quelle</string>
-	<string name="webpage">Webseite</string>
-	<string name="cooktime">Garzeit</string>
-	<string name="preptime">Vorbereitungszeit</string>
-	<string name="yield">für</string>
-	<string name="unit">Einheit</string>
-	<string name="ingredient">Zutat</string>
-	<string name="ingredients">Zutaten</string>
-	<string name="group">Zutatengruppe</string>
-	<string name="optional">%s (optional)</string>
-	<string name="instructions">Anleitung</string>
-	<string name="notes">Notizen</string>
-	<plurals name="servings">
-		<item quantity="one">Portion</item>
-		<item quantity="other">Portionen</item>
-	</plurals>
-	<plurals name="lots">
-		<item quantity="one">-fache Rezeptmenge</item>
-		<item quantity="other">-fache Rezeptmenge</item>
-	</plurals>
-
-	<!-- Modes -->
-	<string name="mode">Modus</string>
-	<string name="mode_standalone">Eigenständig</string>
-	<string name="mode_standalone_description_short">Eigenständig: Eigene Datenbank, Rezepte bearbeitbar</string>
-	<string name="mode_standalone_description_long">Tournant erstellt eine eigene Rezepte-Datenbank. Rezepte können aus einer XML-Datei importiert und bearbeitet werden (in Entwicklung).</string>
-	<string name="mode_synced">Synchronisiert</string>
-	<string name="mode_synced_description_short">Synchronisiert: Mit einer XML-Datei synchronisiert (Lesemodus)</string>
-	<string name="mode_synced_description_long">Tournant synchronisiert die Rezeptliste mit einer XML-Datei auf dem Gerät. Bearbeiten ist deaktiviert, da Änderungen nicht wieder an Gourmand übertragen werden könnten.</string>
-
-	<!-- First start UI & file choose options -->
-	<string name="choose_file_long">Wählen Sie eine Gourmet/Gourmand-XML-Datei vom Gerät aus.</string>
-	<string name="change_synced_file">Datei auswählen</string>
-	<string name="change_mode_explanation">Sie können den Modus in den Einstellungen ändern.</string>
-
-	<!-- Messages -->
-	<string name="file_does_not_exist">Die Datei existiert nicht</string>
-	<string name="no_recipes_found">Keine Rezepte gefunden</string>
-	<string name="recipe_not_found">Rezept nicht gefunden</string>
-	<string name="inputstream_null">Fehler beim Öffnen der Datei</string>
-	<string name="unknown_file_error">Unbekannter Dateifehler: %s</string>
-	<string name="importing_only_in_standalone_mode">Importieren nur im eigenständigen Modus</string>
-	<string name="file_not_changed">Synchronisierte Datei unverändert</string>
-
-	<!-- Options menu -->
-	<string name="recipe_count">Rezeptanzahl</string>
-	<string name="new_recipe">Neues Rezept</string>
-	<string name="import_recipes">Rezepte importieren</string>
-	<string name="refresh">Aktualisieren</string>
-	<string name="settings">Einstellungen</string>
-	<string name="about_app_name">Über %s</string>
-
-	<!-- Recipe options menu -->
-	<string name="share">Teilen</string>
-
-	<!-- Action mode menu -->
-	<string name="share_selected">Ausgewählte teilen</string>
-	<string name="export_selected">Ausgewählte exportieren</string>
-	<string name="delete_selected">Ausgewählte löschen</string>
-	<plurals name="delete_selected_sure">
-		<item quantity="one">Das wird ein Rezept aus der Datenbank löschen. Sicher?</item>
-		<item quantity="other">Das wird %d Rezepte aus der Datenbank löschen. Sicher?</item>
-	</plurals>
-	<string name="delete_selected_sure_named">Das wird %s aus der Datenbank löschen. Sicher?</string>
-	<string name="dependent_recipes">Abhängige Rezepte</string>
-	<string name="dependent_recipes_found">Die Auswahl enthält ein oder mehrere Rezepte, die in anderen Rezepten verwendet werden. Lösen Sie die Abhängigkeiten oder löschen Sie auch diese Rezepte.\nAbhängige Rezepte: %s</string>
-	<string name="share_all">Alle teilen</string>
-	<string name="export_all">Alle exportieren</string>
-	<string name="select_all">Alle auswählen</string>
-
-	<!-- Settings -->
-	<string name="general_settings">Allgemeine Einstellungen</string>
-	<string name="be_careful">Vorsicht</string>
-	<string name="keep_screen_on">Bildschirm in der Rezeptansicht angeschaltet lassen</string>
-	<string name="synced_file">Synchronisierte Gourmand-XML-Datei</string>
-	<string name="color_theme">Farbschema</string>
-	<string name="delete_all_recipes">Alle Rezepte löschen</string>
-	<string name="delete_all_recipes_sure">Das wird alle importierten Rezepte aus der Datenbank löschen (aber keine Dateien). Sicher?</string>
-	<string-array name="color_theme_options">
-		<item>Automatisch (dem System folgen)</item>
-		<item>Hell</item>
-		<item>Dunkel</item>
-	</string-array>
-	<string name="import_export">Gourmand-Kompatibilität</string>
-	<string name="use_comma_as_decimal_separator">Ein Komma als Dezimaltrennzeichen beim Importieren und Exportieren verwenden</string>
-
-	<!-- About -->
-	<string name="website">Webseite</string>
-	<string name="version">Version</string>
-	<string name="license">Lizenz</string>
-	<string name="code">Quellcode</string>
-	<string name="issues">Bugtracker</string>
-	<string name="donate">Spenden</string>
-	<string name="libraries">Bibliotheken</string>
-
-	<!-- Search -->
-	<string name="search">Suche</string>
-	<string name="type_or_tap_to_search">Tippen oder antippen…</string>
-
-	<!-- General purpose -->
-	<string name="cancel">Abbrechen</string>
-	<string name="ok">OK</string>
-	<string name="done">Fertig</string>
-	<string name="egg">Hier, ein Keks: 🍪</string>
-	<string name="less">Weniger</string>
-	<string name="more">Mehr</string>
-	<string name="checked">abgehakt</string>
-	<string name="selected">%d ausgewählt</string>
-	<string name="add_to_selection">Zur Auswahl hinzufügen</string>
-	<string name="remove">Entfernen</string>
-	<string name="options">Optionen</string>
-	<string name="inspiration">Inspiration gefällig?</string>
-
-	<!-- Editing -->
-	<string name="edit">Bearbeiten</string>
-	<string name="save">Speichern</string>
-	<string name="add_photo">Foto hinzufügen</string>
-	<string name="remove_photo">Foto entfernen</string>
-	<string name="unset_rating">Bewertung zurückziehen</string>
-	<string name="make_optional">Als optional markieren</string>
-	<string name="make_mandatory">Als nicht optional markieren</string>
-
+    <!-- App bar titles -->
+    <string name="recipes">Rezepte</string>
+    <!-- Recipe -->
+    <string name="recipe">Rezept</string>
+    <plurals name="n_recipes">
+        <item quantity="one">%d Rezept</item>
+        <item quantity="other">%d Rezepte</item>
+    </plurals>
+    <string name="title">Titel</string>
+    <string name="category">Kategorie</string>
+    <string name="cuisine">Küche</string>
+    <string name="rating">Bewertung</string>
+    <string name="source">Quelle</string>
+    <string name="webpage">Webseite</string>
+    <string name="cooktime">Garzeit</string>
+    <string name="preptime">Vorbereitungszeit</string>
+    <string name="yield">für</string>
+    <string name="unit">Einheit</string>
+    <string name="ingredient">Zutat</string>
+    <string name="ingredients">Zutaten</string>
+    <string name="group">Zutatengruppe</string>
+    <string name="optional">%s (optional)</string>
+    <string name="instructions">Anleitung</string>
+    <string name="notes">Notizen</string>
+    <plurals name="servings">
+        <item quantity="one">Portion</item>
+        <item quantity="other">Portionen</item>
+    </plurals>
+    <plurals name="lots">
+        <item quantity="one">-fache Rezeptmenge</item>
+        <item quantity="other">-fache Rezeptmenge</item>
+    </plurals>
+    <!-- Modes -->
+    <string name="mode">Modus</string>
+    <string name="mode_standalone">Eigenständig</string>
+    <string name="mode_standalone_description_short">Eigenständig: Eigene Datenbank, Rezepte bearbeitbar</string>
+    <string name="mode_standalone_description_long">Tournant erstellt eine eigene Rezepte-Datenbank. Rezepte können aus einer XML-Datei importiert und bearbeitet werden (in Entwicklung).</string>
+    <string name="mode_synced">Synchronisiert</string>
+    <string name="mode_synced_description_short">Synchronisiert: Mit einer XML-Datei synchronisiert (Lesemodus)</string>
+    <string name="mode_synced_description_long">Tournant synchronisiert die Rezeptliste mit einer XML-Datei auf dem Gerät. Bearbeiten ist deaktiviert, da Änderungen nicht wieder an Gourmand übertragen werden könnten.</string>
+    <!-- First start UI & file choose options -->
+    <string name="choose_file_long">Wählen Sie eine Gourmet/Gourmand-XML-Datei vom Gerät aus.</string>
+    <string name="change_synced_file">Datei auswählen</string>
+    <string name="change_mode_explanation">Sie können den Modus in den Einstellungen ändern.</string>
+    <!-- Messages -->
+    <string name="file_does_not_exist">Die Datei existiert nicht</string>
+    <string name="no_recipes_found">Keine Rezepte gefunden</string>
+    <string name="recipe_not_found">Rezept nicht gefunden</string>
+    <string name="inputstream_null">Fehler beim Öffnen der Datei</string>
+    <string name="unknown_file_error">Unbekannter Dateifehler: %s</string>
+    <string name="importing_only_in_standalone_mode">Importieren nur im eigenständigen Modus</string>
+    <string name="file_not_changed">Synchronisierte Datei unverändert</string>
+    <!-- Options menu -->
+    <string name="recipe_count">Rezeptanzahl</string>
+    <string name="new_recipe">Neues Rezept</string>
+    <string name="import_recipes">Rezepte importieren</string>
+    <string name="refresh">Aktualisieren</string>
+    <string name="settings">Einstellungen</string>
+    <string name="about_app_name">Über %s</string>
+    <!-- Recipe options menu -->
+    <string name="share">Teilen</string>
+    <!-- Action mode menu -->
+    <string name="share_selected">Ausgewählte teilen</string>
+    <string name="export_selected">Ausgewählte exportieren</string>
+    <string name="delete_selected">Ausgewählte löschen</string>
+    <plurals name="delete_selected_sure">
+        <item quantity="one">Das wird ein Rezept aus der Datenbank löschen. Sicher?</item>
+        <item quantity="other">Das wird %d Rezepte aus der Datenbank löschen. Sicher?</item>
+    </plurals>
+    <string name="delete_selected_sure_named">Das wird %s aus der Datenbank löschen. Sicher?</string>
+    <string name="dependent_recipes">Abhängige Rezepte</string>
+    <string name="dependent_recipes_found">Die Auswahl enthält ein oder mehrere Rezepte, die in anderen Rezepten verwendet werden. Lösen Sie die Abhängigkeiten oder löschen Sie auch diese Rezepte.\nAbhängige Rezepte: %s</string>
+    <string name="share_all">Alle teilen</string>
+    <string name="export_all">Alle exportieren</string>
+    <string name="select_all">Alle auswählen</string>
+    <!-- Settings -->
+    <string name="general_settings">Allgemeine Einstellungen</string>
+    <string name="be_careful">Vorsicht</string>
+    <string name="keep_screen_on">Bildschirm in der Rezeptansicht angeschaltet lassen</string>
+    <string name="synced_file">Synchronisierte Gourmand-XML-Datei</string>
+    <string name="color_theme">Farbschema</string>
+    <string name="delete_all_recipes">Alle Rezepte löschen</string>
+    <string name="delete_all_recipes_sure">Das wird alle importierten Rezepte aus der Datenbank löschen (aber keine Dateien). Sicher?</string>
+    <string-array name="color_theme_options">
+        <item>Automatisch (dem System folgen)</item>
+        <item>Hell</item>
+        <item>Dunkel</item>
+    </string-array>
+    <string name="import_export">Gourmand-Kompatibilität</string>
+    <string name="use_comma_as_decimal_separator">Ein Komma als Dezimaltrennzeichen beim Importieren und Exportieren verwenden</string>
+    <!-- About -->
+    <string name="website">Webseite</string>
+    <string name="version">Version</string>
+    <string name="license">Lizenz</string>
+    <string name="code">Quellcode</string>
+    <string name="issues">Bugtracker</string>
+    <string name="donate">Spenden</string>
+    <string name="libraries">Bibliotheken</string>
+    <!-- Search -->
+    <string name="search">Suche</string>
+    <string name="type_or_tap_to_search">Tippen oder antippen…</string>
+    <!-- General purpose -->
+    <string name="cancel">Abbrechen</string>
+    <string name="ok">OK</string>
+    <string name="done">Fertig</string>
+    <string name="egg">Hier, ein Keks: 🍪</string>
+    <string name="less">Weniger</string>
+    <string name="more">Mehr</string>
+    <string name="checked">abgehakt</string>
+    <string name="selected">%d ausgewählt</string>
+    <string name="add_to_selection">Zur Auswahl hinzufügen</string>
+    <string name="remove">Entfernen</string>
+    <string name="options">Optionen</string>
+    <string name="inspiration">Inspiration gefällig?</string>
+    <!-- Editing -->
+    <string name="edit">Bearbeiten</string>
+    <string name="save">Speichern</string>
+    <string name="add_photo">Foto hinzufügen</string>
+    <string name="remove_photo">Foto entfernen</string>
+    <string name="unset_rating">Bewertung zurückziehen</string>
+    <string name="make_optional">Als optional markieren</string>
+    <string name="make_mandatory">Als nicht optional markieren</string>
 </resources>

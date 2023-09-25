@@ -50,7 +50,7 @@
     <string name="share_all">Sdílet vše</string>
     <string name="export_all">Exportovat vše</string>
     <string name="select_all">Označit vše</string>
-    <string name="be_careful">Pozor!</string>
+    <string name="be_careful">Pozor</string>
     <string name="keep_screen_on">Nechat zapnutý dislej při zobrazení jednoho receptu</string>
     <string name="synced_file">Synchronizovaný Gourmand XML soubor</string>
     <string name="use_comma_as_decimal_separator">Používat čárku pro oddělení desetinných čísel při importu a exportu</string>
@@ -65,7 +65,7 @@
     <string name="cancel">Zrušit</string>
     <string name="ok">OK</string>
     <string name="done">Hotovo</string>
-    <string name="egg">Dejte si sušenku:🍪</string>
+    <string name="egg">Dejte si sušenku: 🍪</string>
     <string name="less">méně</string>
     <string name="more">více</string>
     <string name="selected">%d vybráno</string>
