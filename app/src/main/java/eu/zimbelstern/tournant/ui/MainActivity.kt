@@ -147,6 +147,7 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 			recipeListAdapter.withLoadStateFooter(RecipeDescriptionLoadStateAdapter())
 		)
 
+		supportActionBar?.title = getString(R.string.all_recipes)
 
 		// RECIPE COUNT
 		supportActionBar?.setDisplayShowTitleEnabled(true)

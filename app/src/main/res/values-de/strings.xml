@@ -3,6 +3,7 @@
 
 	<!-- App bar titles -->
 	<string name="recipes">Rezepte</string>
+	<string name="all_recipes">Alle Rezepte</string>
 
 	<!-- Recipe -->
 	<string name="recipe">Rezept</string>

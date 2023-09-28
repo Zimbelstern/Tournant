@@ -6,6 +6,7 @@
 
 	<!-- App bar titles -->
 	<string name="recipes">Recipes</string>
+	<string name="all_recipes">All recipes</string>
 
 	<!-- Recipe -->
 	<string name="recipe">Recipe</string>
