@@ -63,9 +63,10 @@
 			android:layout_weight="1"
 			app:suffixText="@{ingredient.optional}"
 			app:expandedHintEnabled="false"
-			style="@style/Tournant.TextInputLayout.OutlinedBox.Dense">
+			app:endIconMode="none"
+			style="@style/Tournant.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu">
 
-			<com.google.android.material.textfield.TextInputEditText
+			<com.google.android.material.textfield.MaterialAutoCompleteTextView
 				android:id="@+id/edit_item"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"

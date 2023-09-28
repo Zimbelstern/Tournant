@@ -129,7 +129,7 @@ abstract class RecipeDao {
 
 	@Transaction
 	@Query("SELECT * FROM recipe WHERE id IN (:ids)")
-	abstract suspend fun getRecipesById(ids: Set<Long>): List<RecipeWithIngredients>
+	abstract fun getRecipesById(ids: Set<Long>): List<RecipeWithIngredients>
 
 	@Transaction
 	@Query("""
@@ -140,13 +140,13 @@ abstract class RecipeDao {
 		)
 		SELECT * FROM recipe WHERE id IN refs AND id NOT IN (:recipeIds)
 	""")
-	abstract suspend fun getReferencedRecipes(recipeIds: Set<Long>): List<RecipeWithIngredients>
+	abstract fun getReferencedRecipes(recipeIds: Set<Long>): List<RecipeWithIngredients>
 
 	@Query("SELECT id, title FROM recipe ORDER BY title COLLATE LOCALIZED ASC")
-	abstract suspend fun getRecipeTitlesWithIds(): List<RecipeTitleId>
+	abstract fun getRecipeTitlesWithIds(): Flow<List<RecipeTitleId>>
 
 	@Query("SELECT title FROM recipe WHERE id = :id")
-	abstract suspend fun getRecipeTitleById(id: Long): String?
+	abstract fun getRecipeTitleById(id: Long): String?
 
 	@Transaction
 	@Query("SELECT * FROM recipe WHERE gourmandId = :gourmandId")
@@ -178,11 +178,20 @@ abstract class RecipeDao {
 	""")
 	abstract fun getDependentRecipeIds(recipeIds: Set<Long>): List<Long>
 
-	@Query("SELECT DISTINCT category FROM recipe ORDER BY category COLLATE LOCALIZED ASC")
+	@Query("SELECT DISTINCT category FROM recipe WHERE category IS NOT NULL ORDER BY category COLLATE LOCALIZED ASC")
 	abstract fun getCategories(): Flow<List<String?>>
 
-	@Query("SELECT DISTINCT cuisine FROM recipe ORDER BY cuisine COLLATE LOCALIZED ASC")
+	@Query("SELECT DISTINCT cuisine FROM recipe WHERE cuisine IS NOT NULL ORDER BY cuisine COLLATE LOCALIZED ASC")
 	abstract fun getCuisines(): Flow<List<String?>>
+
+	@Query("SELECT DISTINCT source FROM recipe WHERE source IS NOT NULL ORDER BY source COLLATE LOCALIZED ASC")
+	abstract fun getSources(): Flow<List<String>>
+
+	@Query("SELECT DISTINCT yieldUnit FROM recipe WHERE yieldUnit IS NOT NULL ORDER BY yieldUnit COLLATE LOCALIZED ASC")
+	abstract fun getYieldUnits(): Flow<List<String>>
+
+	@Query("SELECT DISTINCT item FROM ingredient WHERE item IS NOT NULL ORDER BY item COLLATE LOCALIZED ASC")
+	abstract fun getIngredientItems(): Flow<List<String>>
 
 
 	// INSERTING

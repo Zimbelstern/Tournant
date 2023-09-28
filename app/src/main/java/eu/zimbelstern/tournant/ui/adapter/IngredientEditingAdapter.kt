@@ -26,8 +26,14 @@ import java.text.NumberFormat
 class IngredientEditingAdapter(
 	private val ingredientEditingInterface: IngredientEditingInterface,
 	private val ingredientLines: MutableList<IngredientLine>,
-	private var recipeTitles: List<RecipeTitleId>
+	private var titlesWithIds: List<RecipeTitleId>,
+	private var ingredientSuggestions: List<String>
 ): RecyclerView.Adapter<ViewHolder>() {
+
+	companion object {
+		private const val VIEW_TYPE_INGREDIENT = 0
+		private const val VIEW_TYPE_GROUP = 1
+	}
 
 	class IngredientViewHolder(val binding: RecyclerItemIngredientEditingBinding) : ViewHolder(binding.root)
 	class GroupTitleViewHolder(val binding: RecyclerItemIngredientEditingGroupBinding) : ViewHolder(binding.root)
@@ -37,7 +43,7 @@ class IngredientEditingAdapter(
 	}
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-		return if (viewType == 0)
+		return if (viewType == VIEW_TYPE_INGREDIENT)
 			IngredientViewHolder(RecyclerItemIngredientEditingBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 		else
 			GroupTitleViewHolder(RecyclerItemIngredientEditingGroupBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -46,7 +52,7 @@ class IngredientEditingAdapter(
 	@SuppressLint("ClickableViewAccessibility")
 	override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-		if (holder.itemViewType == 0) {
+		if (holder.itemViewType == VIEW_TYPE_INGREDIENT) {
 
 			holder as IngredientViewHolder
 			val ingredient = ingredientLines[position] as Ingredient
@@ -76,19 +82,22 @@ class IngredientEditingAdapter(
 
 			holder.binding.editItem.setRawInputType(InputType.TYPE_CLASS_TEXT)
 
-			ingredient.refId?.let { refId ->
+			if (ingredient.refId == null) {
+				holder.binding.editItem.setSimpleItems(ingredientSuggestions.toTypedArray())
+				holder.binding.editItem.threshold = 3
+			} else {
 				holder.binding.editItemField.visibility = View.GONE
 				holder.binding.editRefField.visibility = View.VISIBLE
-				holder.binding.editRef.setText(recipeTitles.find { it.id == refId }?.title ?: "")
+				holder.binding.editRef.setText(titlesWithIds.find { it.id == ingredient.refId }?.title ?: "")
 				holder.binding.editRef.setAdapter(
 					ArrayAdapter(
 						holder.binding.root.context,
 						android.R.layout.simple_dropdown_item_1line,
-						recipeTitles.map { it.title }
+						titlesWithIds.map { it.title }
 					)
 				)
 				holder.binding.editRef.doAfterTextChanged { editable ->
-					ingredient.refId = recipeTitles.find { it.title == editable.toString() }?.id ?: 0L
+					ingredient.refId = titlesWithIds.find { it.title == editable.toString() }?.id ?: 0L
 				}
 			}
 
@@ -128,7 +137,7 @@ class IngredientEditingAdapter(
 			}
 		}
 
-		if (holder.itemViewType == 1) {
+		if (holder.itemViewType == VIEW_TYPE_GROUP) {
 
 			holder as GroupTitleViewHolder
 			val group = ingredientLines[position] as IngredientGroupTitle
@@ -183,14 +192,6 @@ class IngredientEditingAdapter(
 	private var focus = false
 	fun onItemInserted() {
 		focus = true
-	}
-
-	fun updateTitles(titles: List<RecipeTitleId>) {
-		recipeTitles = titles
-		ingredientLines.forEachIndexed { i, ingredientLine ->
-			if (ingredientLine is Ingredient && ingredientLine.refId != null)
-				notifyItemChanged(i)
-		}
 	}
 
 	interface IngredientEditingInterface {

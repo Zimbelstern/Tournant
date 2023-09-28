@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import eu.zimbelstern.tournant.data.IngredientLine
 import eu.zimbelstern.tournant.data.Recipe
 import eu.zimbelstern.tournant.data.RecipeDao
-import eu.zimbelstern.tournant.data.RecipeTitleId
 import eu.zimbelstern.tournant.deflate
 import eu.zimbelstern.tournant.inflate
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +17,12 @@ class RecipeEditingViewModel(private val recipeDao: RecipeDao, private val recip
 
 	val recipe = MutableStateFlow(Recipe())
 	val ingredients = MutableStateFlow(mutableListOf<IngredientLine>())
-	val titles = MutableStateFlow(listOf<RecipeTitleId>())
+	val titlesWithIds = recipeDao.getRecipeTitlesWithIds()
+	val categoryStrings = recipeDao.getCategories()
+	val cuisineStrings = recipeDao.getCuisines()
+	val sourceStrings = recipeDao.getSources()
+	val yieldUnitStrings = recipeDao.getYieldUnits()
+	val ingredientStrings = recipeDao.getIngredientItems()
 
 	init {
 		if (recipeId != 0L)
@@ -30,7 +34,6 @@ class RecipeEditingViewModel(private val recipeDao: RecipeDao, private val recip
 					}
 				}
 			}
-		viewModelScope.launch { titles.emit(recipeDao.getRecipeTitlesWithIds()) }
 	}
 
 	var savedWithId = MutableStateFlow(0L)

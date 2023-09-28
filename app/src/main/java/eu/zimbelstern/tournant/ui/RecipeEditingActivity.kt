@@ -26,6 +26,7 @@ import eu.zimbelstern.tournant.databinding.ActivityRecipeEditingBinding
 import eu.zimbelstern.tournant.move
 import eu.zimbelstern.tournant.ui.adapter.IngredientEditingAdapter
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import java.io.File
 import java.text.DecimalFormatSymbols
@@ -137,40 +138,82 @@ class RecipeEditingActivity : AppCompatActivity(), IngredientEditingAdapter.Ingr
 		}
 
 		lifecycleScope.launch {
-			viewModel.ingredients.collectLatest { ingredientLines ->
-				val ingredientAdapter = IngredientEditingAdapter(this@RecipeEditingActivity, ingredientLines, viewModel.titles.value)
-				binding.editIngredients.adapter = ingredientAdapter
+			viewModel.categoryStrings.collectLatest {
+				if (it.isNotEmpty())
+					binding.editCategory.apply {
+						setSimpleItems(it.toTypedArray())
+						setOnClickListener { if (!enoughToFilter()) showDropDown() }
+						threshold = 1
+					}
+			}
+		}
+
+		lifecycleScope.launch {
+			viewModel.cuisineStrings.collectLatest {
+				if (it.isNotEmpty())
+					binding.editCuisine.apply {
+						setSimpleItems(it.toTypedArray())
+						setOnClickListener { if (!enoughToFilter()) showDropDown() }
+						threshold = 1
+					}
+			}
+		}
+
+		lifecycleScope.launch {
+			viewModel.sourceStrings.collectLatest {
+				if (it.isNotEmpty())
+					binding.editSource.apply {
+						setSimpleItems(it.toTypedArray())
+						setOnClickListener { if (!enoughToFilter()) showDropDown() }
+						threshold = 1
+					}
+			}
+		}
+
+		lifecycleScope.launch {
+			viewModel.yieldUnitStrings.collectLatest {
+				if (it.isNotEmpty())
+					binding.editYieldUnit.apply {
+						setSimpleItems(it.toTypedArray())
+						setOnClickListener { if (!enoughToFilter()) showDropDown() }
+						threshold = 1
+					}
+			}
+		}
+
+		lifecycleScope.launch {
+			viewModel.titlesWithIds.combine(viewModel.ingredientStrings) { t, i ->
+				Pair(t, i)
+			}.combine(viewModel.ingredients) { titlesIngredients, ingredients ->
+				IngredientEditingAdapter(this@RecipeEditingActivity, ingredients, titlesIngredients.first, titlesIngredients.second)
+			}.collectLatest { adapter ->
+				binding.editIngredients.adapter = adapter
 
 				itemTouchHelper.attachToRecyclerView(binding.editIngredients)
 
 				binding.editIngredientsNewIngredient.setOnClickListener {
 					viewModel.ingredients.value.add(Ingredient(0, null, null, null, "", null, false))
-					ingredientAdapter.onItemInserted()
-					ingredientAdapter.notifyItemInserted(ingredientAdapter.itemCount + 1)
+					adapter.onItemInserted()
+					adapter.notifyItemInserted(adapter.itemCount + 1)
 				}
 
 				binding.editIngredientsNewReference.setOnClickListener {
 					viewModel.ingredients.value.add(Ingredient(0, null, null, null, 0, null, false))
-					ingredientAdapter.onItemInserted()
-					ingredientAdapter.notifyItemInserted(ingredientAdapter.itemCount + 1)
+					adapter.onItemInserted()
+					adapter.notifyItemInserted(adapter.itemCount + 1)
 				}
 
 				binding.editIngredientsNewGroup.setOnClickListener {
 					viewModel.ingredients.value.add(IngredientGroupTitle(""))
-					ingredientAdapter.onItemInserted()
-					ingredientAdapter.notifyItemInserted(ingredientAdapter.itemCount + 1)
+					adapter.onItemInserted()
+					adapter.notifyItemInserted(adapter.itemCount + 1)
 					viewModel.ingredients.value.add(IngredientGroupTitle(null))
-					ingredientAdapter.onItemInserted()
-					ingredientAdapter.notifyItemInserted(ingredientAdapter.itemCount + 1)
+					adapter.onItemInserted()
+					adapter.notifyItemInserted(adapter.itemCount + 1)
 				}
 			}
 		}
 
-		lifecycleScope.launch {
-			viewModel.titles.collectLatest {
-				(binding.editIngredients.adapter as? IngredientEditingAdapter)?.updateTitles(it)
-			}
-		}
 	}
 
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
