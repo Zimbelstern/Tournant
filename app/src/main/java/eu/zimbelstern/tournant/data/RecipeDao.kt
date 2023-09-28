@@ -142,7 +142,7 @@ abstract class RecipeDao {
 	""")
 	abstract suspend fun getReferencedRecipes(recipeIds: Set<Long>): List<RecipeWithIngredients>
 
-	@Query("SELECT id, title FROM recipe ORDER BY title ASC")
+	@Query("SELECT id, title FROM recipe ORDER BY title COLLATE LOCALIZED ASC")
 	abstract suspend fun getRecipeTitlesWithIds(): List<RecipeTitleId>
 
 	@Query("SELECT title FROM recipe WHERE id = :id")
@@ -159,7 +159,7 @@ abstract class RecipeDao {
 	@Query("SELECT * FROM recipe WHERE gourmandId NOT IN (:gourmandIds)")
 	abstract fun getDeprecatedRecipes(gourmandIds: List<Int>): List<RecipeWithIngredients>
 
-	@Query("SELECT id, title, category, cuisine, rating, image FROM recipe ORDER BY title ASC")
+	@Query("SELECT id, title, category, cuisine, rating, image FROM recipe ORDER BY title COLLATE LOCALIZED ASC")
 	abstract fun getPagedRecipeDescriptions(): PagingSource<Int, RecipeDescription>
 
 	@Query("SELECT COUNT(*) FROM recipe")
@@ -178,10 +178,10 @@ abstract class RecipeDao {
 	""")
 	abstract fun getDependentRecipeIds(recipeIds: Set<Long>): List<Long>
 
-	@Query("SELECT DISTINCT category FROM recipe")
+	@Query("SELECT DISTINCT category FROM recipe ORDER BY category COLLATE LOCALIZED ASC")
 	abstract fun getCategories(): Flow<List<String?>>
 
-	@Query("SELECT DISTINCT cuisine FROM recipe")
+	@Query("SELECT DISTINCT cuisine FROM recipe ORDER BY cuisine COLLATE LOCALIZED ASC")
 	abstract fun getCuisines(): Flow<List<String?>>
 
 
