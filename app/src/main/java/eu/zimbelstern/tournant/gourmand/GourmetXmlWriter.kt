@@ -85,7 +85,10 @@ class GourmetXmlWriter(private val separator: Char) {
 
 		recipe.recipe.yieldValue?.let {
 			startTag(null, "yields")
-			text("${recipe.recipe.yieldValue.toString().replace(".".single(), separator)} ${recipe.recipe.yieldUnit}")
+			text(recipe.recipe.yieldValue.toString().replace(".".single(), separator))
+			recipe.recipe.yieldUnit?.let {
+				text(" $it")
+			}
 			endTag(null, "yields")
 		}
 

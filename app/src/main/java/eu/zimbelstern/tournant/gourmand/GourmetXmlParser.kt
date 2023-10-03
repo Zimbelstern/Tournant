@@ -2,7 +2,6 @@ package eu.zimbelstern.tournant.gourmand
 
 import android.util.Base64
 import android.util.Xml
-import androidx.core.text.isDigitsOnly
 import androidx.core.text.parseAsHtml
 import eu.zimbelstern.tournant.data.Ingredient
 import eu.zimbelstern.tournant.data.Recipe
@@ -239,7 +238,7 @@ class GourmetXmlParser(private val separator: Char) {
 		val yieldString = readText(parser)
 		parser.require(XmlPullParser.END_TAG, null, tag)
 		if (yieldString[0].isDigit()) {
-			if (yieldString.isDigitsOnly()) {
+			if (yieldString.matches(Regex("^[0-9$separator]+$"))) {
 				return Pair(
 					yieldString.split(" ")[0].withFractionsToFloat(separator),
 					null
