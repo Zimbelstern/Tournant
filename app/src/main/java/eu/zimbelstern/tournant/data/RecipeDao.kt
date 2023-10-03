@@ -159,8 +159,8 @@ abstract class RecipeDao {
 	@Query("SELECT * FROM recipe WHERE gourmandId NOT IN (:gourmandIds)")
 	abstract fun getDeprecatedRecipes(gourmandIds: List<Int>): List<RecipeWithIngredients>
 
-	@Query("SELECT id, title, category, cuisine, rating, image FROM recipe ORDER BY title COLLATE LOCALIZED ASC")
-	abstract fun getPagedRecipeDescriptions(): PagingSource<Int, RecipeDescription>
+	@Query("SELECT id, title, category, cuisine, rating, image FROM recipe WHERE title LIKE '%' || :query || '%' OR category LIKE '%' || :query || '%' OR cuisine LIKE '%' || :query || '%' ORDER BY title COLLATE LOCALIZED ASC")
+	abstract fun getPagedRecipeDescriptions(query: String): PagingSource<Int, RecipeDescription>
 
 	@Query("SELECT COUNT(*) FROM recipe")
 	abstract fun getRecipeCount(): Flow<Int>

@@ -14,7 +14,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
-import androidx.paging.filter
 import eu.zimbelstern.tournant.Constants.Companion.MODE_STANDALONE
 import eu.zimbelstern.tournant.Constants.Companion.MODE_SYNCED
 import eu.zimbelstern.tournant.Constants.Companion.PREF_FILE
@@ -27,9 +26,11 @@ import eu.zimbelstern.tournant.data.RecipeWithIngredients
 import eu.zimbelstern.tournant.gourmand.GourmetXmlParser
 import eu.zimbelstern.tournant.gourmand.GourmetXmlWriter
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -61,21 +62,13 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 
 
 	// RECIPES
-	val recipeDescriptions = Pager(
-		PagingConfig(pageSize = 10, enablePlaceholders = false)
-	) {
-		recipeDao.getPagedRecipeDescriptions()
-	}.flow
-		.cachedIn(viewModelScope)
-		.combine(searchQuery) { recipeDescriptions, searchQuery ->
-			if (searchQuery?.isNotBlank() == true) {
-				recipeDescriptions.filter {
-					it.title.contains(searchQuery, true)
-							|| it.category?.contains(searchQuery, true) == true
-							|| it.cuisine?.contains(searchQuery, true) == true
-				}
-			} else recipeDescriptions
-		}
+	@OptIn(ExperimentalCoroutinesApi::class)
+	val recipeDescriptions = searchQuery.flatMapLatest { query ->
+		Pager(PagingConfig(pageSize = 10, enablePlaceholders = false)) {
+			recipeDao.getPagedRecipeDescriptions(query ?: "")
+		}.flow
+			.cachedIn(viewModelScope)
+	}
 
 	val countAllRecipes = recipeDao.getRecipeCount().stateIn(viewModelScope, SharingStarted.Lazily, 0)
 
