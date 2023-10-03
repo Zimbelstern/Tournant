@@ -3,10 +3,10 @@
     <string name="recipes">Рецепти</string>
     <string name="recipe">Рецепт</string>
     <plurals name="n_recipes">
-        <item quantity="one">Рецепт</item>
-        <item quantity="few">Рецепти</item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
+        <item quantity="one">%d рецепт</item>
+        <item quantity="few">%d рецепти</item>
+        <item quantity="many">%d рецептів</item>
+        <item quantity="other">%d рецептів</item>
     </plurals>
     <string name="title">Назва</string>
     <string name="category">Категорія</string>
@@ -25,16 +25,16 @@
     <string name="instructions">Інструкції</string>
     <string name="notes">Примітки</string>
     <plurals name="servings">
-        <item quantity="one">Порція</item>
-        <item quantity="few">Порцій</item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
+        <item quantity="one">порція</item>
+        <item quantity="few">порції</item>
+        <item quantity="many">порцій</item>
+        <item quantity="other">порцій</item>
     </plurals>
     <plurals name="lots">
-        <item quantity="one">Багато</item>
-        <item quantity="few"></item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
+        <item quantity="one">партія</item>
+        <item quantity="few">партії</item>
+        <item quantity="many">партій</item>
+        <item quantity="other">партій</item>
     </plurals>
     <string name="mode">Режим</string>
     <string name="mode_standalone">Автономний</string>
