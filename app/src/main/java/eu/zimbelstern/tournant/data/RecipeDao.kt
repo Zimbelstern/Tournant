@@ -146,7 +146,7 @@ abstract class RecipeDao {
 	abstract fun getRecipeTitlesWithIds(): Flow<List<RecipeTitleId>>
 
 	@Query("SELECT title FROM recipe WHERE id = :id")
-	abstract fun getRecipeTitleById(id: Long): String?
+	abstract fun getRecipeTitleById(id: Long): String
 
 	@Transaction
 	@Query("SELECT * FROM recipe WHERE gourmandId = :gourmandId")

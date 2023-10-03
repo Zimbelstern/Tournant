@@ -5,8 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.text.SpannableString
 import android.text.SpannableStringBuilder
+import android.text.Spanned
 import android.text.method.DigitsKeyListener
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -173,6 +177,33 @@ class RecipeActivity : AppCompatActivity() {
 				}
 			}
 		}
+
+		lifecycleScope.launch {
+			viewModel.dependentRecipes.collectLatest { recipeTitleIdList ->
+				if (recipeTitleIdList.isNotEmpty()) {
+					binding.recipeDetailDependentRecipes.visibility = View.VISIBLE
+					binding.recipeDetailDependentRecipesText.movementMethod = LinkMovementMethod.getInstance()
+					binding.recipeDetailDependentRecipesText.text =
+						recipeTitleIdList.joinTo(SpannableStringBuilder(), "\n") {
+							SpannableString(it.title).apply {
+								setSpan(
+									object : ClickableSpan() {
+										override fun onClick(widget: View) {
+											startActivity(Intent(this@RecipeActivity, RecipeActivity::class.java).apply {
+												putExtra("RECIPE_ID", it.id)
+											})
+										}
+									},
+									0,
+									it.title.length,
+									Spanned.SPAN_INCLUSIVE_EXCLUSIVE
+								)
+							}
+					}
+				}
+			}
+		}
+
 	}
 
 	private fun fillYieldsUnit(value: Float?, unit: String?) {

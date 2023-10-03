@@ -391,6 +391,43 @@
 
 			</com.google.android.material.card.MaterialCardView>
 
+			<com.google.android.material.card.MaterialCardView
+				android:id="@+id/recipe_detail_dependent_recipes"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginHorizontal="16dp"
+				android:layout_marginVertical="8dp"
+				android:elevation="4dp"
+				app:cardCornerRadius="8dp"
+				android:visibility="gone"
+				tools:visibility="visible">
+
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="vertical"
+					android:paddingHorizontal="20dp"
+					android:paddingVertical="16dp">
+
+					<TextView
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginBottom="4dp"
+						android:layout_marginTop="-4dp"
+						android:text="@string/dependent_recipes"
+						style="@style/h2"/>
+
+					<TextView
+						android:id="@+id/recipe_detail_dependent_recipes_text"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:lineSpacingExtra="4sp"
+						android:textSize="@dimen/font_size_text"/>
+
+				</LinearLayout>
+
+			</com.google.android.material.card.MaterialCardView>
+
 		</LinearLayout>
 
 	</androidx.core.widget.NestedScrollView>

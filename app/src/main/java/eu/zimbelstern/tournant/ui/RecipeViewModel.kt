@@ -5,9 +5,15 @@ import android.graphics.BitmapFactory
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import eu.zimbelstern.tournant.TournantApplication
+import eu.zimbelstern.tournant.data.RecipeTitleId
 import eu.zimbelstern.tournant.gourmand.GourmetXmlWriter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.io.File
 import kotlin.math.roundToInt
@@ -19,7 +25,21 @@ class RecipeViewModel(private val application: TournantApplication, private val 
 	val recipe = recipeDao.getRecipeFlowById(recipeId).onEach { recipeWithIngredients ->
 		recipeWithIngredients.ingredients.forEach {
 			it.refId?.let { refId ->
-				it.item = recipeDao.getRecipeTitleById(refId)
+				withContext(Dispatchers.IO) {
+					it.item = recipeDao.getRecipeTitleById(refId)
+				}
+			}
+		}
+	}
+
+	val dependentRecipes = MutableStateFlow(listOf<RecipeTitleId>())
+
+	init {
+		viewModelScope.launch {
+			withContext(Dispatchers.IO) {
+				dependentRecipes.emit(recipeDao.getDependentRecipeIds(setOf(recipeId)).map {
+					RecipeTitleId(it, recipeDao.getRecipeTitleById(it))
+				})
 			}
 		}
 	}
