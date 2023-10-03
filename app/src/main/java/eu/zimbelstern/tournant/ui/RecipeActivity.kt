@@ -145,6 +145,11 @@ class RecipeActivity : AppCompatActivity() {
 									(getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.hideSoftInputFromWindow(binding.root.windowToken, 0)
 								}
 							}
+							savedInstanceState?.getString("YIELD_VALUE")?.let {
+								if (it.isNotEmpty()) {
+									setText(it)
+								}
+							}
 						}
 					}
 					recipe.instructions?.let {
@@ -158,7 +163,11 @@ class RecipeActivity : AppCompatActivity() {
 				}
 				recipeWithIngredients.ingredients.let { list ->
 					binding.recipeDetailIngredients.visibility = View.VISIBLE
-					binding.recipeDetailIngredientsRecycler.adapter = IngredientTableAdapter(this@RecipeActivity, list)
+					if (savedInstanceState?.getString("YIELD_VALUE").isNullOrEmpty()) {
+						binding.recipeDetailIngredientsRecycler.adapter = IngredientTableAdapter(this@RecipeActivity, list)
+					} else {
+						savedInstanceState?.putString("YIELD_VALUE", null)
+					}
 				}
 				binding.recipeDetailLess.setOnClickListener {
 					binding.recipeDetailYieldsValue.text = SpannableStringBuilder(
@@ -272,6 +281,11 @@ class RecipeActivity : AppCompatActivity() {
 			}
 			else -> super.onOptionsItemSelected(item)
 		}
+	}
+
+	override fun onSaveInstanceState(outState: Bundle) {
+		outState.putString("YIELD_VALUE", binding.recipeDetailYieldsValue.text.toString())
+		super.onSaveInstanceState(outState)
 	}
 
 }
