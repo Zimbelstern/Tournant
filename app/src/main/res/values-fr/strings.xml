@@ -103,4 +103,10 @@
     <string name="change_mode_explanation">Vous pouvez changer le mode dans les réglages.</string>
     <string name="search">Rechercher</string>
     <string name="done">Prêt !</string>
+    <plurals name="n_recipes">
+        <item quantity="one">%d recette</item>
+        <item quantity="many">%d recettes</item>
+        <item quantity="other">%d recettes</item>
+    </plurals>
+    <string name="share">Partager</string>
 </resources>

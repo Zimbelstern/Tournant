@@ -31,6 +31,7 @@
     </plurals>
     <plurals name="lots">
         <item quantity="one">lotto</item>
+        <item quantity="many"></item>
         <item quantity="other">lotti</item>
     </plurals>
     <string name="code">Fonte</string>
@@ -47,4 +48,65 @@
     <string name="type_or_tap_to_search">Scrivi o tocca per cercare…</string>
     <string name="checked">controllato</string>
     <string name="color_theme">Schema colori</string>
+    <string name="delete_all_recipes_sure">Questo cancellerà definitivamente tutte le ricette importate nel database (ma nessun file). Sei sicuro\?</string>
+    <string name="save">Salva</string>
+    <string name="mode_standalone">Autonomo</string>
+    <string name="title">Titolo</string>
+    <string name="remove_photo">Rimuovi foto</string>
+    <string name="synced_file">File XML Gourmand sincronizzato</string>
+    <string name="remove">Rimuovi</string>
+    <string name="import_export">Compatibilità Gourmand</string>
+    <string name="mode_synced_description_short">Sincronizzato: Sempre sincronizzato con un file XML (di sola lettura)</string>
+    <string name="dependent_recipes">Ricette dipendenti</string>
+    <string name="add_to_selection">Aggiungi alla selezione</string>
+    <plurals name="n_recipes">
+        <item quantity="one">%d ricetta</item>
+        <item quantity="many">%d ricette</item>
+        <item quantity="other">%d ricette</item>
+    </plurals>
+    <string name="file_not_changed">Il file sincronizzato non è stato modificato</string>
+    <string name="edit">Modifica</string>
+    <string name="add_photo">Aggiungi foto</string>
+    <string name="export_selected">Esporta di ricette selezionate</string>
+    <string name="selected">%d selezionato</string>
+    <string name="mode_synced_description_long">Tournant resta sincronizzato con un singolo file XML sul tuo dispositivo. La modifica della ricetta è disabilitata perché creerebbe dei conflitti e attualmente non esiste una funzione di sincronizzazione in Gourmand per risolvere questi conflitti.</string>
+    <string name="new_recipe">Nuova ricetta</string>
+    <string name="select_all">Seleziona tutto</string>
+    <string name="group">Gruppo</string>
+    <string name="mode_synced">Sincronizzato</string>
+    <string name="import_recipes">Importa le ricette</string>
+    <string name="ingredient">Ingrediente</string>
+    <string name="change_mode_explanation">Puoi cambiare la modalità nelle impostazioni.</string>
+    <string name="delete_selected">Eliminare le ricette selezionate</string>
+    <string name="options">Opzioni</string>
+    <string name="share_selected">Condividi il contenuto selezionato</string>
+    <string name="mode_standalone_description_long">Tournant crea un proprio database per le tue ricette. Puoi importare le ricette dai file XML. Le ricette possono essere modificate (in fase di sviluppo).</string>
+    <string name="make_mandatory">Rendi obbligatorio</string>
+    <string name="be_careful">Fai attenzione</string>
+    <string name="change_synced_file">Cambia il file sincronizzato</string>
+    <string name="refresh">Aggiorna</string>
+    <string name="use_comma_as_decimal_separator">Usa una virgola come separatore decimale quando importi ed esporti</string>
+    <string name="search">Ricerca</string>
+    <string name="mode">Modo</string>
+    <string name="inspiration">Stai cercando un’ispirazione\?</string>
+    <string name="make_optional">Rendi opzionale</string>
+    <string name="export_all">Esporta tutto</string>
+    <string name="delete_all_recipes">Elimina tutte le ricette</string>
+    <string name="recipe">Ricetta</string>
+    <string name="unit">Unità</string>
+    <plurals name="delete_selected_sure">
+        <item quantity="one">Questo cancellerà definitivamente una ricetta dal database. Sei sicuro\?</item>
+        <item quantity="many">Questo cancellerà definitivamente %d le ricette dal database. Sei sicuro\?</item>
+        <item quantity="other">Questo cancellerà definitivamente %d le ricette dal database. Sei sicuro\?</item>
+    </plurals>
+    <string name="mode_standalone_description_short">Autonomo: Database proprio che consente di modificare le ricette</string>
+    <string name="dependent_recipes_found">La selezione contiene una o più ricette che vengono usate in altre ricette. È necessario risolvere queste dipendenze o eliminarle. anche queste dipendenze o eliminarle.
+\nRicette dipendenti: %s</string>
+    <string name="importing_only_in_standalone_mode">Importazione solo in modalità autonomo</string>
+    <string name="share">Condividi</string>
+    <string name="recipe_count">Numero delle ricette</string>
+    <string name="share_all">Condividi tutto</string>
+    <string name="done">Fatto</string>
+    <string name="unset_rating">Ritirare la valutazione</string>
+    <string name="delete_selected_sure_named">Questo cancellerà definitivamente %s dal database. Sei sicuro\?</string>
 </resources>

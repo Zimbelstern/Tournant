@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sample_category">Pečivo</string>
+    <string name="sample_cuisine">Americké</string>
+    <string name="sugar">250 g cukru</string>
+    <string name="baking_powder">3 lžíce prášku do pečiva</string>
+    <string name="salt">1 lžíce soli</string>
+    <string name="chocolate_chips">100 g čokoládových lupínků</string>
+    <string name="sample_modifications">Pro čokoládové muffiny, vyměňte 100g mouky za 100g kakaavého prášku.</string>
+    <string name="sample_title">Muffiny</string>
+    <string name="sample_yields">20 muffinů</string>
+    <string name="eggs">2 střední vajíčka</string>
+    <string name="vegetable_oil">125 ml rostlinného oleje</string>
+    <string name="milk">250 ml mléka</string>
+    <string name="flour">400 g mouky</string>
+</resources>

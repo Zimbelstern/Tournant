@@ -82,9 +82,9 @@
     <string name="make_optional">Marchează ca opțional</string>
     <string name="make_mandatory">Marchează ca obligatoriu</string>
     <plurals name="n_recipes">
-        <item quantity="one">Rețete</item>
-        <item quantity="few"></item>
-        <item quantity="other"></item>
+        <item quantity="one">%d rețetă</item>
+        <item quantity="few">%d rețete</item>
+        <item quantity="other">%d de rețete</item>
     </plurals>
     <string name="preptime">Timp de pregătire</string>
     <plurals name="servings">
@@ -107,4 +107,6 @@
     </plurals>
     <string name="libraries">Librării</string>
     <string name="selected">%d selectate</string>
+    <string name="recipes">Rețete</string>
+    <string name="share">Partajați</string>
 </resources>

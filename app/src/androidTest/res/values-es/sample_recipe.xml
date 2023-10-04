@@ -12,4 +12,12 @@
 \n5. Agregue las pepitas de chocolate.
 \n6. Llene dos tercios de los moldes para muffins y hornee durante 20-25 minutos. Cuando se inserte una brocheta en el medio, debe salir limpia.
 \n7. Deje enfriar los muffins en su molde durante unos minutos, para luego transferirlos a una rejilla.</string>
+    <string name="vegetable_oil">125 ml de aceite vegetal</string>
+    <string name="flour">400 g de harina</string>
+    <string name="sugar">250 g de azúcar</string>
+    <string name="salt">1 cucharadita de sal</string>
+    <string name="eggs">2 huevos medianos</string>
+    <string name="baking_powder">3 cucharaditas de levadura en polvo</string>
+    <string name="chocolate_chips">100 g de virutas de chocolate</string>
+    <string name="milk">250 ml de leche</string>
 </resources>
