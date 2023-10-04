@@ -17,6 +17,8 @@ import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -83,6 +85,13 @@ class RecipeActivity : AppCompatActivity() {
 
 		if (getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE).getBoolean(PREF_SCREEN_ON, true))
 			window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
+		if (resources.displayMetrics.run { widthPixels / density } > 600) {
+			binding.recipeDetailImageDrawable.apply {
+				layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
+				scaleType = ImageView.ScaleType.CENTER_CROP
+			}
+		}
 
 		binding.recipeDetailPreptime.updateLayoutParams<LinearLayout.LayoutParams> {
 			weight = getString(R.string.preptime).length.toFloat()
