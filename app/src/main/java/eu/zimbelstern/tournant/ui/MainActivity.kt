@@ -261,7 +261,7 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 	override fun exportRecipes(recipeIds: Set<Long>) {
 		Log.d(TAG, "Exporting recipes $recipeIds")
 		lifecycleScope.launch {
-			val filename = if (recipeIds.size == 1) viewModel.getRecipeTitle(recipeIds.first()) ?: getString(R.string.recipes) else getString(R.string.recipes)
+			val filename = if (recipeIds.size == 1) viewModel.getRecipeTitle(recipeIds.first()) else getString(R.string.recipes)
 			viewModel.writeRecipesToExportDir(recipeIds, "export")
 			exportRecipesActivityResultLauncher.launch("$filename.xml")
 			recipeListAdapter.finishActionMode()
@@ -277,7 +277,7 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 	override fun shareRecipes(recipeIds: Set<Long>) {
 		lifecycleScope.launch {
 			withContext(Dispatchers.IO) {
-				val filename = if (recipeIds.size == 1) viewModel.getRecipeTitle(recipeIds.first()) ?: getString(R.string.recipes) else getString(R.string.recipes)
+				val filename = if (recipeIds.size == 1) viewModel.getRecipeTitle(recipeIds.first()) else getString(R.string.recipes)
 				viewModel.writeRecipesToExportDir(recipeIds, filename)
 				val uri = FileProvider.getUriForFile(
 					application,
