@@ -109,4 +109,22 @@
     <string name="remove_photo">Quitar foto</string>
     <string name="recipes">Recetas</string>
     <string name="share">Compartir</string>
+    <string name="all_recipes">Todas las recetas</string>
+    <string name="ascending">Ascendente</string>
+    <string name="copy_to_clipboard">Copiar al portapapeles</string>
+    <string name="reset">restablecer</string>
+    <string name="copied_to_clipboard">Copiado al portapapeles</string>
+    <string name="ingredients_count">Número de los ingredientes</string>
+    <string name="descending">Descendente</string>
+    <string name="minutes_for_regex">(minuto)|(minutos)</string>
+    <string name="seconds_for_regex">(segundo)|(segundos)</string>
+    <string name="database_id">ID de la base de datos</string>
+    <string name="to">a</string>
+    <string name="sort_by">Ordenar por</string>
+    <string name="timer_set">Temporizador establecido en %s</string>
+    <string name="scale_to">Convertir a</string>
+    <string name="totaltime">Tiempo total</string>
+    <string name="no_suitable_application">Ninguna aplicación adecuada</string>
+    <string name="hours_for_regex">(hora)|(horas)</string>
+    <string name="instructions_length">Longitud de las instrucciones</string>
 </resources>
