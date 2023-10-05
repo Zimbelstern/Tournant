@@ -113,4 +113,21 @@
 \nЗалежні рецепти: %s</string>
     <string name="use_comma_as_decimal_separator">Використовуйте кому як десятковий роздільник під час імпорту та експорту</string>
     <string name="delete_all_recipes_sure">Це призведе до остаточного видалення всіх імпортованих рецептів у базі даних (окрім файлів). Ти впевнений\?</string>
+    <string name="all_recipes">Усі рецепти</string>
+    <string name="ascending">Зростанням</string>
+    <string name="copy_to_clipboard">Копіювати в буфер обміну</string>
+    <string name="reset">скинути</string>
+    <string name="copied_to_clipboard">Скопійовано в буфер обміну</string>
+    <string name="descending">Спаданням</string>
+    <string name="minutes_for_regex">(хвилина)|(хвилини)|(хвилин)</string>
+    <string name="seconds_for_regex">(секунда)|(секунди)|(секунд)</string>
+    <string name="sort_by">Сортувати за</string>
+    <string name="timer_set">Таймер встановлено на %s</string>
+    <string name="no_suitable_application">Немає відповідної програми</string>
+    <string name="hours_for_regex">(година)|(години)|(годин)</string>
+    <string name="ingredients_count">Кількістю інгредієнтів</string>
+    <string name="database_id">ID бази даних</string>
+    <string name="to">до</string>
+    <string name="totaltime">Загальним часом</string>
+    <string name="instructions_length">Довжиною інструкцій</string>
 </resources>
