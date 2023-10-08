@@ -8,7 +8,6 @@ fastlane/*
 !fastlane/metadata/
 fastlane/metadata/android/*
 !fastlane/metadata/android/*/
-gradle/
 local.properties
 *.iml
 *.log
