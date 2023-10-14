@@ -147,7 +147,18 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 			recipeListAdapter.withLoadStateFooter(RecipeDescriptionLoadStateAdapter())
 		)
 
-		supportActionBar?.title = getString(R.string.all_recipes)
+
+		// Action bar title when: synced -> filename; recipes not empty -> All recipes; else -> Tournant
+		lifecycleScope.launch {
+			viewModel.syncedFileName.combine(viewModel.countAllRecipes) { filename, count ->
+				Pair(filename, count)
+			}.collectLatest {
+				supportActionBar?.title =
+					it.first?.substringBeforeLast(".")
+						?: getString(if (it.second > 0) R.string.all_recipes else R.string.app_name)
+			}
+		}
+
 
 		// RECIPE COUNT
 		supportActionBar?.setDisplayShowTitleEnabled(true)

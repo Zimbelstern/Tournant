@@ -45,6 +45,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 	companion object { private const val TAG = "MainViewModel" }
 
 
+	var syncedFileName = MutableStateFlow<String?>(null)
 	val waitingForRecipes = MutableStateFlow(false)
 
 
@@ -168,10 +169,20 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 		if (!path.isNullOrEmpty()) {
 			Log.d(TAG, "Syncing with $path")
 			val uri = Uri.parse(path)
-			val lastModified = DocumentFile.fromSingleUri(application, uri)?.lastModified()
+			val documentFile = DocumentFile.fromSingleUri(application, uri)
+
+			if (documentFile == null) {
+				Log.e(TAG, "Couldn't update; documentFile null")
+				return
+			}
+
+			viewModelScope.launch {
+				syncedFileName.emit(documentFile.name)
+			}
+			val lastModified = documentFile.lastModified()
 			val lastUpdated = sharedPrefs.getLong(PREF_FILE_LAST_MODIFIED, -1)
 			Log.d(TAG, "Updated: $lastUpdated – Modified: $lastModified")
-			if (lastModified != null && lastModified > lastUpdated) {
+			if (lastModified > lastUpdated) {
 				viewModelScope.launch {
 					withContext(Dispatchers.IO) {
 						waitingForRecipes.emit(true)
