@@ -56,6 +56,7 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeListViewHolder {
 		val binding = RecyclerItemRecipeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+		binding.recipeCardImage.clipToOutline = true
 		return RecipeListViewHolder(binding)
 	}
 
@@ -113,7 +114,6 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 			}
 			else if (recipe.image != null) {
 				setImageBitmap(BitmapFactory.decodeByteArray(recipe.image, 0, recipe.image.size))
-				clipToOutline = true
 				setPadding(0)
 			} else {
 				setImageResource(R.drawable.ic_dining)
