@@ -143,7 +143,7 @@ class RecipeActivity : AppCompatActivity() {
 							}
 							fillYieldsUnit(it, recipe.yieldUnit)
 							addTextChangedListener { editable ->
-								val scaleFactor = editable.toString().replace(DecimalFormatSymbols.getInstance().decimalSeparator, ".".single()).toFloatOrNull()?.div(recipe.yieldValue ?: 1f)
+								val scaleFactor = editable.toString().replace(DecimalFormatSymbols.getInstance().decimalSeparator, '.').toFloatOrNull()?.div(recipe.yieldValue ?: 1f)
 								recipeWithIngredients.ingredients.scale(scaleFactor).let { list ->
 									binding.recipeDetailIngredientsRecycler.adapter = IngredientTableAdapter(this@RecipeActivity, list, scaleFactor)
 									fillYieldsUnit(recipe.yieldValue, recipe.yieldUnit)
@@ -181,7 +181,7 @@ class RecipeActivity : AppCompatActivity() {
 				binding.recipeDetailLess.setOnClickListener {
 					binding.recipeDetailYieldsValue.text = SpannableStringBuilder(
 						RecipeUtils.lessYield(
-							binding.recipeDetailYieldsValue.text.toString().replace(DecimalFormatSymbols.getInstance().decimalSeparator, ".".single()).toFloatOrNull()
+							binding.recipeDetailYieldsValue.text.toString().replace(DecimalFormatSymbols.getInstance().decimalSeparator, '.').toFloatOrNull()
 								?: recipeWithIngredients.recipe.yieldValue ?: 1f
 						).toStringForCooks()
 					)
@@ -189,7 +189,7 @@ class RecipeActivity : AppCompatActivity() {
 				binding.recipeDetailMore.setOnClickListener {
 					binding.recipeDetailYieldsValue.text = SpannableStringBuilder(
 						RecipeUtils.moreYield(
-							binding.recipeDetailYieldsValue.text.toString().replace(DecimalFormatSymbols.getInstance().decimalSeparator, ".".single()).toFloatOrNull()
+							binding.recipeDetailYieldsValue.text.toString().replace(DecimalFormatSymbols.getInstance().decimalSeparator, '.').toFloatOrNull()
 								?: recipeWithIngredients.recipe.yieldValue ?: 1f
 						).toStringForCooks())
 				}

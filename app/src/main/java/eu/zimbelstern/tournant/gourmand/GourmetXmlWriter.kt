@@ -85,7 +85,7 @@ class GourmetXmlWriter(private val separator: Char) {
 
 		recipe.recipe.yieldValue?.let {
 			startTag(null, "yields")
-			text(recipe.recipe.yieldValue.toString().replace(".".single(), separator))
+			text(recipe.recipe.yieldValue.toString().replace('.', separator))
 			recipe.recipe.yieldUnit?.let {
 				text(" $it")
 			}
@@ -141,9 +141,9 @@ class GourmetXmlWriter(private val separator: Char) {
 	private fun XmlSerializer.writeIngredient(ingredient: Ingredient) {
 		val amountString =
 			if (ingredient.amountRange != null)
-				"${ingredient.amount}-${ingredient.amountRange}".replace(".".single(), separator)
+				"${ingredient.amount}-${ingredient.amountRange}".replace('.', separator)
 			else
-				"${ingredient.amount}".replace(".".single(), separator)
+				"${ingredient.amount}".replace('.', separator)
 
 		if (ingredient.refId != null) {
 			startTag(null, "ingref")

@@ -13,9 +13,9 @@ class TournantApplication : Application() {
 
 	fun getDecimalSeparator() =
 		if (getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE)
-				.getBoolean(Constants.PREF_DECIMAL_SEPARATOR_COMMA, DecimalFormatSymbols.getInstance().decimalSeparator == ",".single()))
-			",".single()
+				.getBoolean(Constants.PREF_DECIMAL_SEPARATOR_COMMA, DecimalFormatSymbols.getInstance().decimalSeparator == ','))
+			','
 		else
-			".".single()
+			'.'
 
 }

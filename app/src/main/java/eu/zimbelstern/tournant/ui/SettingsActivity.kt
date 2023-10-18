@@ -126,7 +126,7 @@ class SettingsActivity : AppCompatActivity() {
 			}
 
 			findPreference<SwitchPreference>("decimal_separator")?.apply {
-				isChecked = sharedPrefs.getBoolean(PREF_DECIMAL_SEPARATOR_COMMA, DecimalFormatSymbols.getInstance().decimalSeparator == ",".single())
+				isChecked = sharedPrefs.getBoolean(PREF_DECIMAL_SEPARATOR_COMMA, DecimalFormatSymbols.getInstance().decimalSeparator == ',')
 				setOnPreferenceChangeListener { _, value ->
 					sharedPrefs
 						.edit()
