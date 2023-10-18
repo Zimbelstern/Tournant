@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<com.google.android.material.textfield.TextInputLayout
+		android:id="@+id/input_layout"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_margin="24dp"
+		style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+		<com.google.android.material.textfield.TextInputEditText
+			android:id="@+id/input_field"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"/>
+
+	</com.google.android.material.textfield.TextInputLayout>
+
+</FrameLayout>

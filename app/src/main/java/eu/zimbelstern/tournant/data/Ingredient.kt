@@ -88,13 +88,11 @@ data class Ingredient(
 		}
 
 		val amountScaled = amount.let {
-			it?.times(factor)
-			?.roundToNDigits(it.getNumberOfDigits() + 2)
+			it?.times(factor)?.roundToNDigits(it.getNumberOfDigits() + 1)
 		}
 
 		val amountRangeScaled = amountRange.let {
-			it?.times(factor)
-			?.roundToNDigits(it.getNumberOfDigits() + 2)
+			it?.times(factor)?.roundToNDigits(it.getNumberOfDigits() + 1)
 		}
 
 		return this.copy(amount = amountScaled, amountRange = amountRangeScaled)

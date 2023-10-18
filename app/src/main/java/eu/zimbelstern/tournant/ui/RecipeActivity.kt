@@ -39,6 +39,7 @@ import eu.zimbelstern.tournant.RecipeUtils
 import eu.zimbelstern.tournant.TournantApplication
 import eu.zimbelstern.tournant.databinding.ActivityRecipeBinding
 import eu.zimbelstern.tournant.getQuantityIntForPlurals
+import eu.zimbelstern.tournant.parseLocalFormattedFloat
 import eu.zimbelstern.tournant.scale
 import eu.zimbelstern.tournant.toStringForCooks
 import eu.zimbelstern.tournant.ui.adapter.IngredientTableAdapter
@@ -51,7 +52,7 @@ import java.io.File
 import java.text.DecimalFormatSymbols
 import kotlin.random.Random
 
-class RecipeActivity : AppCompatActivity() {
+class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTableInterface {
 
 	companion object {
 		private const val TAG = "RecipeActivity"
@@ -244,10 +245,16 @@ class RecipeActivity : AppCompatActivity() {
 		}
 	}
 
-	fun findReferencedRecipe(refId: Long) {
+	override fun findReferencedRecipe(refId: Long) {
 		startActivity(Intent(this, RecipeActivity::class.java).apply {
 			putExtra("RECIPE_ID", refId)
 		})
+	}
+
+	override fun scale(scaleFactor: Float) {
+		binding.root.clearFocus()
+		val oldYieldValue = binding.recipeDetailYieldsValue.hint.toString().parseLocalFormattedFloat() ?: 1f
+		binding.recipeDetailYieldsValue.setText((oldYieldValue * scaleFactor).toStringForCooks(thousands = false))
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu): Boolean {

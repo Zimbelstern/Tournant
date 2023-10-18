@@ -3,6 +3,7 @@ package eu.zimbelstern.tournant
 import eu.zimbelstern.tournant.data.Ingredient
 import eu.zimbelstern.tournant.data.IngredientGroupTitle
 import eu.zimbelstern.tournant.data.IngredientLine
+import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
 import kotlin.math.pow
 import kotlin.math.roundToInt
@@ -17,12 +18,32 @@ fun Float.getNumberOfDigits(): Int {
 	return i
 }
 
-fun Float?.toStringForCooks(): String {
-	if (this == null) return ""
-	if (this <= this.toInt()) return this.toInt().toString()
-	return NumberFormat.getInstance().format(this)
-		.dropLastWhile { it == '0' }
-		.dropLastWhile { !it.isDigit() }
+/*
+    Returns a localised string omitting trailing zeros, with or without thousands separator
+*/
+fun Float?.toStringForCooks(thousands: Boolean = true): String {
+	if (this == null)
+		return ""
+
+	var formattedNumber =
+		if (this <= toInt()) // i.e. Float == Int -> 123
+			NumberFormat.getInstance().format(this)
+		else // remove trailing zeros and a trailing decimal separator
+			NumberFormat.getInstance().format(this)
+				.dropLastWhile { it == '0' }
+				.dropLastWhile { !it.isDigit() }
+
+	if (!thousands) {
+		val separator = DecimalFormatSymbols.getInstance().decimalSeparator
+		formattedNumber = formattedNumber.replace(Regex("[^0-9$separator]"), "")
+	}
+
+	return formattedNumber
+}
+
+fun String.parseLocalFormattedFloat(): Float? {
+	val separator = DecimalFormatSymbols.getInstance().decimalSeparator
+	return replace(Regex("[^0-9$separator]"), "").replace(separator, '.').toFloatOrNull()
 }
 
 fun Float.roundToNDigits(n: Int): Float {

@@ -147,5 +147,6 @@
 	<string name="unset_rating">Unset rating</string>
 	<string name="make_optional">Make optional</string>
 	<string name="make_mandatory">Make mandatory</string>
+	<string name="scale_to">Scale to</string>
 
 </resources>

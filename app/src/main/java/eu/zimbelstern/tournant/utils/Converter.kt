@@ -43,7 +43,7 @@ object Converter {
 	@InverseMethod("stringToFloat")
 	@JvmStatic
 	fun floatToString(@Suppress("UNUSED_PARAMETER") oldValue: Float?, value: Float?): String {
-		return value?.toStringForCooks() ?: ""
+		return value?.toStringForCooks(thousands = false) ?: ""
 	}
 
 	@Suppress("UNUSED")

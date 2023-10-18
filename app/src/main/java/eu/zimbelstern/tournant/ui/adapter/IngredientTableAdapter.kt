@@ -1,21 +1,27 @@
 package eu.zimbelstern.tournant.ui.adapter
 
+import android.content.res.Resources
 import android.graphics.Paint
+import android.text.method.DigitsKeyListener
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.data.Ingredient
 import eu.zimbelstern.tournant.databinding.RecyclerItemIngredientsBinding
+import eu.zimbelstern.tournant.databinding.ScaleInputFieldBinding
+import eu.zimbelstern.tournant.parseLocalFormattedFloat
 import eu.zimbelstern.tournant.toStringForCooks
-import eu.zimbelstern.tournant.ui.RecipeActivity
+import java.text.DecimalFormatSymbols
 
 class IngredientTableAdapter(
-	private val recipeActivity: RecipeActivity,
-	ingredientList: List<Ingredient>,
-	scale: Float? = null
+	private val ingredientTableInterface: IngredientTableInterface,
+	private val ingredientList: List<Ingredient>,
+	private val scale: Float? = null
 ) : RecyclerView.Adapter<IngredientTableAdapter.IngredientTableViewHolder>() {
 
 	private val tableRows = createTableRows(ingredientList, scale)
@@ -26,7 +32,7 @@ class IngredientTableAdapter(
 		val binding = RecyclerItemIngredientsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
 		binding.ingredientAmount.minimumWidth = tableRows.maxOf {
-			binding.ingredientAmountValue.paint.measureText(it.first[1].plus(it.first[2]))
+			binding.ingredientAmountValue.paint.measureText(it.amountString.plus(it.unitString))
 		}.toInt()
 
 		return IngredientTableViewHolder(binding)
@@ -35,39 +41,64 @@ class IngredientTableAdapter(
 	override fun onBindViewHolder(holder: IngredientTableViewHolder, position: Int) {
 		val row = tableRows[position]
 
-		val textViews = listOf(
-			holder.binding.ingredientGroupName,
-			holder.binding.ingredientAmountValue,
-			holder.binding.ingredientAmountUnit,
-			holder.binding.ingredientItem
-		)
-
-		textViews.forEachIndexed { i, it ->
-			it.text = row.first[i]
-		}
+		holder.binding.ingredientGroupName.text = row.groupString
+		holder.binding.ingredientAmountValue.text = row.amountString
+		holder.binding.ingredientAmountUnit.text = row.unitString
+		holder.binding.ingredientItem.text = row.itemString
 
 		// For ingredient references
-		row.second?.let { refId ->
+		row.refId?.let { refId ->
 			holder.binding.ingredientItem.apply {
 				paintFlags = paintFlags or Paint.UNDERLINE_TEXT_FLAG
 				setOnClickListener {
-					recipeActivity.findReferencedRecipe(refId)
+					ingredientTableInterface.findReferencedRecipe(refId)
 				}
 			}
 		}
 
-		if (textViews.slice(1..3).any { it.text.isNotEmpty() }) {
-			holder.binding.root.setOnClickListener {
-				if (holder.binding.ingredientChecked.isVisible) {
-					textViews.forEach {
-						it.setTextColor(ContextCompat.getColor(holder.binding.root.context, R.color.normal_text_color))
+		if (row.isIngredient) {
+			holder.binding.apply {
+				root.setOnClickListener {
+					ingredientChecked.isVisible = !ingredientChecked.isVisible
+					listOf(ingredientAmountValue, ingredientAmountUnit, ingredientItem).forEach {
+						it.setTextColor(ContextCompat.getColor(root.context,
+							if (ingredientChecked.isVisible)
+								R.color.checked_text_color
+							else
+								R.color.normal_text_color
+						))
 					}
-					holder.binding.ingredientChecked.isVisible = false
-				} else {
-					textViews.forEach {
-						it.setTextColor(ContextCompat.getColor(holder.binding.root.context, R.color.checked_text_color))
+				}
+			}
+
+			if (row.amountString.isNotEmpty()) {
+				val amount = row.amountString.substringBefore('-').parseLocalFormattedFloat() ?: return
+				holder.binding.root.setOnLongClickListener {
+					val inputFieldView = ScaleInputFieldBinding.inflate(LayoutInflater.from(holder.binding.root.context), holder.binding.root, false)
+					inputFieldView.inputLayout.apply {
+						hint = row.itemString
+						suffixText = row.unitString
 					}
-					holder.binding.ingredientChecked.isVisible = true
+					inputFieldView.inputField.apply {
+						keyListener = DigitsKeyListener.getInstance("0123456789" + DecimalFormatSymbols.getInstance().decimalSeparator)
+						setText(amount.toStringForCooks(thousands = false))
+						requestFocus()
+					}
+					MaterialAlertDialogBuilder(holder.binding.root.context)
+						.setTitle(R.string.scale_to)
+						.setView(inputFieldView.root)
+						.setPositiveButton(R.string.ok) { dialog, _ ->
+							val newAmount = inputFieldView.inputField.text.toString().parseLocalFormattedFloat()
+							if (newAmount != null)
+								ingredientTableInterface.scale(
+									newAmount / amount * (scale ?: 1f)
+								)
+							dialog.dismiss()
+						}
+						.setNegativeButton(R.string.cancel) { dialog, _ -> dialog.dismiss()}
+						.show()
+						.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+					true
 				}
 			}
 		}
@@ -77,27 +108,19 @@ class IngredientTableAdapter(
 		return tableRows.size
 	}
 
-	private fun createTableRows(ingredientList: List<Ingredient>, scale: Float?): List<Pair<List<String>, Long?>> {
+	private fun createTableRows(ingredientList: List<Ingredient>, scale: Float?): List<IngredientRow> {
 		val scaleOrEmpty = if (scale != null && scale != 1f) {
 			"(${scale.toStringForCooks()}x)"
 		} else ""
-		return mutableListOf<Pair<List<String>, Long?>>().apply {
+		return mutableListOf<IngredientRow>().apply {
 			var group: String? = null
 			ingredientList.forEach {
 				if (it.group != group) {
 					if (it.position != 0) {
-						add(
-							Pair(
-								listOf("", "", "", ""),
-								null
-							)
-						)
+						add(IngredientRow("", "", "", "", null))
 					}
 					if (!it.group.isNullOrEmpty()) {
-						add(Pair(
-							listOf(it.group ?: "", "", "", ""),
-							null
-						))
+						add(IngredientRow(it.group ?: "", "", "", "", null))
 					}
 					group = it.group
 				}
@@ -105,17 +128,33 @@ class IngredientTableAdapter(
 				it.amountRange?.let { maxAmount ->
 					amountString += "-${maxAmount.toStringForCooks()}"
 				}
-				add(Pair(listOf(
+				add(IngredientRow(
 					"",
 					"$amountString ",
 					it.unit?.plus(" ") ?: "",
 					if (it.optional)
-						recipeActivity.getString(R.string.optional, it.item ?: it.refId.toString())
+						ingredientTableInterface.getResources().getString(R.string.optional, it.item ?: it.refId.toString())
 					else
-						it.item ?: "¬"
-				), it.refId))
+						it.item ?: "¬",
+					it.refId
+				))
 			}
 		}
+	}
+
+	inner class IngredientRow(
+		val groupString: String,
+		val amountString: String,
+		val unitString: String,
+		val itemString: String,
+		val refId: Long?) {
+		val isIngredient = amountString.isNotEmpty() || unitString.isNotEmpty() || itemString.isNotEmpty()
+	}
+
+	interface IngredientTableInterface {
+		fun findReferencedRecipe(refId: Long)
+		fun getResources(): Resources
+		fun scale(scaleFactor: Float)
 	}
 
 }

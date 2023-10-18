@@ -136,5 +136,6 @@
 	<string name="unset_rating">Bewertung zurückziehen</string>
 	<string name="make_optional">Als optional markieren</string>
 	<string name="make_mandatory">Als nicht optional markieren</string>
+	<string name="scale_to">Umrechnen auf</string>
 
 </resources>
