@@ -221,9 +221,9 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 		}
 	}
 
-	suspend fun getRecipeTitle(id: Long) = recipeDao.getRecipeTitleById(id)
+	fun getRecipeTitle(id: Long) = recipeDao.getRecipeTitleById(id)
 
-	suspend fun writeRecipesToExportDir(recipeIds: Set<Long>, filename: String) {
+	fun writeRecipesToExportDir(recipeIds: Set<Long>, filename: String) {
 		val recipes = recipeDao.getRecipesById(recipeIds)
 		val refs = recipeDao.getReferencedRecipes(recipeIds)
 		(recipes + refs).forEach {

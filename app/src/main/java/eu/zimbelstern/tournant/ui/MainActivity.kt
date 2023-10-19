@@ -272,9 +272,11 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 	override fun exportRecipes(recipeIds: Set<Long>) {
 		Log.d(TAG, "Exporting recipes $recipeIds")
 		lifecycleScope.launch {
-			val filename = if (recipeIds.size == 1) viewModel.getRecipeTitle(recipeIds.first()) else getString(R.string.recipes)
-			viewModel.writeRecipesToExportDir(recipeIds, "export")
-			exportRecipesActivityResultLauncher.launch("$filename.xml")
+			withContext(Dispatchers.IO) {
+				val filename = if (recipeIds.size == 1) viewModel.getRecipeTitle(recipeIds.first()) else getString(R.string.recipes)
+				viewModel.writeRecipesToExportDir(recipeIds, "export")
+				exportRecipesActivityResultLauncher.launch("$filename.xml")
+			}
 			recipeListAdapter.finishActionMode()
 		}
 	}
