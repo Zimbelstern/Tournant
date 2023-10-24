@@ -149,4 +149,13 @@
 	<string name="make_mandatory">Make mandatory</string>
 	<string name="scale_to">Scale to</string>
 
+	<!-- Sort options -->
+	<string name="sort_by">Sort by</string>
+	<string name="totaltime">Total time</string>
+	<string name="database_id">Database ID</string>
+	<string name="instructions_length">Instructions length</string>
+	<string name="ingredients_count">Number of ingredients</string>
+	<string name="ascending">Ascending</string>
+	<string name="descending">Descending</string>
+
 </resources>

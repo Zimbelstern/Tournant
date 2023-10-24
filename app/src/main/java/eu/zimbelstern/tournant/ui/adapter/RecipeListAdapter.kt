@@ -148,6 +148,18 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 			}
 		}
 
+		holder.binding.time.apply {
+			visibility = if (recipe.preptime == null && recipe.cooktime == null)
+				View.GONE
+			else {
+				setPadding(0, (8 * resources.displayMetrics.density - holder.binding.recipeCardImage.paddingBottom).toInt(), 0, 0)
+				holder.binding.timeText.text = listOf(recipe.preptime, recipe.cooktime).joinToString(" / ") {
+					if (it == null) "–" else "$it''"
+				}
+				View.VISIBLE
+			}
+		}
+
 	}
 
 	override fun onBindViewHolder(holder: RecipeListViewHolder, position: Int, payloads: MutableList<Any>) {

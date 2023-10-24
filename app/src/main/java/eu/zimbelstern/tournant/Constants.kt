@@ -12,6 +12,7 @@ class Constants {
 		const val PREF_COLOR_THEME = "COLOR_THEME"
 		const val PREF_DECIMAL_SEPARATOR_COMMA = "DECIMAL_SEPARATOR_COMMA"
 		const val PREF_FILE_LAST_MODIFIED = "FILE_LAST_MODIFIED"
+		const val PREF_SORT = "SORT"
 	}
 	
 }

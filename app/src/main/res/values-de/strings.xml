@@ -138,4 +138,13 @@
 	<string name="make_mandatory">Als nicht optional markieren</string>
 	<string name="scale_to">Umrechnen auf</string>
 
+	<!-- Sort options -->
+	<string name="sort_by">Sortieren nach</string>
+	<string name="totaltime">Gesamtzeit</string>
+	<string name="database_id">Datenbank-ID</string>
+	<string name="instructions_length">Länge der Anleitung</string>
+	<string name="ingredients_count">Anzahl der Zutaten</string>
+	<string name="ascending">Aufsteigend</string>
+	<string name="descending">Absteigend</string>
+
 </resources>

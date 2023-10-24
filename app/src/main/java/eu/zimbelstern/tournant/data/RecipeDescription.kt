@@ -6,7 +6,9 @@ data class RecipeDescription(
 	val category: String?,
 	val cuisine: String?,
 	val rating: Float?,
-	val image: ByteArray? // TODO: Replace with thumbnail
+	val image: ByteArray?, // TODO: Replace with thumbnail
+	val preptime: Int?,
+	val cooktime: Int?,
 ) {
 	override fun equals(other: Any?): Boolean {
 		if (this === other) return true
@@ -21,6 +23,8 @@ data class RecipeDescription(
 			if (other.image == null) return false
 			if (!image.contentEquals(other.image)) return false
 		} else if (other.image != null) return false
+		if (preptime != other.preptime) return false
+		if (cooktime != other.cooktime) return false
 
 		return true
 	}
@@ -32,6 +36,8 @@ data class RecipeDescription(
 		result = 31 * result + (cuisine?.hashCode() ?: 0)
 		result = 31 * result + (rating?.hashCode() ?: 0)
 		result = 31 * result + (image?.contentHashCode() ?: 0)
+		result = 31 * result + (preptime ?: 0)
+		result = 31 * result + (cooktime ?: 0)
 		return result
 	}
 }

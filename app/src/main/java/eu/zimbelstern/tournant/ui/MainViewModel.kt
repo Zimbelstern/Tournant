@@ -19,6 +19,7 @@ import eu.zimbelstern.tournant.Constants.Companion.MODE_SYNCED
 import eu.zimbelstern.tournant.Constants.Companion.PREF_FILE
 import eu.zimbelstern.tournant.Constants.Companion.PREF_FILE_LAST_MODIFIED
 import eu.zimbelstern.tournant.Constants.Companion.PREF_MODE
+import eu.zimbelstern.tournant.Constants.Companion.PREF_SORT
 import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.TournantApplication
 import eu.zimbelstern.tournant.data.ColorfulString
@@ -62,11 +63,27 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 	}
 
 
+	// SORTING
+	val orderedBy = MutableStateFlow(
+		application.getSharedPreferences(application.packageName + "_preferences", Context.MODE_PRIVATE)
+			.getInt(PREF_SORT, 0)
+	)
+	fun changeOrder(orderBy: Int) {
+		viewModelScope.launch {
+			orderedBy.emit(orderBy)
+		}
+		application.getSharedPreferences(application.packageName + "_preferences", Context.MODE_PRIVATE)
+			.edit()
+			.putInt(PREF_SORT, orderBy)
+			.apply()
+	}
+
+
 	// RECIPES
 	@OptIn(ExperimentalCoroutinesApi::class)
-	val recipeDescriptions = searchQuery.flatMapLatest { query ->
+	val recipeDescriptions = combine(searchQuery, orderedBy) { s, o -> Pair(s, o)}.flatMapLatest { query ->
 		Pager(PagingConfig(pageSize = 10, enablePlaceholders = false)) {
-			recipeDao.getPagedRecipeDescriptions(query ?: "")
+			recipeDao.getPagedRecipeDescriptions(query.first ?: "", query.second)
 		}.flow
 			.cachedIn(viewModelScope)
 	}

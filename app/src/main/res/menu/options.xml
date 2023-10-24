@@ -32,6 +32,10 @@
 		android:visible="false"/>
 
 	<item
+		android:id="@+id/sorting"
+		android:title="@string/sort_by"/>
+
+	<item
 		android:id="@+id/export_all"
 		android:title="@string/export_all"/>
 

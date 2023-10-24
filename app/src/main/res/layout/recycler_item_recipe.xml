@@ -61,6 +61,7 @@
 				style="@style/Widget.AppCompat.RatingBar.Small"/>
 
 			<com.google.android.material.chip.ChipGroup
+				android:id="@+id/chip_group"
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
 				app:layout_constraintEnd_toEndOf="parent"
@@ -82,6 +83,33 @@
 					android:textColor="@color/white"/>
 
 			</com.google.android.material.chip.ChipGroup>
+
+			<LinearLayout
+				android:id="@+id/time"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				app:layout_constraintEnd_toEndOf="@+id/recipe_card_image"
+				app:layout_constraintStart_toStartOf="@+id/recipe_card_image"
+				app:layout_constraintTop_toBottomOf="@+id/recipe_card_image"
+				android:paddingTop="4dp"
+				android:orientation="horizontal"
+				android:gravity="center"
+				tools:ignore="UseCompoundDrawables">
+
+				<ImageView
+					android:contentDescription="@string/totaltime"
+					android:layout_width="20dp"
+					android:layout_height="20dp"
+					android:src="@drawable/ic_time"
+					app:tint="@color/normal_text_color"/>
+
+				<TextView
+					android:id="@+id/time_text"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginStart="2dp"/>
+
+			</LinearLayout>
 
 		</androidx.constraintlayout.widget.ConstraintLayout>
 

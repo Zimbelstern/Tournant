@@ -12,6 +12,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.MenuItem.OnActionExpandListener
 import android.view.View
+import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -22,6 +23,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.app.ShareCompat
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
+import androidx.core.view.children
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -35,6 +37,7 @@ import eu.zimbelstern.tournant.Constants.Companion.PREF_VERSION
 import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.TournantApplication
 import eu.zimbelstern.tournant.databinding.ActivityMainBinding
+import eu.zimbelstern.tournant.databinding.SortOptionsBinding
 import eu.zimbelstern.tournant.pagination.RecipeDescriptionLoadStateAdapter
 import eu.zimbelstern.tournant.ui.adapter.CategoriesCuisinesAdapter
 import eu.zimbelstern.tournant.ui.adapter.RecipeListAdapter
@@ -80,6 +83,7 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 			syncedFileChanged = true
 		}
 	}
+	private var scrollTopPending = false
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -138,6 +142,10 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 						View.VISIBLE
 					else
 						View.GONE
+				if (scrollTopPending) {
+					binding.recipesView.recipeListRecycler.scrollToPosition(0)
+					scrollTopPending = false
+				}
 			}
 		}
 
@@ -485,6 +493,10 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 				viewModel.syncWithFile(true)
 				true
 			}
+			R.id.sorting -> {
+				showSortDialog()
+				true
+			}
 			R.id.export_all -> {
 				exportRecipes(getFilteredRecipesIds())
 				true
@@ -508,6 +520,30 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 			}
 			else -> false
 		}
+	}
+
+	private fun showSortDialog() {
+		val sortOptionsView = SortOptionsBinding.inflate(layoutInflater)
+
+		(sortOptionsView.orderBy.children.elementAt(viewModel.orderedBy.value.floorDiv(2)) as RadioButton).isChecked = true
+		sortOptionsView.asc.isChecked = viewModel.orderedBy.value % 2 == 0
+		sortOptionsView.desc.isChecked = !sortOptionsView.asc.isChecked
+
+		MaterialAlertDialogBuilder(this)
+			.setTitle(R.string.sort_by)
+			.setView(sortOptionsView.root)
+			.setPositiveButton(R.string.ok) { dialog, _ ->
+				var orderBy = sortOptionsView.orderBy.children.indexOfFirst {
+					(it as RadioButton).isChecked
+				} * 2
+				if (sortOptionsView.desc.isChecked)
+					orderBy++
+				viewModel.changeOrder(orderBy)
+				scrollTopPending = true
+				dialog.dismiss()
+			}
+			.setNegativeButton(R.string.cancel) { dialog, _ -> dialog.dismiss() }
+			.show()
 	}
 
 	private fun migrate() {

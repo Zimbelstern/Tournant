@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginHorizontal="24dp"
+		android:orientation="vertical">
+
+		<RadioGroup
+			android:id="@+id/order_by"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="8dp">
+
+			<RadioButton
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/title"/>
+
+			<RadioButton
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/rating"/>
+
+			<RadioButton
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/preptime"/>
+
+			<RadioButton
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/cooktime"/>
+
+			<RadioButton
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/totaltime"/>
+
+			<RadioButton
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/database_id"/>
+
+			<RadioButton
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/instructions_length"/>
+
+			<RadioButton
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/ingredients_count"/>
+
+		</RadioGroup>
+
+		<View
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:layout_margin="4dp"
+			android:background="@color/checked_text_color"/>
+
+		<RadioGroup
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+			<RadioButton
+				android:id="@+id/asc"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/ascending"/>
+
+			<RadioButton
+				android:id="@+id/desc"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/descending"/>
+
+		</RadioGroup>
+
+	</LinearLayout>
+
+</ScrollView>
