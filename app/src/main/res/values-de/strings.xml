@@ -118,6 +118,8 @@
 	<string name="cancel">Abbrechen</string>
 	<string name="ok">OK</string>
 	<string name="done">Fertig</string>
+	<string name="copy_to_clipboard">In die Zwischenablage kopieren</string>
+	<string name="copied_to_clipboard">In die Zwischenablage kopiert</string>
 	<string name="egg">Hier, ein Keks: 🍪</string>
 	<string name="less">Weniger</string>
 	<string name="more">Mehr</string>

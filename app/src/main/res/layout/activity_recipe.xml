@@ -287,7 +287,8 @@
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
 							android:orientation="vertical"
-							android:paddingHorizontal="20dp"
+							android:paddingStart="20dp"
+							android:paddingEnd="16dp"
 							android:paddingVertical="16dp">
 
 							<TextView
@@ -335,12 +336,32 @@
 
 							</LinearLayout>
 
-							<androidx.recyclerview.widget.RecyclerView
-								android:id="@+id/recipe_detail_ingredients_recycler"
+							<LinearLayout
 								android:layout_width="match_parent"
 								android:layout_height="wrap_content"
-								android:nestedScrollingEnabled="false"
-								app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+								android:orientation="horizontal">
+
+								<androidx.recyclerview.widget.RecyclerView
+									android:id="@+id/recipe_detail_ingredients_recycler"
+									android:layout_width="0dp"
+									android:layout_height="wrap_content"
+									android:layout_weight="1"
+									android:nestedScrollingEnabled="false"
+									app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+								<ImageButton
+									android:id="@+id/recipe_detail_copy"
+									android:contentDescription="@string/copy_to_clipboard"
+									android:layout_width="36dp"
+									android:layout_height="36dp"
+									android:layout_gravity="top"
+									android:padding="2dp"
+									android:background="?attr/colorSurface"
+									android:src="@drawable/ic_copy"
+									android:scaleType="fitXY"
+									app:tint="@color/highlight_on_press_color"/>
+
+							</LinearLayout>
 
 						</LinearLayout>
 

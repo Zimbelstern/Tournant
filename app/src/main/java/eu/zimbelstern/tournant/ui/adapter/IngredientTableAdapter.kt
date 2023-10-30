@@ -62,10 +62,14 @@ class IngredientTableAdapter(
 					ingredientChecked.isVisible = !ingredientChecked.isVisible
 					listOf(ingredientAmountValue, ingredientAmountUnit, ingredientItem).forEach {
 						it.setTextColor(ContextCompat.getColor(root.context,
-							if (ingredientChecked.isVisible)
+							if (ingredientChecked.isVisible) {
+								row.checked = true
 								R.color.checked_text_color
-							else
+							}
+							else {
+								row.checked = false
 								R.color.normal_text_color
+							}
 						))
 					}
 				}
@@ -135,10 +139,16 @@ class IngredientTableAdapter(
 					if (it.optional)
 						ingredientTableInterface.getResources().getString(R.string.optional, it.item ?: it.refId.toString())
 					else
-						it.item ?: "¬",
+						it.item ?: "?",
 					it.refId
 				))
 			}
+		}
+	}
+
+	fun ingredientsToString(): String {
+		return tableRows.joinToString("\n") {
+			it.groupString + it.amountString + it.unitString + it.itemString + if (it.checked) " \u2713" else ""
 		}
 	}
 
@@ -149,6 +159,7 @@ class IngredientTableAdapter(
 		val itemString: String,
 		val refId: Long?) {
 		val isIngredient = amountString.isNotEmpty() || unitString.isNotEmpty() || itemString.isNotEmpty()
+		var checked: Boolean = false
 	}
 
 	interface IngredientTableInterface {

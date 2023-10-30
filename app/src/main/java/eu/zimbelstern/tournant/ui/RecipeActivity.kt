@@ -1,6 +1,8 @@
 package eu.zimbelstern.tournant.ui
 
 import android.annotation.SuppressLint
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -20,6 +22,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
@@ -207,6 +210,18 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 				}
 				binding.recipeDetailReset.setOnClickListener {
 					binding.recipeDetailYieldsValue.setText("")
+				}
+				binding.recipeDetailCopy.apply {
+					if (recipeWithIngredients.ingredients.isEmpty())
+						visibility = View.GONE
+					else {
+						visibility = View.VISIBLE
+						setOnClickListener {
+							val textToCopy = (binding.recipeDetailIngredientsRecycler.adapter as IngredientTableAdapter).ingredientsToString()
+							(getSystemService(CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText(getString(R.string.ingredients), textToCopy))
+							Toast.makeText(this@RecipeActivity, getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show()
+						}
+					}
 				}
 			}
 		}
