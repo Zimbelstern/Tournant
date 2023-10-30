@@ -179,6 +179,17 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 						savedInstanceState?.putString("YIELD_VALUE", null)
 					}
 				}
+				if (intent.hasExtra("RECIPE_YIELD_AMOUNT")) {
+					val requestedYieldAmount = intent.getFloatExtra("RECIPE_YIELD_AMOUNT", 0f)
+					val requestedYieldUnit = intent.getStringExtra("RECIPE_YIELD_UNIT")
+					if (requestedYieldUnit.isNullOrEmpty() && recipeWithIngredients.recipe.yieldUnit != null) {
+						scale(requestedYieldAmount)
+					}
+					else if (requestedYieldUnit == recipeWithIngredients.recipe.yieldUnit) {
+						binding.recipeDetailYieldsValue.setText(requestedYieldAmount.toStringForCooks(thousands = false))
+					}
+					intent.removeExtra("RECIPE_YIELD_AMOUNT")
+				}
 				binding.recipeDetailLess.setOnClickListener {
 					binding.recipeDetailYieldsValue.text = SpannableStringBuilder(
 						RecipeUtils.lessYield(
@@ -245,9 +256,13 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 		}
 	}
 
-	override fun findReferencedRecipe(refId: Long) {
+	override fun openRecipe(refId: Long, yieldAmount: Float?, yieldUnit: String?) {
 		startActivity(Intent(this, RecipeActivity::class.java).apply {
 			putExtra("RECIPE_ID", refId)
+			if (yieldAmount != null) {
+				putExtra("RECIPE_YIELD_AMOUNT", yieldAmount)
+				putExtra("RECIPE_YIELD_UNIT", yieldUnit)
+			}
 		})
 	}
 

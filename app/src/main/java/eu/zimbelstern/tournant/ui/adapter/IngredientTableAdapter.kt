@@ -51,7 +51,7 @@ class IngredientTableAdapter(
 			holder.binding.ingredientItem.apply {
 				paintFlags = paintFlags or Paint.UNDERLINE_TEXT_FLAG
 				setOnClickListener {
-					ingredientTableInterface.findReferencedRecipe(refId)
+					ingredientTableInterface.openRecipe(refId, row.amountString.substringBefore('-').parseLocalFormattedFloat(), row.unitString.trim())
 				}
 			}
 		}
@@ -152,8 +152,8 @@ class IngredientTableAdapter(
 	}
 
 	interface IngredientTableInterface {
-		fun findReferencedRecipe(refId: Long)
 		fun getResources(): Resources
+		fun openRecipe(refId: Long, yieldAmount: Float?, yieldUnit: String?)
 		fun scale(scaleFactor: Float)
 	}
 
