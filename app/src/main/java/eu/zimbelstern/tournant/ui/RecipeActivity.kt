@@ -205,6 +205,9 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 								?: recipeWithIngredients.recipe.yieldValue ?: 1f
 						).toStringForCooks())
 				}
+				binding.recipeDetailReset.setOnClickListener {
+					binding.recipeDetailYieldsValue.setText("")
+				}
 			}
 		}
 
