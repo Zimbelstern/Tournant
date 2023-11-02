@@ -22,7 +22,7 @@ import eu.zimbelstern.tournant.Constants.Companion.PREF_MODE
 import eu.zimbelstern.tournant.Constants.Companion.PREF_SORT
 import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.TournantApplication
-import eu.zimbelstern.tournant.data.ColorfulString
+import eu.zimbelstern.tournant.data.ChipData
 import eu.zimbelstern.tournant.data.RecipeWithIngredients
 import eu.zimbelstern.tournant.gourmand.GourmetXmlParser
 import eu.zimbelstern.tournant.gourmand.GourmetXmlWriter
@@ -30,6 +30,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
@@ -41,6 +42,7 @@ import java.io.File
 import kotlin.math.roundToInt
 import kotlin.random.Random
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class MainViewModel(private val application: TournantApplication) : AndroidViewModel(application) {
 
 	companion object { private const val TAG = "MainViewModel" }
@@ -80,7 +82,6 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 
 
 	// RECIPES
-	@OptIn(ExperimentalCoroutinesApi::class)
 	val recipeDescriptions = combine(searchQuery, orderedBy) { s, o -> Pair(s, o)}.flatMapLatest { query ->
 		Pager(PagingConfig(pageSize = 10, enablePlaceholders = false)) {
 			recipeDao.getPagedRecipeDescriptions(query.first ?: "", query.second)
@@ -99,37 +100,39 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 	// CATEGORIES & CUISINES
 	private val colors = application.resources.obtainTypedArray(R.array.material_colors_700)
 	private val rippleColors = application.resources.obtainTypedArray(R.array.material_colors_900)
-	private fun colorString(strings: List<String?>): List<ColorfulString> {
-		val list = mutableListOf<ColorfulString>()
-		strings.filterNotNull().forEach {
+	private fun createChipData(strings: List<String>): List<ChipData> {
+		val list = mutableListOf<ChipData>()
+		strings.forEach {
 			val pseudoRandomInt = Random(it.hashCode()).nextInt(colors.length())
 			val color = colors.getColorStateList(pseudoRandomInt) ?: return@forEach
 			val rippleColor = rippleColors.getColorStateList(pseudoRandomInt) ?: return@forEach
-			list.add(ColorfulString(it, color, rippleColor))
+			list.add(ChipData(it, null, color, rippleColor))
 		}
 		return list
 	}
 
-	private val allCategories = recipeDao.getCategories().map { colorString(it) }
-	val filteredCategories = allCategories.combine(searchQuery) { allCategories, searchQuery ->
-		when {
-			searchQuery == null -> listOf()
-			searchQuery.isNotBlank() -> allCategories.filter { it.string.contains(searchQuery, true) }
-			else -> allCategories
-		}
+	val allCategories = recipeDao.getAllCategories().map { createChipData(it) }
+	val filteredCategories = searchQuery.flatMapLatest { query ->
+		if (query != null)
+			recipeDao.getCategories(query).combine(allCategories) { filtered, all ->
+				filtered.mapNotNull { filter ->
+					all.find { it.string == filter.string }.also { it?.count = filter.count }
+				}
+			}
+		else
+			listOf(listOf<ChipData>(), listOf()).asFlow()
 	}
 
-	private val allCuisines = recipeDao.getCuisines().map { colorString(it) }
-	val filteredCuisines = allCuisines.combine(searchQuery) { allCuisines, searchQuery ->
-		when {
-			searchQuery == null -> listOf()
-			searchQuery.isNotBlank() -> allCuisines.filter { it.string.contains(searchQuery, true) }
-			else -> allCuisines
-		}
-	}
-
-	val allCategoriesAndCuisines = allCategories.combine(allCuisines) { categories, cuisines ->
-		categories + cuisines
+	val allCuisines = recipeDao.getAllCuisines().map { createChipData(it) }
+	val filteredCuisines = searchQuery.flatMapLatest { query ->
+		if (query != null)
+			recipeDao.getCuisines(query).combine(allCuisines) { filtered, all ->
+				filtered.mapNotNull { filter ->
+					all.find { it.string == filter.string }.also { it?.count = filter.count }
+				}
+			}
+		else
+			listOf(listOf<ChipData>(), listOf()).asFlow()
 	}
 
 

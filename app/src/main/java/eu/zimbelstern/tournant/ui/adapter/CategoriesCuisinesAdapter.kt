@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexboxLayoutManager
 import eu.zimbelstern.tournant.R
-import eu.zimbelstern.tournant.data.ColorfulString
+import eu.zimbelstern.tournant.data.ChipData
 import eu.zimbelstern.tournant.databinding.CategoriesAndCuisinesBinding
 import eu.zimbelstern.tournant.ui.MainActivity
 
@@ -15,7 +15,7 @@ class CategoriesCuisinesAdapter(mainActivity: MainActivity)
 	: RecyclerView.Adapter<CategoriesCuisinesAdapter.CategoriesCuisinesViewHolder>() {
 
 	private var chips = listOf(
-		listOf<ColorfulString>(),
+		listOf<ChipData>(),
 		listOf()
 	)
 
@@ -48,7 +48,7 @@ class CategoriesCuisinesAdapter(mainActivity: MainActivity)
 	override fun getItemCount() = chips.filter { it.isNotEmpty() }.size
 
 	@SuppressLint("NotifyDataSetChanged")
-	fun updateChipAdapters(newChips: List<List<ColorfulString>>) {
+	fun updateChipAdapters(newChips: List<List<ChipData>>) {
 		val diff = DiffUtil.calculateDiff(ChipListListDiffCallback(chips, newChips))
 		chips = newChips
 		adapters.forEachIndexed { i, adapter ->
@@ -58,8 +58,8 @@ class CategoriesCuisinesAdapter(mainActivity: MainActivity)
 	}
 
 	class ChipListListDiffCallback(
-		private val oldLists: List<List<ColorfulString>>,
-		private val newLists: List<List<ColorfulString>>
+		private val oldLists: List<List<ChipData>>,
+		private val newLists: List<List<ChipData>>
 	) : DiffUtil.Callback() {
 
 		override fun getOldListSize() =

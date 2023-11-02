@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.signature.ObjectKey
 import eu.zimbelstern.tournant.R
-import eu.zimbelstern.tournant.data.ColorfulString
+import eu.zimbelstern.tournant.data.ChipData
 import eu.zimbelstern.tournant.data.RecipeDescription
 import eu.zimbelstern.tournant.databinding.RecyclerItemRecipeBinding
 import java.io.File
@@ -45,9 +45,9 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 
 	private val selectedItems = mutableMapOf<Long, Int>()
 
-	private var ccColors = mapOf<String, ColorfulString>()
-	fun updateColors(colorfulStrings: List<ColorfulString>) {
-		ccColors = colorfulStrings.associateBy {
+	private var ccColors = mapOf<String, ChipData>()
+	fun updateColors(chipData: List<ChipData>) {
+		ccColors = chipData.associateBy {
 			it.string
 		}
 	}

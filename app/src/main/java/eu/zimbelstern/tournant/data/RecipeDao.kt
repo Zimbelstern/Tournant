@@ -208,10 +208,28 @@ abstract class RecipeDao {
 	abstract fun getDependentRecipeIds(recipeIds: Set<Long>): List<Long>
 
 	@Query("SELECT DISTINCT category FROM recipe WHERE category IS NOT NULL ORDER BY category COLLATE LOCALIZED ASC")
-	abstract fun getCategories(): Flow<List<String?>>
+	abstract fun getAllCategories(): Flow<List<String>>
 
 	@Query("SELECT DISTINCT cuisine FROM recipe WHERE cuisine IS NOT NULL ORDER BY cuisine COLLATE LOCALIZED ASC")
-	abstract fun getCuisines(): Flow<List<String?>>
+	abstract fun getAllCuisines(): Flow<List<String>>
+
+
+	@Query("""
+		SELECT category AS string, COUNT(*) AS count
+		FROM recipe
+		WHERE (title LIKE '%' || :query || '%' OR category LIKE '%' || :query || '%' OR cuisine LIKE '%' || :query || '%') AND category IS NOT NULL
+		GROUP BY category ORDER BY category COLLATE LOCALIZED ASC
+	""")
+	abstract fun getCategories(query: String): Flow<List<StringAndCount>>
+
+	@Query("""
+		SELECT cuisine AS string, COUNT(*) AS count
+		FROM recipe
+		WHERE (title LIKE '%' || :query || '%' OR category LIKE '%' || :query || '%' OR cuisine LIKE '%' || :query || '%')
+			AND cuisine IS NOT NULL
+		GROUP BY cuisine ORDER BY cuisine COLLATE LOCALIZED ASC
+	""")
+	abstract fun getCuisines(query: String): Flow<List<StringAndCount>>
 
 	@Query("SELECT DISTINCT source FROM recipe WHERE source IS NOT NULL ORDER BY source COLLATE LOCALIZED ASC")
 	abstract fun getSources(): Flow<List<String>>
@@ -256,3 +274,5 @@ abstract class RecipeDao {
 	abstract suspend fun deleteAllRecipes()
 
 }
+
+data class StringAndCount(val string: String, val count: Int)

@@ -221,7 +221,9 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 		}
 
 		lifecycleScope.launch {
-			viewModel.allCategoriesAndCuisines.collectLatest {
+			combine(viewModel.allCategories, viewModel.allCuisines) { categories, cuisines ->
+				categories + cuisines
+			}.collectLatest {
 				recipeListAdapter.updateColors(it)
 			}
 		}
