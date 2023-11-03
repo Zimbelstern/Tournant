@@ -345,7 +345,7 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 							.show()
 					}
 				} else {
-					val message = getString(R.string.dependent_recipes_found, depRecipes.map { viewModel.getRecipeTitle(it) }.joinToString(", "))
+					val message = getString(R.string.dependent_recipes_found, depRecipes.joinToString(", ") { viewModel.getRecipeTitle(it) })
 					withContext(Dispatchers.Main) {
 						MaterialAlertDialogBuilder(this@MainActivity)
 							.setTitle(R.string.dependent_recipes)

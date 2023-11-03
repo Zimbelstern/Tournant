@@ -7,6 +7,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.RewriteQueriesToDropUnusedColumns
 import androidx.room.Transaction
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
@@ -159,6 +160,7 @@ abstract class RecipeDao {
 	@Query("SELECT * FROM recipe WHERE gourmandId NOT IN (:gourmandIds)")
 	abstract fun getDeprecatedRecipes(gourmandIds: List<Int>): List<RecipeWithIngredients>
 
+	@RewriteQueriesToDropUnusedColumns
 	@Query("""
 		SELECT
 			id, title, category, cuisine, rating, image, preptime, cooktime,

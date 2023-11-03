@@ -44,7 +44,7 @@ class RecipeViewModel(private val application: TournantApplication, private val 
 		}
 	}
 
-	suspend fun writeRecipesToExportDir(filename: String) {
+	fun writeRecipesToExportDir(filename: String) {
 		val recipe = listOf(recipeDao.getRecipeById(recipeId))
 		val refs = recipeDao.getReferencedRecipes(setOf(recipeId))
 		(recipe + refs).forEach {

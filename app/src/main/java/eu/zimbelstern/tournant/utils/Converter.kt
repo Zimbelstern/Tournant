@@ -4,6 +4,7 @@ import androidx.databinding.InverseMethod
 import eu.zimbelstern.tournant.toStringForCooks
 import java.text.NumberFormat
 
+@Suppress("unused")
 object Converter {
 
 	@InverseMethod("hourToTime")
@@ -12,7 +13,6 @@ object Converter {
 		return value?.div(60)?.toString() ?: ""
 	}
 
-	@Suppress("UNUSED")
 	@JvmStatic
 	fun hourToTime(oldValue: Int?, value: String): Int? {
 		val hour = value.toIntOrNull()
@@ -25,7 +25,6 @@ object Converter {
 		return value?.mod(60)?.toString() ?: ""
 	}
 
-	@Suppress("UNUSED")
 	@JvmStatic
 	fun minToTime(oldValue: Int?, value: String): Int? {
 		val min = value.toIntOrNull()
@@ -46,7 +45,6 @@ object Converter {
 		return value?.toStringForCooks(thousands = false) ?: ""
 	}
 
-	@Suppress("UNUSED")
 	@JvmStatic
 	fun stringToFloat(oldValue: Float?, value: String): Float? {
 		return if (value.isEmpty()) null else try {
@@ -61,7 +59,6 @@ object Converter {
 		return value?.replace("<br/>", "\n") ?: ""
 	}
 
-	@Suppress("UNUSED")
 	@JvmStatic fun stringToHtml(value: String): String {
 		return value.replace("\n", "<br/>")
 	}

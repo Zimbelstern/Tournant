@@ -217,109 +217,102 @@
 						<LinearLayout
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
-							android:orientation="vertical">
+							android:orientation="horizontal">
 
-							<LinearLayout
-								android:layout_width="match_parent"
+							<TextView
+								android:layout_width="0dp"
 								android:layout_height="wrap_content"
-								android:orientation="horizontal">
+								android:layout_weight="1"
+								android:text="@string/preptime"/>
 
-								<TextView
-									android:layout_width="0dp"
-									android:layout_height="wrap_content"
-									android:layout_weight="1"
-									android:text="@string/preptime"/>
-
-								<TextView
-									android:layout_width="0dp"
-									android:layout_height="wrap_content"
-									android:layout_weight="1"
-									android:text="@string/cooktime"/>
-
-
-							</LinearLayout>
-
-							<LinearLayout
-								android:layout_width="match_parent"
+							<TextView
+								android:layout_width="0dp"
 								android:layout_height="wrap_content"
-								android:orientation="horizontal"
-								android:divider="@drawable/divider_horizontal"
-								android:showDividers="middle"
-								android:baselineAligned="false">
+								android:layout_weight="1"
+								android:text="@string/cooktime"/>
 
-								<com.google.android.material.textfield.TextInputLayout
-									android:layout_width="0dp"
+
+						</LinearLayout>
+
+						<LinearLayout
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:orientation="horizontal"
+							android:divider="@drawable/divider_horizontal"
+							android:showDividers="middle"
+							android:baselineAligned="false">
+
+							<com.google.android.material.textfield.TextInputLayout
+								android:layout_width="0dp"
+								android:layout_height="wrap_content"
+								android:layout_weight="0.2"
+								app:suffixText="h"
+								app:expandedHintEnabled="false"
+								style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+								<com.google.android.material.textfield.TextInputEditText
+									android:id="@+id/edit_preptime_h"
+									android:layout_width="match_parent"
 									android:layout_height="wrap_content"
-									android:layout_weight="0.2"
-									app:suffixText="h"
-									app:expandedHintEnabled="false"
-									style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+									android:imeOptions="actionNext"
+									android:inputType="number"
+									android:text="@={Converter.timeToHour(recipe.preptime, recipe.preptime)}"/>
 
-									<com.google.android.material.textfield.TextInputEditText
-										android:id="@+id/edit_preptime_h"
-										android:layout_width="match_parent"
-										android:layout_height="wrap_content"
-										android:imeOptions="actionNext"
-										android:inputType="number"
-										android:text="@={Converter.timeToHour(recipe.preptime, recipe.preptime)}"/>
+							</com.google.android.material.textfield.TextInputLayout>
 
-								</com.google.android.material.textfield.TextInputLayout>
+							<com.google.android.material.textfield.TextInputLayout
+								android:layout_width="0dp"
+								android:layout_height="wrap_content"
+								android:layout_weight="0.3"
+								app:suffixText="min"
+								app:expandedHintEnabled="false"
+								style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-								<com.google.android.material.textfield.TextInputLayout
-									android:layout_width="0dp"
+								<com.google.android.material.textfield.TextInputEditText
+									android:id="@+id/edit_preptime_min"
+									android:layout_width="match_parent"
 									android:layout_height="wrap_content"
-									android:layout_weight="0.3"
-									app:suffixText="min"
-									app:expandedHintEnabled="false"
-									style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+									android:imeOptions="actionNext"
+									android:inputType="number"
+									android:text="@={Converter.timeToMin(recipe.preptime, recipe.preptime)}"/>
 
-									<com.google.android.material.textfield.TextInputEditText
-										android:id="@+id/edit_preptime_min"
-										android:layout_width="match_parent"
-										android:layout_height="wrap_content"
-										android:imeOptions="actionNext"
-										android:inputType="number"
-										android:text="@={Converter.timeToMin(recipe.preptime, recipe.preptime)}"/>
+							</com.google.android.material.textfield.TextInputLayout>
 
-								</com.google.android.material.textfield.TextInputLayout>
+							<com.google.android.material.textfield.TextInputLayout
+								android:layout_width="0dp"
+								android:layout_height="wrap_content"
+								android:layout_weight="0.2"
+								app:suffixText="h"
+								app:expandedHintEnabled="false"
+								style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-								<com.google.android.material.textfield.TextInputLayout
-									android:layout_width="0dp"
+								<com.google.android.material.textfield.TextInputEditText
+									android:id="@+id/edit_cooktime_h"
+									android:layout_width="match_parent"
 									android:layout_height="wrap_content"
-									android:layout_weight="0.2"
-									app:suffixText="h"
-									app:expandedHintEnabled="false"
-									style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+									android:imeOptions="actionNext"
+									android:inputType="number"
+									android:text="@={Converter.timeToHour(recipe.cooktime, recipe.cooktime)}"/>
 
-									<com.google.android.material.textfield.TextInputEditText
-										android:id="@+id/edit_cooktime_h"
-										android:layout_width="match_parent"
-										android:layout_height="wrap_content"
-										android:imeOptions="actionNext"
-										android:inputType="number"
-										android:text="@={Converter.timeToHour(recipe.cooktime, recipe.cooktime)}"/>
+							</com.google.android.material.textfield.TextInputLayout>
 
-								</com.google.android.material.textfield.TextInputLayout>
+							<com.google.android.material.textfield.TextInputLayout
+								android:layout_width="0dp"
+								android:layout_height="wrap_content"
+								android:layout_weight="0.3"
+								app:suffixText="min"
+								app:expandedHintEnabled="false"
+								style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-								<com.google.android.material.textfield.TextInputLayout
-									android:layout_width="0dp"
+								<com.google.android.material.textfield.TextInputEditText
+									android:id="@+id/edit_cooktime_min"
+									android:layout_width="match_parent"
 									android:layout_height="wrap_content"
-									android:layout_weight="0.3"
-									app:suffixText="min"
-									app:expandedHintEnabled="false"
-									style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+									android:imeOptions="actionNext"
+									android:inputType="number"
+									android:text="@={Converter.timeToMin(recipe.cooktime, recipe.cooktime)}"/>
 
-									<com.google.android.material.textfield.TextInputEditText
-										android:id="@+id/edit_cooktime_min"
-										android:layout_width="match_parent"
-										android:layout_height="wrap_content"
-										android:imeOptions="actionNext"
-										android:inputType="number"
-										android:text="@={Converter.timeToMin(recipe.cooktime, recipe.cooktime)}"/>
-
-								</com.google.android.material.textfield.TextInputLayout>
-
-							</LinearLayout>
+							</com.google.android.material.textfield.TextInputLayout>
 
 						</LinearLayout>
 

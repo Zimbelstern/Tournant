@@ -20,7 +20,7 @@ import java.text.DecimalFormatSymbols
 
 class IngredientTableAdapter(
 	private val ingredientTableInterface: IngredientTableInterface,
-	private val ingredientList: List<Ingredient>,
+	ingredientList: List<Ingredient>,
 	private val scale: Float? = null
 ) : RecyclerView.Adapter<IngredientTableAdapter.IngredientTableViewHolder>() {
 
