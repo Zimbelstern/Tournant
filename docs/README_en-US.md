@@ -27,7 +27,7 @@ EN
 
 # Tournant
 <p style="font-size: 1.25em;">
-  Recipe manager with Gourmand compatibility
+  Recipe manager for Android (with Gourmand compatibility)
 </p>
 
 Tournant serves your favorite dishes on your Android device!  
@@ -56,10 +56,10 @@ You can get your copy from different repositories:
 *Note: F-Droid's main repository will be at least 2–3 days behind the official repo.*
 
 
-- Alternatively, you can download the latest APK directly from <https://tournant.zimbelstern.eu/tournant-latest.apk>
+- [Direct download](https://tournant.zimbelstern.eu/tournant.apk) (no updates)
 
 ## How to get recipes on your device
-Tournant can only read recipe files created by the desktop application Gourmand and is (currently) read-only.
+Tournant can open recipe files created by the desktop application Gourmand.
 - In Gourmand Recipe Manager, navigate to `File -> Export all recipes` or press `Ctrl + Shift + T`
 - Choose `Gourmet XML file format` and give the file the extension `.xml` or `.grmt`
 - Push the file to the external storage of your Android device, either manually or by using file synchronisation
