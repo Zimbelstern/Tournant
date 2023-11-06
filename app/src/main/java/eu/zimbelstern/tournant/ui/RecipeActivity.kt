@@ -1,12 +1,14 @@
 package eu.zimbelstern.tournant.ui
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.provider.AlarmClock
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -53,9 +55,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.text.DecimalFormatSymbols
+import java.util.Calendar
 import kotlin.random.Random
 
-class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTableInterface {
+class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTableInterface, InstructionsTextAdapter.InstructionsTextInterface {
 
 	companion object {
 		private const val TAG = "RecipeActivity"
@@ -167,7 +170,7 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 					}
 					recipe.instructions?.let {
 						binding.recipeDetailInstructions.visibility = View.VISIBLE
-						binding.recipeDetailInstructionsRecycler.adapter = InstructionsTextAdapter(it)
+						binding.recipeDetailInstructionsRecycler.adapter = InstructionsTextAdapter(this@RecipeActivity, it)
 					}
 					recipe.notes?.let {
 						binding.recipeDetailNotes.visibility = View.VISIBLE
@@ -288,6 +291,38 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 		binding.root.clearFocus()
 		val oldYieldValue = binding.recipeDetailYieldsValue.hint.toString().parseLocalFormattedFloat() ?: 1f
 		binding.recipeDetailYieldsValue.setText((oldYieldValue * scaleFactor).toStringForCooks(thousands = false))
+	}
+
+	override fun setAlarm(minutes: Int) {
+		try {
+			val calendar = Calendar.getInstance().apply {
+				add(Calendar.MINUTE, minutes)
+			}
+			startActivity(Intent(AlarmClock.ACTION_SET_ALARM).apply {
+				putExtra(AlarmClock.EXTRA_MESSAGE, binding.recipe?.title)
+				putExtra(AlarmClock.EXTRA_HOUR, calendar[Calendar.HOUR_OF_DAY])
+				putExtra(AlarmClock.EXTRA_MINUTES, calendar[Calendar.MINUTE])
+			})
+		} catch (_: ActivityNotFoundException) {
+			Toast.makeText(this, R.string.no_suitable_application, Toast.LENGTH_LONG).show()
+		}
+	}
+
+	override fun startTimer(seconds: Int) {
+		try {
+			startActivity(Intent(AlarmClock.ACTION_SET_TIMER).apply {
+				putExtra(AlarmClock.EXTRA_MESSAGE, binding.recipe?.title)
+				putExtra(AlarmClock.EXTRA_LENGTH, seconds)
+				putExtra(AlarmClock.EXTRA_SKIP_UI, true)
+			})
+			val timeString = if (seconds >= 60)
+				"%02d".format(seconds / 60) + ":" + "%02d".format(seconds % 60) + " min"
+			else
+				"$seconds s"
+			Toast.makeText(this, getString(R.string.timer_set, timeString), Toast.LENGTH_SHORT).show()
+		} catch (_: ActivityNotFoundException) {
+			Toast.makeText(this, R.string.no_suitable_application, Toast.LENGTH_LONG).show()
+		}
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu): Boolean {

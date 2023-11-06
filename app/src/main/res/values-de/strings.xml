@@ -58,6 +58,7 @@
 	<string name="unknown_file_error">Unbekannter Dateifehler: %s</string>
 	<string name="importing_only_in_standalone_mode">Importieren nur im eigenständigen Modus</string>
 	<string name="file_not_changed">Synchronisierte Datei unverändert</string>
+	<string name="no_suitable_application">Keine passende Anwendung</string>
 
 	<!-- Options menu -->
 	<string name="recipe_count">Rezeptanzahl</string>
@@ -130,6 +131,7 @@
 	<string name="remove">Entfernen</string>
 	<string name="options">Optionen</string>
 	<string name="inspiration">Inspiration gefällig?</string>
+	<string name="to">bis</string>
 
 	<!-- Editing -->
 	<string name="edit">Bearbeiten</string>
@@ -149,5 +151,11 @@
 	<string name="ingredients_count">Anzahl der Zutaten</string>
 	<string name="ascending">Aufsteigend</string>
 	<string name="descending">Absteigend</string>
+
+	<!-- Timer -->
+	<string name="timer_set">Wecker auf %s gestellt</string>
+	<string name="hours_for_regex">(Stunden?)</string>
+	<string name="minutes_for_regex">(Minuten?)</string>
+	<string name="seconds_for_regex">(Sekunden?)</string>
 
 </resources>

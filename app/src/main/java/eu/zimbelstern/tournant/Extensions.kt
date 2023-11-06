@@ -1,5 +1,6 @@
 package eu.zimbelstern.tournant
 
+import android.text.Spanned
 import eu.zimbelstern.tournant.data.Ingredient
 import eu.zimbelstern.tournant.data.IngredientGroupTitle
 import eu.zimbelstern.tournant.data.IngredientLine
@@ -134,5 +135,15 @@ fun MutableList<IngredientLine>.move(from: Int, to: Int) {
 			if (successor is Ingredient)
 				(this[to] as Ingredient).group = successor.group
 		}
+	}
+}
+
+fun Spanned.findDurationsByRegex(dashWords: String, timeUnitWords: String): Sequence<Pair<Float, IntRange>> {
+	val separator = DecimalFormatSymbols.getInstance().decimalSeparator
+	return Regex("""(\d{1,3}([$separator/]\d{1,2})?((\s?\p{Pd}\s?)|(\s$dashWords\s)))?\d{1,3}([$separator/]\d{1,2})?\s?($timeUnitWords)([^A-Za-z]|$)""").findAll(this).map {
+		Pair(
+			it.value.takeWhile { char -> char.isDigit() || char == separator || char == '/'}.withFractionsToFloat(separator)!!,
+			IntRange(it.range.first, it.range.last.minus(if (it.value.last().isLetter()) 0 else 1))
+		)
 	}
 }

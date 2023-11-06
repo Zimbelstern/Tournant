@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
 	<!-- Non-translatable names -->
 	<string name="app_name" translatable="false">Tournant</string>
@@ -61,6 +61,7 @@
 	<string name="unknown_file_error">Unknown file error: %s</string>
 	<string name="importing_only_in_standalone_mode">Importing only in standalone mode</string>
 	<string name="file_not_changed">Synced file has not changed</string>
+	<string name="no_suitable_application">No suitable application</string>
 
 	<!-- Options menu -->
 	<string name="recipe_count">Number of recipes</string>
@@ -141,6 +142,7 @@
 	<string name="remove">Remove</string>
 	<string name="options">Options</string>
 	<string name="inspiration">Looking for inspiration?</string>
+	<string name="to">to</string>
 
 	<!-- Editing -->
 	<string name="edit">Edit</string>
@@ -160,5 +162,11 @@
 	<string name="ingredients_count">Number of ingredients</string>
 	<string name="ascending">Ascending</string>
 	<string name="descending">Descending</string>
+
+	<!-- Timer -->
+	<string name="timer_set">Timer set to %s</string>
+	<string name="hours_for_regex">(hour)|(hours)</string>
+	<string name="minutes_for_regex">(minute)|(minutes)</string>
+	<string name="seconds_for_regex">(second)|(seconds)</string>
 
 </resources>
