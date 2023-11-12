@@ -41,7 +41,7 @@ class AboutActivity : AppCompatActivity() {
 				if (egg < 3) egg++ else Toast.makeText(context, getString(R.string.egg), Toast.LENGTH_LONG).show()
 				true
 			}
-			for (key in listOf("", "license", "source", "issues", "donate")) {
+			for (key in listOf("", "license", "source", "issues", "recipes", "donate")) {
 				findPreference<Preference>(key)?.onPreferenceClickListener = preferenceKeyAsUrl()
 			}
 			findPreference<PreferenceCategory>("libraries")?.let {

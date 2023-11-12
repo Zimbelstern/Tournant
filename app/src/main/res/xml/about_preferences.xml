@@ -34,6 +34,11 @@
 			app:icon="@drawable/ic_bug"/>
 
 		<Preference
+			app:key="recipes"
+			app:title="@string/recipes"
+			app:icon="@drawable/ic_restaurant"/>
+
+		<Preference
 			app:key="donate"
 			app:title="@string/donate"
 			app:icon="@drawable/ic_donate"/>
