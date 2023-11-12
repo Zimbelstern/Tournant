@@ -9,6 +9,8 @@ import java.text.NumberFormat
 import kotlin.math.pow
 import kotlin.math.roundToInt
 
+val separator = DecimalFormatSymbols.getInstance().decimalSeparator
+
 fun Float.getNumberOfDigits(): Int {
 	var f = this
 	var i = 0
@@ -35,7 +37,6 @@ fun Float?.toStringForCooks(thousands: Boolean = true): String {
 				.dropLastWhile { !it.isDigit() }
 
 	if (!thousands) {
-		val separator = DecimalFormatSymbols.getInstance().decimalSeparator
 		formattedNumber = formattedNumber.replace(Regex("[^0-9$separator]"), "")
 	}
 
@@ -43,7 +44,6 @@ fun Float?.toStringForCooks(thousands: Boolean = true): String {
 }
 
 fun String.parseLocalFormattedFloat(): Float? {
-	val separator = DecimalFormatSymbols.getInstance().decimalSeparator
 	return replace(Regex("[^0-9$separator]"), "").replace(separator, '.').toFloatOrNull()
 }
 
@@ -61,11 +61,11 @@ fun String.getQuantityIntForPlurals(): Int? {
 	}
 }
 
-fun String.withFractionsToFloat(separator: Char = '.'): Float? {
+fun String.withFractionsToFloat(separator: Char = eu.zimbelstern.tournant.separator): Float? {
 	return try {
 		 when {
 			 this.contains(" ") -> {
-				 this.split(" ")[1].withFractionsToFloat()
+				 this.split(" ")[1].withFractionsToFloat(separator)
 					 ?.plus(this.split(" ")[0].toFloat())
 			 }
 
@@ -139,11 +139,20 @@ fun MutableList<IngredientLine>.move(from: Int, to: Int) {
 }
 
 fun Spanned.findDurationsByRegex(dashWords: String, timeUnitWords: String): Sequence<Pair<Float, IntRange>> {
-	val separator = DecimalFormatSymbols.getInstance().decimalSeparator
 	return Regex("""(\d{1,3}([$separator/]\d{1,2})?((\s?\p{Pd}\s?)|(\s$dashWords\s)))?\d{1,3}([$separator/]\d{1,2})?\s?($timeUnitWords)([^A-Za-z]|$)""").findAll(this).map {
 		Pair(
 			it.value.takeWhile { char -> char.isDigit() || char == separator || char == '/'}.withFractionsToFloat(separator)!!,
 			IntRange(it.range.first, it.range.last.minus(if (it.value.last().isLetter()) 0 else 1))
 		)
+	}
+}
+
+fun Spanned.findFirstIngredientWithAmount(dashWords: String, ingredient: Ingredient, from: Int): MatchResult? {
+	return Regex("""(\d{1,3}([$separator/]\d{1,2})?((\s?\p{Pd}\s?)|(\s$dashWords\s)))?\d{1,3}([$separator/]\d{1,2})?\s?${ingredient.unit ?: ""}\s${ingredient.item}""").find(this, from)
+}
+
+fun Spanned.findFirstAmount(range: IntRange): MatchResult? {
+	return Regex("""\d{1,3}([$separator/]\d{1,2})?""").find(this, range.first).takeIf {
+		it == null || it.range.last < range.last
 	}
 }

@@ -140,6 +140,10 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 						binding.recipeDetailCuisine.chipBackgroundColor = colors.getColorStateList(Random(it.hashCode()).nextInt(resources.getStringArray(R.array.material_colors_700).size))
 						colors.recycle()
 					}
+					recipe.instructions?.let {
+						binding.recipeDetailInstructions.visibility = View.VISIBLE
+						binding.recipeDetailInstructionsRecycler.adapter = InstructionsTextAdapter(this@RecipeActivity, it)
+					}
 					recipe.yieldValue.let {
 						binding.recipeDetailYields.visibility = View.VISIBLE
 						binding.recipeDetailYieldsValue.apply {
@@ -153,6 +157,9 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 								val scaleFactor = editable.toString().replace(DecimalFormatSymbols.getInstance().decimalSeparator, '.').toFloatOrNull()?.div(recipe.yieldValue ?: 1f)
 								recipeWithIngredients.ingredients.scale(scaleFactor).let { list ->
 									binding.recipeDetailIngredientsRecycler.adapter = IngredientTableAdapter(this@RecipeActivity, list, scaleFactor)
+									binding.recipeDetailInstructionsRecycler.adapter = recipe.instructions?.let {
+										InstructionsTextAdapter(this@RecipeActivity, it, list, scaleFactor)
+									}
 									fillYieldsUnit(recipe.yieldValue, recipe.yieldUnit)
 								}
 							}
@@ -167,10 +174,6 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 								}
 							}
 						}
-					}
-					recipe.instructions?.let {
-						binding.recipeDetailInstructions.visibility = View.VISIBLE
-						binding.recipeDetailInstructionsRecycler.adapter = InstructionsTextAdapter(this@RecipeActivity, it)
 					}
 					recipe.notes?.let {
 						binding.recipeDetailNotes.visibility = View.VISIBLE
