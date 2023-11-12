@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.signature.ObjectKey
+import com.google.android.material.textfield.TextInputLayout
 import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.TournantApplication
 import eu.zimbelstern.tournant.data.Ingredient
@@ -25,6 +27,7 @@ import eu.zimbelstern.tournant.data.IngredientGroupTitle
 import eu.zimbelstern.tournant.databinding.ActivityRecipeEditingBinding
 import eu.zimbelstern.tournant.move
 import eu.zimbelstern.tournant.ui.adapter.IngredientEditingAdapter
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
@@ -214,6 +217,15 @@ class RecipeEditingActivity : AppCompatActivity(), IngredientEditingAdapter.Ingr
 			}
 		}
 
+		lifecycleScope.launch {
+			delay(1000)
+			runOnUiThread {
+				for (view in listOf(binding.editTitle, binding.editCategory, binding.editCuisine, binding.editSource, binding.editLink)) {
+					((view.parent as ViewGroup).parent as TextInputLayout).isHintAnimationEnabled = true
+				}
+			}
+		}
+
 	}
 
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -234,6 +246,10 @@ class RecipeEditingActivity : AppCompatActivity(), IngredientEditingAdapter.Ingr
 				}
 
 				viewModel.saveRecipe()
+				item.isEnabled = false
+				val p = (binding.root.parent as ViewGroup)
+				p.removeAllViews()
+				p.addView(layoutInflater.inflate(R.layout.activity_main_loading, p, false))
 
 				lifecycleScope.launch {
 					viewModel.savedWithId.collect {

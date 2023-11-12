@@ -94,6 +94,7 @@
 				android:paddingTop="4dp"
 				android:orientation="horizontal"
 				android:gravity="center"
+				android:alpha="0.75"
 				tools:ignore="UseCompoundDrawables">
 
 				<ImageView

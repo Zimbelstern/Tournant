@@ -16,9 +16,9 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:layout_margin="16dp"
-			android:clipChildren="false"
 			android:clipToPadding="false"
-			android:paddingVertical="16dp">
+			android:elevation="4dp"
+			app:cardCornerRadius="8dp">
 
 			<LinearLayout
 				android:layout_width="match_parent"
@@ -26,6 +26,7 @@
 				android:orientation="vertical"
 				android:divider="@drawable/divider_vertical"
 				android:showDividers="middle"
+				android:paddingVertical="16dp"
 				android:clipChildren="false">
 
 				<com.google.android.flexbox.FlexboxLayout
@@ -99,6 +100,7 @@
 						<com.google.android.material.textfield.TextInputLayout
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
+							app:hintAnimationEnabled="false"
 							style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
 							<com.google.android.material.textfield.TextInputEditText
@@ -148,6 +150,7 @@
 								android:layout_height="wrap_content"
 								android:layout_weight="1"
 								app:endIconMode="none"
+								app:hintAnimationEnabled="false"
 								style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
 
 								<com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -166,6 +169,7 @@
 								android:layout_height="wrap_content"
 								android:layout_weight="1"
 								app:endIconMode="none"
+								app:hintAnimationEnabled="false"
 								style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
 
 								<com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -185,6 +189,7 @@
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
 							app:endIconMode="none"
+							app:hintAnimationEnabled="false"
 							style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
 
 							<com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -201,6 +206,7 @@
 						<com.google.android.material.textfield.TextInputLayout
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
+							app:hintAnimationEnabled="false"
 							style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
 							<com.google.android.material.textfield.TextInputEditText
