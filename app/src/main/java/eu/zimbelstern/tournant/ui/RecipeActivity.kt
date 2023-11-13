@@ -148,7 +148,7 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 						binding.recipeDetailYields.visibility = View.VISIBLE
 						binding.recipeDetailYieldsValue.apply {
 							keyListener = DigitsKeyListener.getInstance("0123456789" + DecimalFormatSymbols.getInstance().decimalSeparator)
-							hint = (it ?: 1f).toStringForCooks()
+							hint = (it ?: 1f).toStringForCooks(thousands = false)
 							if (it != null) {
 								text = SpannableStringBuilder(hint)
 							}
@@ -204,7 +204,7 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 						RecipeUtils.lessYield(
 							binding.recipeDetailYieldsValue.text.toString().replace(DecimalFormatSymbols.getInstance().decimalSeparator, '.').toFloatOrNull()
 								?: recipeWithIngredients.recipe.yieldValue ?: 1f
-						).toStringForCooks()
+						).toStringForCooks(thousands = false)
 					)
 				}
 				binding.recipeDetailMore.setOnClickListener {
@@ -212,7 +212,7 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 						RecipeUtils.moreYield(
 							binding.recipeDetailYieldsValue.text.toString().replace(DecimalFormatSymbols.getInstance().decimalSeparator, '.').toFloatOrNull()
 								?: recipeWithIngredients.recipe.yieldValue ?: 1f
-						).toStringForCooks())
+						).toStringForCooks(thousands = false))
 				}
 				binding.recipeDetailReset.setOnClickListener {
 					binding.recipeDetailYieldsValue.setText("")
