@@ -12,6 +12,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.MenuItem.OnActionExpandListener
 import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
@@ -23,6 +24,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.app.ShareCompat
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.children
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
@@ -86,6 +88,7 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 	private var scrollTopPending = false
 
 	override fun onCreate(savedInstanceState: Bundle?) {
+		installSplashScreen()
 		super.onCreate(savedInstanceState)
 
 		val sharedPrefs = getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE)
@@ -103,6 +106,19 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 
 		binding = ActivityMainBinding.inflate(layoutInflater)
 		setContentView(binding.root)
+
+		findViewById<View>(android.R.id.content).apply {
+			viewTreeObserver.addOnPreDrawListener(
+				object : ViewTreeObserver.OnPreDrawListener {
+					override fun onPreDraw(): Boolean {
+						return if (viewModel.countAllRecipes.value > -1) {
+							viewTreeObserver.removeOnPreDrawListener(this)
+							true
+						} else false
+					}
+				}
+			)
+		}
 
 		binding.welcomeView.apply {
 			@SuppressLint("SetTextI18n")
@@ -171,30 +187,22 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 		// RECIPE COUNT
 		supportActionBar?.setDisplayShowTitleEnabled(true)
 		lifecycleScope.launch {
-			viewModel.countAllRecipes.collectLatest {
-				if (it > 0) {
-					if (!viewModel.waitingForRecipes.value)
-						binding.root.displayedChild = RECIPES_SCREEN
-				}
-			    else  {
-					if (!viewModel.waitingForRecipes.value)
-						binding.root.displayedChild = WELCOME_SCREEN
-				}
-			}
-		}
-
-		lifecycleScope.launch {
-			viewModel.waitingForRecipes.collectLatest {
-				if (it) {
-					Log.d(TAG, "Waiting for recipes")
-					binding.root.displayedChild = LOADING_SCREEN
-				}
-				else {
-					Log.d(TAG, "Recipes ready")
-					if (viewModel.countAllRecipes.value > 0)
-						binding.root.displayedChild = RECIPES_SCREEN
-					else
-						binding.root.displayedChild = WELCOME_SCREEN
+			viewModel.waitingForRecipes.combine(viewModel.countAllRecipes) { waiting, count ->
+				Pair(waiting, count)
+			}.collectLatest {
+				binding.root.displayedChild = when {
+					it.first -> {
+						Log.d(TAG, "Waiting for recipes")
+						LOADING_SCREEN
+					}
+					it.second == 0 -> {
+						Log.d(TAG, "Recipe count: 0")
+						WELCOME_SCREEN
+					}
+					else -> {
+						Log.d(TAG, "Recipe count: ${it.second}")
+						RECIPES_SCREEN
+					}
 				}
 			}
 		}
@@ -215,9 +223,9 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 		// RECIPES
 		lifecycleScope.launch {
 			viewModel.recipeDescriptions.collectLatest {
-					Log.d(TAG, "Recipes updated")
-					recipeListAdapter.submitData(it)
-				}
+				Log.d(TAG, "Recipes updated")
+				recipeListAdapter.submitData(it)
+			}
 		}
 
 		lifecycleScope.launch {
@@ -370,11 +378,6 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 			if (syncedFileChanged) {
 				viewModel.syncWithFile()
 				syncedFileChanged = false
-			}
-			if (!viewModel.waitingForRecipes.value) {
-				binding.root.displayedChild =
-					if (viewModel.countAllRecipes.value > 0) RECIPES_SCREEN
-					else WELCOME_SCREEN
 			}
 			if (recipeOpen) {
 				recipeListAdapter.recipeClosed()

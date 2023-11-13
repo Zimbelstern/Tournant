@@ -82,14 +82,13 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 
 
 	// RECIPES
-	val recipeDescriptions = combine(searchQuery, orderedBy) { s, o -> Pair(s, o)}.flatMapLatest { query ->
+	val recipeDescriptions = combine(searchQuery, orderedBy) { s, o -> Pair(s, o) }.flatMapLatest { query ->
 		Pager(PagingConfig(pageSize = 10, enablePlaceholders = false)) {
 			recipeDao.getPagedRecipeDescriptions(query.first ?: "", query.second)
-		}.flow
-			.cachedIn(viewModelScope)
+		}.flow.cachedIn(viewModelScope)
 	}
 
-	val countAllRecipes = recipeDao.getRecipeCount().stateIn(viewModelScope, SharingStarted.Lazily, 0)
+	val countAllRecipes = recipeDao.getRecipeCount().stateIn(viewModelScope, SharingStarted.Lazily, -1)
 
 	val idsRecipesFiltered = countAllRecipes.combine(searchQuery) { _, query ->
 		withContext(Dispatchers.IO) {

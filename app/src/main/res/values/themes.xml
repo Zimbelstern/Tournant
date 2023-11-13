@@ -28,6 +28,12 @@
 
 	</style>
 
+	<style name="Theme.Tournant.Splash" parent="Theme.SplashScreen">
+		<item name="windowSplashScreenBackground">@color/light_surface</item>
+		<item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+		<item name="postSplashScreenTheme">@style/Theme.Tournant.KitchenBackground</item>
+	</style>
+
 	<style name="h" parent="@android:style/TextAppearance.Medium">
 		<item name="android:textColor">@color/heading_color</item>
 		<item name="fontFamily">@font/quicksand_bold</item>
@@ -110,7 +116,5 @@
 		<item name="android:paddingTop">10dp</item>
 		<item name="android:paddingBottom">10dp</item>
 	</style>
-
-
 
 </resources>
