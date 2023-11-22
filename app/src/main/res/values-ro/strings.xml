@@ -109,4 +109,22 @@
     <string name="selected">%d selectate</string>
     <string name="recipes">Rețete</string>
     <string name="share">Partajați</string>
+    <string name="ascending">Ascendent</string>
+    <string name="copy_to_clipboard">Copiați în clipboard</string>
+    <string name="reset">resetare</string>
+    <string name="copied_to_clipboard">Copiat în clipboard</string>
+    <string name="ingredients_count">Numărul de ingrediente</string>
+    <string name="all_recipes">Toate rețetele</string>
+    <string name="descending">Descendent</string>
+    <string name="minutes_for_regex">(minut)|(minute)</string>
+    <string name="seconds_for_regex">(secundă)|(secunde)</string>
+    <string name="database_id">ID-ul din baza de date</string>
+    <string name="to">până la</string>
+    <string name="sort_by">Sortați după</string>
+    <string name="timer_set">Temporizator setat la %s</string>
+    <string name="scale_to">Scalați la</string>
+    <string name="totaltime">Timp total</string>
+    <string name="no_suitable_application">Nici-o aplicație adecvată</string>
+    <string name="hours_for_regex">(oră)(ore)</string>
+    <string name="instructions_length">Lungimea instrucțiunilor</string>
 </resources>
