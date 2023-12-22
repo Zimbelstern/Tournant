@@ -6,6 +6,7 @@ import androidx.core.text.parseAsHtml
 import eu.zimbelstern.tournant.data.Ingredient
 import eu.zimbelstern.tournant.data.Recipe
 import eu.zimbelstern.tournant.data.RecipeWithIngredients
+import eu.zimbelstern.tournant.extractFractionsToFloat
 import eu.zimbelstern.tournant.withFractionsToFloat
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
@@ -237,22 +238,7 @@ class GourmetXmlParser(private val separator: Char) {
 		parser.require(XmlPullParser.START_TAG, null, tag)
 		val yieldString = readText(parser)
 		parser.require(XmlPullParser.END_TAG, null, tag)
-		if (yieldString[0].isDigit()) {
-			if (yieldString.matches(Regex("^[0-9$separator]+$"))) {
-				return Pair(
-					yieldString.split(" ")[0].withFractionsToFloat(separator),
-					null
-				)
-			}
-			return Pair(
-				yieldString.split(" ")[0].withFractionsToFloat(separator),
-				yieldString.split(" ").drop(1).joinToString(" ")
-			)
-		}
-		return Pair(
-			null,
-			yieldString
-		)
+		return yieldString.extractFractionsToFloat(separator)
 	}
 
 	@Throws(XmlPullParserException::class, IOException::class)

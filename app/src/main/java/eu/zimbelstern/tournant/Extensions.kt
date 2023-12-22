@@ -80,6 +80,19 @@ fun String.withFractionsToFloat(separator: Char = eu.zimbelstern.tournant.separa
 	}
 }
 
+fun String.extractFractionsToFloat(separator: Char = eu.zimbelstern.tournant.separator): Pair<Float?, String?> {
+	val fraction =
+		if (get(0).isDigit()) {
+			split(" ").takeWhile { it.matches(Regex("^[0-9$separator/ ]+$")) }.joinToString(" ")
+		} else null
+	val remainingString =
+		if (fraction?.length?.equals(length) == false) {
+			substring(fraction.length)
+		}
+		else null
+	return Pair(fraction?.withFractionsToFloat(separator), remainingString)
+}
+
 fun MutableList<Ingredient>.scale(factor: Float?): List<Ingredient> {
 	return if (factor != null) {
 		map {
