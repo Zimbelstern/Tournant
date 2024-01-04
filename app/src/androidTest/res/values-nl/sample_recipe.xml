@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sample_instructions">1. Verwarm de oven voor op 200°C (400°F);
+\n2. Klop de eieren in 1 minuut los;
+\n3. Voeg de olie en melk toe en klop erdoor;
+\n4. Voeg de suiker toe en meng tot een glad beslag;
+\n5. Voeg de bloem, het bakpoeder en zout toe en meng voorzichtig zodat het beslag glad blijft;
+\n6. Roer de chocoladestukjes erdoor;
+\n7. Vul de muffinvormen met tweederde besla en bak de muffins in 20-25 minuten af (prik erin met een satéstokje - dat zou er schoon uit moeten komen);
+\n8. Laat de muffins afkoelen voordat je ze eruit haalt.</string>
+    <string name="sample_yields">20 muffins</string>
+    <string name="vegetable_oil">125 ml plantaardige olie</string>
+    <string name="flour">400 g bloem</string>
+    <string name="sugar">250 g suiker</string>
+    <string name="sample_title">Muffins</string>
+    <string name="salt">1 tl zout</string>
+    <string name="eggs">2 middelgrote eieren</string>
+    <string name="sample_cuisine">Amerikaans</string>
+    <string name="sample_modifications">Tip: wil je chocolademuffins maken? Vervang de 100 g bloem dan door 100 g cacaopoeder.</string>
+    <string name="baking_powder">3 tl bakpoeder</string>
+    <string name="sample_category">Gebak</string>
+    <string name="chocolate_chips">100 g chocoladestukjes</string>
+    <string name="milk">250 ml melk</string>
+</resources>

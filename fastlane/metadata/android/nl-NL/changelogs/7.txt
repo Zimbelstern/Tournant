@@ -1,0 +1,4 @@
+New feature: Tap an ingredient or paragraph of the instructions to mark it as checked
+Improvement: Support of ingredient references and ingredient groups
+Improvement: Design improvements
+Bugfixes: Small optimizations

@@ -1,0 +1,15 @@
+<b>Tournant serveert je favoriete gerechten op je Android-apparaat!</b>
+Met Tournant kun je je favoriete kook- en bakrecepten beheren. Ook kun je de app - optioneel - synchroniseren met een receptbestand uit ‘Gourmand Recipe Manager’ (voorheen: ‘Gourmet’).
+
+<b>Mogelijkheiden</b>
+<ul>
+<li>Maak recepten en bewerk ze;</li>
+<li>Im- en exporteer xml-bestanden (Gourmand);</li>
+<li>Synchroniseer met een xml-bestand op je Android-apparaat;</li>
+<li>Doorzoek recepten en categorieën;</li>
+<li>Deel recepten;</li>
+<li>Stem ingrediëntenlijsten af op het aantal personen.</li>
+</ul>
+
+<b>Documentatie is beschikbaar op</b>
+https://tournant.zimbelstern.eu
