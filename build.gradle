@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		room_version = '2.6.0'
+		room_version = '2.6.1'
 	}
 	repositories {
 		google()
