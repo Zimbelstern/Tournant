@@ -12,6 +12,7 @@
 
 		<!-- Bar colors -->
 		<item name="actionBarStyle">@style/Tournant.ActionBar</item>
+		<item name="actionBarTheme">@style/ThemeOverlay.AppCompat.DayNight.ActionBar</item>
 		<item name="actionModeStyle">@style/Tournant.ActionMode</item>
 		<item name="android:statusBarColor">@color/amber_dark</item>
 		<item name="android:navigationBarColor">@color/amber_dark</item>
@@ -20,11 +21,7 @@
 		<item name="colorSurface">@color/light_surface</item>
 		<item name="android:windowBackground">?attr/colorSurface</item>
 		<item name="materialCardViewStyle">@style/Tournant.CardViewStyle</item>
-
-		<!-- Text color of action bar menu items -->
-		<item name="android:itemTextAppearance">@style/Tournant.MenuItemTextAppearance</item>
-
-		<item name="popupMenuBackground">@drawable/popup_background</item>
+		<item name="actionBarPopupTheme">@style/ThemeOverlay.MaterialComponents.ActionBar</item>
 
 	</style>
 
@@ -58,11 +55,6 @@
 
 	<style name="Tournant.ActionMode" parent="Widget.AppCompat.ActionMode">
 		<item name="background">@color/bar_color</item>
-	</style>
-	
-	<!-- Menu item color -->
-	<style name="Tournant.MenuItemTextAppearance" parent="Theme.Tournant">
-		<item name="android:textColor">@android:color/primary_text_light</item>
 	</style>
 
 	<color name="bar_color">@color/amber</color>

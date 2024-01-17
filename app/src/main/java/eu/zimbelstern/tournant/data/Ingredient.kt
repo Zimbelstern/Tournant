@@ -5,6 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.squareup.moshi.JsonClass
 import eu.zimbelstern.tournant.getNumberOfDigits
 import eu.zimbelstern.tournant.roundToNDigits
 import kotlinx.parcelize.Parcelize
@@ -19,6 +20,7 @@ import kotlinx.parcelize.Parcelize
 		onDelete = ForeignKey.CASCADE
 	)
 ])
+@JsonClass(generateAdapter = true)
 data class Ingredient(
 	// Constructor for Room entity
 	@PrimaryKey(autoGenerate = true)

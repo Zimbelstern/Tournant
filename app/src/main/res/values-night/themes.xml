@@ -21,20 +21,12 @@
 		<item name="android:windowBackground">?attr/colorSurface</item>
 		<item name="materialCardViewStyle">@style/Tournant.CardViewStyle</item>
 
-		<!-- Text color of action bar menu items -->
-		<item name="android:itemTextAppearance">@style/MenuItemTextAppearance</item>
-
 	</style>
 
 	<style name="Theme.Tournant.Splash" parent="Theme.SplashScreen.IconBackground">
 		<item name="windowSplashScreenBackground">@color/dark_surface</item>
 		<item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
 		<item name="postSplashScreenTheme">@style/Theme.Tournant.KitchenBackground</item>
-	</style>
-
-	<!-- Menu item color -->
-	<style name="MenuItemTextAppearance" parent="Theme.Tournant">
-		<item name="android:textColor">@android:color/primary_text_dark</item>
 	</style>
 
 	<color name="bar_color">@color/blue_dark</color>

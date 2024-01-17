@@ -77,6 +77,9 @@
 	<!-- Action mode menu -->
 	<string name="share_selected">Share selected</string>
 	<string name="export_selected">Export selected</string>
+	<string name="json_file">JSON file (recommended)</string>
+	<string name="archive_original_images">Archive with original images</string>
+	<string name="gourmand_file">Gourmand XML file</string>
 	<string name="delete_selected">Delete selected</string>
 	<plurals name="delete_selected_sure">
 		<item quantity="one">This will permanently erase one recipe from the database. Are you sure?</item>

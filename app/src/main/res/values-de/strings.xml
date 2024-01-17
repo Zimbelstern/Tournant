@@ -74,6 +74,9 @@
 	<!-- Action mode menu -->
 	<string name="share_selected">Ausgewählte teilen</string>
 	<string name="export_selected">Ausgewählte exportieren</string>
+	<string name="json_file">JSON-Datei (empfohlen)</string>
+	<string name="archive_original_images">Archiv mit Originalbildern</string>
+	<string name="gourmand_file">Gourmand-XML-Datei</string>
 	<string name="delete_selected">Ausgewählte löschen</string>
 	<plurals name="delete_selected_sure">
 		<item quantity="one">Das wird ein Rezept aus der Datenbank löschen. Sicher?</item>

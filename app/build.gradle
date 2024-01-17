@@ -70,6 +70,9 @@ dependencies {
 	implementation "androidx.room:room-paging:$room_version"
 	ksp "androidx.room:room-compiler:$room_version"
 
+	implementation 'com.squareup.moshi:moshi:1.15.0'
+	ksp 'com.squareup.moshi:moshi-kotlin-codegen:1.15.0'
+
 	testImplementation 'androidx.test.ext:junit-ktx:1.1.5'
 
 	androidTestImplementation 'androidx.test:runner:1.5.2'

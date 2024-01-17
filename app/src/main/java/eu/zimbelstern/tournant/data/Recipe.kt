@@ -3,10 +3,12 @@ package eu.zimbelstern.tournant.data
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 @Entity
+@JsonClass(generateAdapter = true)
 data class Recipe(
 	// Constructor for Room entity
 	@PrimaryKey(autoGenerate = true)

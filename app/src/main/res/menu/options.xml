@@ -37,11 +37,43 @@
 
 	<item
 		android:id="@+id/export_all"
-		android:title="@string/export_all"/>
+		android:title="@string/export_all">
+
+		<menu>
+			<item android:id="@+id/export_all_json"
+				android:title="@string/json_file"
+				android:icon="@drawable/ic_file"/>
+
+			<item android:id="@+id/export_all_archive"
+				android:title="@string/archive_original_images"
+				android:icon="@drawable/ic_archive"/>
+
+			<item android:id="@+id/export_all_gourmand"
+				android:title="@string/gourmand_file"
+				android:icon="@drawable/ic_cookie"/>
+		</menu>
+
+	</item>
 
 	<item
 		android:id="@+id/share_all"
-		android:title="@string/share_all"/>
+		android:title="@string/share_all">
+
+		<menu>
+			<item android:id="@+id/share_all_json"
+				android:title="@string/json_file"
+				android:icon="@drawable/ic_file"/>
+
+			<item android:id="@+id/share_all_archive"
+				android:title="@string/archive_original_images"
+				android:icon="@drawable/ic_archive"/>
+
+			<item android:id="@+id/share_all_gourmand"
+				android:title="@string/gourmand_file"
+				android:icon="@drawable/ic_cookie"/>
+		</menu>
+
+	</item>
 
 	<item
 		android:id="@+id/select_all"

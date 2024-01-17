@@ -3,9 +3,11 @@ package eu.zimbelstern.tournant.data
 import android.os.Parcelable
 import androidx.room.Embedded
 import androidx.room.Relation
+import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
+@JsonClass(generateAdapter = true)
 data class RecipeWithIngredients(
 	@Embedded
 	val recipe: Recipe,

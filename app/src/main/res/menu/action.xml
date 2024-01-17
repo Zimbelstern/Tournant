@@ -5,12 +5,47 @@
 	<item android:id="@+id/export_selected"
 		android:title="@string/export_selected"
 		android:icon="@drawable/ic_save"
-		app:showAsAction="ifRoom"/>
+		app:showAsAction="ifRoom">
+
+		<menu>
+			<item android:id="@+id/export_selected_json"
+				android:title="@string/json_file"
+				android:icon="@drawable/ic_file"/>
+
+			<item android:id="@+id/export_selected_archive"
+				android:title="@string/archive_original_images"
+				android:icon="@drawable/ic_archive"/>
+
+			<item android:id="@+id/export_selected_gourmand"
+				android:title="@string/gourmand_file"
+				android:icon="@drawable/ic_cookie"/>
+		</menu>
+
+	</item>
 
 	<item android:id="@+id/share_selected"
 		android:title="@string/share_selected"
 		android:icon="@drawable/ic_share"
-		app:showAsAction="ifRoom"/>
+		app:showAsAction="ifRoom">
+
+		<menu>
+			<item android:id="@+id/share_selected_json"
+				android:title="@string/json_file"
+				android:icon="@drawable/ic_file"
+				app:showAsAction="ifRoom"/>
+
+			<item android:id="@+id/share_selected_archive"
+				android:title="@string/archive_original_images"
+				android:icon="@drawable/ic_archive"
+				app:showAsAction="ifRoom"/>
+
+			<item android:id="@+id/share_selected_gourmand"
+				android:title="@string/gourmand_file"
+				android:icon="@drawable/ic_cookie"
+				app:showAsAction="ifRoom"/>
+		</menu>
+
+	</item>
 
 	<item android:id="@+id/delete_selected"
 		android:title="@string/delete_selected"
