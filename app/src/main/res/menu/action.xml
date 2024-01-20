@@ -12,7 +12,7 @@
 				android:title="@string/json_file"
 				android:icon="@drawable/ic_file"/>
 
-			<item android:id="@+id/export_selected_archive"
+			<item android:id="@+id/export_selected_zip"
 				android:title="@string/archive_original_images"
 				android:icon="@drawable/ic_archive"/>
 
@@ -34,7 +34,7 @@
 				android:icon="@drawable/ic_file"
 				app:showAsAction="ifRoom"/>
 
-			<item android:id="@+id/share_selected_archive"
+			<item android:id="@+id/share_selected_zip"
 				android:title="@string/archive_original_images"
 				android:icon="@drawable/ic_archive"
 				app:showAsAction="ifRoom"/>
