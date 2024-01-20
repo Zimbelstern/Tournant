@@ -249,7 +249,7 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 
 	private fun importRecipesFromFile() {
 		activityResultLauncher.launch(
-			arrayOf("application/octet-stream", "application/xml", "text/html", "text/xml")
+			arrayOf("application/json", "application/xml", "application/zip", "text/xml")
 		)
 	}
 	private val activityResultLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) {

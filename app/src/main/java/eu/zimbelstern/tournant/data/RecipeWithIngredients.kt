@@ -25,4 +25,9 @@ data class RecipeWithIngredients(
 		}
 	}
 
+	fun clearIds() {
+		recipe.id = 0
+		ingredients.forEach { it.id = 0 }
+	}
+
 }

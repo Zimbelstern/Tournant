@@ -70,7 +70,9 @@
 				<data android:scheme="file" />
 				<data android:scheme="data" />
 				<data android:mimeType="text/xml" />
+				<data android:mimeType="application/json" />
 				<data android:mimeType="application/xml" />
+				<data android:mimeType="application/zip" />
 			</intent-filter>
 		</activity>
 		<provider

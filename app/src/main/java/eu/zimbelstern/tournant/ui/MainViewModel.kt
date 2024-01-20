@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
+import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.AndroidViewModel
@@ -14,6 +15,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
+import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import eu.zimbelstern.tournant.Constants.Companion.MODE_STANDALONE
 import eu.zimbelstern.tournant.Constants.Companion.MODE_SYNCED
@@ -39,6 +41,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okio.buffer
+import okio.source
 import okio.use
 import java.io.BufferedOutputStream
 import java.io.ByteArrayOutputStream
@@ -56,6 +60,9 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 
 	var syncedFileName = MutableStateFlow<String?>(null)
 	val waitingForRecipes = MutableStateFlow(false)
+
+
+	private val recipeJsonAdapter: JsonAdapter<RecipeList> = Moshi.Builder().build().adapter(RecipeList::class.java)
 
 
 	// DAO
@@ -160,6 +167,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 			withContext(Dispatchers.IO) {
 				waitingForRecipes.emit(true)
 				try {
+					val format = MimeTypeMap.getSingleton().getExtensionFromMimeType(application.contentResolver.getType(uri))
 					val inputStream = application.contentResolver.openInputStream(uri)
 					if (inputStream == null) {
 						Log.e(TAG, "Couldn't update; inputstream null")
@@ -167,14 +175,24 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 							Toast.makeText(application, application.getString(R.string.inputstream_null), Toast.LENGTH_LONG).show()
 						}
 					} else {
-						val parsedRecipes = GourmetXmlParser(application.getDecimalSeparator()).parse(inputStream).also {
-							if (it.isEmpty()) {
-								withContext(Dispatchers.Main) {
-									Toast.makeText(application, application.getString(R.string.no_recipes_found), Toast.LENGTH_LONG).show()
-								}
+						val parsedRecipes = when (format) {
+							"json" -> {
+								recipeJsonAdapter.fromJson(inputStream.source().buffer())?.recipes?.onEach { it.clearIds() }
+							}
+							"xml" -> {
+								GourmetXmlParser(application.getDecimalSeparator()).parse(inputStream)
+							}
+							else -> {
+								error("Wrong file format")
 							}
 						}
-						insertRecipes(parsedRecipes)
+						if (parsedRecipes.isNullOrEmpty()) {
+							withContext(Dispatchers.Main) {
+								Toast.makeText(application, application.getString(R.string.no_recipes_found), Toast.LENGTH_LONG).show()
+							}
+						}   else {
+							insertRecipes(parsedRecipes)
+						}
 					}
 				} catch (e: Exception) {
 					Log.e(TAG, "Couldn't update; $e")
@@ -278,7 +296,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 				if (format == "xml")
 					GourmetXmlWriter(application.getDecimalSeparator()).serialize(recipes + refs)
 				else
-					Moshi.Builder().build().adapter(RecipeList::class.java).toJson(RecipeList(recipes + refs)).encodeToByteArray()
+					recipeJsonAdapter.toJson(RecipeList(recipes + refs)).encodeToByteArray()
 			)
 		}
 
