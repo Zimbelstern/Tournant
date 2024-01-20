@@ -207,16 +207,22 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 	override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
 		when (item.itemId) {
 			R.id.export_selected_json -> {
-				recipeListInterface.exportRecipes(selectedItems.keys.toSet())
+				recipeListInterface.exportRecipes(selectedItems.keys.toSet(), "json")
+			}
+			R.id.export_selected_zip -> {
+				recipeListInterface.exportRecipes(selectedItems.keys.toSet(), "zip")
 			}
 			R.id.export_selected_gourmand -> {
-				recipeListInterface.exportRecipes(selectedItems.keys.toSet(), gourmandFormat = true)
+				recipeListInterface.exportRecipes(selectedItems.keys.toSet(), "xml")
 			}
 			R.id.share_selected_json-> {
-				recipeListInterface.shareRecipes(selectedItems.keys.toSet())
+				recipeListInterface.shareRecipes(selectedItems.keys.toSet(), "json")
+			}
+			R.id.share_selected_zip-> {
+				recipeListInterface.shareRecipes(selectedItems.keys.toSet(), "zip")
 			}
 			R.id.share_selected_gourmand -> {
-				recipeListInterface.shareRecipes(selectedItems.keys.toSet(), gourmandFormat = true)
+				recipeListInterface.shareRecipes(selectedItems.keys.toSet(), "xml")
 			}
 			R.id.delete_selected -> {
 				recipeListInterface.showDeleteDialog(selectedItems.keys.toSet())
@@ -268,8 +274,8 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 		fun openRecipeDetail(recipeId: Long)
 		fun searchForSomething(query: CharSequence?)
 		fun startActionMode(adapter: RecipeListAdapter)
-		fun exportRecipes(recipeIds: Set<Long>, gourmandFormat: Boolean = false)
-		fun shareRecipes(recipeIds: Set<Long>, gourmandFormat: Boolean = false)
+		fun exportRecipes(recipeIds: Set<Long>, format: String)
+		fun shareRecipes(recipeIds: Set<Long>, format: String)
 		fun showDeleteDialog(recipeIds: Set<Long>)
 	}
 

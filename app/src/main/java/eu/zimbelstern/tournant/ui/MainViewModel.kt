@@ -39,8 +39,12 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okio.use
+import java.io.BufferedOutputStream
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
 import kotlin.math.roundToInt
 import kotlin.random.Random
 
@@ -244,28 +248,54 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 
 	fun getRecipeTitle(id: Long) = recipeDao.getRecipeTitleById(id)
 
-	fun writeRecipesToExportDir(recipeIds: Set<Long>, filename: String, gourmandFormat: Boolean) {
+	fun writeRecipesToExportDir(recipeIds: Set<Long>, filename: String, format: String) {
+
 		val recipes = recipeDao.getRecipesById(recipeIds)
 		val refs = recipeDao.getReferencedRecipes(recipeIds)
-		(recipes + refs).forEach {
-			val imageFile = File(File(application.filesDir, "images"), "${it.recipe.id}.jpg")
-			if (imageFile.exists()) {
-				imageFile.inputStream().use {inputStream ->
-					val byteArrayOutputStream = ByteArrayOutputStream()
-					val image = BitmapFactory.decodeStream(inputStream)
-					Bitmap.createScaledBitmap(image, 256, (image.height * 256f / image.width).roundToInt(), true).compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream)
-					it.recipe.image = byteArrayOutputStream.toByteArray()
+
+		if (format != "zip") {
+			// Read externally saved images, compress and add to recipe objects
+			(recipes + refs).forEach {
+				val imageFile = File(File(application.filesDir, "images"), "${it.recipe.id}.jpg")
+				if (imageFile.exists()) {
+					imageFile.inputStream().use { inputStream ->
+						val byteArrayOutputStream = ByteArrayOutputStream()
+						val image = BitmapFactory.decodeStream(inputStream)
+						Bitmap.createScaledBitmap(image, 256, (image.height * 256f / image.width).roundToInt(), true)
+							.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream)
+						it.recipe.image = byteArrayOutputStream.toByteArray()
+					}
 				}
 			}
 		}
+
 		File(application.filesDir, "export").mkdir()
-		File(File(application.filesDir, "export"), if (gourmandFormat) "$filename.xml" else "$filename.json").outputStream().use {
+
+		// Write text file with recipes
+		val recipeFile = File(File(application.filesDir, "export"), if (format == "xml") "$filename.xml" else "$filename.json")
+		recipeFile.outputStream().use {
 			it.write(
-				if (gourmandFormat)
+				if (format == "xml")
 					GourmetXmlWriter(application.getDecimalSeparator()).serialize(recipes + refs)
 				else
 					Moshi.Builder().build().adapter(RecipeList::class.java).toJson(RecipeList(recipes + refs)).encodeToByteArray()
 			)
+		}
+
+		if (format == "zip") {
+			ZipOutputStream(BufferedOutputStream(File(File(application.filesDir, "export"), "$filename.zip").outputStream())).use { zipOS ->
+				zipOS.putNextEntry(ZipEntry("$filename.json"))
+				recipeFile.inputStream().use { it.copyTo(zipOS) }
+
+				(recipes + refs).map{ it.recipe.id }.forEach { recipeId ->
+					File(File(application.filesDir, "images"), "$recipeId.jpg").let { imageFile ->
+						if (imageFile.exists()) {
+							zipOS.putNextEntry(ZipEntry("$recipeId.jpg"))
+							imageFile.inputStream().use{ it.copyTo(zipOS) }
+						}
+					}
+				}
+			}
 		}
 
 	}

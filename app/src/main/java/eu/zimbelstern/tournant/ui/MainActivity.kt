@@ -287,16 +287,18 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 		startSupportActionMode(adapter)
 	}
 
-	override fun exportRecipes(recipeIds: Set<Long>, gourmandFormat: Boolean) {
+	override fun exportRecipes(recipeIds: Set<Long>, format: String) {
 		Log.d(TAG, "Exporting recipes $recipeIds")
 		lifecycleScope.launch {
 			withContext(Dispatchers.IO) {
 				val filename = if (recipeIds.size == 1) viewModel.getRecipeTitle(recipeIds.first()) else getString(R.string.recipes)
-				viewModel.writeRecipesToExportDir(recipeIds, "export", gourmandFormat)
-				if (gourmandFormat)
-					exportXmlActivityResultLauncher.launch("$filename.xml")
-				else
-					exportJsonActivityResultLauncher.launch("$filename.json")
+				viewModel.writeRecipesToExportDir(recipeIds, "export", format)
+				when (format) {
+					"json" -> exportJsonActivityResultLauncher.launch("$filename.json")
+					"zip" -> exportZipActivityResultLauncher.launch("$filename.zip")
+					"xml" -> exportXmlActivityResultLauncher.launch("$filename.xml")
+					else -> throw Error("Wrong export format")
+				}
 			}
 			recipeListAdapter.finishActionMode()
 		}
@@ -305,24 +307,26 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 	private val exportJsonActivityResultLauncher = registerForActivityResult(ActivityResultContracts.CreateDocument("application/json")) {
 		if (it != null) { viewModel.copyRecipesFromExportDir("export", "json", it) }
 	}
-
+	private val exportZipActivityResultLauncher = registerForActivityResult(ActivityResultContracts.CreateDocument("application/zip")) {
+		if (it != null) { viewModel.copyRecipesFromExportDir("export", "json", it) }
+	}
 	private val exportXmlActivityResultLauncher = registerForActivityResult(ActivityResultContracts.CreateDocument("application/xml")) {
 		if (it != null) { viewModel.copyRecipesFromExportDir("export", "xml", it) }
 	}
 
-	override fun shareRecipes(recipeIds: Set<Long>, gourmandFormat: Boolean) {
+	override fun shareRecipes(recipeIds: Set<Long>, format: String) {
 		lifecycleScope.launch {
 			withContext(Dispatchers.IO) {
 				val filename = if (recipeIds.size == 1) viewModel.getRecipeTitle(recipeIds.first()) else getString(R.string.recipes)
-				viewModel.writeRecipesToExportDir(recipeIds, filename, gourmandFormat)
+				viewModel.writeRecipesToExportDir(recipeIds, filename, format)
 				val uri = FileProvider.getUriForFile(
 					application,
 					BuildConfig.APPLICATION_ID + ".fileprovider",
-					File(File(filesDir, "export"), if (gourmandFormat) "$filename.xml" else "$filename.json")
+					File(File(filesDir, "export"), "$filename.$format")
 				)
 				ShareCompat.IntentBuilder(this@MainActivity)
 					.setStream(uri)
-					.setType(if (gourmandFormat) "application/xml" else "application/json")
+					.setType("application/$format")
 					.startChooser()
 			}
 			recipeListAdapter.finishActionMode()
@@ -510,19 +514,27 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 				true
 			}
 			R.id.export_all_json -> {
-				exportRecipes(getFilteredRecipesIds())
+				exportRecipes(getFilteredRecipesIds(), "json")
+				true
+			}
+			R.id.export_all_zip -> {
+				exportRecipes(getFilteredRecipesIds(), "zip")
 				true
 			}
 			R.id.export_all_gourmand -> {
-				exportRecipes(getFilteredRecipesIds(), gourmandFormat = true)
+				exportRecipes(getFilteredRecipesIds(), "xml")
 				true
 			}
 			R.id.share_all_json -> {
-				shareRecipes(getFilteredRecipesIds())
+				shareRecipes(getFilteredRecipesIds(), "json")
+				true
+			}
+			R.id.share_all_zip -> {
+				shareRecipes(getFilteredRecipesIds(), "zip")
 				true
 			}
 			R.id.share_all_gourmand -> {
-				shareRecipes(getFilteredRecipesIds(), gourmandFormat = true)
+				shareRecipes(getFilteredRecipesIds(), "xml")
 				true
 			}
 			R.id.select_all -> {
