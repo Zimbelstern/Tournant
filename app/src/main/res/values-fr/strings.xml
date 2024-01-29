@@ -109,4 +109,20 @@
         <item quantity="other">%d recettes</item>
     </plurals>
     <string name="share">Partager</string>
+    <string name="ascending">Ascendant</string>
+    <string name="copy_to_clipboard">Copier vers le presse-papiers</string>
+    <string name="copied_to_clipboard">Copié vers le presse-papiers</string>
+    <string name="ingredients_count">Nombre d’ingrédients</string>
+    <string name="all_recipes">Toutes les recettes</string>
+    <string name="descending">Descendant</string>
+    <string name="minutes_for_regex">(minute)|(minutes)</string>
+    <string name="seconds_for_regex">(seconde)|(secondes)</string>
+    <string name="database_id">Identifiant dans base de données</string>
+    <string name="to">à</string>
+    <string name="sort_by">Trier par</string>
+    <string name="timer_set">Minuteur réglé sur %s</string>
+    <string name="scale_to">Convertir pour</string>
+    <string name="totaltime">Temps total</string>
+    <string name="hours_for_regex">(heure)|(heures]</string>
+    <string name="instructions_length">Longueur d’instructions</string>
 </resources>
