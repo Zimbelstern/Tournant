@@ -249,7 +249,7 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 
 	private fun importRecipesFromFile() {
 		activityResultLauncher.launch(
-			arrayOf("application/json", "application/xml", "application/zip", "text/xml")
+			arrayOf("application/octet-stream", "application/json", "application/xml", "application/zip", "text/xml")
 		)
 	}
 	private val activityResultLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) {
@@ -308,7 +308,7 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 		if (it != null) { viewModel.copyRecipesFromExportDir("export", "json", it) }
 	}
 	private val exportZipActivityResultLauncher = registerForActivityResult(ActivityResultContracts.CreateDocument("application/zip")) {
-		if (it != null) { viewModel.copyRecipesFromExportDir("export", "json", it) }
+		if (it != null) { viewModel.copyRecipesFromExportDir("export", "zip", it) }
 	}
 	private val exportXmlActivityResultLauncher = registerForActivityResult(ActivityResultContracts.CreateDocument("application/xml")) {
 		if (it != null) { viewModel.copyRecipesFromExportDir("export", "xml", it) }

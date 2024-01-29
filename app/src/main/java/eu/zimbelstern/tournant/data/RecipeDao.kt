@@ -18,29 +18,39 @@ abstract class RecipeDao {
 	companion object { private const val TAG = "RecipeDao" }
 
 	// Standalone mode: saves recipes in the database
-	suspend fun insertRecipesWithIngredients(recipes: List<RecipeWithIngredients>) {
+	@Transaction
+	open suspend fun insertRecipesWithIngredients(recipes: List<RecipeWithIngredients>): List<RecipeWithIngredients> {
 		// TODO: Should throw an error when called from synced mode
 
 		// Stores recipe information except for the ingredients, retrieves the generated ID
 		recipes.forEach {
+			// Save previous id for json parsed recipes
+			if (it.recipe.id != 0L) {
+				it.recipe.prevId = it.recipe.id
+				it.recipe.id = 0
+			} else {
+				it.recipe.prevId = it.recipe.gourmandId?.toLong()
+			}
+			// Insert recipe in database and save id
 			it.recipe.id = insertRecipe(it.recipe)
 		}
 
 		// Stores the ingredients, replaces gourmand refIds with the correct new ones
 		recipes.forEach {
 			it.ingredients.forEach { ingredient ->
+				ingredient.id = 0
 				ingredient.recipeId = it.recipe.id
 				// For referenced recipes
 				if (ingredient.refId != null) {
-					val newRef = getRecipeIdByGourmandId(ingredient.refId!!)
-					if (newRef != null)
-						ingredient.refId = getRecipeIdByGourmandId(ingredient.refId!!)
-					else
-						throw Error("Error while saving ${it.recipe.title} to database: Referenced recipe not found")
+					ingredient.refId = recipes.find { rwi -> rwi.recipe.prevId == ingredient.refId }?.recipe?.id
+						?: throw Error("Error while saving ${it.recipe.title} to database: Referenced recipe not found")
 				}
 			}
 			insertIngredients(it.ingredients)
 		}
+
+		return recipes
+
 	}
 
 	// Synced mode: compares a list of recipes with the database

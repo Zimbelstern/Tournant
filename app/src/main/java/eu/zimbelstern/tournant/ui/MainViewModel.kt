@@ -7,6 +7,7 @@ import android.net.Uri
 import android.util.Log
 import android.webkit.MimeTypeMap
 import android.widget.Toast
+import androidx.core.text.isDigitsOnly
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
@@ -30,6 +31,7 @@ import eu.zimbelstern.tournant.data.RecipeList
 import eu.zimbelstern.tournant.data.RecipeWithIngredients
 import eu.zimbelstern.tournant.gourmand.GourmetXmlParser
 import eu.zimbelstern.tournant.gourmand.GourmetXmlWriter
+import eu.zimbelstern.tournant.utils.Base64Adapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -48,9 +50,11 @@ import java.io.BufferedOutputStream
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.zip.ZipEntry
+import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
 import kotlin.math.roundToInt
 import kotlin.random.Random
+
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MainViewModel(private val application: TournantApplication) : AndroidViewModel(application) {
@@ -62,7 +66,12 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 	val waitingForRecipes = MutableStateFlow(false)
 
 
-	private val recipeJsonAdapter: JsonAdapter<RecipeList> = Moshi.Builder().build().adapter(RecipeList::class.java)
+	private val recipeJsonAdapter: JsonAdapter<RecipeList> =
+		Moshi.Builder()
+			.add(Base64Adapter())
+			.build()
+			.adapter(RecipeList::class.java)
+			.indent("\t")
 
 
 	// DAO
@@ -147,15 +156,6 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 			listOf(listOf<ChipData>(), listOf()).asFlow()
 	}
 
-
-	private fun insertRecipes(recipeList: List<RecipeWithIngredients>) {
-		viewModelScope.launch {
-			withContext(Dispatchers.IO) {
-				recipeDao.insertRecipesWithIngredients(recipeList)
-			}
-		}
-	}
-
 	init {
 		if (application.getSharedPreferences(application.packageName + "_preferences", Context.MODE_PRIVATE)
 			.getInt(PREF_MODE, MODE_STANDALONE) == MODE_SYNCED)
@@ -177,29 +177,79 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 					} else {
 						val parsedRecipes = when (format) {
 							"json" -> {
-								recipeJsonAdapter.fromJson(inputStream.source().buffer())?.recipes?.onEach { it.clearIds() }
+								recipeJsonAdapter.fromJson(inputStream.source().buffer())?.recipes
+									?: error("Malformed json file")
 							}
-							"xml" -> {
+							"xml", "bin" -> {
 								GourmetXmlParser(application.getDecimalSeparator()).parse(inputStream)
+							}
+							"zip" -> {
+								ZipInputStream(inputStream).use { zipIS ->
+									try {
+										var jsonFound = false
+										var recipeList: List<RecipeWithIngredients>? = null
+										var entry = zipIS.nextEntry
+										while (entry != null) {
+											if (entry.isDirectory) {
+												error("Malformed zip archive")
+											}
+											else if (entry.name.endsWith(".json")) {
+												if (jsonFound)
+													error("Malformed zip archive")
+												else
+													jsonFound = true
+												recipeList = recipeJsonAdapter.fromJson(zipIS.source().buffer())?.recipes
+													?: error("Malformed json file")
+											} else if (entry.name.endsWith(".jpg") && entry.name.dropLast(4).isDigitsOnly()) {
+												File(application.filesDir, "import").mkdir()
+												File(File(application.filesDir, "import"), entry.name).outputStream().use { fileOS ->
+													zipIS.copyTo(fileOS)
+												}
+											} else {
+												error("Malformed zip archive")
+											}
+											entry = zipIS.nextEntry
+										}
+										recipeList ?: error("Malformed zip archive")
+									} catch (e: Error) {
+										error(e.message.toString())
+									}
+								}
 							}
 							else -> {
 								error("Wrong file format")
 							}
 						}
-						if (parsedRecipes.isNullOrEmpty()) {
+						if (parsedRecipes.isEmpty()) {
 							withContext(Dispatchers.Main) {
 								Toast.makeText(application, application.getString(R.string.no_recipes_found), Toast.LENGTH_LONG).show()
 							}
-						}   else {
-							insertRecipes(parsedRecipes)
+						} else {
+							try {
+								val insertedRecipes = recipeDao.insertRecipesWithIngredients(parsedRecipes)
+								if (format == "zip") {
+									insertedRecipes.forEach {
+										val imageFile = File(File(application.filesDir, "import"), "${it.recipe.prevId}.jpg")
+										if (imageFile.exists()) {
+											imageFile.copyTo(File(File(application.filesDir, "images"), "${it.recipe.id}.jpg"))
+											imageFile.delete()
+										}
+									}
+								}
+							} catch (e: Error) {
+								error(e.message.toString())
+							}
 						}
 					}
 				} catch (e: Exception) {
-					Log.e(TAG, "Couldn't update; $e")
+					Log.e(TAG, "Couldn't import; $e")
 					withContext(Dispatchers.Main) {
 						Toast.makeText(application, application.getString(R.string.unknown_file_error, e.message), Toast.LENGTH_LONG).show()
 					}
 				} finally {
+					File(application.filesDir, "import").listFiles()?.forEach {
+						it.delete()
+					}
 					waitingForRecipes.emit(false)
 				}
 			}

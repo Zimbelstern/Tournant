@@ -3,6 +3,7 @@ package eu.zimbelstern.tournant.data
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
 
@@ -14,7 +15,12 @@ data class Recipe(
 	@PrimaryKey(autoGenerate = true)
 	var id: Long,
 
-	val gourmandId: Int?,
+	@Transient
+	var prevId: Long? = null,
+
+	@field:Json(ignore = true)
+	val gourmandId: Int? = null,
+
 	var title: String,
 	var description: String?,
 	var category: String?,
@@ -51,6 +57,7 @@ data class Recipe(
 		image: ByteArray? = null,
 		thumbnail: ByteArray? = null
 	) : this(0,
+		null,
 		gourmandId,
 		title,
 		description,
