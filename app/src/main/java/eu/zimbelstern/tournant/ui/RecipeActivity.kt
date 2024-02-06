@@ -280,6 +280,25 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 		}
 	}
 
+	private fun shareRecipe(format: String): Boolean {
+		lifecycleScope.launch {
+			withContext(Dispatchers.IO) {
+				val filename = binding.recipeDetailTitle.text.toString().ifBlank { getString(R.string.recipe) }
+				(application as TournantApplication).writeRecipesToExportDir(setOf(intent.getLongExtra("RECIPE_ID", 0L)), filename, format)
+				val uri = FileProvider.getUriForFile(
+					application,
+					BuildConfig.APPLICATION_ID + ".fileprovider",
+					File(File(filesDir, "export"), "$filename.$format")
+				)
+				ShareCompat.IntentBuilder(this@RecipeActivity)
+					.setStream(uri)
+					.setType("application/$format")
+					.startChooser()
+			}
+		}
+		return true
+	}
+
 	override fun openRecipe(refId: Long, yieldAmount: Float?, yieldUnit: String?) {
 		startActivity(Intent(this, RecipeActivity::class.java).apply {
 			putExtra("RECIPE_ID", refId)
@@ -337,25 +356,9 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
 		return when (item.itemId) {
-			R.id.share -> {
-				lifecycleScope.launch {
-					withContext(Dispatchers.IO) {
-						val filename = binding.recipeDetailTitle.text.toString()
-							.ifBlank { getString(R.string.recipe) }
-						viewModel.writeRecipesToExportDir(filename)
-						val uri = FileProvider.getUriForFile(
-							application,
-							BuildConfig.APPLICATION_ID + ".fileprovider",
-							File(File(filesDir, "export"), "$filename.xml")
-						)
-						ShareCompat.IntentBuilder(this@RecipeActivity)
-							.setStream(uri)
-							.setType("application/xml")
-							.startChooser()
-					}
-				}
-				true
-			}
+			R.id.share_json -> shareRecipe("json")
+			R.id.share_zip -> shareRecipe("zip")
+			R.id.share_gourmand -> shareRecipe("xml")
 			R.id.edit -> {
 				startActivity(Intent(this, RecipeEditingActivity::class.java).apply {
 					putExtra("RECIPE_ID", intent.getLongExtra("RECIPE_ID", 0L))

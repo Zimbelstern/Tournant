@@ -292,7 +292,7 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 		lifecycleScope.launch {
 			withContext(Dispatchers.IO) {
 				val filename = if (recipeIds.size == 1) viewModel.getRecipeTitle(recipeIds.first()) else getString(R.string.recipes)
-				viewModel.writeRecipesToExportDir(recipeIds, "export", format)
+				(application as TournantApplication).writeRecipesToExportDir(recipeIds, "export", format)
 				when (format) {
 					"json" -> exportJsonActivityResultLauncher.launch("$filename.json")
 					"zip" -> exportZipActivityResultLauncher.launch("$filename.zip")
@@ -318,7 +318,7 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 		lifecycleScope.launch {
 			withContext(Dispatchers.IO) {
 				val filename = if (recipeIds.size == 1) viewModel.getRecipeTitle(recipeIds.first()) else getString(R.string.recipes)
-				viewModel.writeRecipesToExportDir(recipeIds, filename, format)
+				(application as TournantApplication).writeRecipesToExportDir(recipeIds, filename, format)
 				val uri = FileProvider.getUriForFile(
 					application,
 					BuildConfig.APPLICATION_ID + ".fileprovider",

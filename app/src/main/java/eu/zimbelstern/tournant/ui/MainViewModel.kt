@@ -1,8 +1,6 @@
 package eu.zimbelstern.tournant.ui
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
 import android.webkit.MimeTypeMap
@@ -16,8 +14,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
 import eu.zimbelstern.tournant.Constants.Companion.MODE_STANDALONE
 import eu.zimbelstern.tournant.Constants.Companion.MODE_SYNCED
 import eu.zimbelstern.tournant.Constants.Companion.PREF_FILE
@@ -27,11 +23,9 @@ import eu.zimbelstern.tournant.Constants.Companion.PREF_SORT
 import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.TournantApplication
 import eu.zimbelstern.tournant.data.ChipData
-import eu.zimbelstern.tournant.data.RecipeList
 import eu.zimbelstern.tournant.data.RecipeWithIngredients
 import eu.zimbelstern.tournant.gourmand.GourmetXmlParser
-import eu.zimbelstern.tournant.gourmand.GourmetXmlWriter
-import eu.zimbelstern.tournant.utils.Base64Adapter
+import eu.zimbelstern.tournant.utils.RecipeJsonAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -46,13 +40,8 @@ import kotlinx.coroutines.withContext
 import okio.buffer
 import okio.source
 import okio.use
-import java.io.BufferedOutputStream
-import java.io.ByteArrayOutputStream
 import java.io.File
-import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
-import java.util.zip.ZipOutputStream
-import kotlin.math.roundToInt
 import kotlin.random.Random
 
 
@@ -64,15 +53,6 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 
 	var syncedFileName = MutableStateFlow<String?>(null)
 	val waitingForRecipes = MutableStateFlow(false)
-
-
-	private val recipeJsonAdapter: JsonAdapter<RecipeList> =
-		Moshi.Builder()
-			.add(Base64Adapter())
-			.build()
-			.adapter(RecipeList::class.java)
-			.indent("\t")
-
 
 	// DAO
 	private val recipeDao = application.database.recipeDao()
@@ -177,7 +157,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 					} else {
 						val parsedRecipes = when (format) {
 							"json" -> {
-								recipeJsonAdapter.fromJson(inputStream.source().buffer())?.recipes
+								RecipeJsonAdapter().fromJson(inputStream.source().buffer())?.recipes
 									?: error("Malformed json file")
 							}
 							"xml", "bin" -> {
@@ -198,7 +178,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 													error("Malformed zip archive")
 												else
 													jsonFound = true
-												recipeList = recipeJsonAdapter.fromJson(zipIS.source().buffer())?.recipes
+												recipeList = RecipeJsonAdapter().fromJson(zipIS.source().buffer())?.recipes
 													?: error("Malformed json file")
 											} else if (entry.name.endsWith(".jpg") && entry.name.dropLast(4).isDigitsOnly()) {
 												File(application.filesDir, "import").mkdir()
@@ -315,58 +295,6 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 	}
 
 	fun getRecipeTitle(id: Long) = recipeDao.getRecipeTitleById(id)
-
-	fun writeRecipesToExportDir(recipeIds: Set<Long>, filename: String, format: String) {
-
-		val recipes = recipeDao.getRecipesById(recipeIds)
-		val refs = recipeDao.getReferencedRecipes(recipeIds)
-
-		if (format != "zip") {
-			// Read externally saved images, compress and add to recipe objects
-			(recipes + refs).forEach {
-				val imageFile = File(File(application.filesDir, "images"), "${it.recipe.id}.jpg")
-				if (imageFile.exists()) {
-					imageFile.inputStream().use { inputStream ->
-						val byteArrayOutputStream = ByteArrayOutputStream()
-						val image = BitmapFactory.decodeStream(inputStream)
-						Bitmap.createScaledBitmap(image, 256, (image.height * 256f / image.width).roundToInt(), true)
-							.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream)
-						it.recipe.image = byteArrayOutputStream.toByteArray()
-					}
-				}
-			}
-		}
-
-		File(application.filesDir, "export").mkdir()
-
-		// Write text file with recipes
-		val recipeFile = File(File(application.filesDir, "export"), if (format == "xml") "$filename.xml" else "$filename.json")
-		recipeFile.outputStream().use {
-			it.write(
-				if (format == "xml")
-					GourmetXmlWriter(application.getDecimalSeparator()).serialize(recipes + refs)
-				else
-					recipeJsonAdapter.toJson(RecipeList(recipes + refs)).encodeToByteArray()
-			)
-		}
-
-		if (format == "zip") {
-			ZipOutputStream(BufferedOutputStream(File(File(application.filesDir, "export"), "$filename.zip").outputStream())).use { zipOS ->
-				zipOS.putNextEntry(ZipEntry("$filename.json"))
-				recipeFile.inputStream().use { it.copyTo(zipOS) }
-
-				(recipes + refs).map{ it.recipe.id }.forEach { recipeId ->
-					File(File(application.filesDir, "images"), "$recipeId.jpg").let { imageFile ->
-						if (imageFile.exists()) {
-							zipOS.putNextEntry(ZipEntry("$recipeId.jpg"))
-							imageFile.inputStream().use{ it.copyTo(zipOS) }
-						}
-					}
-				}
-			}
-		}
-
-	}
 
 	fun copyRecipesFromExportDir(filename: String, extension: String, toUri: Uri) {
 		viewModelScope.launch {
