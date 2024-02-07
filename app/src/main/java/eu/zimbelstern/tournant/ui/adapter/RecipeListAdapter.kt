@@ -123,6 +123,11 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 
 		holder.binding.recipeCardTitle.text = recipe.title
 
+		holder.binding.recipeCardDescription.apply {
+			text = recipe.description
+			visibility = if (recipe.description != null) View.VISIBLE else View.GONE
+		}
+
 		holder.binding.recipeCardRating.apply {
 			rating = recipe.rating ?: 0f
 			visibility = if (recipe.rating != null) View.VISIBLE else View.GONE

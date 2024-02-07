@@ -12,6 +12,7 @@
 		<item quantity="other">%d Rezepte</item>
 	</plurals>
 	<string name="title">Titel</string>
+	<string name="description">Beschreibung</string>
 	<string name="category">Kategorie</string>
 	<string name="cuisine">Küche</string>
 	<string name="rating">Bewertung</string>

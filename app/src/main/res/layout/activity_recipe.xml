@@ -73,9 +73,20 @@
 							android:id="@+id/recipe_detail_title"
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
-							android:layout_marginBottom="4dp"
 							android:text="@{recipe.title}"
+							tools:text="@string/title"
 							style="@style/h1"/>
+
+						<TextView
+							android:id="@+id/recipe_detail_description"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_marginTop="-4sp"
+							android:text="@{recipe.description}"
+							android:textColor="@color/subtitle_color"
+							android:textSize="18sp"
+							android:visibility="@{recipe.description != null ? View.VISIBLE : View.GONE}"
+							tools:text="@string/description"/>
 
 						<RatingBar
 							android:id="@+id/recipe_detail_rating"

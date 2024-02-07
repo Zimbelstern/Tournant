@@ -173,12 +173,12 @@ abstract class RecipeDao {
 	@RewriteQueriesToDropUnusedColumns
 	@Query("""
 		SELECT
-			id, title, category, cuisine, rating, image, preptime, cooktime,
+			id, title, description, category, cuisine, rating, image, preptime, cooktime,
 			CASE WHEN :orderedBy = 8 OR :orderedBy = 9 THEN preptime + cooktime END AS totaltime,
 			CASE WHEN :orderedBy = 12 OR :orderedBy = 13 THEN LENGTH(instructions) END AS instructionslength,
 			CASE WHEN :orderedBy = 14 OR :orderedBy = 15 THEN (SELECT COUNT(*) FROM Ingredient WHERE recipeId = recipe.id) END AS ingredientscount
 		FROM recipe
-		WHERE title LIKE '%' || :query || '%' OR category LIKE '%' || :query || '%' OR cuisine LIKE '%' || :query || '%'
+		WHERE title LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%' OR category LIKE '%' || :query || '%' OR cuisine LIKE '%' || :query || '%'
 		ORDER BY
 			CASE WHEN :orderedBy = 0 THEN title COLLATE LOCALIZED END ASC,
 			CASE WHEN :orderedBy = 1 THEN title COLLATE LOCALIZED END DESC,
@@ -206,7 +206,7 @@ abstract class RecipeDao {
 	@Query("SELECT COUNT(*) FROM recipe")
 	abstract fun getRecipeCount(): Flow<Int>
 
-	@Query("SELECT id FROM recipe WHERE title LIKE '%' || :query || '%' OR category LIKE '%' || :query || '%' OR cuisine LIKE '%' || :query || '%'")
+	@Query("SELECT id FROM recipe WHERE title LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%' OR category LIKE '%' || :query || '%' OR cuisine LIKE '%' || :query || '%'")
 	abstract fun getRecipeIds(query: String): List<Long>
 
 	@Query("""
@@ -229,7 +229,7 @@ abstract class RecipeDao {
 	@Query("""
 		SELECT category AS string, COUNT(*) AS count
 		FROM recipe
-		WHERE (title LIKE '%' || :query || '%' OR category LIKE '%' || :query || '%' OR cuisine LIKE '%' || :query || '%') AND category IS NOT NULL
+		WHERE (title LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%' OR category LIKE '%' || :query || '%' OR cuisine LIKE '%' || :query || '%') AND category IS NOT NULL
 		GROUP BY category ORDER BY category COLLATE LOCALIZED ASC
 	""")
 	abstract fun getCategories(query: String): Flow<List<StringAndCount>>
@@ -237,7 +237,7 @@ abstract class RecipeDao {
 	@Query("""
 		SELECT cuisine AS string, COUNT(*) AS count
 		FROM recipe
-		WHERE (title LIKE '%' || :query || '%' OR category LIKE '%' || :query || '%' OR cuisine LIKE '%' || :query || '%')
+		WHERE (title LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%'  OR category LIKE '%' || :query || '%' OR cuisine LIKE '%' || :query || '%')
 			AND cuisine IS NOT NULL
 		GROUP BY cuisine ORDER BY cuisine COLLATE LOCALIZED ASC
 	""")

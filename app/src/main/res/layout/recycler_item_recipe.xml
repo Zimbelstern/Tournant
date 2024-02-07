@@ -47,13 +47,27 @@
 				style="@style/h2"
 				tools:text="Recipe title"/>
 
+			<TextView
+				android:id="@+id/recipe_card_description"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="12dp"
+				app:layout_constraintStart_toEndOf="@id/recipe_card_image"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/recipe_card_title"
+				android:maxLines="3"
+				android:ellipsize="end"
+				android:textColor="@color/subtitle_color"
+				android:textSize="16sp"
+				tools:text="Recipe description"/>
+
 			<RatingBar
 				android:id="@+id/recipe_card_rating"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_marginTop="4dp"
 				app:layout_constraintStart_toStartOf="@id/recipe_card_title"
-				app:layout_constraintTop_toBottomOf="@id/recipe_card_title"
+				app:layout_constraintTop_toBottomOf="@id/recipe_card_description"
 				android:numStars="5"
 				android:isIndicator="true"
 				android:visibility="gone"

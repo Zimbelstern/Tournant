@@ -4,10 +4,12 @@
 	<color name="amber">#ffb300</color>
 	<color name="amber_dark">#ff9d0a</color>
 
+	<color name="blue_light_pale">#a3bbe1</color>
 	<color name="blue_light">#5e92f3</color>
 	<color name="blue">#1565c0</color>
 	<color name="blue_text">#2c5ba2</color>
 	<color name="blue_dark">#003c8f</color>
+	<color name="blue_dark_pale">#2f4a69</color>
 	<color name="blue_darker">#1c253e</color>
 
 	<color name="light_surface">#fff5dc</color>

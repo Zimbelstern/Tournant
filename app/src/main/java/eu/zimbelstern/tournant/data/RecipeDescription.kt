@@ -3,6 +3,7 @@ package eu.zimbelstern.tournant.data
 data class RecipeDescription(
 	val id: Long,
 	val title: String,
+	val description: String?,
 	val category: String?,
 	val cuisine: String?,
 	val rating: Float?,
@@ -16,6 +17,7 @@ data class RecipeDescription(
 
 		if (id != other.id) return false
 		if (title != other.title) return false
+		if (description != other.description) return false
 		if (category != other.category) return false
 		if (cuisine != other.cuisine) return false
 		if (rating != other.rating) return false
@@ -32,6 +34,7 @@ data class RecipeDescription(
 	override fun hashCode(): Int {
 		var result = id.hashCode()
 		result = 31 * result + title.hashCode()
+		result = 31 * result + (description?.hashCode() ?: 0)
 		result = 31 * result + (category?.hashCode() ?: 0)
 		result = 31 * result + (cuisine?.hashCode() ?: 0)
 		result = 31 * result + (rating?.hashCode() ?: 0)
