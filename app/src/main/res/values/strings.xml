@@ -63,6 +63,8 @@
 	<string name="importing_only_in_standalone_mode">Importing only in standalone mode</string>
 	<string name="file_not_changed">Synced file has not changed</string>
 	<string name="no_suitable_application">No suitable application</string>
+	<string name="limitations">Limitations</string>
+	<string name="missing_features_gourmand">The following recipe properties are not supported by Gourmand:\n%s</string>
 
 	<!-- Options menu -->
 	<string name="recipe_count">Number of recipes</string>

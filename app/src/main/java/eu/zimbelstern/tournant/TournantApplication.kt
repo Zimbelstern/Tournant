@@ -4,10 +4,17 @@ import android.app.Application
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Log
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import eu.zimbelstern.tournant.data.RecipeList
 import eu.zimbelstern.tournant.data.RecipeRoomDatabase
+import eu.zimbelstern.tournant.gourmand.GourmandIssues
 import eu.zimbelstern.tournant.gourmand.GourmetXmlWriter
 import eu.zimbelstern.tournant.utils.RecipeJsonAdapter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okio.use
 import java.io.BufferedOutputStream
 import java.io.ByteArrayOutputStream
@@ -19,8 +26,40 @@ import kotlin.math.roundToInt
 
 class TournantApplication : Application() {
 
+	companion object {
+		private const val TAG = "TournantApplication"
+	}
+
 	val database: RecipeRoomDatabase by lazy {
 		RecipeRoomDatabase.getDatabase(this)
+	}
+
+	fun withGourmandIssueCheck(context: Context, recipeIds: Set<Long>, onSuccess: (Set<Long>) -> Unit) {
+		MainScope().launch {
+			val issues = mutableSetOf<String>()
+			withContext(Dispatchers.IO) {
+				val recipes = database.recipeDao().getRecipesById(recipeIds)
+				val refs = database.recipeDao().getReferencedRecipes(recipeIds)
+				(recipes + refs).forEach {
+					if (it.recipe.description != null)
+						issues.add(GourmandIssues.NO_DESCRIPTIONS)
+				}
+			}
+			if (issues.isNotEmpty()) {
+				Log.i(TAG, "Exporting issues: $issues")
+				withContext(Dispatchers.Main) {
+					MaterialAlertDialogBuilder(context)
+						.setTitle(R.string.limitations)
+						.setMessage(getString(R.string.missing_features_gourmand, getString(R.string.description)))
+						.setPositiveButton(R.string.ok) { _, _ -> onSuccess(recipeIds) }
+						.setNegativeButton(R.string.cancel, null)
+						.show()
+				}
+			}
+			else {
+				onSuccess(recipeIds)
+			}
+		}
 	}
 
 	fun writeRecipesToExportDir(recipeIds: Set<Long>, filename: String, format: String) {

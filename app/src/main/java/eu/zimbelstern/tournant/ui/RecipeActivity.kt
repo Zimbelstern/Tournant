@@ -358,7 +358,12 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 		return when (item.itemId) {
 			R.id.share_json -> shareRecipe("json")
 			R.id.share_zip -> shareRecipe("zip")
-			R.id.share_gourmand -> shareRecipe("xml")
+			R.id.share_gourmand -> {
+				(application as TournantApplication).withGourmandIssueCheck(this, setOf(intent.getLongExtra("RECIPE_ID", 0L))) {
+					shareRecipe("xml")
+				}
+				true
+			}
 			R.id.edit -> {
 				startActivity(Intent(this, RecipeEditingActivity::class.java).apply {
 					putExtra("RECIPE_ID", intent.getLongExtra("RECIPE_ID", 0L))

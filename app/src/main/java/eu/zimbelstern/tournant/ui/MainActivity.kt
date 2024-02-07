@@ -288,8 +288,8 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 	}
 
 	override fun exportRecipes(recipeIds: Set<Long>, format: String) {
-		Log.d(TAG, "Exporting recipes $recipeIds")
-		lifecycleScope.launch {
+		fun export() = lifecycleScope.launch {
+			Log.d(TAG, "Exporting recipes $recipeIds")
 			withContext(Dispatchers.IO) {
 				val filename = if (recipeIds.size == 1) viewModel.getRecipeTitle(recipeIds.first()) else getString(R.string.recipes)
 				(application as TournantApplication).writeRecipesToExportDir(recipeIds, "export", format)
@@ -302,6 +302,10 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 			}
 			recipeListAdapter.finishActionMode()
 		}
+		if (format == "xml")
+			(application as TournantApplication).withGourmandIssueCheck(this, recipeIds) { export() }
+		else
+			export()
 	}
 
 	private val exportJsonActivityResultLauncher = registerForActivityResult(ActivityResultContracts.CreateDocument("application/json")) {
@@ -315,7 +319,8 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 	}
 
 	override fun shareRecipes(recipeIds: Set<Long>, format: String) {
-		lifecycleScope.launch {
+		fun share() = lifecycleScope.launch {
+			Log.d(TAG, "Sharing recipes $recipeIds")
 			withContext(Dispatchers.IO) {
 				val filename = if (recipeIds.size == 1) viewModel.getRecipeTitle(recipeIds.first()) else getString(R.string.recipes)
 				(application as TournantApplication).writeRecipesToExportDir(recipeIds, filename, format)
@@ -331,6 +336,12 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 			}
 			recipeListAdapter.finishActionMode()
 		}
+		if (format == "xml")
+			(application as TournantApplication).withGourmandIssueCheck(this, recipeIds) {
+				share()
+			}
+		else
+			share()
 	}
 
 	override fun showDeleteDialog(recipeIds: Set<Long>) {
@@ -522,7 +533,9 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 				true
 			}
 			R.id.export_all_gourmand -> {
-				exportRecipes(getFilteredRecipesIds(), "xml")
+				(application as TournantApplication).withGourmandIssueCheck(this@MainActivity, getFilteredRecipesIds()) {
+					exportRecipes(it, "xml")
+				}
 				true
 			}
 			R.id.share_all_json -> {
@@ -534,7 +547,9 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 				true
 			}
 			R.id.share_all_gourmand -> {
-				shareRecipes(getFilteredRecipesIds(), "xml")
+				(application as TournantApplication).withGourmandIssueCheck(this@MainActivity, getFilteredRecipesIds()) {
+					shareRecipes(it, "xml")
+				}
 				true
 			}
 			R.id.select_all -> {
