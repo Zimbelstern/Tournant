@@ -34,6 +34,11 @@
 			app:icon="@drawable/ic_bug"/>
 
 		<Preference
+			app:key="translations"
+			app:title="@string/translations"
+			app:icon="@drawable/ic_lang"/>
+
+		<Preference
 			app:key="recipes"
 			app:title="@string/recipes"
 			app:icon="@drawable/ic_restaurant"/>

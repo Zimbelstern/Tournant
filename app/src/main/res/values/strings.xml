@@ -125,6 +125,7 @@
 	<string name="license">License</string>
 	<string name="code">Source</string>
 	<string name="issues">Bug tracker</string>
+	<string name="translations">Translations</string>
 	<string name="donate">Donate</string>
 	<string name="libraries">Libraries</string>
 
