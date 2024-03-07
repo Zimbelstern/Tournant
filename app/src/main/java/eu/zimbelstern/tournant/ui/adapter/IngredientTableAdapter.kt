@@ -6,8 +6,6 @@ import android.text.method.DigitsKeyListener
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.WindowManager
-import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import eu.zimbelstern.tournant.R
@@ -57,52 +55,47 @@ class IngredientTableAdapter(
 		}
 
 		if (row.isIngredient) {
-			holder.binding.apply {
-				root.setOnClickListener {
-					ingredientChecked.isVisible = !ingredientChecked.isVisible
-					listOf(ingredientAmountValue, ingredientAmountUnit, ingredientItem).forEach {
-						it.setTextColor(ContextCompat.getColor(root.context,
-							if (ingredientChecked.isVisible) {
-								row.checked = true
-								R.color.checked_text_color
-							}
-							else {
-								row.checked = false
-								R.color.normal_text_color
-							}
-						))
+			val ingredientViews = holder.binding.run { listOf(ingredientAmountValue, ingredientAmountUnit, ingredientItem) }
+
+			ingredientViews.forEach { checkabletextView ->
+				checkabletextView.setOnClickListener {
+					ingredientViews.forEach {
+						it.isChecked = !it.isChecked
 					}
+					row.checked = !row.checked
 				}
 			}
 
 			if (row.amountString.isNotEmpty()) {
 				val amount = row.amountString.substringBefore('-').parseLocalFormattedFloat() ?: return
-				holder.binding.root.setOnLongClickListener {
-					val customView = InputFieldScaleBinding.inflate(LayoutInflater.from(holder.binding.root.context), holder.binding.root, false)
-					customView.inputLayout.apply {
-						hint = row.itemString
-						suffixText = row.unitString
-					}
-					customView.inputField.apply {
-						keyListener = DigitsKeyListener.getInstance("0123456789" + DecimalFormatSymbols.getInstance().decimalSeparator)
-						setText(amount.toStringForCooks(thousands = false))
-						requestFocus()
-					}
-					MaterialAlertDialogBuilder(holder.binding.root.context)
-						.setTitle(R.string.scale_to)
-						.setView(customView.root)
-						.setPositiveButton(R.string.ok) { dialog, _ ->
-							val newAmount = customView.inputField.text.toString().parseLocalFormattedFloat()
-							if (newAmount != null)
-								ingredientTableInterface.scale(
-									newAmount / amount * (scale ?: 1f)
-								)
-							dialog.dismiss()
+				ingredientViews.forEach {
+					it.setOnLongClickListener {
+						val customView = InputFieldScaleBinding.inflate(LayoutInflater.from(holder.binding.root.context), holder.binding.root, false)
+						customView.inputLayout.apply {
+							hint = row.itemString
+							suffixText = row.unitString
 						}
-						.setNegativeButton(R.string.cancel) { dialog, _ -> dialog.dismiss()}
-						.show()
-						.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
-					true
+						customView.inputField.apply {
+							keyListener = DigitsKeyListener.getInstance("0123456789" + DecimalFormatSymbols.getInstance().decimalSeparator)
+							setText(amount.toStringForCooks(thousands = false))
+							requestFocus()
+						}
+						MaterialAlertDialogBuilder(holder.binding.root.context)
+							.setTitle(R.string.scale_to)
+							.setView(customView.root)
+							.setPositiveButton(R.string.ok) { dialog, _ ->
+								val newAmount = customView.inputField.text.toString().parseLocalFormattedFloat()
+								if (newAmount != null)
+									ingredientTableInterface.scale(
+										newAmount / amount * (scale ?: 1f)
+									)
+								dialog.dismiss()
+							}
+							.setNegativeButton(R.string.cancel) { dialog, _ -> dialog.dismiss()}
+							.show()
+							.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+						true
+					}
 				}
 			}
 		}

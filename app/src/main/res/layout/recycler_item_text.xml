@@ -1,27 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
-	android:orientation="horizontal"
-	android:gravity="center"
-	tools:ignore="UseCompoundDrawables">
+	android:layout_height="wrap_content">
 
-	<TextView
+	<eu.zimbelstern.tournant.utils.CheckableTextView
 		android:id="@+id/instruction_text"
-		android:layout_width="0dp"
-		android:layout_height="wrap_content"
-		android:layout_weight="1"
-		android:layout_marginVertical="2sp"
-		android:textSize="@dimen/font_size_text"/>
-
-	<ImageView
-		android:id="@+id/instruction_checked"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:src="@drawable/ic_checked"
-		android:contentDescription="@string/checked"
-		android:visibility="invisible"
-		tools:visibility="visible"/>
+		android:layout_marginVertical="2sp"
+		android:textSize="@dimen/font_size_text"
+		android:drawablePadding="4sp"
+		app:drawableEndCompat="@drawable/ic_checked"
+		app:drawableTint="@color/transparent"
+		tools:text="Text"/>
 
-</LinearLayout>
+</FrameLayout>
