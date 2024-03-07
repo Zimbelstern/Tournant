@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.data.Ingredient
+import eu.zimbelstern.tournant.databinding.InputFieldScaleBinding
 import eu.zimbelstern.tournant.databinding.RecyclerItemIngredientsBinding
-import eu.zimbelstern.tournant.databinding.ScaleInputFieldBinding
 import eu.zimbelstern.tournant.parseLocalFormattedFloat
 import eu.zimbelstern.tournant.toStringForCooks
 import java.text.DecimalFormatSymbols
@@ -78,21 +78,21 @@ class IngredientTableAdapter(
 			if (row.amountString.isNotEmpty()) {
 				val amount = row.amountString.substringBefore('-').parseLocalFormattedFloat() ?: return
 				holder.binding.root.setOnLongClickListener {
-					val inputFieldView = ScaleInputFieldBinding.inflate(LayoutInflater.from(holder.binding.root.context), holder.binding.root, false)
-					inputFieldView.inputLayout.apply {
+					val customView = InputFieldScaleBinding.inflate(LayoutInflater.from(holder.binding.root.context), holder.binding.root, false)
+					customView.inputLayout.apply {
 						hint = row.itemString
 						suffixText = row.unitString
 					}
-					inputFieldView.inputField.apply {
+					customView.inputField.apply {
 						keyListener = DigitsKeyListener.getInstance("0123456789" + DecimalFormatSymbols.getInstance().decimalSeparator)
 						setText(amount.toStringForCooks(thousands = false))
 						requestFocus()
 					}
 					MaterialAlertDialogBuilder(holder.binding.root.context)
 						.setTitle(R.string.scale_to)
-						.setView(inputFieldView.root)
+						.setView(customView.root)
 						.setPositiveButton(R.string.ok) { dialog, _ ->
-							val newAmount = inputFieldView.inputField.text.toString().parseLocalFormattedFloat()
+							val newAmount = customView.inputField.text.toString().parseLocalFormattedFloat()
 							if (newAmount != null)
 								ingredientTableInterface.scale(
 									newAmount / amount * (scale ?: 1f)

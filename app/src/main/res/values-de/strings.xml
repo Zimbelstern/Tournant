@@ -160,7 +160,9 @@
 	<string name="descending">Absteigend</string>
 
 	<!-- Timer -->
-	<string name="timer_set">Wecker auf %s gestellt</string>
+	<string name="set_alarm">Wecker stellen</string>
+	<string name="set_timer">Timer stellen</string>
+	<string name="timer_set">Timer auf %s gestellt</string>
 	<string name="hours_for_regex">(Stunden?)</string>
 	<string name="minutes_for_regex">(Minuten?)</string>
 	<string name="seconds_for_regex">(Sekunden?)</string>

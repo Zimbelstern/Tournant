@@ -171,6 +171,8 @@
 	<string name="descending">Descending</string>
 
 	<!-- Timer -->
+	<string name="set_alarm">Set alarm</string>
+	<string name="set_timer">Set timer</string>
 	<string name="timer_set">Timer set to %s</string>
 	<string name="hours_for_regex">(hour)|(hours)</string>
 	<string name="minutes_for_regex">(minute)|(minutes)</string>

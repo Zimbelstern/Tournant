@@ -108,7 +108,7 @@ class InstructionsTextAdapter(
 			paragraph.setSpan(
 				object : ClickableSpan() {
 					override fun onClick(widget: View) {
-						instructionsTextInterface.setAlarm((it.first * 60).roundToInt())
+						instructionsTextInterface.showAlarmDialog((it.first * 60).roundToInt())
 					}
 				},
 				it.second.first, it.second.last + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -118,7 +118,7 @@ class InstructionsTextAdapter(
 			paragraph.setSpan(
 				object : ClickableSpan() {
 					override fun onClick(widget: View) {
-						instructionsTextInterface.startTimer((it.first * 60).roundToInt())
+						instructionsTextInterface.showTimerDialog((it.first * 60).roundToInt())
 					}
 				},
 				it.second.first, it.second.last + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -128,7 +128,7 @@ class InstructionsTextAdapter(
 			paragraph.setSpan(
 				object : ClickableSpan() {
 					override fun onClick(widget: View) {
-						instructionsTextInterface.startTimer(it.first.roundToInt())
+						instructionsTextInterface.showTimerDialog(it.first.roundToInt())
 					}
 				},
 				it.second.first, it.second.last + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -153,8 +153,8 @@ class InstructionsTextAdapter(
 	}
 
 	interface InstructionsTextInterface {
-		fun setAlarm(minutes: Int)
-		fun startTimer(seconds: Int)
+		fun showAlarmDialog(minutes: Int)
+		fun showTimerDialog(seconds: Int)
 	}
 
 }

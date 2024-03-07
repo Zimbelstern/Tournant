@@ -9,13 +9,16 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.AlarmClock
+import android.text.InputFilter
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
+import android.text.format.DateFormat
 import android.text.method.DigitsKeyListener
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -32,9 +35,13 @@ import androidx.core.content.FileProvider
 import androidx.core.text.parseAsHtml
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.signature.ObjectKey
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import eu.zimbelstern.tournant.BuildConfig
 import eu.zimbelstern.tournant.Constants.Companion.MODE_SYNCED
 import eu.zimbelstern.tournant.Constants.Companion.PREF_MODE
@@ -43,6 +50,7 @@ import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.RecipeUtils
 import eu.zimbelstern.tournant.TournantApplication
 import eu.zimbelstern.tournant.databinding.ActivityRecipeBinding
+import eu.zimbelstern.tournant.databinding.InputFieldTimeBinding
 import eu.zimbelstern.tournant.getQuantityIntForPlurals
 import eu.zimbelstern.tournant.parseLocalFormattedFloat
 import eu.zimbelstern.tournant.scale
@@ -315,22 +323,95 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 		binding.recipeDetailYieldsValue.setText((oldYieldValue * scaleFactor).toStringForCooks(thousands = false))
 	}
 
-	override fun setAlarm(minutes: Int) {
+	override fun showAlarmDialog(minutes: Int) {
+		val calendar = Calendar.getInstance().apply {
+			add(Calendar.MINUTE, minutes)
+		}
+		MaterialTimePicker.Builder()
+			.setTitleText(R.string.set_alarm)
+			.setHour(calendar[Calendar.HOUR_OF_DAY])
+			.setMinute(calendar[Calendar.MINUTE])
+			.setTimeFormat(if (DateFormat.is24HourFormat(this)) TimeFormat.CLOCK_24H else TimeFormat.CLOCK_12H)
+			.setPositiveButtonText(R.string.ok)
+			.setNegativeButtonText(R.string.cancel)
+			.setInputMode(MaterialTimePicker.INPUT_MODE_CLOCK)
+			.build()
+			.also { picker -> picker.addOnPositiveButtonClickListener { setAlarm(picker.hour, picker.minute) } }
+			.show(supportFragmentManager, "SetAlarmDialog")
+	}
+
+	private fun setAlarm(hour: Int, minute: Int) {
 		try {
-			val calendar = Calendar.getInstance().apply {
-				add(Calendar.MINUTE, minutes)
-			}
 			startActivity(Intent(AlarmClock.ACTION_SET_ALARM).apply {
 				putExtra(AlarmClock.EXTRA_MESSAGE, binding.recipe?.title)
-				putExtra(AlarmClock.EXTRA_HOUR, calendar[Calendar.HOUR_OF_DAY])
-				putExtra(AlarmClock.EXTRA_MINUTES, calendar[Calendar.MINUTE])
+				putExtra(AlarmClock.EXTRA_HOUR, hour)
+				putExtra(AlarmClock.EXTRA_MINUTES, minute)
 			})
 		} catch (_: ActivityNotFoundException) {
 			Toast.makeText(this, R.string.no_suitable_application, Toast.LENGTH_LONG).show()
 		}
 	}
 
-	override fun startTimer(seconds: Int) {
+	@SuppressLint("SetTextI18n")
+	override fun showTimerDialog(seconds: Int) {
+		val customView = InputFieldTimeBinding.inflate(LayoutInflater.from(this), null, false).apply {
+			minutesField.apply {
+				doOnTextChanged { text, _, _, _ ->
+					minutesMinus.isEnabled = ((text.toString().toIntOrNull() ?: 0) != 0)
+					secondsMinus.isEnabled = (text.toString().toIntOrNull() ?: 0) != 0 || (secondsField.text.toString().toIntOrNull() ?: 0) != 0
+				}
+				setText((seconds / 60).toString())
+			}
+			secondsField.apply {
+				doOnTextChanged { text, _, _, _ ->
+					secondsMinus.isEnabled = (text.toString().toIntOrNull() ?: 0) != 0 || (minutesField.text.toString().toIntOrNull() ?: 0) != 0
+				}
+				setText((seconds % 60).toString())
+			}
+			secondsField.filters += InputFilter { source, _, _, dest, _, _ ->
+				if (((dest.toString() + source.toString()).toIntOrNull() ?: 0) < 60) null else ""
+			}
+			minutesPlus.setOnClickListener {
+				minutesField.setText(((minutesField.text.toString().toIntOrNull() ?: 0) + 1).toString())
+			}
+			minutesMinus.setOnClickListener {
+				minutesField.setText((minutesField.text.toString().toInt() - 1).toString())
+			}
+			secondsPlus.setOnClickListener {
+				val value = secondsField.text.toString().toIntOrNull() ?: 0
+				if (value == 59) {
+					secondsField.setText(0.toString())
+					minutesPlus.performClick()
+				}
+				else {
+					secondsField.setText(((secondsField.text.toString().toIntOrNull() ?: 0) + 1).toString())
+				}
+			}
+			secondsMinus.setOnClickListener {
+				val value = secondsField.text.toString().toIntOrNull() ?: 0
+				if (value == 0) {
+					minutesMinus.performClick()
+					secondsField.setText(59.toString())
+				}
+				else {
+					secondsField.setText((value - 1).toString())
+				}
+			}
+		}
+		MaterialAlertDialogBuilder(this)
+			.setTitle(R.string.set_timer)
+			.setView(customView.root)
+			.setPositiveButton(R.string.ok) { _, _ ->
+				val min = customView.minutesField.text.toString().toIntOrNull() ?: 0
+				val s = customView.secondsField.text.toString().toIntOrNull() ?: 0
+				if ((min + s) != 0)
+					startTimer(min * 60 + s)
+			}
+			.setNegativeButton(R.string.cancel, null)
+			.show()
+	}
+
+	private fun startTimer(seconds: Int) {
 		try {
 			startActivity(Intent(AlarmClock.ACTION_SET_TIMER).apply {
 				putExtra(AlarmClock.EXTRA_MESSAGE, binding.recipe?.title)
