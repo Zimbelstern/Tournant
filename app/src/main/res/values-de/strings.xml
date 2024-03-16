@@ -62,6 +62,11 @@
 	<string name="no_suitable_application">Keine passende Anwendung</string>
 	<string name="limitations">Einschränkungen</string>
 	<string name="missing_features_gourmand">Folgende Rezepteigenschaften werden von Gourmand nicht unterstützt:\n%s</string>
+	<string name="recipe_imported">%s wurde importiert</string>
+	<plurals name="recipes_imported">
+		<item quantity="one">%s und ein weiteres Rezept wurden importiert</item>
+		<item quantity="other">%s und %d weitere Rezepte wurden importiert</item>
+	</plurals>
 
 	<!-- Options menu -->
 	<string name="recipe_count">Rezeptanzahl</string>

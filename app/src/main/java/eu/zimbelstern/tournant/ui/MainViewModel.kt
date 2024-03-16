@@ -216,6 +216,18 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 										}
 									}
 								}
+								withContext(Dispatchers.Main) {
+									Toast.makeText(application,
+										if (insertedRecipes.size == 1)
+											application.getString(R.string.recipe_imported, insertedRecipes[0].recipe.title)
+										else
+											String.format(
+												application.resources.getQuantityText(R.plurals.recipes_imported, insertedRecipes.size - 1).toString(),
+												insertedRecipes[0].recipe.title,
+												insertedRecipes.size - 1
+											)
+										, Toast.LENGTH_LONG).show()
+								}
 							} catch (e: Error) {
 								error(e.message.toString())
 							}
