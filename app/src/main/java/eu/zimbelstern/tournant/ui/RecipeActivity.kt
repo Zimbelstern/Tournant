@@ -32,6 +32,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
 import androidx.core.content.FileProvider
+import androidx.core.text.parseAsHtml
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doOnTextChanged
@@ -43,6 +44,7 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import eu.zimbelstern.tournant.BuildConfig
 import eu.zimbelstern.tournant.Constants.Companion.MODE_SYNCED
+import eu.zimbelstern.tournant.Constants.Companion.PREF_MARKDOWN
 import eu.zimbelstern.tournant.Constants.Companion.PREF_MODE
 import eu.zimbelstern.tournant.Constants.Companion.PREF_SCREEN_ON
 import eu.zimbelstern.tournant.R
@@ -83,7 +85,17 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 			intent.getLongExtra("RECIPE_ID", 0L)
 		)
 	}
-	private lateinit var markwon: Markwon
+
+	private val markwon: Markwon? by lazy {
+		if (getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE).getBoolean(PREF_MARKDOWN, true)) {
+			Markwon.builder(this)
+				.usePlugin(HtmlPlugin.create())
+				.usePlugin(RecipeMarkwonPlugin(this))
+				.usePlugin(SoftBreakAddsNewLinePlugin.create())
+				.build()
+		}
+		else null
+	}
 
 	@SuppressLint("SetTextI18n")
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -121,12 +133,6 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 			weight = getString(R.string.cooktime).length.toFloat()
 		}
 
-		markwon = Markwon.builder(this@RecipeActivity)
-			.usePlugin(HtmlPlugin.create())
-			.usePlugin(RecipeMarkwonPlugin(this@RecipeActivity))
-			.usePlugin(SoftBreakAddsNewLinePlugin.create())
-			.build()
-
 		lifecycleScope.launch {
 			viewModel.recipe.collectLatest { recipeWithIngredients ->
 				recipeWithIngredients.recipe.let { recipe ->
@@ -161,7 +167,7 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 					}
 					recipe.instructions?.let {
 						binding.recipeDetailInstructions.visibility = View.VISIBLE
-						binding.recipeDetailInstructionsRecycler.adapter = InstructionsTextAdapter(this@RecipeActivity, markwon.toMarkdown(it).splitLines())
+						binding.recipeDetailInstructionsRecycler.adapter = InstructionsTextAdapter(this@RecipeActivity, parseRecipeText(it).splitLines())
 					}
 					recipe.yieldValue.let {
 						binding.recipeDetailYields.visibility = View.VISIBLE
@@ -177,7 +183,7 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 								recipeWithIngredients.ingredients.scale(scaleFactor).let { list ->
 									binding.recipeDetailIngredientsRecycler.adapter = IngredientTableAdapter(this@RecipeActivity, list, scaleFactor)
 									binding.recipeDetailInstructionsRecycler.adapter = recipe.instructions?.let {
-										InstructionsTextAdapter(this@RecipeActivity, markwon.toMarkdown(it).splitLines(), list, scaleFactor)
+										InstructionsTextAdapter(this@RecipeActivity, parseRecipeText(it).splitLines(), list, scaleFactor)
 									}
 									fillYieldsUnit(recipe.yieldValue, recipe.yieldUnit)
 								}
@@ -197,7 +203,7 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 					recipe.notes?.let {
 						binding.recipeDetailNotes.visibility = View.VISIBLE
 						binding.recipeDetailNotesText.movementMethod = LinkMovementMethod.getInstance()
-						binding.recipeDetailNotesText.text = markwon.toMarkdown(it)
+						binding.recipeDetailNotesText.text = parseRecipeText(it)
 					}
 				}
 				recipeWithIngredients.ingredients.let { list ->
@@ -278,6 +284,11 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 			}
 		}
 
+	}
+
+	// Parses text as markdown or html (if markwon instance null, that depends on user preference)
+	private fun parseRecipeText(text: String): Spanned {
+		return markwon?.toMarkdown(text) ?: text.replace("\n", "<br/>").parseAsHtml()
 	}
 
 	private fun fillYieldsUnit(value: Float?, unit: String?) {

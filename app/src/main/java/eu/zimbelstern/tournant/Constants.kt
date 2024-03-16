@@ -8,6 +8,7 @@ class Constants {
 		const val PREF_VERSION = "VERSION"
 		const val PREF_MODE = "FILE_MODE"
 		const val PREF_FILE = "SYNCED_FILE_URI"
+		const val PREF_MARKDOWN = "MARKDOWN"
 		const val PREF_SCREEN_ON = "SCREEN_ON"
 		const val PREF_COLOR_THEME = "COLOR_THEME"
 		const val PREF_DECIMAL_SEPARATOR_COMMA = "DECIMAL_SEPARATOR_COMMA"

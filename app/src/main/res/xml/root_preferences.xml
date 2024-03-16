@@ -15,6 +15,11 @@
 			app:icon="@drawable/ic_link"/>
 
 		<SwitchPreference
+			app:key="markdown"
+			app:title="@string/markdown_support"
+			app:icon="@drawable/ic_markdown"/>
+
+		<SwitchPreference
 			app:key="keep_screen_on"
 			app:title="@string/keep_screen_on"
 			app:singleLineTitle="false"

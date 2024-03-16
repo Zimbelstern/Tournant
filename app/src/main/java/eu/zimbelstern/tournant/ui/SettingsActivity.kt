@@ -22,6 +22,7 @@ import eu.zimbelstern.tournant.Constants.Companion.PREF_COLOR_THEME
 import eu.zimbelstern.tournant.Constants.Companion.PREF_DECIMAL_SEPARATOR_COMMA
 import eu.zimbelstern.tournant.Constants.Companion.PREF_FILE
 import eu.zimbelstern.tournant.Constants.Companion.PREF_FILE_LAST_MODIFIED
+import eu.zimbelstern.tournant.Constants.Companion.PREF_MARKDOWN
 import eu.zimbelstern.tournant.Constants.Companion.PREF_MODE
 import eu.zimbelstern.tournant.Constants.Companion.PREF_SCREEN_ON
 import eu.zimbelstern.tournant.R
@@ -93,6 +94,17 @@ class SettingsActivity : AppCompatActivity() {
 			sharedPrefs.registerOnSharedPreferenceChangeListener { _, key ->
 				if (key == PREF_FILE) {
 					findPreference<Preference>("file")?.summary = sharedPrefs.getString(key, "")
+				}
+			}
+
+			findPreference<SwitchPreference>("markdown")?.apply {
+				isChecked = sharedPrefs.getBoolean(PREF_MARKDOWN, true)
+				setOnPreferenceChangeListener { _, value ->
+					sharedPrefs
+						.edit()
+						.putBoolean(PREF_MARKDOWN, value as Boolean)
+						.apply()
+					true
 				}
 			}
 

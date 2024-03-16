@@ -108,6 +108,7 @@
 		<item>@string/mode_synced_description_short</item>
 	</string-array>
 	<string name="synced_file">Synced Gourmand XML file</string>
+	<string name="markdown_support">Markdown support</string>
 	<string name="color_theme">Color scheme</string>
 	<string-array name="color_theme_options">
 		<item>Auto (follow system)</item>

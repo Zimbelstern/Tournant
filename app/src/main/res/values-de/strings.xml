@@ -97,6 +97,7 @@
 	<string name="be_careful">Vorsicht</string>
 	<string name="keep_screen_on">Bildschirm in der Rezeptansicht angeschaltet lassen</string>
 	<string name="synced_file">Synchronisierte Gourmand-XML-Datei</string>
+	<string name="markdown_support">Markdown-Unterstützung</string>
 	<string name="color_theme">Farbschema</string>
 	<string name="delete_all_recipes">Alle Rezepte löschen</string>
 	<string name="delete_all_recipes_sure">Das wird alle importierten Rezepte aus der Datenbank löschen (aber keine Dateien). Sicher?</string>
