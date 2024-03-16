@@ -32,7 +32,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
 import androidx.core.content.FileProvider
-import androidx.core.text.parseAsHtml
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doOnTextChanged
@@ -54,9 +53,14 @@ import eu.zimbelstern.tournant.databinding.InputFieldTimeBinding
 import eu.zimbelstern.tournant.getQuantityIntForPlurals
 import eu.zimbelstern.tournant.parseLocalFormattedFloat
 import eu.zimbelstern.tournant.scale
+import eu.zimbelstern.tournant.splitLines
 import eu.zimbelstern.tournant.toStringForCooks
 import eu.zimbelstern.tournant.ui.adapter.IngredientTableAdapter
 import eu.zimbelstern.tournant.ui.adapter.InstructionsTextAdapter
+import eu.zimbelstern.tournant.utils.RecipeMarkwonPlugin
+import io.noties.markwon.Markwon
+import io.noties.markwon.SoftBreakAddsNewLinePlugin
+import io.noties.markwon.html.HtmlPlugin
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -79,6 +83,7 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 			intent.getLongExtra("RECIPE_ID", 0L)
 		)
 	}
+	private lateinit var markwon: Markwon
 
 	@SuppressLint("SetTextI18n")
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -116,6 +121,12 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 			weight = getString(R.string.cooktime).length.toFloat()
 		}
 
+		markwon = Markwon.builder(this@RecipeActivity)
+			.usePlugin(HtmlPlugin.create())
+			.usePlugin(RecipeMarkwonPlugin(this@RecipeActivity))
+			.usePlugin(SoftBreakAddsNewLinePlugin.create())
+			.build()
+
 		lifecycleScope.launch {
 			viewModel.recipe.collectLatest { recipeWithIngredients ->
 				recipeWithIngredients.recipe.let { recipe ->
@@ -150,7 +161,7 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 					}
 					recipe.instructions?.let {
 						binding.recipeDetailInstructions.visibility = View.VISIBLE
-						binding.recipeDetailInstructionsRecycler.adapter = InstructionsTextAdapter(this@RecipeActivity, it)
+						binding.recipeDetailInstructionsRecycler.adapter = InstructionsTextAdapter(this@RecipeActivity, markwon.toMarkdown(it).splitLines())
 					}
 					recipe.yieldValue.let {
 						binding.recipeDetailYields.visibility = View.VISIBLE
@@ -166,7 +177,7 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 								recipeWithIngredients.ingredients.scale(scaleFactor).let { list ->
 									binding.recipeDetailIngredientsRecycler.adapter = IngredientTableAdapter(this@RecipeActivity, list, scaleFactor)
 									binding.recipeDetailInstructionsRecycler.adapter = recipe.instructions?.let {
-										InstructionsTextAdapter(this@RecipeActivity, it, list, scaleFactor)
+										InstructionsTextAdapter(this@RecipeActivity, markwon.toMarkdown(it).splitLines(), list, scaleFactor)
 									}
 									fillYieldsUnit(recipe.yieldValue, recipe.yieldUnit)
 								}
@@ -185,7 +196,8 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 					}
 					recipe.notes?.let {
 						binding.recipeDetailNotes.visibility = View.VISIBLE
-						binding.recipeDetailNotesText.text = it.parseAsHtml()
+						binding.recipeDetailNotesText.movementMethod = LinkMovementMethod.getInstance()
+						binding.recipeDetailNotesText.text = markwon.toMarkdown(it)
 					}
 				}
 				recipeWithIngredients.ingredients.let { list ->

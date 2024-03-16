@@ -1,11 +1,14 @@
 package eu.zimbelstern.tournant
 
+import android.text.SpannableStringBuilder
 import android.text.Spanned
+import androidx.core.text.toSpanned
 import eu.zimbelstern.tournant.data.Ingredient
 import eu.zimbelstern.tournant.data.IngredientGroupTitle
 import eu.zimbelstern.tournant.data.IngredientLine
 import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
+import java.util.Stack
 import kotlin.math.pow
 import kotlin.math.roundToInt
 
@@ -168,4 +171,25 @@ fun Spanned.findFirstAmount(range: IntRange): MatchResult? {
 	return Regex("""\d{1,3}([$separator/]\d{1,2})?""").find(this, range.first).takeIf {
 		it == null || it.range.last < range.last
 	}
+}
+
+fun Spanned.splitLines(): List<Spanned> {
+	val positions = Stack<Int>()
+	val newSpans = mutableListOf<Spanned>()
+
+	var next = this.indexOf('\n')
+	while (next > 0) {
+		positions.push(next)
+		next = this.indexOf('\n', next + 1)
+		if (next >= this.length)
+			break
+	}
+	positions.push(this.length)
+
+	while (positions.isNotEmpty()) {
+		val end = positions.pop()
+		val start = if (positions.isEmpty()) 0 else positions.peek()
+		newSpans.add(0, this.subSequence(start, end).trimStart('\n') as? Spanned ?: SpannableStringBuilder(" ").toSpanned())
+	}
+	return newSpans
 }

@@ -73,6 +73,9 @@ dependencies {
 	implementation 'com.squareup.moshi:moshi:1.15.0'
 	ksp 'com.squareup.moshi:moshi-kotlin-codegen:1.15.0'
 
+	implementation  'io.noties.markwon:core:4.6.2'
+	implementation  'io.noties.markwon:html:4.6.2'
+
 	testImplementation 'androidx.test.ext:junit-ktx:1.1.5'
 
 	androidTestImplementation 'androidx.test:runner:1.5.2'

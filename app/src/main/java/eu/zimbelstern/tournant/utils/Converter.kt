@@ -60,7 +60,7 @@ object Converter {
 	}
 
 	@JvmStatic fun stringToHtml(value: String): String {
-		return value.replace("\n", "<br/>")
+		return value
 	}
 
 }

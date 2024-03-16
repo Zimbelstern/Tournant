@@ -12,7 +12,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.text.parseAsHtml
 import androidx.recyclerview.widget.RecyclerView
 import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.data.Ingredient
@@ -26,23 +25,21 @@ import kotlin.math.roundToInt
 
 class InstructionsTextAdapter(
 	private val instructionsTextInterface: InstructionsTextInterface,
-	text: String,
+	private val paragraphs: List<Spanned>,
 	private val ingredients: List<Ingredient> = listOf(),
 	private val scale: Float? = 1f
 	) : RecyclerView.Adapter<InstructionsTextAdapter.InstructionTextViewHolder>() {
-
-	private val paragraphs = text.split("<br/>")
 
 	class InstructionTextViewHolder(val binding: RecyclerItemTextBinding) : RecyclerView.ViewHolder(binding.root)
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InstructionTextViewHolder {
 		val binding = RecyclerItemTextBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+		binding.instructionText.movementMethod = LinkMovementMethod.getInstance()
 		return InstructionTextViewHolder(binding)
 	}
 
 	override fun onBindViewHolder(holder: InstructionTextViewHolder, position: Int) {
-		val paragraph = SpannableStringBuilder(paragraphs[position].parseAsHtml())
-
+		val paragraph = SpannableStringBuilder(paragraphs[position])
 		if (scale != null && scale != 1f) {
 			ingredients.filter { it.amount != null }.forEach { ingredient ->
 				var cursor = 0
