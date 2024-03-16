@@ -130,4 +130,16 @@
     <string name="to">до</string>
     <string name="totaltime">Загальним часом</string>
     <string name="instructions_length">Довжиною інструкцій</string>
+    <string name="json_file">Файл JSON (рекомендовано)</string>
+    <string name="gourmand_file">Файл XML Gourmand</string>
+    <string name="markdown_support">Підтримка Markdown</string>
+    <string name="translations">Переклад</string>
+    <string name="missing_features_gourmand">Gourmand не підтримує такі властивості рецепта:
+\n%s</string>
+    <string name="description">Опис</string>
+    <string name="set_timer">Встановити таймер</string>
+    <string name="set_alarm">Встановити сповіщення</string>
+    <string name="scale_to">Обрахувати для</string>
+    <string name="limitations">Обмеження</string>
+    <string name="archive_original_images">Архів з оригінальними зображеннями</string>
 </resources>
