@@ -245,7 +245,7 @@ class GourmetXmlParser(private val separator: Char) {
 	private fun readStringField(parser: XmlPullParser): String {
 		val tag = parser.name
 		parser.require(XmlPullParser.START_TAG, null, tag)
-		val title = readText(parser).replace("\n", "&lt;br/>").parseAsHtml().toString()
+		val title = readText(parser).parseAsHtml().toString()
 		parser.require(XmlPullParser.END_TAG, null, tag)
 		return title
 	}
