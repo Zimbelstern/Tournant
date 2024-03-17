@@ -112,7 +112,7 @@
     <string name="dependent_recipes_found">Вибір містить один або кілька рецептів, які використовуються в інших рецептах. Ви повинні вирішити ці залежності або також видалити їх.
 \nЗалежні рецепти: %s</string>
     <string name="use_comma_as_decimal_separator">Використовуйте кому як десятковий роздільник під час імпорту та експорту</string>
-    <string name="delete_all_recipes_sure">Це призведе до остаточного видалення всіх імпортованих рецептів у базі даних (окрім файлів). Ти впевнений\?</string>
+    <string name="delete_all_recipes_sure">Це призведе до остаточного видалення всіх імпортованих рецептів у базі даних (окрім файлів). Ти впевнений?</string>
     <string name="all_recipes">Усі рецепти</string>
     <string name="ascending">Зростанням</string>
     <string name="copy_to_clipboard">Копіювати в буфер обміну</string>

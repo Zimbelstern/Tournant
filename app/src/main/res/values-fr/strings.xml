@@ -53,7 +53,7 @@
     <string name="be_careful">Faites attention</string>
     <string name="use_comma_as_decimal_separator">Utilisez une virgule comme séparateur décimal lors de l\'importation et de l\'exportation</string>
     <string name="delete_all_recipes">Supprimer toutes les recettes</string>
-    <string name="delete_all_recipes_sure">Cela va effacer définitivement toutes les recettes importées dans la base de données (mais aucun fichier). Êtes-vous sûr \?</string>
+    <string name="delete_all_recipes_sure">Cela va effacer définitivement toutes les recettes importées dans la base de données (mais aucun fichier). Êtes-vous sûr ?</string>
     <string name="synced_file">Fichier Gourmand XML synchronisé</string>
     <string name="recipe">Recette</string>
     <string name="title">Titre</string>

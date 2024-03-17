@@ -31,7 +31,7 @@
     </plurals>
     <plurals name="lots">
         <item quantity="one">lotto</item>
-        <item quantity="many"></item>
+        <item quantity="many"/>
         <item quantity="other">lotti</item>
     </plurals>
     <string name="code">Fonte</string>
@@ -48,7 +48,7 @@
     <string name="type_or_tap_to_search">Scrivi o tocca per cercare…</string>
     <string name="checked">controllato</string>
     <string name="color_theme">Schema colori</string>
-    <string name="delete_all_recipes_sure">Questo cancellerà definitivamente tutte le ricette importate nel database (ma nessun file). Sei sicuro\?</string>
+    <string name="delete_all_recipes_sure">Questo cancellerà definitivamente tutte le ricette importate nel database (ma nessun file). Sei sicuro?</string>
     <string name="save">Salva</string>
     <string name="mode_standalone">Autonomo</string>
     <string name="title">Titolo</string>

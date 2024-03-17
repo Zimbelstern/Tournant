@@ -106,7 +106,7 @@
     <string name="options">Možnosti</string>
     <string name="general_settings">Obecná nastavení</string>
     <string name="import_export">Gourmand kompatibilita</string>
-    <string name="delete_all_recipes_sure">Toto rozhodnutí nenávratně smaže všechny importované recpety v databázi (bez souborů). Jste si jisti\?</string>
+    <string name="delete_all_recipes_sure">Toto rozhodnutí nenávratně smaže všechny importované recpety v databázi (bez souborů). Jste si jisti?</string>
     <string name="mode_standalone_description_long">Tournant vytvoří vlastní databázi pro vaše recepty. Recepty můžete importovat z XML souborů. Recepty mohou být upraveny (ve vývoji).</string>
     <string name="mode_synced_description_long">Tournant zůstane sladěn s jediným XML souborem na vašem zařízení. Úpravy receptů jsou z důvodu konfliktů nemožné a v aplikaci Gourmand zatím není funkce která by problém vyřešila.</string>
 </resources>
