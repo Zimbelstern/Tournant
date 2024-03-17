@@ -127,4 +127,15 @@
     <string name="no_suitable_application">Ninguna aplicación adecuada</string>
     <string name="hours_for_regex">(hora)|(horas)</string>
     <string name="instructions_length">Longitud de las instrucciones</string>
+    <string name="description">Descripción</string>
+    <string name="limitations">Limitaciones</string>
+    <string name="json_file">Archivo JSON (recomendado)</string>
+    <string name="archive_original_images">Archivo con imágenes originales</string>
+    <string name="gourmand_file">Archivo XML gourmet</string>
+    <string name="markdown_support">Soporte para Markdown</string>
+    <string name="set_timer">Fijar un temporizador</string>
+    <string name="translations">Traducciones</string>
+    <string name="set_alarm">Fijar una alarma</string>
+    <string name="missing_features_gourmand">Gourmand no admite las siguientes propiedades de recetas:
+\n%s</string>
 </resources>
