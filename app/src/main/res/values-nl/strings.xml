@@ -123,4 +123,15 @@
     <string name="done">Klaar</string>
     <string name="unset_rating">Beoordeling intrekken</string>
     <string name="delete_selected_sure_named">Hierdoor wordt %s uit de databank verwijderd. Weet je het zeker?</string>
+    <string name="limitations">Beperkingen</string>
+    <string name="gourmand_file">Gourmand xml-bestand</string>
+    <string name="markdown_support">Markdownondersteuning</string>
+    <string name="translations">Vertalingen</string>
+    <string name="set_timer">Kookwekker instellen</string>
+    <string name="description">Omschrijving</string>
+    <string name="missing_features_gourmand">De volgende recepteigenschappen worden niet ondersteund door Gourmand:
+\n%s</string>
+    <string name="json_file">Json-bestand (aanbevolen)</string>
+    <string name="set_alarm">Kookwekker instellen</string>
+    <string name="archive_original_images">Archief met oorspronkelijke afbeeldingen</string>
 </resources>
