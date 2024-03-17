@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="ascending">Oplopend</string>
-    <string name="delete_all_recipes_sure">Hierdoor worden alle geïmporteerde recepten gewist (maar niet de bestanden). Weet je het zeker?</string>
+    <string name="delete_all_recipes_sure">Hierdoor worden <b>alle geïmporteerde recepten</b> gewist. Weet je het zeker?</string>
     <string name="save">Opslaan</string>
     <string name="recipes">Recepten</string>
     <string name="copy_to_clipboard">Kopiëren naar klembord</string>
@@ -134,4 +134,9 @@
     <string name="json_file">Json-bestand (aanbevolen)</string>
     <string name="set_alarm">Kookwekker instellen</string>
     <string name="archive_original_images">Archief met oorspronkelijke afbeeldingen</string>
+    <string name="recipe_imported">%s geïmporteerd</string>
+    <plurals name="recipes_imported">
+        <item quantity="one">%s en één ander recept geïmporteerd</item>
+        <item quantity="other">%s en %d andere recepten geïmporteerd</item>
+    </plurals>
 </resources>
