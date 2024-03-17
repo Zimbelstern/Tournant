@@ -5,8 +5,11 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
+import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
+import android.text.Spanned
+import android.text.style.StyleSpan
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -25,6 +28,7 @@ import androidx.core.app.ShareCompat
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.text.toSpannable
 import androidx.core.view.children
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
@@ -349,17 +353,22 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 			withContext(Dispatchers.IO) {
 				val depRecipes = viewModel.getDepRecipes(recipeIds)
 				if (depRecipes.isEmpty()) {
-					val message = if (recipeIds.size == 1)
-						getString(
-							R.string.delete_selected_sure_named,
-							viewModel.getRecipeTitle(recipeIds.first())
-						)
-					else
-						resources.getQuantityString(
-							R.plurals.delete_selected_sure,
-							recipeIds.size,
-							recipeIds.size
-						)
+					val message = if (recipeIds.size == 1) {
+						getString(R.string.delete_selected_sure_named, viewModel.getRecipeTitle(recipeIds.first()))
+							.toSpannable().apply {
+								val start = getString(R.string.delete_selected_sure_named).indexOf('%')
+								val end = start + viewModel.getRecipeTitle(recipeIds.first()).length
+								setSpan(StyleSpan(Typeface.BOLD), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+							}
+					}
+					else {
+						resources.getQuantityString(R.plurals.delete_selected_sure, recipeIds.size, recipeIds.size)
+							.toSpannable().apply {
+								val start = getString(R.string.delete_selected_sure_named).indexOf('%')
+								val end = start + recipeIds.size.toString().length
+								setSpan(StyleSpan(Typeface.BOLD), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+							}
+					}
 					withContext(Dispatchers.Main) {
 						MaterialAlertDialogBuilder(this@MainActivity)
 							.setTitle(R.string.delete_selected)
@@ -374,6 +383,11 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 					}
 				} else {
 					val message = getString(R.string.dependent_recipes_found, depRecipes.joinToString(", ") { viewModel.getRecipeTitle(it) })
+						.toSpannable().apply {
+							val start = getString(R.string.dependent_recipes_found).length
+							val end = length
+							setSpan(StyleSpan(Typeface.BOLD), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+						}
 					withContext(Dispatchers.Main) {
 						MaterialAlertDialogBuilder(this@MainActivity)
 							.setTitle(R.string.dependent_recipes)

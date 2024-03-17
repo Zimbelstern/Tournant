@@ -4,7 +4,11 @@ import android.app.Application
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Typeface
+import android.text.Spanned
+import android.text.style.StyleSpan
 import android.util.Log
+import androidx.core.text.toSpannable
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import eu.zimbelstern.tournant.data.RecipeList
 import eu.zimbelstern.tournant.data.RecipeRoomDatabase
@@ -50,7 +54,14 @@ class TournantApplication : Application() {
 				withContext(Dispatchers.Main) {
 					MaterialAlertDialogBuilder(context)
 						.setTitle(R.string.limitations)
-						.setMessage(getString(R.string.missing_features_gourmand, getString(R.string.description)))
+						.setMessage(
+							getString(R.string.missing_features_gourmand, getString(R.string.description))
+								.toSpannable().apply {
+									val start = getString(R.string.missing_features_gourmand).length - 2
+									val end = length
+									setSpan(StyleSpan(Typeface.BOLD), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+								}
+						)
 						.setPositiveButton(R.string.ok) { _, _ -> onSuccess(recipeIds) }
 						.setNegativeButton(R.string.cancel, null)
 						.show()

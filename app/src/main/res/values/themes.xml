@@ -23,6 +23,9 @@
 		<item name="materialCardViewStyle">@style/Tournant.CardViewStyle</item>
 		<item name="actionBarPopupTheme">@style/ThemeOverlay.MaterialComponents.ActionBar</item>
 
+		<!-- Dialogs -->
+		<item name="materialAlertDialogTheme">@style/Theme.Tournant.Dialog</item>
+
 	</style>
 
 	<style name="Theme.Tournant.Splash" parent="Theme.SplashScreen">
@@ -108,6 +111,22 @@
 		<item name="android:paddingRight">8dp</item>
 		<item name="android:paddingTop">10dp</item>
 		<item name="android:paddingBottom">10dp</item>
+	</style>
+
+	<!-- MaterialAlertDialog theme -->
+	<style name="Theme.Tournant.Dialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+		<item name="materialAlertDialogTitleTextStyle">@style/DialogTitleText</item>
+		<item name="materialAlertDialogBodyTextStyle">@style/DialogBodyText</item>
+	</style>
+
+	<style name="DialogTitleText" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+		<item name="android:textAppearance">@style/h</item>
+		<item name="android:textColor">@color/heading_color</item>
+	</style>
+
+	<style name="DialogBodyText" parent="MaterialAlertDialog.MaterialComponents.Body.Text">
+		<item name="android:textSize">16sp</item>
+		<item name="android:lineSpacingExtra">4sp</item>
 	</style>
 
 </resources>

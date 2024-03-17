@@ -90,7 +90,7 @@
 		<item quantity="one">Das wird ein Rezept aus der Datenbank löschen. Sicher?</item>
 		<item quantity="other">Das wird %d Rezepte aus der Datenbank löschen. Sicher?</item>
 	</plurals>
-	<string name="delete_selected_sure_named">Das wird %s aus der Datenbank löschen. Sicher?</string>
+	<string name="delete_selected_sure_named">Das wird %s aus der Datenbank löschen. Fortfahren?</string>
 	<string name="dependent_recipes">Abhängige Rezepte</string>
 	<string name="dependent_recipes_found">Die Auswahl enthält ein oder mehrere Rezepte, die in anderen Rezepten verwendet werden. Lösen Sie die Abhängigkeiten oder löschen Sie auch diese Rezepte.\nAbhängige Rezepte: %s</string>
 	<string name="share_all">Alle teilen</string>
@@ -105,7 +105,7 @@
 	<string name="markdown_support">Markdown-Unterstützung</string>
 	<string name="color_theme">Farbschema</string>
 	<string name="delete_all_recipes">Alle Rezepte löschen</string>
-	<string name="delete_all_recipes_sure">Das wird alle importierten Rezepte aus der Datenbank löschen (aber keine Dateien). Sicher?</string>
+	<string name="delete_all_recipes_sure">Das wird <b>alle importierten Rezepte</b> aus der Datenbank löschen. Fortfahren?</string>
 	<string-array name="color_theme_options">
 		<item>Automatisch (dem System folgen)</item>
 		<item>Hell</item>

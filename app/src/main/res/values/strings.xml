@@ -123,7 +123,7 @@
 	<string name="import_export">Gourmand compatibility</string>
 	<string name="use_comma_as_decimal_separator">Use a comma as decimal separator when importing and exporting</string>
 	<string name="delete_all_recipes">Delete all recipes</string>
-	<string name="delete_all_recipes_sure">This will permanently erase all imported recipes in the database (but no files). Are you sure?</string>
+	<string name="delete_all_recipes_sure">This will permanently erase <b>all imported recipes</b> in the database. Are you sure?</string>
 
 	<!-- About -->
 	<string name="website">Website</string>

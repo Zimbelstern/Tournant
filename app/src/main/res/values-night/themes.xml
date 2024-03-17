@@ -21,6 +21,9 @@
 		<item name="android:windowBackground">?attr/colorSurface</item>
 		<item name="materialCardViewStyle">@style/Tournant.CardViewStyle</item>
 
+		<!-- Dialogs -->
+		<item name="materialAlertDialogTheme">@style/Theme.Tournant.Dialog</item>
+
 	</style>
 
 	<style name="Theme.Tournant.Splash" parent="Theme.SplashScreen.IconBackground">
