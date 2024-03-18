@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class RecipeViewModel(private val application: TournantApplication, private val recipeId: Long) : AndroidViewModel(application) {
+class RecipeViewModel(application: TournantApplication, private val recipeId: Long) : AndroidViewModel(application) {
 
 	private val recipeDao = application.database.recipeDao()
 

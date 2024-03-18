@@ -4,7 +4,6 @@ import androidx.databinding.InverseMethod
 import eu.zimbelstern.tournant.toStringForCooks
 import java.text.NumberFormat
 
-@Suppress("unused")
 object Converter {
 
 	@InverseMethod("hourToTime")

@@ -1,5 +1,6 @@
 package eu.zimbelstern.tournant.ui.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -39,6 +40,7 @@ class ChipGroupAdapter(private val mainActivity: MainActivity) : RecyclerView.Ad
 		)
 	}
 
+	@SuppressLint("SetTextI18n")
 	override fun onBindViewHolder(holder: ChipGroupViewHolder, position: Int) {
 		val chip = chips[position]
 		holder.binding.root.apply {
