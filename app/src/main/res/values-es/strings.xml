@@ -104,7 +104,7 @@
     <string name="keep_screen_on">Mantener la pantalla encendida en la vista de receta individual</string>
     <string name="choose_file_long">Escoger un archivo Gourmet/XML Gourmand desde su dispositivo.</string>
     <string name="synced_file">Archivo XML Gourmand sincronizado</string>
-    <string name="delete_all_recipes_sure">Esto borrará permanentemente todas las recetas importadas en la base de datos (pero no archivos) ¿Está seguro?</string>
+    <string name="delete_all_recipes_sure">Esto borrará permanentemente <b>todas las recetas importadas</b> de la base de datos. ¿Está seguro?</string>
     <string name="save">Guardar</string>
     <string name="remove_photo">Quitar foto</string>
     <string name="recipes">Recetas</string>
@@ -138,4 +138,10 @@
     <string name="set_alarm">Fijar una alarma</string>
     <string name="missing_features_gourmand">Gourmand no admite las siguientes propiedades de recetas:
 \n%s</string>
+    <string name="recipe_imported">%s importado</string>
+    <plurals name="recipes_imported">
+        <item quantity="one">%s y otra receta importada</item>
+        <item quantity="many">%s y %d otras recetas importadas</item>
+        <item quantity="other">%s y %d otras recetas importadas</item>
+    </plurals>
 </resources>
