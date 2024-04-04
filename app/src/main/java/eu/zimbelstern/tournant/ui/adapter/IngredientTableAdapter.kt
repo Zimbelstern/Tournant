@@ -44,16 +44,6 @@ class IngredientTableAdapter(
 		holder.binding.ingredientAmountUnit.text = row.unitString
 		holder.binding.ingredientItem.text = row.itemString
 
-		// For ingredient references
-		row.refId?.let { refId ->
-			holder.binding.ingredientItem.apply {
-				paintFlags = paintFlags or Paint.UNDERLINE_TEXT_FLAG
-				setOnClickListener {
-					ingredientTableInterface.openRecipe(refId, row.amountString.substringBefore('-').parseLocalFormattedFloat(), row.unitString.trim())
-				}
-			}
-		}
-
 		if (row.isIngredient) {
 			val ingredientViews = holder.binding.run { listOf(ingredientAmountValue, ingredientAmountUnit, ingredientItem) }
 
@@ -63,6 +53,16 @@ class IngredientTableAdapter(
 						it.isChecked = !it.isChecked
 					}
 					row.checked = !row.checked
+				}
+			}
+
+			// For ingredient references
+			row.refId?.let { refId ->
+				holder.binding.ingredientItem.apply {
+					paintFlags = paintFlags or Paint.UNDERLINE_TEXT_FLAG
+					setOnClickListener {
+						ingredientTableInterface.openRecipe(refId, row.amountString.substringBefore('-').parseLocalFormattedFloat(), row.unitString.trim())
+					}
 				}
 			}
 
