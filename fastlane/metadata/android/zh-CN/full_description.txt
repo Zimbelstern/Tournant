@@ -1,0 +1,15 @@
+<b>Tournant在您的安卓设备上提供您最喜欢的菜肴！</b>
+通过Tournant，您可以管理您的烹饪和烘焙菜谱。并且您可以将应用程序与 Gourmand Recipe Manager（之前叫做Gourmet）中的菜谱文件同步，或将Tournant用作独立的菜谱管理器。
+
+<b>特性</b>
+<ul>
+<li>创建和编辑菜谱</li>
+<li>导入和导出 XML 文件 （Gourmand）</li>
+<li>与 Android 设备上的 XML 文件进行同步</li>
+<li>在菜谱和类别中搜索</li>
+<li>分享菜谱</li>
+<li>对原料比例进行缩放</li>
+</ul>
+
+<b>访问网站获取文档</b>
+https://tournant.zimbelstern.eu
