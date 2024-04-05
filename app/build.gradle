@@ -14,8 +14,8 @@ android {
 		applicationId "eu.zimbelstern.tournant"
 		minSdk 21
 		targetSdk 34
-		versionCode 19
-		versionName "2.5.0"
+		versionCode 20
+		versionName "2.5.1"
 
 		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 	}
