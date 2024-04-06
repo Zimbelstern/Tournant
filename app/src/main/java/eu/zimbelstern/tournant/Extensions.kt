@@ -90,7 +90,7 @@ fun String.extractFractionsToFloat(separator: Char = eu.zimbelstern.tournant.sep
 		} else null
 	val remainingString =
 		if (fraction?.length?.equals(length) == false) {
-			substring(fraction.length)
+			substring(fraction.length).trim()
 		}
 		else null
 	return Pair(fraction?.withFractionsToFloat(separator), remainingString)
