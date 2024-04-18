@@ -39,7 +39,7 @@
     <string name="mode">Режим</string>
     <string name="mode_standalone">Автономний</string>
     <string name="mode_standalone_description_short">Автономний: Власна база даних із можливістю редагування рецептів</string>
-    <string name="mode_standalone_description_long">«Tournant» створює власну базу даних для ваших рецептів. Ви можете імпортувати рецепти з файлів XML. Рецепти можна редагувати (в розробці).</string>
+    <string name="mode_standalone_description_long">Tournant створює власну базу даних для рецептів. Ви можете імпортувати рецепти з файлів XML. Рецепти можна редагувати (в розробці).</string>
     <string name="mode_synced">Синхронізовано</string>
     <string name="mode_synced_description_short">Синхронізовано: Завжди синхронно з файлом XML (тільки для читання)</string>
     <string name="choose_file_long">Виберіть XML-файл Gourmet/Gourmand зі свого пристрою.</string>
@@ -55,16 +55,16 @@
     <string name="refresh">Оновити</string>
     <string name="settings">Налаштування</string>
     <string name="about_app_name">Про %s</string>
-    <string name="share">Поділіться</string>
+    <string name="share">Поділитися</string>
     <string name="delete_selected">Видалити виділене</string>
     <string name="share_selected">Поділитися виділеним</string>
-    <string name="delete_selected_sure_named">Це назавжди видалить %s із бази даних. Ти впевнений\?</string>
+    <string name="delete_selected_sure_named">Це назавжди видалить %s із бази даних. Ви впевнені?</string>
     <string name="dependent_recipes">Залежні рецепти</string>
-    <string name="share_all">Поділіться всім</string>
+    <string name="share_all">Поділитися всім</string>
     <string name="export_all">Експортувати все</string>
     <string name="select_all">Виділити все</string>
     <string name="general_settings">Загальні налаштування</string>
-    <string name="be_careful">Будь обережний</string>
+    <string name="be_careful">Будьте обережні</string>
     <string name="keep_screen_on">Тримайте дисплей увімкненим у перегляді одного рецепта</string>
     <string name="synced_file">Синхронізований XML-файл Gourmand</string>
     <string name="color_theme">Кольорова схема</string>
@@ -98,16 +98,16 @@
     <string name="unset_rating">Скасувати оцінку</string>
     <string name="make_optional">Зробити необов\'язковим</string>
     <string name="make_mandatory">Зробити обов\'язковим</string>
-    <string name="mode_synced_description_long">Tournant синхронізується з одним файлом XML на вашому пристрої. Редагування рецептів вимкнено, оскільки це призведе до конфліктів, і наразі в Gourmand немає функції синхронізації, щоб вирішити їх.</string>
+    <string name="mode_synced_description_long">Tournant синхронізується з одним файлом XML на Вашому пристрої. Редагування рецептів вимкнено, оскільки це призведе до конфліктів, і наразі в Gourmand немає функції синхронізації, щоб вирішити їх.</string>
     <string name="recipe_not_found">Рецепт не знайдено</string>
     <string name="inputstream_null">Помилка під час відкриття файлу</string>
     <string name="recipe_count">Кількість рецептів</string>
     <string name="export_selected">Експорт виділеного</string>
     <plurals name="delete_selected_sure">
-        <item quantity="one">Це назавжди видалить один рецепт із бази даних. Ти впевнений\?</item>
-        <item quantity="few">Це назавжди видалить %d рецепти з бази даних. Ти впевнений\?</item>
-        <item quantity="many">Це назавжди видалить %d рецептів з бази даних. Ти впевнений\?</item>
-        <item quantity="other">Це назавжди видалить %d рецептів з бази даних. Ти впевнений\?</item>
+        <item quantity="one">Це назавжди видалить один рецепт із бази даних. Ви впевнені?</item>
+        <item quantity="few">Це назавжди видалить %d рецепти з бази даних. Ви впевнені?</item>
+        <item quantity="many">Це назавжди видалить %d рецептів з бази даних. Ви впевнені?</item>
+        <item quantity="other">Це назавжди видалить %d рецептів з бази даних. Ви впевнені?</item>
     </plurals>
     <string name="dependent_recipes_found">Вибір містить один або кілька рецептів, які використовуються в інших рецептах. Ви повинні вирішити ці залежності або також видалити їх.
 \nЗалежні рецепти: %s</string>
