@@ -89,7 +89,7 @@ class GourmetXmlParser(private val separator: Char) {
 		return RecipeWithIngredients(
 			Recipe(
 				gourmandId, title, null, category, cuisine, source, link, rating, preptime, cooktime,
-				yieldValue, yieldUnit, instructions, modifications, image, null
+				yieldValue, yieldUnit, instructions, modifications, image
 			),
 			ingredientList
 		)

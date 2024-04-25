@@ -35,7 +35,7 @@ data class Recipe(
 	var instructions: String?,
 	var notes: String?,
 	var image: ByteArray?,
-	var thumbnail: ByteArray?
+	var thumbnail: ByteArray?,
 ) : Parcelable {
 
 	// Constructor for outdoor (non-room) usage
@@ -55,7 +55,7 @@ data class Recipe(
 		instructions: String? = null,
 		notes: String? = null,
 		image: ByteArray? = null,
-		thumbnail: ByteArray? = null
+		thumbnail: ByteArray? = null,
 	) : this(0,
 		null,
 		gourmandId,
@@ -73,7 +73,7 @@ data class Recipe(
 		instructions,
 		notes,
 		image,
-		thumbnail
+		thumbnail,
 	)
 
 	fun removeEmptyValues() {
