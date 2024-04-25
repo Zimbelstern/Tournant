@@ -17,6 +17,10 @@ android {
 		versionCode 20
 		versionName "2.5.1"
 
+		ksp {
+			arg("room.schemaLocation", "$projectDir/schemas")
+		}
+
 		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 	}
 

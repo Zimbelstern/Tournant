@@ -8,7 +8,7 @@ import eu.zimbelstern.tournant.Constants.Companion.MODE_STANDALONE
 import eu.zimbelstern.tournant.Constants.Companion.MODE_SYNCED
 import eu.zimbelstern.tournant.Constants.Companion.PREF_MODE
 
-@Database(entities = [Recipe::class, Ingredient::class], version = 1, exportSchema = false)
+@Database(entities = [Recipe::class, Ingredient::class], version = 1, exportSchema = true)
 abstract class RecipeRoomDatabase : RoomDatabase() {
 	abstract fun recipeDao(): RecipeDao
 
@@ -34,7 +34,6 @@ abstract class RecipeRoomDatabase : RoomDatabase() {
 					}, Executors.newSingleThreadExecutor()
 					)
 */
-					.fallbackToDestructiveMigration()
 					.build()
 				INSTANCE = instance
 				return instance
