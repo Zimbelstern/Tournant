@@ -259,6 +259,19 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 		}
 
 		lifecycleScope.launch {
+			viewModel.recipeDates.collectLatest { (created, modified) ->
+				created?.let {
+					binding.recipeDetailCreated.visibility = View.VISIBLE
+					binding.recipeDetailCreatedDate.text = it
+				}
+				modified?.let {
+					binding.recipeDetailModified.visibility = View.VISIBLE
+					binding.recipeDetailModifiedDate.text = it
+				}
+			}
+		}
+
+		lifecycleScope.launch {
 			viewModel.dependentRecipes.collectLatest { recipeTitleIdList ->
 				if (recipeTitleIdList.isNotEmpty()) {
 					binding.recipeDetailDependentRecipes.visibility = View.VISIBLE

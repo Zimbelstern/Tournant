@@ -36,6 +36,8 @@
 		<item quantity="one">-fache Rezeptmenge</item>
 		<item quantity="other">-fache Rezeptmenge</item>
 	</plurals>
+	<string name="created">Erstellt</string>
+	<string name="modified">Geändert</string>
 
 	<!-- Modes -->
 	<string name="mode">Modus</string>

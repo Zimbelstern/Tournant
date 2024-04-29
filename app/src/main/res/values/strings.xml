@@ -39,6 +39,8 @@
 		<item quantity="one">lot</item>
 		<item quantity="other">lots</item>
 	</plurals>
+	<string name="created">Created</string>
+	<string name="modified">Modified</string>
 
 	<!-- Modes -->
 	<string name="mode">Mode</string>

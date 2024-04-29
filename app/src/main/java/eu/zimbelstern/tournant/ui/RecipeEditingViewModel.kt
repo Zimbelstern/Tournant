@@ -43,11 +43,11 @@ class RecipeEditingViewModel(private val recipeDao: RecipeDao, private val recip
 		viewModelScope.launch {
 			withContext(Dispatchers.IO) {
 				recipeDao.deleteIngredientsById(ingredientsRemoved.toSet())
-				recipe.value.removeEmptyValues()
+				recipe.value.processModifications()
 				val ingredientList = ingredients.value.deflate()
 				ingredientList.forEach { it.removeEmptyValues() }
 				if (recipeId == 0L) {
-					val id = recipeDao.insertRecipe(recipe.value.apply { removeEmptyValues() })
+					val id = recipeDao.insertRecipe(recipe.value.apply { processModifications() })
 					ingredientList.forEach { it.recipeId = id }
 					recipeDao.insertIngredients(ingredientList)
 					savedWithId.emit(id)

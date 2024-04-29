@@ -8,6 +8,7 @@ import com.squareup.moshi.JsonWriter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.ToJson
 import eu.zimbelstern.tournant.data.RecipeList
+import java.util.Date
 
 class RecipeJsonAdapter : JsonAdapter<RecipeList>() {
 
@@ -21,6 +22,12 @@ class RecipeJsonAdapter : JsonAdapter<RecipeList>() {
 				fun fromJson(string: String?) = Base64.decode(string, Base64.NO_WRAP)
 				@ToJson
 				fun toJson(bytes: ByteArray?) = Base64.encodeToString(bytes, Base64.NO_WRAP)
+			})
+			.add(object {
+				@FromJson
+				fun fromJson(long: Long?) = long?.let { Date(it) }
+				@ToJson
+				fun toJson(date: Date?) = date?.time
 			})
 			.build()
 			.adapter(RecipeList::class.java)
