@@ -40,7 +40,9 @@
 		<item quantity="other">lots</item>
 	</plurals>
 	<string name="created">Created</string>
+	<string name="creation_date">Creation date</string>
 	<string name="modified">Modified</string>
+	<string name="modification_date">Modification date</string>
 
 	<!-- Modes -->
 	<string name="mode">Mode</string>

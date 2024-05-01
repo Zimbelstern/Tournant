@@ -3,12 +3,16 @@ package eu.zimbelstern.tournant.ui.adapter
 import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.graphics.BitmapFactory
+import android.text.format.DateUtils
+import android.text.format.DateUtils.MINUTE_IN_MILLIS
+import android.text.format.DateUtils.WEEK_IN_MILLIS
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.view.ActionMode
 import androidx.core.view.setPadding
 import androidx.paging.PagingDataAdapter
@@ -16,6 +20,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.signature.ObjectKey
+import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_CREATED
+import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_INGREDIENTS_COUNT
+import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_INSTRUCTIONS_LENGTH
+import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_MODIFIED
 import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.data.ChipData
 import eu.zimbelstern.tournant.data.RecipeDescription
@@ -44,6 +52,7 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 	}
 
 	private val selectedItems = mutableMapOf<Long, Int>()
+	private var sortedBy = 0
 
 	private var ccColors = mapOf<String, ChipData>()
 	fun updateColors(chipData: List<ChipData>) {
@@ -165,6 +174,45 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 			}
 		}
 
+		holder.binding.sortedBy.visibility =
+			if (sortedBy / 2 in listOf(
+					SORTED_BY_CREATED,
+					SORTED_BY_MODIFIED,
+					SORTED_BY_INSTRUCTIONS_LENGTH,
+					SORTED_BY_INGREDIENTS_COUNT
+			))
+				View.VISIBLE
+			else
+				View.GONE
+
+		holder.binding.sortedBy.apply {
+			visibility = View.VISIBLE
+			when (sortedBy / 2) {
+				SORTED_BY_CREATED -> {
+					text = recipe.created?.let { DateUtils.getRelativeDateTimeString(context, it, MINUTE_IN_MILLIS, WEEK_IN_MILLIS, 0) } ?: "–"
+					contentDescription = context.getString(R.string.creation_date)
+					setCompoundDrawablesRelativeWithIntrinsicBounds(AppCompatResources.getDrawable(context, R.drawable.ic_date), null, null, null)
+				}
+				SORTED_BY_MODIFIED -> {
+					text = recipe.modified?.let { DateUtils.getRelativeDateTimeString(context, it, MINUTE_IN_MILLIS, WEEK_IN_MILLIS, 0) } ?: "–"
+					contentDescription = context.getString(R.string.modification_date)
+					setCompoundDrawablesRelativeWithIntrinsicBounds(AppCompatResources.getDrawable(context, R.drawable.ic_modification_date), null, null, null)
+				}
+				SORTED_BY_INSTRUCTIONS_LENGTH -> {
+					text = (recipe.instructionsLength ?: 0).toString()
+					contentDescription = context.getString(R.string.instructions_length)
+					setCompoundDrawablesRelativeWithIntrinsicBounds(AppCompatResources.getDrawable(context, R.drawable.ic_notes), null, null, null)
+				}
+				SORTED_BY_INGREDIENTS_COUNT -> {
+					text = recipe.ingredientsCount.toString()
+					contentDescription = context.getString(R.string.ingredients_count)
+					setCompoundDrawablesRelativeWithIntrinsicBounds(AppCompatResources.getDrawable(context, R.drawable.ic_list_numbered), null, null, null)
+				}
+				else -> {
+					visibility = View.GONE
+				}
+			}
+		}
 	}
 
 	override fun onBindViewHolder(holder: RecipeListViewHolder, position: Int, payloads: MutableList<Any>) {
@@ -266,6 +314,13 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 			notifyItemChanged(it, PAYLOAD_UPDATE_SELECTED)
 		}
 		updateTitle()
+	}
+
+	fun updateSortedBy(sortOption: Int) {
+		sortedBy = sortOption
+		(0..itemCount).forEach {
+			notifyItemChanged(it)
+		}
 	}
 
 	fun finishActionMode() {

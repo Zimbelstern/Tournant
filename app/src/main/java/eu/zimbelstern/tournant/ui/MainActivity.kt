@@ -241,6 +241,13 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 		}
 
 
+		lifecycleScope.launch {
+			viewModel.orderedBy.collectLatest {
+				recipeListAdapter.updateSortedBy(it)
+			}
+		}
+
+
 		if (intent.action == Intent.ACTION_VIEW) {
 			if (mode == MODE_STANDALONE)
 				viewModel.parseAndInsertRecipes(intent.data as Uri)
@@ -586,7 +593,7 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 	private fun showSortDialog() {
 		val sortOptionsView = SortOptionsBinding.inflate(layoutInflater)
 
-		(sortOptionsView.orderBy.children.elementAt(viewModel.orderedBy.value.floorDiv(2)) as RadioButton).isChecked = true
+		(sortOptionsView.sortBy.children.elementAt(viewModel.orderedBy.value.floorDiv(2)) as RadioButton).isChecked = true
 		sortOptionsView.asc.isChecked = viewModel.orderedBy.value % 2 == 0
 		sortOptionsView.desc.isChecked = !sortOptionsView.asc.isChecked
 
@@ -594,7 +601,7 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 			.setTitle(R.string.sort_by)
 			.setView(sortOptionsView.root)
 			.setPositiveButton(R.string.ok) { dialog, _ ->
-				var orderBy = sortOptionsView.orderBy.children.indexOfFirst {
+				var orderBy = sortOptionsView.sortBy.children.indexOfFirst {
 					(it as RadioButton).isChecked
 				} * 2
 				if (sortOptionsView.desc.isChecked)
