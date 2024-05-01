@@ -53,7 +53,7 @@
     <string name="be_careful">Faites attention</string>
     <string name="use_comma_as_decimal_separator">Utilisez une virgule comme séparateur décimal lors de l\'importation et de l\'exportation</string>
     <string name="delete_all_recipes">Supprimer toutes les recettes</string>
-    <string name="delete_all_recipes_sure">Cela va effacer définitivement toutes les recettes importées dans la base de données (mais aucun fichier). Êtes-vous sûr ?</string>
+    <string name="delete_all_recipes_sure">Cela va effacer définitivement <b>toutes les recettes</b> importées dans la base de données. Êtes-vous sûr ?</string>
     <string name="synced_file">Fichier Gourmand XML synchronisé</string>
     <string name="recipe">Recette</string>
     <string name="title">Titre</string>
@@ -123,6 +123,25 @@
     <string name="timer_set">Minuteur réglé sur %s</string>
     <string name="scale_to">Convertir pour</string>
     <string name="totaltime">Temps total</string>
-    <string name="hours_for_regex">(heure)|(heures]</string>
+    <string name="hours_for_regex">(heure)|(heures)</string>
     <string name="instructions_length">Longueur d’instructions</string>
+    <string name="description">Description</string>
+    <string name="translations">Traductions</string>
+    <string name="json_file">Fichier JSON (recommandé)</string>
+    <string name="recipe_imported">%s importés</string>
+    <plurals name="recipes_imported">
+        <item quantity="one">%s et une autre recette importées</item>
+        <item quantity="many">%s et %d d\'autres recettes importées</item>
+        <item quantity="other">%s et %d autres recettes importées</item>
+    </plurals>
+    <string name="gourmand_file">Fichier XML Gourmand</string>
+    <string name="markdown_support">Prise en charge de Markdown</string>
+    <string name="reset">réinitialiser</string>
+    <string name="set_timer">Régler la minuterie</string>
+    <string name="set_alarm">Régler l\'alarme</string>
+    <string name="no_suitable_application">Aucune application appropriée</string>
+    <string name="limitations">Restrictions</string>
+    <string name="missing_features_gourmand">Les propriétés de recette suivantes ne sont pas prises en charge par Gourmand:
+\n%s</string>
+    <string name="archive_original_images">Archiver avec des images originales</string>
 </resources>
