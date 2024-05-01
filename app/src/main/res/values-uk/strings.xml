@@ -65,7 +65,7 @@
     <string name="select_all">Виділити все</string>
     <string name="general_settings">Загальні налаштування</string>
     <string name="be_careful">Будьте обережні</string>
-    <string name="keep_screen_on">Тримайте дисплей увімкненим у перегляді одного рецепта</string>
+    <string name="keep_screen_on">Тримати дисплей увімкненим у перегляді одного рецепта</string>
     <string name="synced_file">Синхронізований XML-файл Gourmand</string>
     <string name="color_theme">Кольорова схема</string>
     <string name="import_export">Сумісність з Gourmand</string>
@@ -80,7 +80,7 @@
     <string name="search">Пошук</string>
     <string name="type_or_tap_to_search">Введіть або торкніться, щоб шукати…</string>
     <string name="cancel">Скасувати</string>
-    <string name="ok">Ок</string>
+    <string name="ok">ОК</string>
     <string name="done">Готово</string>
     <string name="egg">Візьміть печиво: 🍪</string>
     <string name="less">менше</string>
@@ -104,14 +104,14 @@
     <string name="recipe_count">Кількість рецептів</string>
     <string name="export_selected">Експорт виділеного</string>
     <plurals name="delete_selected_sure">
-        <item quantity="one">Це назавжди видалить один рецепт із бази даних. Ви впевнені?</item>
+        <item quantity="one">Це назавжди видалить %d рецепт із бази даних. Ви впевнені?</item>
         <item quantity="few">Це назавжди видалить %d рецепти з бази даних. Ви впевнені?</item>
         <item quantity="many">Це назавжди видалить %d рецептів з бази даних. Ви впевнені?</item>
         <item quantity="other">Це назавжди видалить %d рецептів з бази даних. Ви впевнені?</item>
     </plurals>
     <string name="dependent_recipes_found">Вибір містить один або кілька рецептів, які використовуються в інших рецептах. Ви повинні вирішити ці залежності або також видалити їх.
 \nЗалежні рецепти: %s</string>
-    <string name="use_comma_as_decimal_separator">Використовуйте кому як десятковий роздільник під час імпорту та експорту</string>
+    <string name="use_comma_as_decimal_separator">Використовувати кому як десятковий роздільник під час імпорту та експорту</string>
     <string name="delete_all_recipes_sure">Це призведе до остаточного видалення <b>всіх імпортованих рецептів</b> у базі даних. Ви впевнені?</string>
     <string name="all_recipes">Усі рецепти</string>
     <string name="ascending">Зростанням</string>
@@ -144,9 +144,25 @@
     <string name="archive_original_images">Архів з оригінальними зображеннями</string>
     <string name="recipe_imported">%s імпортовано</string>
     <plurals name="recipes_imported">
-        <item quantity="one">Імпортовано %s і ще один рецепт</item>
+        <item quantity="one">Імпортовано %s і ще %d рецепт</item>
         <item quantity="few">Імпортовано %s і ще %d рецепти</item>
         <item quantity="many">Імпортовано %s і ще %d рецептів</item>
         <item quantity="other">Імпортовано %s і ще %d рецептів</item>
     </plurals>
+    <string name="modified">Змінено</string>
+    <string name="created">Створено</string>
+    <string name="creation_date">Дата створення</string>
+    <string name="modification_date">Дата зміни</string>
+    <string name="prepared_on">Приготовано</string>
+    <string name="logbook">Журнал</string>
+    <plurals name="prepared_times">
+        <item quantity="one">Приготовано %d раз</item>
+        <item quantity="few">Приготовано %d рази</item>
+        <item quantity="many">Приготовано %d разів</item>
+        <item quantity="other">Приготовано %d разів</item>
+    </plurals>
+    <string name="last_time">Востаннє: %s</string>
+    <string name="last_prepared">Востаннє приготовано</string>
+    <string name="preparations_count">Кількість приготувань</string>
+    <string name="log_preparation">Статистика приготувань</string>
 </resources>
