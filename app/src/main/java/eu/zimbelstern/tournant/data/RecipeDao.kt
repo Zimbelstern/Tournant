@@ -10,6 +10,15 @@ import androidx.room.Query
 import androidx.room.RewriteQueriesToDropUnusedColumns
 import androidx.room.Transaction
 import androidx.room.Update
+import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_COOKTIME
+import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_CREATED
+import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_INGREDIENTS_COUNT
+import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_INSTRUCTIONS_LENGTH
+import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_MODIFIED
+import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_PREPTIME
+import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_RATING
+import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_TITLE
+import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_TOTALTIME
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -173,32 +182,34 @@ abstract class RecipeDao {
 	@RewriteQueriesToDropUnusedColumns
 	@Query("""
 		SELECT
-			id, title, description, category, cuisine, rating, image, preptime, cooktime,
-			CASE WHEN :orderedBy = 8 OR :orderedBy = 9 THEN preptime + cooktime END AS totaltime,
-			CASE WHEN :orderedBy = 12 OR :orderedBy = 13 THEN LENGTH(instructions) END AS instructionslength,
-			CASE WHEN :orderedBy = 14 OR :orderedBy = 15 THEN (SELECT COUNT(*) FROM Ingredient WHERE recipeId = recipe.id) END AS ingredientscount
+			id, title, description, category, cuisine, rating, image, preptime, cooktime, created, modified, LENGTH(instructions) AS instructionsLength, (SELECT COUNT(*) FROM Ingredient WHERE recipeId = recipe.id) AS ingredientsCount,
+			CASE WHEN :orderedBy = $SORTED_BY_TOTALTIME * 2 OR :orderedBy = $SORTED_BY_TOTALTIME * 2 + 1 THEN preptime + cooktime END AS totaltime
 		FROM recipe
 		WHERE title LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%' OR category LIKE '%' || :query || '%' OR cuisine LIKE '%' || :query || '%'
 		ORDER BY
-			CASE WHEN :orderedBy = 0 THEN title COLLATE LOCALIZED END ASC,
-			CASE WHEN :orderedBy = 1 THEN title COLLATE LOCALIZED END DESC,
-			CASE WHEN :orderedBy = 2 AND rating NOTNULL THEN rating ELSE 6 END ASC,
-			CASE WHEN :orderedBy = 3 THEN rating END DESC,
-			CASE WHEN :orderedBy = 4 AND preptime NOTNULL THEN 0 ELSE 1 END ASC,
-			CASE WHEN :orderedBy = 4 THEN preptime END ASC,
-			CASE WHEN :orderedBy = 5 THEN preptime END DESC,
-			CASE WHEN :orderedBy = 6 AND cooktime NOTNULL THEN 0 ELSE 1 END ASC,
-			CASE WHEN :orderedBy = 6 THEN cooktime END ASC,
-			CASE WHEN :orderedBy = 7 THEN cooktime END DESC,
-			CASE WHEN :orderedBy = 8 AND totaltime NOTNULL THEN 0 ELSE 1 END ASC,
-			CASE WHEN :orderedBy = 8 THEN totaltime END ASC,
-			CASE WHEN :orderedBy = 9 THEN totaltime END DESC,
-			CASE WHEN :orderedBy = 10 THEN id END ASC,
-			CASE WHEN :orderedBy = 11 THEN id END DESC,
-			CASE WHEN :orderedBy = 12 THEN instructionslength END ASC,
-			CASE WHEN :orderedBy = 13 THEN instructionslength END DESC,
-			CASE WHEN :orderedBy = 14 THEN ingredientscount END ASC,
-			CASE WHEN :orderedBy = 15 THEN ingredientscount END DESC,
+			CASE WHEN :orderedBy = $SORTED_BY_TITLE * 2 THEN title COLLATE LOCALIZED END ASC,
+			CASE WHEN :orderedBy = $SORTED_BY_TITLE * 2 + 1 THEN title COLLATE LOCALIZED END DESC,
+			CASE WHEN :orderedBy = $SORTED_BY_RATING * 2 AND rating NOTNULL THEN rating ELSE 6 END ASC,
+			CASE WHEN :orderedBy = $SORTED_BY_RATING * 2 + 1 THEN rating END DESC,
+			CASE WHEN :orderedBy = $SORTED_BY_PREPTIME * 2 AND preptime NOTNULL THEN 0 ELSE 1 END ASC,
+			CASE WHEN :orderedBy = $SORTED_BY_PREPTIME * 2 THEN preptime * 2 END ASC,
+			CASE WHEN :orderedBy = $SORTED_BY_PREPTIME * 2 + 1 THEN preptime END DESC,
+			CASE WHEN :orderedBy = $SORTED_BY_COOKTIME * 2 AND cooktime NOTNULL THEN 0 ELSE 1 END ASC,
+			CASE WHEN :orderedBy = $SORTED_BY_COOKTIME * 2 THEN cooktime END ASC,
+			CASE WHEN :orderedBy = $SORTED_BY_COOKTIME * 2 + 1 THEN cooktime END DESC,
+			CASE WHEN :orderedBy = $SORTED_BY_TOTALTIME * 2 AND totaltime NOTNULL THEN 0 ELSE 1 END ASC,
+			CASE WHEN :orderedBy = $SORTED_BY_TOTALTIME * 2 THEN totaltime END ASC,
+			CASE WHEN :orderedBy = $SORTED_BY_TOTALTIME * 2 + 1 THEN totaltime END DESC,
+			CASE WHEN :orderedBy = $SORTED_BY_CREATED * 2 AND created NOTNULL THEN 0 ELSE 1 END ASC,
+			CASE WHEN :orderedBy = $SORTED_BY_CREATED * 2 THEN created END ASC,
+			CASE WHEN :orderedBy = $SORTED_BY_CREATED * 2 + 1 THEN created END DESC,
+			CASE WHEN :orderedBy = $SORTED_BY_MODIFIED * 2 AND modified THEN 0 ELSE 1 END ASC,
+			CASE WHEN :orderedBy = $SORTED_BY_MODIFIED * 2 THEN modified END ASC,
+			CASE WHEN :orderedBy = $SORTED_BY_MODIFIED * 2 + 1 THEN modified END DESC,
+			CASE WHEN :orderedBy = $SORTED_BY_INSTRUCTIONS_LENGTH * 2 THEN instructionsLength END ASC,
+			CASE WHEN :orderedBy = $SORTED_BY_INSTRUCTIONS_LENGTH * 2 + 1 THEN instructionsLength END DESC,
+			CASE WHEN :orderedBy = $SORTED_BY_INGREDIENTS_COUNT * 2 THEN ingredientsCount END ASC,
+			CASE WHEN :orderedBy = $SORTED_BY_INGREDIENTS_COUNT * 2 + 1 THEN ingredientsCount END DESC,
 			title COLLATE LOCALIZED
 	""")
 	abstract fun getPagedRecipeDescriptions(query: String, orderedBy: Int): PagingSource<Int, RecipeDescription>

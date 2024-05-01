@@ -1,6 +1,7 @@
 package eu.zimbelstern.tournant.data
 
 import android.content.Context
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -8,7 +9,7 @@ import eu.zimbelstern.tournant.Constants.Companion.MODE_STANDALONE
 import eu.zimbelstern.tournant.Constants.Companion.MODE_SYNCED
 import eu.zimbelstern.tournant.Constants.Companion.PREF_MODE
 
-@Database(entities = [Recipe::class, Ingredient::class], version = 1, exportSchema = false)
+@Database(entities = [Recipe::class, Ingredient::class], version = 2, exportSchema = true, autoMigrations = [AutoMigration(1, 2)])
 abstract class RecipeRoomDatabase : RoomDatabase() {
 	abstract fun recipeDao(): RecipeDao
 
@@ -34,7 +35,6 @@ abstract class RecipeRoomDatabase : RoomDatabase() {
 					}, Executors.newSingleThreadExecutor()
 					)
 */
-					.fallbackToDestructiveMigration()
 					.build()
 				INSTANCE = instance
 				return instance

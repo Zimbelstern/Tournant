@@ -14,6 +14,15 @@ class Constants {
 		const val PREF_DECIMAL_SEPARATOR_COMMA = "DECIMAL_SEPARATOR_COMMA"
 		const val PREF_FILE_LAST_MODIFIED = "FILE_LAST_MODIFIED"
 		const val PREF_SORT = "SORT"
+		const val SORTED_BY_TITLE = 0
+		const val SORTED_BY_RATING = 1
+		const val SORTED_BY_PREPTIME = 2
+		const val SORTED_BY_COOKTIME = 3
+		const val SORTED_BY_TOTALTIME = 4
+		const val SORTED_BY_CREATED = 5
+		const val SORTED_BY_MODIFIED = 6
+		const val SORTED_BY_INSTRUCTIONS_LENGTH = 7
+		const val SORTED_BY_INGREDIENTS_COUNT = 8
 	}
 	
 }

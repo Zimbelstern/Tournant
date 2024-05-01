@@ -11,7 +11,7 @@
 		android:orientation="vertical">
 
 		<RadioGroup
-			android:id="@+id/order_by"
+			android:id="@+id/sort_by"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="8dp">
@@ -44,7 +44,12 @@
 			<RadioButton
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/database_id"/>
+				android:text="@string/creation_date"/>
+
+			<RadioButton
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/modification_date"/>
 
 			<RadioButton
 				android:layout_width="match_parent"

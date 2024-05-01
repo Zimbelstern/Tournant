@@ -10,6 +10,10 @@ data class RecipeDescription(
 	val image: ByteArray?, // TODO: Replace with thumbnail
 	val preptime: Int?,
 	val cooktime: Int?,
+	val created: Long?,
+	val modified: Long?,
+	val instructionsLength: Int?,
+	val ingredientsCount: Int,
 ) {
 	override fun equals(other: Any?): Boolean {
 		if (this === other) return true
@@ -27,6 +31,10 @@ data class RecipeDescription(
 		} else if (other.image != null) return false
 		if (preptime != other.preptime) return false
 		if (cooktime != other.cooktime) return false
+		if (created!= other.created) return false
+		if (modified != other.modified) return false
+		if (instructionsLength != other.instructionsLength) return false
+		if (ingredientsCount != other.ingredientsCount) return false
 
 		return true
 	}
@@ -41,6 +49,10 @@ data class RecipeDescription(
 		result = 31 * result + (image?.contentHashCode() ?: 0)
 		result = 31 * result + (preptime ?: 0)
 		result = 31 * result + (cooktime ?: 0)
+		result = 31 * result + (created.hashCode())
+		result = 31 * result + (modified.hashCode())
+		result = 31 * result + (instructionsLength ?: 0)
+		result = 31 * result + (ingredientsCount)
 		return result
 	}
 }

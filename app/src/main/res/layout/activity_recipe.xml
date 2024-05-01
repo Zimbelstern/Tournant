@@ -494,6 +494,58 @@
 
 			</com.google.android.material.card.MaterialCardView>
 
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal"
+				android:layout_marginHorizontal="16dp"
+				android:layout_marginBottom="16dp"
+				android:paddingHorizontal="12dp">
+
+				<LinearLayout
+					android:id="@+id/recipe_detail_created"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:orientation="vertical"
+					android:visibility="gone">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="@string/created"
+						android:textStyle="bold"/>
+
+					<TextView
+						android:id="@+id/recipe_detail_created_date"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"/>
+
+				</LinearLayout>
+
+				<LinearLayout
+					android:id="@+id/recipe_detail_modified"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:orientation="vertical"
+					android:visibility="gone">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="@string/modified"
+						android:textStyle="bold"/>
+
+					<TextView
+						android:id="@+id/recipe_detail_modified_date"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"/>
+
+				</LinearLayout>
+
+			</LinearLayout>
+
 		</LinearLayout>
 
 	</androidx.core.widget.NestedScrollView>
