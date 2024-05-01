@@ -38,8 +38,12 @@ class RecipeViewModel(application: TournantApplication, private val recipeId: Lo
 		}
 	}.combine(recipe) { _, recipe ->
 		Pair(
-			recipe.recipe.created?.let { DateUtils.getRelativeDateTimeString(application, it.time, MINUTE_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, 0) },
-			recipe.recipe.modified?.let { DateUtils.getRelativeDateTimeString(application, it.time, MINUTE_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, 0) }
+			recipe.recipe.created?.let {
+				DateUtils.getRelativeDateTimeString(application, it.time, MINUTE_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, 0)
+			},
+			recipe.recipe.modified?.takeIf { it != recipe.recipe.created }?.let {
+				DateUtils.getRelativeDateTimeString(application, it.time, MINUTE_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, 0)
+			}
 		)
 	}
 

@@ -41,7 +41,7 @@ data class Recipe(
 	var image: ByteArray?,
 	var thumbnail: ByteArray?,
 	var created: Date? = Date(),
-	var modified: Date? = null,
+	var modified: Date? = created,
 ) : Parcelable {
 
 	// Constructor for outdoor (non-room) usage
@@ -63,7 +63,7 @@ data class Recipe(
 		image: ByteArray? = null,
 		thumbnail: ByteArray? = null,
 		created: Date? = Date(),
-		modified: Date? = null,
+		modified: Date? = created,
 	) : this(0,
 		null,
 		gourmandId,
