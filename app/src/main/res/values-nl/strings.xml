@@ -139,4 +139,18 @@
         <item quantity="one">%s en één ander recept geïmporteerd</item>
         <item quantity="other">%s en %d andere recepten geïmporteerd</item>
     </plurals>
+    <string name="creation_date">Aanmaakdatum</string>
+    <string name="modified">Bewerkt</string>
+    <string name="created">Aangemaakt</string>
+    <string name="modification_date">Bewerkdatum</string>
+    <string name="prepared_on">Bereid op</string>
+    <string name="last_prepared">Laatst bereid op</string>
+    <string name="logbook">Logboek</string>
+    <plurals name="prepared_times">
+        <item quantity="one">Eenmaal bereid</item>
+        <item quantity="other">%d-maal bereid</item>
+    </plurals>
+    <string name="preparations_count">Aantal voorbereidingen</string>
+    <string name="log_preparation">Markeren als bereid</string>
+    <string name="last_time">Recentste keer: %s</string>
 </resources>
