@@ -25,6 +25,12 @@
 	</item>
 
 	<item
+		android:id="@+id/log_preparation"
+		android:title="@string/log_preparation"
+		android:icon="@drawable/ic_calendar_checked"
+		app:showAsAction="ifRoom"/>
+
+	<item
 		android:id="@+id/edit"
 		android:title="@string/edit"
 		android:icon="@drawable/ic_edit"

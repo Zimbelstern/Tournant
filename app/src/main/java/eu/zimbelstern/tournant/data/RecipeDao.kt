@@ -15,6 +15,8 @@ import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_CREATED
 import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_INGREDIENTS_COUNT
 import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_INSTRUCTIONS_LENGTH
 import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_MODIFIED
+import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_PREPARATIONS_COUNT
+import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_PREPARED
 import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_PREPTIME
 import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_RATING
 import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_TITLE
@@ -182,7 +184,11 @@ abstract class RecipeDao {
 	@RewriteQueriesToDropUnusedColumns
 	@Query("""
 		SELECT
-			id, title, description, category, cuisine, rating, image, preptime, cooktime, created, modified, LENGTH(instructions) AS instructionsLength, (SELECT COUNT(*) FROM Ingredient WHERE recipeId = recipe.id) AS ingredientsCount,
+			id, title, description, category, cuisine, rating, image, preptime, cooktime, created, modified,
+			LENGTH(instructions) AS instructionsLength,
+			(SELECT COUNT(*) FROM Ingredient WHERE recipeId = recipe.id) AS ingredientsCount,
+			(SELECT COUNT(*) FROM Preparation WHERE recipeId = recipe.id) AS preparationsCount,
+			(SELECT date FROM Preparation WHERE recipeId = recipe.id ORDER BY date DESC LIMIT 1) AS prepared,
 			CASE WHEN :orderedBy = $SORTED_BY_TOTALTIME * 2 OR :orderedBy = $SORTED_BY_TOTALTIME * 2 + 1 THEN preptime + cooktime END AS totaltime
 		FROM recipe
 		WHERE title LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%' OR category LIKE '%' || :query || '%' OR cuisine LIKE '%' || :query || '%'
@@ -210,6 +216,10 @@ abstract class RecipeDao {
 			CASE WHEN :orderedBy = $SORTED_BY_INSTRUCTIONS_LENGTH * 2 + 1 THEN instructionsLength END DESC,
 			CASE WHEN :orderedBy = $SORTED_BY_INGREDIENTS_COUNT * 2 THEN ingredientsCount END ASC,
 			CASE WHEN :orderedBy = $SORTED_BY_INGREDIENTS_COUNT * 2 + 1 THEN ingredientsCount END DESC,
+			CASE WHEN :orderedBy = $SORTED_BY_PREPARATIONS_COUNT * 2 THEN preparationsCount END ASC,
+			CASE WHEN :orderedBy = $SORTED_BY_PREPARATIONS_COUNT * 2 + 1 THEN preparationsCount END DESC,
+			CASE WHEN :orderedBy = $SORTED_BY_PREPARED * 2 THEN prepared END ASC,
+			CASE WHEN :orderedBy = $SORTED_BY_PREPARED * 2 + 1 THEN prepared END DESC,
 			title COLLATE LOCALIZED
 	""")
 	abstract fun getPagedRecipeDescriptions(query: String, orderedBy: Int): PagingSource<Int, RecipeDescription>
@@ -271,6 +281,8 @@ abstract class RecipeDao {
 	@Insert(onConflict = OnConflictStrategy.ABORT)
 	abstract suspend fun insertIngredients(ingredients: List<Ingredient>)
 
+	@Insert
+	abstract suspend fun insertPreparation(preparation: Preparation): Long
 
 	// UPDATING
 	@Update
@@ -296,6 +308,8 @@ abstract class RecipeDao {
 	@Query("DELETE FROM Recipe")
 	abstract suspend fun deleteAllRecipes()
 
+	@Delete
+	abstract suspend fun deletePreparation(preparation: Preparation)
 }
 
 data class StringAndCount(val string: String, val count: Int)

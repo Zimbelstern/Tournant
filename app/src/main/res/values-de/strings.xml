@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
 	<!-- App bar titles -->
 	<string name="recipes">Rezepte</string>
@@ -40,6 +40,16 @@
 	<string name="creation_date">Erstellungsdatum</string>
 	<string name="modified">Geändert</string>
 	<string name="modification_date">Änderungsdatum</string>
+	<string name="preparations_count">Am häufigsten zubereitet</string>
+	<string name="prepared_on">Zubereitet am</string>
+	<string name="last_prepared">Zuletzt zubereitet</string>
+	<string name="log_preparation">Zubereitung vermerken</string>
+	<string name="logbook">Logbuch</string>
+	<plurals name="prepared_times" tools:ignore="MissingQuantity">
+		<item quantity="other">%d Mal zubereitet</item>
+	</plurals>
+	<string name="last_time">Zuletzt: %s</string>
+
 
 	<!-- Modes -->
 	<string name="mode">Modus</string>
@@ -135,7 +145,7 @@
 	<!-- General purpose -->
 	<string name="cancel">Abbrechen</string>
 	<string name="ok">OK</string>
-	<string name="done">Fertig</string>
+	<string name="done">Erledigt</string>
 	<string name="copy_to_clipboard">In die Zwischenablage kopieren</string>
 	<string name="copied_to_clipboard">In die Zwischenablage kopiert</string>
 	<string name="egg">Hier, ein Keks: 🍪</string>
@@ -176,5 +186,4 @@
 	<string name="hours_for_regex">(Stunden?)</string>
 	<string name="minutes_for_regex">(Minuten?)</string>
 	<string name="seconds_for_regex">(Sekunden?)</string>
-
 </resources>

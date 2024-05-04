@@ -9,7 +9,7 @@ import eu.zimbelstern.tournant.Constants.Companion.MODE_STANDALONE
 import eu.zimbelstern.tournant.Constants.Companion.MODE_SYNCED
 import eu.zimbelstern.tournant.Constants.Companion.PREF_MODE
 
-@Database(entities = [Recipe::class, Ingredient::class], version = 2, exportSchema = true, autoMigrations = [AutoMigration(1, 2)])
+@Database(entities = [Recipe::class, Ingredient::class, Preparation::class], version = 3, exportSchema = true, autoMigrations = [AutoMigration(1, 2), AutoMigration(2, 3)])
 abstract class RecipeRoomDatabase : RoomDatabase() {
 	abstract fun recipeDao(): RecipeDao
 

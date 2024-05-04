@@ -43,6 +43,16 @@
 	<string name="creation_date">Creation date</string>
 	<string name="modified">Modified</string>
 	<string name="modification_date">Modification date</string>
+	<string name="preparations_count">Number of preparations</string>
+	<string name="prepared_on">Prepared on</string>
+	<string name="last_prepared">Last prepared</string>
+	<string name="log_preparation">Log preparation</string>
+	<string name="logbook">Logbook</string>
+	<plurals name="prepared_times">
+		<item quantity="one">Prepared once</item>
+		<item quantity="other">Prepared %d times</item>
+	</plurals>
+	<string name="last_time">Last time: %s</string>
 
 	<!-- Modes -->
 	<string name="mode">Mode</string>

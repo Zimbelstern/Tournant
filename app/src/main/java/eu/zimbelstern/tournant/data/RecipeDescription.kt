@@ -14,6 +14,8 @@ data class RecipeDescription(
 	val modified: Long?,
 	val instructionsLength: Int?,
 	val ingredientsCount: Int,
+	val preparationsCount: Int,
+	val prepared: Long?
 ) {
 	override fun equals(other: Any?): Boolean {
 		if (this === other) return true

@@ -14,6 +14,8 @@ import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.format.DateFormat
+import android.text.format.DateUtils
+import android.text.format.DateUtils.DAY_IN_MILLIS
 import android.text.method.DigitsKeyListener
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
@@ -39,6 +41,10 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.signature.ObjectKey
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointBackward
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
@@ -50,8 +56,10 @@ import eu.zimbelstern.tournant.Constants.Companion.PREF_SCREEN_ON
 import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.RecipeUtils
 import eu.zimbelstern.tournant.TournantApplication
+import eu.zimbelstern.tournant.data.Preparation
 import eu.zimbelstern.tournant.databinding.ActivityRecipeBinding
 import eu.zimbelstern.tournant.databinding.InputFieldTimeBinding
+import eu.zimbelstern.tournant.databinding.RecyclerPreparationsBinding
 import eu.zimbelstern.tournant.getQuantityIntForPlurals
 import eu.zimbelstern.tournant.parseLocalFormattedFloat
 import eu.zimbelstern.tournant.scale
@@ -59,6 +67,7 @@ import eu.zimbelstern.tournant.splitLines
 import eu.zimbelstern.tournant.toStringForCooks
 import eu.zimbelstern.tournant.ui.adapter.IngredientTableAdapter
 import eu.zimbelstern.tournant.ui.adapter.InstructionsTextAdapter
+import eu.zimbelstern.tournant.ui.adapter.PreparationsAdapter
 import eu.zimbelstern.tournant.utils.RecipeMarkwonPlugin
 import io.noties.markwon.Markwon
 import io.noties.markwon.SoftBreakAddsNewLinePlugin
@@ -70,9 +79,10 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import java.text.DecimalFormatSymbols
 import java.util.Calendar
+import java.util.Date
 import kotlin.random.Random
 
-class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTableInterface, InstructionsTextAdapter.InstructionsTextInterface {
+class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTableInterface, InstructionsTextAdapter.InstructionsTextInterface, PreparationsAdapter.PreparationsInterface {
 
 	companion object {
 		private const val TAG = "RecipeActivity"
@@ -252,6 +262,39 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 							val textToCopy = (binding.recipeDetailIngredientsRecycler.adapter as IngredientTableAdapter).ingredientsToString()
 							(getSystemService(CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText(getString(R.string.ingredients), textToCopy))
 							Toast.makeText(this@RecipeActivity, getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show()
+						}
+					}
+				}
+				binding.recipeDetailPreparations.apply {
+					if (recipeWithIngredients.preparations.isEmpty())
+						visibility = View.GONE
+					else {
+						visibility = View.VISIBLE
+						binding.recipeDetailPreparationsCount.text = resources.getQuantityString(
+							R.plurals.prepared_times,
+							recipeWithIngredients.preparations.size,
+							recipeWithIngredients.preparations.size
+						)
+						binding.recipeDetailPreparationsTime.text = getString(
+							R.string.last_time,
+							DateUtils.getRelativeTimeSpanString(
+								recipeWithIngredients.preparations.last().date.time,
+								Date().time,
+								DAY_IN_MILLIS
+							)
+						)
+						val preparationsDialog = MaterialAlertDialogBuilder(this@RecipeActivity)
+							.setTitle(R.string.prepared_on)
+							.setView(
+								RecyclerPreparationsBinding.inflate(layoutInflater).apply {
+									preparationsRecycler.adapter = PreparationsAdapter(this@RecipeActivity, recipeWithIngredients.preparations.asReversed())
+									preparationsRecycler.layoutManager = FlexboxLayoutManager(this@RecipeActivity)
+								}.root
+							)
+							.setPositiveButton(R.string.ok) { _, _ -> }
+							.create()
+						setOnClickListener {
+							preparationsDialog.show()
 						}
 					}
 				}
@@ -464,6 +507,25 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 		}
 	}
 
+	private fun logPreparation(): Boolean {
+		MaterialDatePicker.Builder.datePicker()
+			.setCalendarConstraints(
+				CalendarConstraints.Builder()
+					.setValidator(DateValidatorPointBackward.now())
+					.build()
+			)
+			.setTitleText(getString(R.string.prepared_on))
+			.setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+			.build()
+			.apply {
+				addOnPositiveButtonClickListener {
+					viewModel.addPreparation(it)
+				}
+			}
+			.show(supportFragmentManager, "DatePicker")
+		return true
+	}
+
 	override fun onCreateOptionsMenu(menu: Menu): Boolean {
 		menuInflater.inflate(R.menu.options_recipe, menu)
 		if (application.getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE).getInt(PREF_MODE, 0) == MODE_SYNCED)
@@ -473,6 +535,7 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
 		return when (item.itemId) {
+			R.id.log_preparation -> logPreparation()
 			R.id.share_json -> shareRecipe("json")
 			R.id.share_zip -> shareRecipe("zip")
 			R.id.share_gourmand -> {
@@ -500,4 +563,7 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 		super.onSaveInstanceState(outState)
 	}
 
+	override fun removePreparation(preparation: Preparation) {
+		viewModel.removePreparation(preparation)
+	}
 }

@@ -16,12 +16,22 @@ data class RecipeWithIngredients(
 		parentColumn = "id",
 		entityColumn = "recipeId"
 	)
-	val ingredients: MutableList<Ingredient>
+	val ingredients: MutableList<Ingredient>,
+
+	@Relation(
+		parentColumn = "id",
+		entityColumn = "recipeId"
+	)
+	@Transient
+	val preparations: MutableList<Preparation> = mutableListOf()
 ) : Parcelable {
 
 	init {
 		ingredients.sortBy {
 			it.position
+		}
+		preparations.sortBy {
+			it.date
 		}
 	}
 

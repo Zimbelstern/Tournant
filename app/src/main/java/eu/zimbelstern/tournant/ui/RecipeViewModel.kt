@@ -2,11 +2,14 @@ package eu.zimbelstern.tournant.ui
 
 import android.text.format.DateUtils
 import android.text.format.DateUtils.MINUTE_IN_MILLIS
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.TournantApplication
+import eu.zimbelstern.tournant.data.Preparation
 import eu.zimbelstern.tournant.data.RecipeTitleId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -16,6 +19,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Date
 
 class RecipeViewModel(application: TournantApplication, private val recipeId: Long) : AndroidViewModel(application) {
 
@@ -55,6 +59,25 @@ class RecipeViewModel(application: TournantApplication, private val recipeId: Lo
 				dependentRecipes.emit(recipeDao.getDependentRecipeIds(setOf(recipeId)).map {
 					RecipeTitleId(it, recipeDao.getRecipeTitleById(it))
 				})
+			}
+		}
+	}
+
+	fun addPreparation(time: Long) {
+		viewModelScope.launch {
+			withContext(Dispatchers.IO) {
+				recipeDao.insertPreparation(Preparation(recipeId, Date(time)))
+				withContext(Dispatchers.Main) {
+					Toast.makeText(getApplication(), R.string.done, Toast.LENGTH_SHORT).show()
+				}
+			}
+		}
+	}
+
+	fun removePreparation(preparation: Preparation) {
+		viewModelScope.launch {
+			withContext(Dispatchers.IO) {
+				recipeDao.deletePreparation(preparation)
 			}
 		}
 	}

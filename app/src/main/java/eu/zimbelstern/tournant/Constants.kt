@@ -23,6 +23,8 @@ class Constants {
 		const val SORTED_BY_MODIFIED = 6
 		const val SORTED_BY_INSTRUCTIONS_LENGTH = 7
 		const val SORTED_BY_INGREDIENTS_COUNT = 8
+		const val SORTED_BY_PREPARATIONS_COUNT = 9
+		const val SORTED_BY_PREPARED = 10
 	}
 	
 }

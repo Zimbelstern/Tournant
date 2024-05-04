@@ -462,7 +462,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_marginHorizontal="16dp"
-				android:layout_marginVertical="8dp"
+				android:layout_marginBottom="16dp"
 				android:elevation="4dp"
 				app:cardCornerRadius="8dp"
 				android:visibility="gone"
@@ -489,6 +489,65 @@
 						android:layout_height="wrap_content"
 						android:lineSpacingExtra="4sp"
 						android:textSize="@dimen/font_size_text"/>
+
+				</LinearLayout>
+
+			</com.google.android.material.card.MaterialCardView>
+
+			<com.google.android.material.card.MaterialCardView
+				android:id="@+id/recipe_detail_preparations"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginHorizontal="16dp"
+				android:layout_marginBottom="16dp"
+				android:elevation="4dp"
+				app:cardCornerRadius="8dp"
+				android:visibility="gone"
+				tools:visibility="visible">
+
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal"
+					android:gravity="center">
+
+					<LinearLayout
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_weight="1"
+						android:orientation="vertical"
+						android:paddingHorizontal="20dp"
+						android:paddingVertical="16dp">
+
+						<TextView
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_marginBottom="4dp"
+							android:layout_marginTop="-4dp"
+							android:text="@string/logbook"
+							style="@style/h2"/>
+
+						<TextView
+							android:id="@+id/recipe_detail_preparations_count"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:textSize="@dimen/font_size_text"/>
+
+						<TextView
+							android:id="@+id/recipe_detail_preparations_time"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:textSize="@dimen/font_size_text"/>
+
+					</LinearLayout>
+
+					<ImageView
+						android:layout_width="32dp"
+						android:layout_height="96dp"
+						android:layout_marginEnd="8dp"
+						android:src="@drawable/ic_arrow"
+						android:scaleType="fitXY"
+						app:tint="@color/checked_text_color"/>
 
 				</LinearLayout>
 

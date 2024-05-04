@@ -61,6 +61,16 @@
 				android:layout_height="wrap_content"
 				android:text="@string/ingredients_count"/>
 
+			<RadioButton
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/preparations_count"/>
+
+			<RadioButton
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/last_prepared"/>
+
 		</RadioGroup>
 
 		<View

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.graphics.BitmapFactory
 import android.text.format.DateUtils
+import android.text.format.DateUtils.DAY_IN_MILLIS
 import android.text.format.DateUtils.MINUTE_IN_MILLIS
 import android.text.format.DateUtils.WEEK_IN_MILLIS
 import android.util.Log
@@ -24,11 +25,14 @@ import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_CREATED
 import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_INGREDIENTS_COUNT
 import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_INSTRUCTIONS_LENGTH
 import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_MODIFIED
+import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_PREPARATIONS_COUNT
+import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_PREPARED
 import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.data.ChipData
 import eu.zimbelstern.tournant.data.RecipeDescription
 import eu.zimbelstern.tournant.databinding.RecyclerItemRecipeBinding
 import java.io.File
+import java.util.Date
 
 class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 	: PagingDataAdapter<RecipeDescription, RecipeListAdapter.RecipeListViewHolder>(DIFF_CALLBACK),
@@ -207,6 +211,16 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 					text = recipe.ingredientsCount.toString()
 					contentDescription = context.getString(R.string.ingredients_count)
 					setCompoundDrawablesRelativeWithIntrinsicBounds(AppCompatResources.getDrawable(context, R.drawable.ic_list_numbered), null, null, null)
+				}
+				SORTED_BY_PREPARATIONS_COUNT -> {
+					text = recipe.preparationsCount.toString()
+					contentDescription = context.getString(R.string.preparations_count)
+					setCompoundDrawablesRelativeWithIntrinsicBounds(AppCompatResources.getDrawable(context, R.drawable.ic_calendar_checked), null, null, null)
+				}
+				SORTED_BY_PREPARED -> {
+					text = recipe.prepared?.let { DateUtils.getRelativeTimeSpanString(it, Date().time, DAY_IN_MILLIS) } ?: "–"
+					contentDescription = context.getString(R.string.last_prepared)
+					setCompoundDrawablesRelativeWithIntrinsicBounds(AppCompatResources.getDrawable(context, R.drawable.ic_calendar_checked), null, null, null)
 				}
 				else -> {
 					visibility = View.GONE
