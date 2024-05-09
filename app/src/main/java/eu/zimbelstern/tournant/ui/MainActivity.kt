@@ -554,9 +554,7 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 				true
 			}
 			R.id.export_all_gourmand -> {
-				(application as TournantApplication).withGourmandIssueCheck(this@MainActivity, getFilteredRecipesIds()) {
-					exportRecipes(it, "xml")
-				}
+				exportRecipes(getFilteredRecipesIds(), "xml")
 				true
 			}
 			R.id.share_all_json -> {
@@ -568,9 +566,7 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 				true
 			}
 			R.id.share_all_gourmand -> {
-				(application as TournantApplication).withGourmandIssueCheck(this@MainActivity, getFilteredRecipesIds()) {
-					shareRecipes(it, "xml")
-				}
+				shareRecipes(getFilteredRecipesIds(), "xml")
 				true
 			}
 			R.id.select_all -> {
