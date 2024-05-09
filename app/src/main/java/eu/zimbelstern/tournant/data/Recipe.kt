@@ -87,6 +87,7 @@ data class Recipe(
 	)
 
 	fun processModifications() {
+		if (description?.isBlank() == true) description = null
 		if (category?.isBlank() == true) category = null
 		if (cuisine?.isBlank() == true) cuisine = null
 		if (source?.isBlank() == true) source = null
