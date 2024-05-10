@@ -102,7 +102,7 @@
     <string name="recipe_not_found">Рецепт не знайдено</string>
     <string name="inputstream_null">Помилка під час відкриття файлу</string>
     <string name="recipe_count">Кількість рецептів</string>
-    <string name="export_selected">Експорт виділеного</string>
+    <string name="export_selected">Експортувати виділене</string>
     <plurals name="delete_selected_sure">
         <item quantity="one">Це назавжди видалить %d рецепт із бази даних. Ви впевнені?</item>
         <item quantity="few">Це назавжди видалить %d рецепти з бази даних. Ви впевнені?</item>
@@ -151,8 +151,8 @@
     </plurals>
     <string name="modified">Змінено</string>
     <string name="created">Створено</string>
-    <string name="creation_date">Дата створення</string>
-    <string name="modification_date">Дата зміни</string>
+    <string name="creation_date">Датою створення</string>
+    <string name="modification_date">Датою редагування</string>
     <string name="prepared_on">Приготовано</string>
     <string name="logbook">Журнал</string>
     <plurals name="prepared_times">
@@ -162,7 +162,7 @@
         <item quantity="other">Приготовано %d разів</item>
     </plurals>
     <string name="last_time">Востаннє: %s</string>
-    <string name="last_prepared">Востаннє приготовано</string>
-    <string name="preparations_count">Кількість приготувань</string>
+    <string name="last_prepared">Датою останнього приготування</string>
+    <string name="preparations_count">Кількістю приготувань</string>
     <string name="log_preparation">Статистика приготувань</string>
 </resources>
