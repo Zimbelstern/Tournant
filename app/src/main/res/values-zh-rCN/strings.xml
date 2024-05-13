@@ -85,7 +85,7 @@
     <string name="copied_to_clipboard">已复制到剪贴板</string>
     <string name="reset">重置</string>
     <string name="checked">已检查</string>
-    <string name="selected">%d已选中</string>
+    <string name="selected">已选中%d份菜谱</string>
     <string name="remove">移除</string>
     <string name="options">选项</string>
     <string name="edit">编辑</string>
@@ -134,4 +134,17 @@
     <string name="hours_for_regex">(小时?)</string>
     <string name="minutes_for_regex">(分钟)</string>
     <string name="seconds_for_regex">(秒)</string>
+    <string name="created">创建于</string>
+    <string name="creation_date">创建时间</string>
+    <string name="modified">编辑于</string>
+    <string name="modification_date">编辑时间</string>
+    <string name="log_preparation">烹饪记录</string>
+    <string name="preparations_count">烹饪步骤数</string>
+    <string name="logbook">烹饪统计</string>
+    <string name="last_prepared">最后烹饪时间</string>
+    <plurals name="prepared_times">
+        <item quantity="other">烹饪%d次</item>
+    </plurals>
+    <string name="last_time">最后烹饪时间：%s</string>
+    <string name="prepared_on">制作于</string>
 </resources>
