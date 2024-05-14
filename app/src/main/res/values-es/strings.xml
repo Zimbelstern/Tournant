@@ -144,4 +144,19 @@
         <item quantity="many">%s y %d otras recetas importadas</item>
         <item quantity="other">%s y %d otras recetas importadas</item>
     </plurals>
+    <string name="created">Creado</string>
+    <string name="creation_date">Fecha de la creación</string>
+    <string name="modified">Modificado</string>
+    <string name="modification_date">Fecha de la modificación</string>
+    <string name="preparations_count">Cantidad justa de preparación</string>
+    <string name="prepared_on">Preparado el</string>
+    <string name="last_prepared">Último preparado</string>
+    <string name="log_preparation">Preparación de registros</string>
+    <string name="logbook">Cuaderno</string>
+    <plurals name="prepared_times">
+        <item quantity="one">Se prepara una vez</item>
+        <item quantity="many">Se prepara %d veces</item>
+        <item quantity="other">Se prepara %d veces</item>
+    </plurals>
+    <string name="last_time">Última vez: %s</string>
 </resources>
