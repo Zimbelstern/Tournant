@@ -41,6 +41,8 @@ import okio.buffer
 import okio.source
 import okio.use
 import java.io.File
+import java.io.InputStream
+import java.io.InputStreamReader
 import java.util.zip.ZipInputStream
 import kotlin.random.Random
 
@@ -146,106 +148,131 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 		viewModelScope.launch {
 			withContext(Dispatchers.IO) {
 				waitingForRecipes.emit(true)
-				try {
-					val format = MimeTypeMap.getSingleton().getExtensionFromMimeType(application.contentResolver.getType(uri))
-					val inputStream = application.contentResolver.openInputStream(uri)
-					if (inputStream == null) {
-						Log.e(TAG, "Couldn't update; inputstream null")
-						withContext(Dispatchers.Main) {
-							Toast.makeText(application, application.getString(R.string.inputstream_null), Toast.LENGTH_LONG).show()
+				val format = MimeTypeMap.getSingleton().getExtensionFromMimeType(application.contentResolver.getType(uri))
+				val inputStream = try {
+					application.contentResolver.openInputStream(uri)!!
+				} catch (_: Error) {
+					Log.e(TAG, "Couldn't update; input not openable")
+					withContext(Dispatchers.Main) {
+						Toast.makeText(application, application.getString(R.string.inputstream_null), Toast.LENGTH_LONG).show()
+					}
+					return@withContext
+				}
+				val parsedRecipes = when (format) {
+					"json" -> {
+						try {
+							readJsonRecipes(inputStream)
+						} catch (e: Error) {
+							Toast.makeText(application, application.getString(R.string.unknown_file_error, e), Toast.LENGTH_LONG).show()
+							return@withContext
 						}
-					} else {
-						val parsedRecipes = when (format) {
-							"json" -> {
-								RecipeJsonAdapter().fromJson(inputStream.source().buffer())?.recipes
-									?: error("Malformed json file")
-							}
-							"xml", "bin" -> {
-								GourmetXmlParser(application.getDecimalSeparator()).parse(inputStream)
-							}
-							"zip" -> {
-								ZipInputStream(inputStream).use { zipIS ->
-									try {
-										var jsonFound = false
-										var recipeList: List<RecipeWithIngredients>? = null
-										var entry = zipIS.nextEntry
-										while (entry != null) {
-											if (entry.isDirectory) {
-												error("Malformed zip archive")
-											}
-											else if (entry.name.endsWith(".json")) {
-												if (jsonFound)
-													error("Malformed zip archive")
-												else
-													jsonFound = true
-												recipeList = RecipeJsonAdapter().fromJson(zipIS.source().buffer())?.recipes
-													?: error("Malformed json file")
-											} else if (entry.name.endsWith(".jpg") && entry.name.dropLast(4).isDigitsOnly()) {
-												File(application.filesDir, "import").mkdir()
-												File(File(application.filesDir, "import"), entry.name).outputStream().use { fileOS ->
-													zipIS.copyTo(fileOS)
-												}
-											} else {
-												error("Malformed zip archive")
-											}
-											entry = zipIS.nextEntry
-										}
-										recipeList ?: error("Malformed zip archive")
-									} catch (e: Error) {
-										error(e.message.toString())
-									}
-								}
-							}
-							else -> {
-								error("Wrong file format")
-							}
+					}
+					"xml", "bin" -> {
+						try {
+							readXmlRecipes(inputStream)
+						} catch (e: Error) {
+							Toast.makeText(application, application.getString(R.string.unknown_file_error, e), Toast.LENGTH_LONG).show()
+							return@withContext
 						}
-						if (parsedRecipes.isEmpty()) {
-							withContext(Dispatchers.Main) {
-								Toast.makeText(application, application.getString(R.string.no_recipes_found), Toast.LENGTH_LONG).show()
-							}
-						} else {
+					}
+					"zip" -> {
+						ZipInputStream(inputStream).use { zipIS ->
 							try {
-								val insertedRecipes = recipeDao.insertRecipesWithIngredients(parsedRecipes)
-								if (format == "zip") {
-									insertedRecipes.forEach {
-										val imageFile = File(File(application.filesDir, "import"), "${it.recipe.prevId}.jpg")
-										if (imageFile.exists()) {
-											imageFile.copyTo(File(File(application.filesDir, "images"), "${it.recipe.id}.jpg"))
-											imageFile.delete()
-										}
+								var jsonFound = false
+								var recipeList: List<RecipeWithIngredients>? = null
+								var entry = zipIS.nextEntry
+								while (entry != null) {
+									if (entry.isDirectory) {
+										error("Malformed zip archive")
 									}
-								}
-								withContext(Dispatchers.Main) {
-									Toast.makeText(application,
-										if (insertedRecipes.size == 1)
-											application.getString(R.string.recipe_imported, insertedRecipes[0].recipe.title)
+									else if (entry.name.endsWith(".json")) {
+										if (jsonFound)
+											error("Malformed zip archive")
 										else
-											String.format(
-												application.resources.getQuantityText(R.plurals.recipes_imported, insertedRecipes.size - 1).toString(),
-												insertedRecipes[0].recipe.title,
-												insertedRecipes.size - 1
-											)
-										, Toast.LENGTH_LONG).show()
+											jsonFound = true
+										recipeList = RecipeJsonAdapter().fromJson(zipIS.source().buffer())?.recipes
+											?: error("Malformed json file")
+									} else if (entry.name.endsWith(".jpg") && entry.name.dropLast(4).isDigitsOnly()) {
+										File(application.filesDir, "import").mkdir()
+										File(File(application.filesDir, "import"), entry.name).outputStream().use { fileOS ->
+											zipIS.copyTo(fileOS)
+										}
+									} else {
+										error("Malformed zip archive")
+									}
+									entry = zipIS.nextEntry
 								}
+								recipeList ?: error("Malformed zip archive")
 							} catch (e: Error) {
 								error(e.message.toString())
 							}
 						}
 					}
-				} catch (e: Exception) {
-					Log.e(TAG, "Couldn't import; $e")
+					else -> {
+						// Manually detect mime type and open new input stream
+						inputStream.use {
+							try {
+								val firstChar = InputStreamReader(it).readLines()[0][0]
+								val newInputStream = application.contentResolver.openInputStream(uri)!!
+								when (firstChar) {
+									'{' -> readJsonRecipes(newInputStream)
+									'<' -> readXmlRecipes(newInputStream)
+									else -> throw Error("Unknown file type")
+								}
+							} catch (e: Error) {
+								Toast.makeText(application, application.getString(R.string.unknown_file_error, e), Toast.LENGTH_LONG).show()
+								return@withContext
+							}
+						}
+					}
+				}
+				if (parsedRecipes.isEmpty()) {
 					withContext(Dispatchers.Main) {
-						Toast.makeText(application, application.getString(R.string.unknown_file_error, e.message), Toast.LENGTH_LONG).show()
+						Toast.makeText(application, application.getString(R.string.no_recipes_found), Toast.LENGTH_LONG).show()
 					}
-				} finally {
-					File(application.filesDir, "import").listFiles()?.forEach {
-						it.delete()
+				} else {
+					try {
+						val insertedRecipes = recipeDao.insertRecipesWithIngredients(parsedRecipes)
+						if (format == "zip") {
+							insertedRecipes.forEach {
+								val imageFile = File(File(application.filesDir, "import"), "${it.recipe.prevId}.jpg")
+								if (imageFile.exists()) {
+									imageFile.copyTo(File(File(application.filesDir, "images"), "${it.recipe.id}.jpg"))
+									imageFile.delete()
+								}
+							}
+						}
+						withContext(Dispatchers.Main) {
+							Toast.makeText(application,
+								if (insertedRecipes.size == 1)
+									application.getString(R.string.recipe_imported, insertedRecipes[0].recipe.title)
+								else
+									String.format(
+										application.resources.getQuantityText(R.plurals.recipes_imported, insertedRecipes.size - 1).toString(),
+										insertedRecipes[0].recipe.title,
+										insertedRecipes.size - 1
+									)
+								, Toast.LENGTH_LONG).show()
+						}
+					} catch (e: Error) {
+						error(e.message.toString())
+					} finally {
+						File(application.filesDir, "import").listFiles()?.forEach {
+							it.delete()
+						}
+						waitingForRecipes.emit(false)
 					}
-					waitingForRecipes.emit(false)
 				}
 			}
 		}
+	}
+
+	private fun readJsonRecipes(inputStream: InputStream): List<RecipeWithIngredients> {
+		return inputStream.use { RecipeJsonAdapter().fromJson(it.source().buffer())?.recipes ?: throw Error("Malformed json file") }
+	}
+
+	private fun readXmlRecipes(inputStream: InputStream): List<RecipeWithIngredients> {
+		return inputStream.use { GourmetXmlParser(application.getDecimalSeparator()).parse(it) }
 	}
 
 	fun syncWithFile(notify: Boolean = false) {
