@@ -6,4 +6,4 @@ dependencyResolutionManagement {
 	}
 }
 rootProject.name = "Tournant"
-include ':app'
+include(":app")
