@@ -96,6 +96,22 @@ fun String.extractFractionsToFloat(separator: Char = eu.zimbelstern.tournant.sep
 	return Pair(fraction?.withFractionsToFloat(separator), remainingString)
 }
 
+fun List<Int>.toRangeList(): List<IntRange> {
+	val list = sorted()
+	val result = mutableListOf<IntRange>()
+	var start = list[0]
+	var last = list[0]
+	forEach {
+		if (it > last + 1) {
+			result.add(start..last)
+			start = it
+		}
+		last = it
+	}
+	result.add(start..last)
+	return result.toList()
+}
+
 fun MutableList<Ingredient>.scale(factor: Float?): List<Ingredient> {
 	return if (factor != null) {
 		map {

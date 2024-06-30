@@ -19,6 +19,7 @@ import eu.zimbelstern.tournant.databinding.RecyclerItemTextBinding
 import eu.zimbelstern.tournant.findDurationsByRegex
 import eu.zimbelstern.tournant.findFirstAmount
 import eu.zimbelstern.tournant.findFirstIngredientWithAmount
+import eu.zimbelstern.tournant.toRangeList
 import eu.zimbelstern.tournant.toStringForCooks
 import eu.zimbelstern.tournant.withFractionsToFloat
 import kotlin.math.roundToInt
@@ -95,50 +96,56 @@ class InstructionsTextAdapter(
 			}
 		}
 
-		val resources = holder.binding.root.context.resources
-		val to = resources.getString(R.string.to)
-		val hourS = "(h)|" + resources.getString(R.string.hours_for_regex)
-		val minuteS = "(min)|" + resources.getString(R.string.minutes_for_regex)
-		val secondS = "(s)|" + resources.getString(R.string.seconds_for_regex)
-		paragraph.findDurationsByRegex(to, hourS).forEach {
-			paragraph.setSpan(
-				object : ClickableSpan() {
-					override fun onClick(widget: View) {
-						instructionsTextInterface.showAlarmDialog((it.first * 60).roundToInt())
-					}
-				},
-				it.second.first, it.second.last + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-			)
-		}
-		paragraph.findDurationsByRegex(to, minuteS).forEach {
-			paragraph.setSpan(
-				object : ClickableSpan() {
-					override fun onClick(widget: View) {
-						instructionsTextInterface.showTimerDialog((it.first * 60).roundToInt())
-					}
-				},
-				it.second.first, it.second.last + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-			)
-		}
-		paragraph.findDurationsByRegex(to, secondS).forEach {
-			paragraph.setSpan(
-				object : ClickableSpan() {
-					override fun onClick(widget: View) {
-						instructionsTextInterface.showTimerDialog(it.first.roundToInt())
-					}
-				},
-				it.second.first, it.second.last + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-			)
-		}
 		if (paragraph.isNotEmpty()) {
-			paragraph.setSpan(
-				object : ClickableSpan() {
-					override fun onClick(widget: View) {
-						holder.binding.instructionText.apply { isChecked = !isChecked }
-					}
-					override fun updateDrawState(ds: TextPaint) { }
-				}, 0 , paragraph.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-			)
+			val resources = holder.binding.root.context.resources
+			val to = resources.getString(R.string.to)
+			val hourS = "(h)|" + resources.getString(R.string.hours_for_regex)
+			val minuteS = "(min)|" + resources.getString(R.string.minutes_for_regex)
+			val secondS = "(s)|" + resources.getString(R.string.seconds_for_regex)
+			val free = (0..paragraph.length).toMutableList()
+			paragraph.findDurationsByRegex(to, hourS).forEach {
+				paragraph.setSpan(
+					object : ClickableSpan() {
+						override fun onClick(widget: View) {
+							instructionsTextInterface.showAlarmDialog((it.first * 60).roundToInt())
+						}
+					},
+					it.second.first, it.second.last + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+				)
+				free.removeAll(it.second)
+			}
+			paragraph.findDurationsByRegex(to, minuteS).forEach {
+				paragraph.setSpan(
+					object : ClickableSpan() {
+						override fun onClick(widget: View) {
+							instructionsTextInterface.showTimerDialog((it.first * 60).roundToInt())
+						}
+					},
+					it.second.first, it.second.last + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+				)
+				free.removeAll(it.second)
+			}
+			paragraph.findDurationsByRegex(to, secondS).forEach {
+				paragraph.setSpan(
+					object : ClickableSpan() {
+						override fun onClick(widget: View) {
+							instructionsTextInterface.showTimerDialog(it.first.roundToInt())
+						}
+					},
+					it.second.first, it.second.last + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+				)
+				free.removeAll(it.second)
+			}
+			free.toRangeList().forEach {
+				paragraph.setSpan(
+					object : ClickableSpan() {
+						override fun onClick(widget: View) {
+							holder.binding.instructionText.apply { isChecked = !isChecked }
+						}
+						override fun updateDrawState(ds: TextPaint) { }
+					}, it.first , it.last, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+				)
+			}
 		}
 		holder.binding.instructionText.movementMethod = LinkMovementMethod.getInstance()
 		holder.binding.instructionText.text = paragraph
