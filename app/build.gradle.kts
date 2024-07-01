@@ -82,13 +82,13 @@ tasks.register("deployRelease", Exec::class) {
 }
 
 dependencies {
-	implementation("androidx.core:core-ktx:1.12.0")
-	implementation("androidx.appcompat:appcompat:1.6.1")
+	implementation("androidx.core:core-ktx:1.13.1")
+	implementation("androidx.appcompat:appcompat:1.7.0")
 	implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 	implementation("androidx.preference:preference-ktx:1.2.1")
-	implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
-	implementation("androidx.paging:paging-runtime-ktx:3.2.1")
-	implementation("com.google.android.material:material:1.11.0")
+	implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.2")
+	implementation("androidx.paging:paging-runtime-ktx:3.3.0")
+	implementation("com.google.android.material:material:1.12.0")
 	implementation("com.google.android.flexbox:flexbox:3.0.0")
 	implementation("com.github.bumptech.glide:glide:4.16.0")
 	implementation("androidx.core:core-splashscreen:1.0.1")
@@ -107,13 +107,13 @@ dependencies {
 	implementation("io.noties.markwon:core:$markwonVersion")
 	implementation("io.noties.markwon:html:$markwonVersion")
 
-	testImplementation("androidx.test.ext:junit-ktx:1.1.5")
+	testImplementation("androidx.test.ext:junit-ktx:1.2.1")
 	testImplementation("org.robolectric:robolectric:4.12")
 
-	androidTestImplementation("androidx.test:runner:1.5.2")
-	androidTestImplementation("androidx.test:rules:1.5.0")
-	androidTestImplementation("androidx.test.ext:junit-ktx:1.1.5")
-	androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-	androidTestImplementation("androidx.test.espresso:espresso-contrib:3.5.1")
+	androidTestImplementation("androidx.test:runner:1.6.1")
+	androidTestImplementation("androidx.test:rules:1.6.1")
+	androidTestImplementation("androidx.test.ext:junit-ktx:1.2.1")
+	androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+	androidTestImplementation("androidx.test.espresso:espresso-contrib:3.6.1")
 	androidTestImplementation("tools.fastlane:screengrab:2.1.1")
 }
