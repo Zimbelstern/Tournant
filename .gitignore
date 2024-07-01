@@ -11,3 +11,4 @@ fastlane/metadata/android/*
 local.properties
 *.iml
 *.log
+zimbelstern/
