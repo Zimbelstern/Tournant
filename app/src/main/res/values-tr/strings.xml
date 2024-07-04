@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+	<!-- Çevrilemeyen isimler -->
+	<string name="app_name" translatable="false">Tournant</string>
+
+	<!-- Uygulama çubuğu başlıkları -->
+	<string name="recipes">Tarifler</string>
+	<string name="all_recipes">Tüm tarifler</string>
+
+	<!-- Tarif -->
+	<string name="recipe">Tarif</string>
+	<plurals name="n_recipes">
+		<item quantity="one">%d tarif</item>
+		<item quantity="other">%d tarif</item>
+	</plurals>
+	<string name="title">Başlık</string>
+	<string name="description">Açıklama</string>
+	<string name="category">Kategori</string>
+	<string name="cuisine">Mutfak</string>
+	<string name="rating">Değerlendirme</string>
+	<string name="source">Kaynak</string>
+	<string name="webpage">Web sayfası</string>
+	<string name="cooktime">Pişirme süresi</string>
+	<string name="preptime">Hazırlık süresi</string>
+	<string name="yield">Porsiyon:</string>
+	<string name="unit">Birim</string>
+	<string name="ingredient">Malzeme</string>
+	<string name="ingredients">Malzemeler</string>
+	<string name="group">Grup</string>
+	<string name="optional">%s (isteğe bağlı)</string>
+	<string name="instructions">Talimatlar</string>
+	<string name="notes">Notlar</string>
+	<plurals name="servings">
+		<item quantity="one">porsiyon</item>
+		<item quantity="other">porsiyon</item>
+	</plurals>
+	<plurals name="lots">
+		<item quantity="one">adet</item>
+		<item quantity="other">adet</item>
+	</plurals>
+	<string name="created">Oluşturuldu</string>
+	<string name="creation_date">Oluşturma tarihi</string>
+	<string name="modified">Değiştirildi</string>
+	<string name="modification_date">Değiştirilme tarihi</string>
+	<string name="preparations_count">Hazırlama sayısı</string>
+	<string name="prepared_on">Hazırlandığı tarih</string>
+	<string name="last_prepared">Son hazırlanma</string>
+	<string name="log_preparation">Hazırlığı kaydet</string>
+	<string name="logbook">Kayıt defteri</string>
+	<plurals name="prepared_times">
+		<item quantity="one">Bir kez hazırlandı</item>
+		<item quantity="other">%d kez hazırlandı</item>
+	</plurals>
+	<string name="last_time">Son kez: %s</string>
+
+	<!-- Modlar -->
+	<string name="mode">Mod</string>
+	<string name="mode_standalone">Bağımsız</string>
+	<string name="mode_standalone_description_short">Bağımsız: Tarif düzenleme özellikli kendi veritabanı</string>
+	<string name="mode_standalone_description_long">Tournant tarifleriniz için kendi veritabanını oluşturur. XML dosyalarından tarifleri içe aktarabilirsiniz. Tarifler düzenlenebilir (geliştirme aşamasında).</string>
+	<string name="mode_synced">Senkronize</string>
+	<string name="mode_synced_description_short">Senkronize: Her zaman bir XML dosyası ile senkronize (salt okunur)</string>
+	<string name="mode_synced_description_long">Tournant, cihazınızdaki tek bir XML dosyası ile senkronize kalır. Tarif düzenleme devre dışı bırakılmıştır çünkü çakışmalar yaratacaktır ve şu anda Gourmand\'da bu çakışmaları çözmek için bir senkronizasyon özelliği bulunmamaktadır.</string>
+
+	<!-- İlk başlangıç UI ve dosya seçme seçenekleri -->
+	<string name="choose_file_long">Cihazınızdan bir Gourmet/Gourmand XML dosyası seçin.</string>
+	<string name="change_synced_file">Senkronize dosyayı değiştir</string>
+	<string name="change_mode_explanation">Ayarlardan modu değiştirebilirsiniz.</string>
+
+	<!-- Mesajlar -->
+	<string name="file_does_not_exist">Dosya mevcut değil</string>
+	<string name="no_recipes_found">Tarif bulunamadı</string>
+	<string name="recipe_not_found">Tarif bulunamadı</string>
+	<string name="inputstream_null">Dosya açılırken hata oluştu</string>
+	<string name="unknown_file_error">Bilinmeyen dosya hatası: %s</string>
+	<string name="importing_only_in_standalone_mode">Sadece bağımsız modda içe aktarma yapılabilir</string>
+	<string name="file_not_changed">Senkronize dosya değişmedi</string>
+	<string name="no_suitable_application">Uygun uygulama yok</string>
+	<string name="limitations">Sınırlamalar</string>
+	<string name="missing_features_gourmand">Aşağıdaki tarif özellikleri Gourmand tarafından desteklenmiyor:\n%s</string>
+	<string name="recipe_imported">%s içe aktarıldı</string>
+	<plurals name="recipes_imported">
+		<item quantity="one">%s ve bir diğer tarif içe aktarıldı</item>
+		<item quantity="other">%s ve %d diğer tarif içe aktarıldı</item>
+	</plurals>
+
+	<!-- Seçenekler menüsü -->
+	<string name="recipe_count">Tarif sayısı</string>
+	<string name="new_recipe">Yeni tarif</string>
+	<string name="import_recipes">Tarifleri içe aktar</string>
+	<string name="refresh">Yenile</string>
+	<string name="settings">Ayarlar</string>
+	<string name="about_app_name">%s Hakkında</string>
+
+	<!-- Tarif seçenekleri menüsü -->
+	<string name="share">Paylaş</string>
+
+	<!-- Eylem modu menüsü -->
+	<string name="share_selected">Seçilenleri paylaş</string>
+	<string name="export_selected">Seçilenleri dışa aktar</string>
+	<string name="json_file">JSON dosyası (önerilen)</string>
+	<string name="archive_original_images">Orijinal resimlerle arşiv</string>
+	<string name="gourmand_file">Gourmand XML dosyası</string>
+	<string name="delete_selected">Seçilenleri sil</string>
+	<plurals name="delete_selected_sure">
+		<item quantity="one">Bu, veritabanından bir tarifi kalıcı olarak silecek. Emin misiniz?</item>
+		<item quantity="other">Bu, veritabanından %d tarifi kalıcı olarak silecek. Emin misiniz?</item>
+	</plurals>
+	<string name="delete_selected_sure_named">Bu, %s\'i veritabanından kalıcı olarak silecek. Emin misiniz?</string>
+	<string name="dependent_recipes">Bağımlı tarifler</string>
+	<string name="dependent_recipes_found">Seçim, diğer tariflerde kullanılan bir veya daha fazla tarif içeriyor. Bu bağımlılıkları çözmeniz veya onları da silmeniz gerekiyor.\nBağımlı tarifler: %s</string>
+	<string name="share_all">Tümünü paylaş</string>
+	<string name="export_all">Tümünü dışa aktar</string>
+	<string name="select_all">Tümünü seç</string>
+
+	<!-- Ayarlar -->
+	<string name="general_settings">Genel ayarlar</string>
+	<string name="be_careful">Dikkatli olun</string>
+	<string name="keep_screen_on">Tek tarif görünümünde ekranı açık tut</string>
+	<string-array name="mode_options">
+		<item>@string/mode_standalone</item>
+		<item>@string/mode_synced</item>
+	</string-array>
+	<string-array name="mode_options_summary">
+		<item>@string/mode_standalone_description_short</item>
+		<item>@string/mode_synced_description_short</item>
+	</string-array>
+	<string name="synced_file">Senkronize Gourmand XML dosyası</string>
+	<string name="markdown_support">Markdown desteği</string>
+	<string name="color_theme">Renk şeması</string>
+	<string-array name="color_theme_options">
+		<item>Otomatik (sistemi takip et)</item>
+		<item>Açık</item>
+		<item>Koyu</item>
+	</string-array>
+	<string name="import_export">Gourmand uyumluluğu</string>
+	<string name="use_comma_as_decimal_separator">İçe ve dışa aktarırken ondalık ayırıcı olarak virgül kullan</string>
+	<string name="delete_all_recipes">Tüm tarifleri sil</string>
+	<string name="delete_all_recipes_sure">Bu, veritabanındaki <b>tüm içe aktarılan tarifleri</b> kalıcı olarak silecek. Emin misiniz?</string>
+
+	<!-- Hakkında -->
+	<string name="website">Web sitesi</string>
+	<string name="version">Sürüm</string>
+	<string name="license">Lisans</string>
+	<string name="code">Kaynak</string>
+	<string name="issues">Hata takipçisi</string>
+	<string name="translations">Çeviriler</string>
+	<string name="donate">Bağış yap</string>
+	<string name="libraries">Kütüphaneler</string>
+
+	<!-- Arama -->
+	<string name="search">Ara</string>
+	<string name="type_or_tap_to_search">Aramak için yazın veya dokunun…</string>
+
+	<!-- Genel amaçlı -->
+	<string name="cancel">İptal</string>
+	<string name="ok">Tamam</string>
+	<string name="done">Bitti</string>
+	<string name="copy_to_clipboard">Panoya kopyala</string>
+	<string name="copied_to_clipboard">Panoya kopyalandı</string>
+	<string name="egg">Bir kurabiye al: 🍪</string>
+	<string name="less">daha az</string>
+	<string name="more">daha fazla</string>
+	<string name="reset">sıfırla</string>
+	<string name="checked">işaretlendi</string>
+	<string name="selected">%d seçildi</string>
+	<string name="add_to_selection">Seçime ekle</string>
+	<string name="remove">Kaldır</string>
+	<string name="options">Seçenekler</string>
+	<string name="inspiration">İlham mı arıyorsunuz?</string>
+	<string name="to">için</string>
+
+	<!-- Düzenleme -->
+	<string name="edit">Düzenle</string>
+	<string name="save">Kaydet</string>
+	<string name="add_photo">Fotoğraf ekle</string>
+	<string name="remove_photo">Fotoğrafı kaldır</string>
+	<string name="unset_rating">Değerlendirmeyi kaldır</string>
+	<string name="make_optional">İsteğe bağlı yap</string>
+	<string name="make_mandatory">Zorunlu yap</string>
+	<string name="scale_to">Ölçeklendir</string>
+
+	<!-- Sıralama seçenekleri -->
+	<string name="sort_by">Sırala</string>
+	<string name="totaltime">Toplam süre</string>
+	<string name="database_id">Veritabanı ID</string>
+	<string name="instructions_length">Talimat uzunluğu</string>
+	<string name="ingredients_count">Malzeme sayısı</string>
+	<string name="ascending">Artan</string>
+	<string name="descending">Azalan</string>
+
+	<!-- Zamanlayıcı -->
+	<string name="set_alarm">Alarm kur</string>
+	<string name="set_timer">Zamanlayıcı ayarla</string>
+	<string name="timer_set">Zamanlayıcı %s olarak ayarlandı</string>
+	<string name="hours_for_regex">(saat)</string>
+	<string name="minutes_for_regex">(dakika)</string>
+	<string name="seconds_for_regex">(saniye)</string>
+
+</resources>
