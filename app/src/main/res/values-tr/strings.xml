@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
-	<!-- Çevrilemeyen isimler -->
-	<string name="app_name" translatable="false">Tournant</string>
-
 	<!-- Uygulama çubuğu başlıkları -->
 	<string name="recipes">Tarifler</string>
 	<string name="all_recipes">Tüm tarifler</string>
