@@ -125,6 +125,7 @@
 		<item>Hell</item>
 		<item>Dunkel</item>
 	</string-array>
+	<string name="language">Sprache</string>
 	<string name="import_export">Gourmand-Kompatibilität</string>
 	<string name="use_comma_as_decimal_separator">Ein Komma als Dezimaltrennzeichen beim Importieren und Exportieren verwenden</string>
 

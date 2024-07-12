@@ -24,8 +24,26 @@ android {
 		testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 	}
 
+	val availableLanguages = File(relativePath("app/src/main/res")).walk()
+		.filter {
+			it.isDirectory
+				&& it.walk().any { it.name == "strings.xml" }
+				&& Regex("values-[a-z]{2}(-r?[A-Z]{2})?").matches(it.name)
+		}
+		.map {
+			it.name.drop(7).replace("-r", "-")
+		}
+		.plus("en")
+		.sorted()
+		.joinToString(",")
+
 	applicationVariants.configureEach {
 		resValue("string", "versionName", versionName)
+		resValue("string", "availableLanguages", availableLanguages)
+	}
+
+	androidResources {
+		generateLocaleConfig = true
 	}
 
 	buildFeatures {

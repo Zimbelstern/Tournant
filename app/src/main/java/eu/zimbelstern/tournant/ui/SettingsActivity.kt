@@ -3,6 +3,7 @@ package eu.zimbelstern.tournant.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
+import androidx.core.os.LocaleListCompat
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -33,6 +35,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.text.DecimalFormatSymbols
+import java.util.Locale
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -52,6 +55,10 @@ class SettingsActivity : AppCompatActivity() {
 	}
 
 	class SettingsFragment : PreferenceFragmentCompat() {
+
+		companion object {
+			private const val TAG = "SettingsFragment"
+		}
 
 		override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
 			setPreferencesFromResource(R.xml.root_preferences, rootKey)
@@ -133,6 +140,37 @@ class SettingsActivity : AppCompatActivity() {
 						.putInt(PREF_COLOR_THEME, opt)
 						.apply()
 					AppCompatDelegate.setDefaultNightMode(opt)
+					true
+				}
+			}
+
+			findPreference<ListPreference>("language")?.apply {
+				val availableLocales = getString(R.string.availableLanguages)
+					.split(",")
+					.map { Locale.forLanguageTag(it) }
+					.sortedBy { it.displayName }
+
+				val thisLocale = AppCompatDelegate.getApplicationLocales().get(0)
+					?: LocaleListCompat.getDefault().get(0)
+
+				val foundLocale = availableLocales.find { it.toLanguageTag() == thisLocale?.toLanguageTag() }
+					?: availableLocales.find { it.language == thisLocale?.language }
+
+				Log.d(TAG, "availableLocales: ${availableLocales.map { it.toLanguageTag() }}")
+				Log.d(TAG, "thisLocale: ${thisLocale?.toLanguageTag()}")
+				Log.d(TAG, "foundLocale: ${foundLocale?.toLanguageTag()}")
+
+				entries = availableLocales.map { it.displayName }.toTypedArray()
+				entryValues = availableLocales.map { it.toLanguageTag() }.toTypedArray()
+
+				foundLocale?.let {
+					value = it.toLanguageTag()
+					setDefaultValue(it.toLanguageTag())
+					summary = it.displayName
+				}
+
+				setOnPreferenceChangeListener { _, value ->
+					AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(value as String))
 					true
 				}
 			}

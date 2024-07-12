@@ -31,6 +31,11 @@
 			app:entries="@array/color_theme_options"
 			app:icon="@drawable/ic_colors"/>
 
+		<ListPreference
+			app:key="language"
+			app:title="@string/language"
+			app:icon="@drawable/ic_lang"/>
+
 	</PreferenceCategory>
 
 	<PreferenceCategory

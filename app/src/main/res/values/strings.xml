@@ -134,6 +134,7 @@
 		<item>Light</item>
 		<item>Dark</item>
 	</string-array>
+	<string name="language">Language</string>
 	<string name="import_export">Gourmand compatibility</string>
 	<string name="use_comma_as_decimal_separator">Use a comma as decimal separator when importing and exporting</string>
 	<string name="delete_all_recipes">Delete all recipes</string>
