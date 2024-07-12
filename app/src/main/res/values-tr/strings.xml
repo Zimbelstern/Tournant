@@ -115,22 +115,12 @@
 	<string name="general_settings">Genel ayarlar</string>
 	<string name="be_careful">Dikkatli olun</string>
 	<string name="keep_screen_on">Tek tarif görünümünde ekranı açık tut</string>
-	<string-array name="mode_options">
-		<item>@string/mode_standalone</item>
-		<item>@string/mode_synced</item>
-	</string-array>
-	<string-array name="mode_options_summary">
-		<item>@string/mode_standalone_description_short</item>
-		<item>@string/mode_synced_description_short</item>
-	</string-array>
 	<string name="synced_file">Senkronize Gourmand XML dosyası</string>
 	<string name="markdown_support">Markdown desteği</string>
 	<string name="color_theme">Renk şeması</string>
-	<string-array name="color_theme_options">
-		<item>Otomatik (sistemi takip et)</item>
-		<item>Açık</item>
-		<item>Koyu</item>
-	</string-array>
+	<string name="auto_follow_system">Otomatik (sistemi takip et)</string>
+	<string name="light">Açık</string>
+	<string name="dark">Koyu</string>
 	<string name="import_export">Gourmand uyumluluğu</string>
 	<string name="use_comma_as_decimal_separator">İçe ve dışa aktarırken ondalık ayırıcı olarak virgül kullan</string>
 	<string name="delete_all_recipes">Tüm tarifleri sil</string>

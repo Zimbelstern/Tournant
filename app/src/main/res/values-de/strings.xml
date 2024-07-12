@@ -120,11 +120,9 @@
 	<string name="color_theme">Farbschema</string>
 	<string name="delete_all_recipes">Alle Rezepte löschen</string>
 	<string name="delete_all_recipes_sure">Das wird <b>alle importierten Rezepte</b> aus der Datenbank löschen. Fortfahren?</string>
-	<string-array name="color_theme_options">
-		<item>Automatisch (dem System folgen)</item>
-		<item>Hell</item>
-		<item>Dunkel</item>
-	</string-array>
+	<string name="auto_follow_system">Automatisch (dem System folgen)</string>
+	<string name="light">Hell</string>
+	<string name="dark">Dunkel</string>
 	<string name="language">Sprache</string>
 	<string name="import_export">Gourmand-Kompatibilität</string>
 	<string name="use_comma_as_decimal_separator">Ein Komma als Dezimaltrennzeichen beim Importieren und Exportieren verwenden</string>

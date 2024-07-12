@@ -130,10 +130,13 @@
 	<string name="markdown_support">Markdown support</string>
 	<string name="color_theme">Color scheme</string>
 	<string-array name="color_theme_options">
-		<item>Auto (follow system)</item>
-		<item>Light</item>
-		<item>Dark</item>
+		<item>@string/auto_follow_system</item>
+		<item>@string/light</item>
+		<item>@string/dark</item>
 	</string-array>
+	<string name="auto_follow_system">Auto (follow system)</string>
+	<string name="light">Light</string>
+	<string name="dark">Dark</string>
 	<string name="language">Language</string>
 	<string name="import_export">Gourmand compatibility</string>
 	<string name="use_comma_as_decimal_separator">Use a comma as decimal separator when importing and exporting</string>
