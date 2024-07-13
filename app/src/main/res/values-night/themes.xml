@@ -36,7 +36,7 @@
 	<color name="heading_color">@color/blue_light</color>
 	<color name="subtitle_color">@color/blue_light_pale</color>
 	<color name="highlight_color">@color/amber</color>
-	<color name="normal_text_color">@color/light_gray</color>
-	<color name="checked_text_color">@color/light_gray_alpha</color>
+	<color name="normal_text_color">@color/text_on_dark_card</color>
+	<color name="checked_text_color">@color/text_on_dark_card_checked</color>
 
 </resources>

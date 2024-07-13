@@ -64,8 +64,8 @@
 	<color name="heading_color">@color/blue_text</color>
 	<color name="subtitle_color">@color/blue_dark_pale</color>
 	<color name="highlight_color">@color/blue</color>
-	<color name="normal_text_color">@color/dark_gray</color>
-	<color name="checked_text_color">@color/dark_gray_alpha</color>
+	<color name="normal_text_color">@color/text_on_card</color>
+	<color name="checked_text_color">@color/text_on_card_checked</color>
 
 	<!-- For light and dark theme -->
 	<style name="Theme.Tournant.KitchenBackground" parent="Theme.Tournant">

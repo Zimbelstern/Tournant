@@ -33,6 +33,7 @@ class CheckableTextView : androidx.appcompat.widget.AppCompatTextView {
 		}
 
 	init {
+		setTextColor(ContextCompat.getColor(context, R.color.normal_text_color))
 		highlightColor = Color.TRANSPARENT
 	}
 

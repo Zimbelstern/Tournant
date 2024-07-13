@@ -16,10 +16,10 @@
 	<color name="dark_surface">#25231f</color>
 
 	<color name="black">#000000</color>
-	<color name="dark_gray">#808080</color>
-	<color name="dark_gray_alpha">#77808080</color>
-	<color name="light_gray">#cccccc</color>
-	<color name="light_gray_alpha">#55cccccc</color>
+	<color name="text_on_card">#8a000000</color>
+	<color name="text_on_card_checked">#44000000</color>
+	<color name="text_on_dark_card">#b3ffffff</color>
+	<color name="text_on_dark_card_checked">#44ffffff</color>
 	<color name="white">#ffffff</color>
 	<color name="transparent">#00123456</color>
 
