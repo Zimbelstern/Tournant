@@ -160,13 +160,13 @@ class SettingsActivity : AppCompatActivity() {
 				Log.d(TAG, "thisLocale: ${thisLocale?.toLanguageTag()}")
 				Log.d(TAG, "foundLocale: ${foundLocale?.toLanguageTag()}")
 
-				entries = availableLocales.map { it.displayName }.toTypedArray()
+				entries = availableLocales.map { it.displayName.replaceFirstChar { char -> char.titlecase() } }.toTypedArray()
 				entryValues = availableLocales.map { it.toLanguageTag() }.toTypedArray()
 
 				foundLocale?.let {
 					value = it.toLanguageTag()
 					setDefaultValue(it.toLanguageTag())
-					summary = it.displayName
+					summary = it.displayName.replaceFirstChar { char -> char.titlecase() }
 				}
 
 				setOnPreferenceChangeListener { _, value ->
