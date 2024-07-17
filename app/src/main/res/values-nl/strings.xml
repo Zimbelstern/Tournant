@@ -153,4 +153,8 @@
     <string name="preparations_count">Aantal voorbereidingen</string>
     <string name="log_preparation">Markeren als bereid</string>
     <string name="last_time">Recentste keer: %s</string>
+    <string name="light">Licht thema</string>
+    <string name="dark">Donker thema</string>
+    <string name="language">Taal</string>
+    <string name="auto_follow_system">Automatisch (systeemthema)</string>
 </resources>
