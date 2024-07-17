@@ -24,7 +24,7 @@ android {
 		testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 	}
 
-	val availableLanguages = File(relativePath("app/src/main/res")).walk()
+	val availableLanguages = File("$projectDir/app/src/main/res").walk()
 		.filter {
 			it.isDirectory
 				&& it.walk().any { it.name == "strings.xml" }
