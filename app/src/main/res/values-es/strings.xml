@@ -159,4 +159,8 @@
         <item quantity="other">Se prepara %d veces</item>
     </plurals>
     <string name="last_time">Última vez: %s</string>
+    <string name="light">Claro</string>
+    <string name="dark">Oscuro</string>
+    <string name="language">Idioma</string>
+    <string name="auto_follow_system">Automático (tema del sistema)</string>
 </resources>
