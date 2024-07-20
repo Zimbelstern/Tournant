@@ -16,7 +16,7 @@
     <string name="ingredients">原料</string>
     <string name="group">组</string>
     <string name="instructions">步骤</string>
-    <string name="notes">提醒</string>
+    <string name="notes">注意事项</string>
     <string name="mode">模式</string>
     <string name="mode_standalone">独立</string>
     <string name="mode_standalone_description_long">Tournant为您的菜谱创建自己的数据库。您可以从 XML 文件导入菜谱。菜谱可以编辑（功能开发中）。</string>
@@ -102,7 +102,7 @@
     <string name="ingredients_count">原料种类数量</string>
     <string name="ascending">升序</string>
     <string name="descending">降序</string>
-    <string name="set_alarm">设置提醒</string>
+    <string name="set_alarm">设置闹钟</string>
     <string name="set_timer">设置计时器</string>
     <string name="timer_set">定时器设置为%s</string>
     <string name="ingredient">原料</string>
@@ -138,7 +138,7 @@
     <string name="creation_date">创建时间</string>
     <string name="modified">编辑于</string>
     <string name="modification_date">编辑时间</string>
-    <string name="log_preparation">烹饪记录</string>
+    <string name="log_preparation">记录烹饪时间</string>
     <string name="preparations_count">烹饪步骤数</string>
     <string name="logbook">烹饪统计</string>
     <string name="last_prepared">最后烹饪时间</string>
@@ -146,5 +146,9 @@
         <item quantity="other">烹饪%d次</item>
     </plurals>
     <string name="last_time">最后烹饪时间：%s</string>
-    <string name="prepared_on">制作于</string>
+    <string name="prepared_on">烹饪于</string>
+    <string name="auto_follow_system">自动（跟随系统）</string>
+    <string name="light">浅色</string>
+    <string name="dark">深色</string>
+    <string name="language">语言</string>
 </resources>
