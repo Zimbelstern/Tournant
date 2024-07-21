@@ -20,6 +20,8 @@ import androidx.preference.SwitchPreference
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import eu.zimbelstern.tournant.Constants.Companion.MODE_STANDALONE
 import eu.zimbelstern.tournant.Constants.Companion.MODE_SYNCED
+import eu.zimbelstern.tournant.Constants.Companion.PREF_AUTO_BACKUP
+import eu.zimbelstern.tournant.Constants.Companion.PREF_BACKUP_FILE
 import eu.zimbelstern.tournant.Constants.Companion.PREF_COLOR_THEME
 import eu.zimbelstern.tournant.Constants.Companion.PREF_DECIMAL_SEPARATOR_COMMA
 import eu.zimbelstern.tournant.Constants.Companion.PREF_FILE
@@ -92,6 +94,30 @@ class SettingsActivity : AppCompatActivity() {
 			findPreference<Preference>("file")?.apply {
 				isEnabled = findPreference<ListPreference>("mode")?.value == "SYNC"
 				summary = sharedPrefs.getString(PREF_FILE, "")
+				setOnPreferenceClickListener {
+					(activity as SettingsActivity).chooseFile()
+					true
+				}
+			}
+
+			findPreference<SwitchPreference>("auto_backup")?.apply {
+				isEnabled = findPreference<ListPreference>("mode")?.value == "STANDALONE"
+				isChecked = sharedPrefs.getBoolean(PREF_AUTO_BACKUP, false)
+				setOnPreferenceChangeListener { _, value ->
+					sharedPrefs
+						.edit()
+						.putBoolean(PREF_AUTO_BACKUP, value as Boolean)
+						.apply()
+					if (value && sharedPrefs.getString(PREF_BACKUP_FILE, "").isNullOrEmpty()) {
+						(activity as SettingsActivity).chooseFile()
+					}
+					true
+				}
+			}
+
+			findPreference<Preference>("backup_file")?.apply {
+				isEnabled = findPreference<ListPreference>("mode")?.value == "STANDALONE"
+				summary = sharedPrefs.getString(PREF_BACKUP_FILE, "")
 				setOnPreferenceClickListener {
 					(activity as SettingsActivity).chooseFile()
 					true
@@ -239,11 +265,21 @@ class SettingsActivity : AppCompatActivity() {
 				if (inputStream == null) {
 					Toast.makeText(this, getString(R.string.inputstream_null), Toast.LENGTH_LONG).show()
 				} else {
-					getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE)
-						.edit()
-						.putString(PREF_FILE, it.toString())
-						.putLong(PREF_FILE_LAST_MODIFIED, -1)
-						.apply()
+					val sharedPrefs = getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE)
+					if (sharedPrefs.getInt(PREF_MODE, MODE_STANDALONE) == MODE_STANDALONE) {
+						getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE)
+							.edit()
+							.putString(PREF_BACKUP_FILE, it.toString())
+							.apply()
+					}
+					else{
+						getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE)
+							.edit()
+							.putString(PREF_FILE, it.toString())
+							.putLong(PREF_FILE_LAST_MODIFIED, -1)
+							.apply()
+					}
+
 				}
 			} catch (e: Exception) {
 				Toast.makeText(this, getString(R.string.unknown_file_error, e.message), Toast.LENGTH_LONG).show()

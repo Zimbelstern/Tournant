@@ -348,7 +348,7 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 		fun openRecipeDetail(recipeId: Long)
 		fun searchForSomething(query: CharSequence?)
 		fun startActionMode(adapter: RecipeListAdapter)
-		fun exportRecipes(recipeIds: Set<Long>, format: String)
+		fun exportRecipes(recipeIds: Set<Long>, format: String, chooseFile: Boolean = true)
 		fun shareRecipes(recipeIds: Set<Long>, format: String)
 		fun showDeleteDialog(recipeIds: Set<Long>)
 	}
