@@ -36,6 +36,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import eu.zimbelstern.tournant.BuildConfig
 import eu.zimbelstern.tournant.Constants.Companion.MODE_STANDALONE
 import eu.zimbelstern.tournant.Constants.Companion.MODE_SYNCED
+import eu.zimbelstern.tournant.Constants.Companion.PREF_AUTO_BACKUP
+import eu.zimbelstern.tournant.Constants.Companion.PREF_BACKUP_FILE
 import eu.zimbelstern.tournant.Constants.Companion.PREF_COLOR_THEME
 import eu.zimbelstern.tournant.Constants.Companion.PREF_FILE
 import eu.zimbelstern.tournant.Constants.Companion.PREF_MODE
@@ -247,13 +249,24 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 			}
 		}
 
-
 		if (intent.action == Intent.ACTION_VIEW) {
 			if (mode == MODE_STANDALONE)
 				viewModel.parseAndInsertRecipes(intent.data as Uri)
 			else
 				Toast.makeText(this, R.string.importing_only_in_standalone_mode, Toast.LENGTH_LONG).show()
 			intent.action = ""
+		}
+
+		lifecycleScope.launch { // BACKUP RECIPES
+			viewModel.idsRecipesFiltered.collectLatest {
+				if (sharedPrefs.getBoolean(PREF_AUTO_BACKUP, false) && mode == MODE_STANDALONE && !sharedPrefs.getString(PREF_BACKUP_FILE, null).isNullOrEmpty()){
+					exportRecipes(it, "xml", false)
+					val uri = sharedPrefs.getString(PREF_BACKUP_FILE, "")?.toUri()
+					if (uri != null) {
+						viewModel.copyRecipesFromExportDir("export", "xml", uri)
+					}
+				}
+			}
 		}
 
 	}
@@ -298,17 +311,19 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 		startSupportActionMode(adapter)
 	}
 
-	override fun exportRecipes(recipeIds: Set<Long>, format: String) {
+	override fun exportRecipes(recipeIds: Set<Long>, format: String, chooseFile: Boolean) {
 		fun export() = lifecycleScope.launch {
 			Log.d(TAG, "Exporting recipes $recipeIds")
 			withContext(Dispatchers.IO) {
 				val filename = if (recipeIds.size == 1) viewModel.getRecipeTitle(recipeIds.first()) else getString(R.string.recipes)
 				(application as TournantApplication).writeRecipesToExportDir(recipeIds, "export", format)
-				when (format) {
-					"json" -> exportJsonActivityResultLauncher.launch("$filename.json")
-					"zip" -> exportZipActivityResultLauncher.launch("$filename.zip")
-					"xml" -> exportXmlActivityResultLauncher.launch("$filename.xml")
-					else -> throw Error("Wrong export format")
+				if (chooseFile){
+					when (format) {
+						"json" -> exportJsonActivityResultLauncher.launch("$filename.json")
+						"zip" -> exportZipActivityResultLauncher.launch("$filename.zip")
+						"xml" -> exportXmlActivityResultLauncher.launch("$filename.xml")
+						else -> throw Error("Wrong export format")
+					}
 				}
 			}
 			recipeListAdapter.finishActionMode()
