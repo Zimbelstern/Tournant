@@ -84,6 +84,7 @@
 		<item quantity="one">%s and one other recipe imported</item>
 		<item quantity="other">%s and %d other recipes imported</item>
 	</plurals>
+	<string name="gourmand165">Floating point numbers as yield value (Gourmand issue #165)</string>
 
 	<!-- Options menu -->
 	<string name="recipe_count">Number of recipes</string>

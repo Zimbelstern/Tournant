@@ -6,6 +6,7 @@ import eu.zimbelstern.tournant.data.Ingredient
 import eu.zimbelstern.tournant.data.RecipeWithIngredients
 import org.xmlpull.v1.XmlSerializer
 import java.io.StringWriter
+import kotlin.math.roundToInt
 
 class GourmetXmlWriter(private val separator: Char) {
 
@@ -83,9 +84,9 @@ class GourmetXmlWriter(private val separator: Char) {
 			endTag(null, "cooktime")
 		}
 
-		recipe.recipe.yieldValue?.let {
+		recipe.recipe.yieldValue?.let { yieldValue ->
 			startTag(null, "yields")
-			text(recipe.recipe.yieldValue.toString().replace('.', separator))
+			text(yieldValue.roundToInt().toString()) // see Gourmand issue #165
 			recipe.recipe.yieldUnit?.let {
 				text(" $it")
 			}

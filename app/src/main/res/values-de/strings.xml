@@ -81,6 +81,7 @@
 		<item quantity="one">%s und ein weiteres Rezept wurden importiert</item>
 		<item quantity="other">%s und %d weitere Rezepte wurden importiert</item>
 	</plurals>
+	<string name="gourmand165">Dezimalzahlen als Ausbeute (Gourmand-Issue #165)</string>
 
 	<!-- Options menu -->
 	<string name="recipe_count">Rezeptanzahl</string>

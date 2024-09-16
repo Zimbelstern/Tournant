@@ -47,15 +47,24 @@ class TournantApplication : Application() {
 				(recipes + refs).forEach {
 					if (it.recipe.description != null)
 						issues.add(GourmandIssues.NO_DESCRIPTIONS)
+					if (it.recipe.yieldValue?.run { this <= this.toInt() } == false)
+						issues.add(GourmandIssues.NO_FRACTIONS_IN_YIELD)
 				}
 			}
 			if (issues.isNotEmpty()) {
 				Log.i(TAG, "Exporting issues: $issues")
+				val localizedIssues = issues.joinToString("\n") {
+					when (it) {
+						GourmandIssues.NO_DESCRIPTIONS -> getString(R.string.description)
+						GourmandIssues.NO_FRACTIONS_IN_YIELD -> getString(R.string.gourmand165)
+						else -> ""
+					}
+				}
 				withContext(Dispatchers.Main) {
 					MaterialAlertDialogBuilder(context)
 						.setTitle(R.string.limitations)
 						.setMessage(
-							getString(R.string.missing_features_gourmand, getString(R.string.description))
+							getString(R.string.missing_features_gourmand, localizedIssues)
 								.toSpannable().apply {
 									val start = getString(R.string.missing_features_gourmand).length - 2
 									val end = length
