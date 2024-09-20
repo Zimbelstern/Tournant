@@ -40,6 +40,7 @@ android {
 	applicationVariants.configureEach {
 		resValue("string", "versionName", versionName)
 		resValue("string", "availableLanguages", availableLanguages)
+		mergedFlavor.manifestPlaceholders["fileprovider_authority"] = "$applicationId.fileprovider"
 	}
 
 	androidResources {
@@ -63,6 +64,18 @@ android {
 		}
 	}
 
+	flavorDimensions += "database"
+	productFlavors {
+		create("default") {
+			dimension = "database"
+		}
+		create("demo") {
+			dimension = "database"
+			applicationIdSuffix = ".demo"
+
+		}
+	}
+
 	compileOptions {
 		sourceCompatibility = JavaVersion.VERSION_17
 		targetCompatibility = JavaVersion.VERSION_17
@@ -78,7 +91,7 @@ android {
 tasks.register("assembleReleaseSigned", Exec::class) {
 	group = "zimbelstern"
 	description = "Assembles a release APK and signs it with my key"
-	dependsOn("assembleRelease")
+	dependsOn("assembleDefaultRelease")
 	commandLine("../zimbelstern/sign.sh")
 	args(
 		workingDir.path

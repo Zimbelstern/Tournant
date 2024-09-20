@@ -52,7 +52,7 @@
 		</activity>
 		<provider
 			android:name="androidx.core.content.FileProvider"
-			android:authorities="eu.zimbelstern.tournant.fileprovider"
+			android:authorities="${fileprovider_authority}"
 			android:grantUriPermissions="true"
 			android:exported="false">
 			<meta-data
