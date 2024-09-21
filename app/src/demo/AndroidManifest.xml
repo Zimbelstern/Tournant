@@ -1,0 +1,15 @@
+<manifest xmlns:tools="http://schemas.android.com/tools"
+	xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<application tools:node="merge"
+		tools:ignore="MissingApplicationIcon">
+		<receiver android:name=".demo.LocaleBroadcastReceiver"
+			android:exported="true"
+			tools:ignore="ExportedReceiver">
+			<intent-filter>
+				<action android:name="eu.zimbelstern.tournant.changelocale"/>
+			</intent-filter>
+		</receiver>
+	</application>
+
+</manifest>
