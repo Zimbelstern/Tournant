@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="muffins">Muffins</string>
+    <string name="pastries">Gebäck</string>
+    <string name="american">amerikanisch</string>
+    <string name="yield_muffins">Stück</string>
+	<string name="g">g</string>
+	<string name="ml">ml</string>
+	<string name="tsp">TL</string>
+    <string name="eggs">Eier</string>
+    <string name="vegetable_oil">Speiseöl</string>
+    <string name="milk">Milch</string>
+    <string name="sugar">Zucker</string>
+    <string name="flour">Mehl</string>
+    <string name="baking_powder">Backpulver</string>
+    <string name="salt">Salz</string>
+    <string name="chocolate_chips">Schokotropfen</string>
+    <string name="sample_instructions">
+        1. Backofen auf 200 °C vorheizen.
+        \n2. Die Eier leicht schaumig rühren.
+		\n3. Öl und Milch zu den Eiern geben und verrühren. Dann den Zucker hinzufügen und den Teig glatt rühren.
+		\n4. Mehl, Backpulver und Salz vorsichtig unter die Masse heben.
+		\n5. Schokotropfen unterrühren.
+		\n6. Mit dem Teig die Muffinförmchen zu zwei Dritteln befüllen und 20-25 Minuten backen. An einem hineingesteckten Holzstäbchen sollte kein Teig mehr kleben bleiben.
+		\n7. Die fertiggebackenen Muffins noch wenige Minuten in der Form lassen und dann zum Auskühlen auf ein Gitter stellen.
+	</string>
+    <string name="sample_modifications">Für Schokomuffins 100 g des Mehls mit 100 g Kakaopulver ersetzen.</string>
+	<string name="croissants">Croissants</string>
+	<string name="pretzels">Brezeln</string>
+	<string name="dessert">Dessert</string>
+	<string name="tiramisu">Tiramisu</string>
+	<string name="panna_cotta">Panna cotta</string>
+	<string name="german">deutsch</string>
+	<string name="french">französisch</string>
+	<string name="italian">italienisch</string>
+</resources>

@@ -138,6 +138,8 @@ dependencies {
 	implementation("io.noties.markwon:core:$markwonVersion")
 	implementation("io.noties.markwon:html:$markwonVersion")
 
+	implementation(kotlin("reflect"))
+
 	testImplementation("androidx.test.ext:junit-ktx:1.2.1")
 	testImplementation("org.robolectric:robolectric:4.12")
 

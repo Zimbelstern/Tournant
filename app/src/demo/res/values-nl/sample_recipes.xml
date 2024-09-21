@@ -8,17 +8,20 @@
 \n6. Roer de chocoladestukjes erdoor;
 \n7. Vul de muffinvormen met tweederde besla en bak de muffins in 20-25 minuten af (prik erin met een satéstokje - dat zou er schoon uit moeten komen);
 \n8. Laat de muffins afkoelen voordat je ze eruit haalt.</string>
-    <string name="sample_yields">20 muffins</string>
-    <string name="vegetable_oil">125 ml plantaardige olie</string>
-    <string name="flour">400 g bloem</string>
-    <string name="sugar">250 g suiker</string>
-    <string name="sample_title">Muffins</string>
-    <string name="salt">1 tl zout</string>
-    <string name="eggs">2 middelgrote eieren</string>
-    <string name="sample_cuisine">Amerikaans</string>
+    <string name="yield_muffins">muffins</string>
+    <string name="vegetable_oil">plantaardige olie</string>
+    <string name="flour">bloem</string>
+    <string name="sugar">suiker</string>
+    <string name="muffins">Muffins</string>
+    <string name="salt">zout</string>
+    <string name="eggs">middelgrote eieren</string>
+    <string name="american">Amerikaans</string>
     <string name="sample_modifications">Tip: wil je chocolademuffins maken? Vervang de 100 g bloem dan door 100 g cacaopoeder.</string>
-    <string name="baking_powder">3 tl bakpoeder</string>
-    <string name="sample_category">Gebak</string>
-    <string name="chocolate_chips">100 g chocoladestukjes</string>
-    <string name="milk">250 ml melk</string>
+    <string name="baking_powder">bakpoeder</string>
+    <string name="pastries">Gebak</string>
+    <string name="chocolate_chips">chocoladestukjes</string>
+    <string name="milk">melk</string>
+    <string name="g">g</string>
+    <string name="ml">ml</string>
+    <string name="tsp">tl</string>
 </resources>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+	<string name="muffins">Muffins</string>
+	<string name="pastries">Pastries</string>
+	<string name="american">American</string>
+	<string name="bbc_goodfood" translatable="false">BBC goodfood</string>
+	<string name="yield_muffins">muffins</string>
+	<string name="g">g</string>
+	<string name="ml">ml</string>
+	<string name="tsp">tsp</string>
+	<string name="eggs">medium eggs</string>
+	<string name="vegetable_oil">vegetable oil</string>
+	<string name="milk">milk</string>
+	<string name="sugar">sugar</string>
+	<string name="flour">flour</string>
+	<string name="baking_powder">baking powder</string>
+	<string name="salt">salt</string>
+	<string name="chocolate_chips">chocolate chips</string>
+	<string name="sample_instructions">
+		1. Preheat the oven to 200°C (400°F).
+		\n2. Beat the eggs lightly for 1 min.
+		\n3. Add the oil and milk and beat until combined. Then add the sugar and mix until you have a smooth batter.
+		\n4. Sift in flour, baking powder and salt and mix carefully until just smooth.
+		\n5. Stir in chocolate chips.
+		\n6. Fill muffin cases two-thirds full and bake for 20-25 minutes. When a skewer is inserted in the middle, it should come out clean.
+		\n7. Leave the muffins in the tin to cool for a few mins then transfer to a wire rack.
+	</string>
+	<string name="sample_modifications">For chocolate muffins, replace 100g of the flour with 100g cocoa powder.</string>
+	<string name="croissants">Croissants</string>
+	<string name="pretzels">Pretzels</string>
+	<string name="pretzels_description" translatable="false">Brezeln, Breze, Brezn, ...</string>
+	<string name="dessert">Dessert</string>
+	<string name="tiramisu">Tiramisu</string>
+	<string name="panna_cotta">Panna cotta</string>
+	<string name="german">German</string>
+	<string name="french">French</string>
+	<string name="italian">Italian</string>
+</resources>
