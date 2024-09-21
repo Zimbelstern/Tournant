@@ -25,10 +25,10 @@ android {
 	}
 
 	val availableLanguages = File("$projectDir/app/src/main/res").walk()
-		.filter {
-			it.isDirectory
-				&& it.walk().any { it.name == "strings.xml" }
-				&& Regex("values-[a-z]{2}(-r?[A-Z]{2})?").matches(it.name)
+		.filter { file ->
+			file.isDirectory
+				&& file.walk().any { it.name == "strings.xml" }
+				&& Regex("values-[a-z]{2}(-r?[A-Z]{2})?").matches(file.name)
 		}
 		.map {
 			it.name.drop(7).replace("-r", "-")
@@ -50,6 +50,7 @@ android {
 	buildFeatures {
 		viewBinding = true
 		dataBinding = true
+		buildConfig = true
 	}
 
 	buildTypes {
