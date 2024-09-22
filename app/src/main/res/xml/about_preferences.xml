@@ -75,12 +75,22 @@
 			app:icon="@drawable/ic_library"/>
 
 		<Preference
+			app:title="Markwon"
+			app:summary="Apache License, Version 2.0"
+			app:icon="@drawable/ic_library"/>
+
+		<Preference
 			app:title="Material Components for Android"
 			app:summary="Apache License, Version 2.0"
 			app:icon="@drawable/ic_library"/>
 
 		<Preference
 			app:title="Material Design Icons"
+			app:summary="Apache License, Version 2.0"
+			app:icon="@drawable/ic_library"/>
+
+		<Preference
+			app:title="Moshi"
 			app:summary="Apache License, Version 2.0"
 			app:icon="@drawable/ic_library"/>
 
