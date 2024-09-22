@@ -165,4 +165,8 @@
     <string name="last_prepared">Датою останнього приготування</string>
     <string name="preparations_count">Кількістю приготувань</string>
     <string name="log_preparation">Статистика приготувань</string>
+    <string name="dark">Темна</string>
+    <string name="auto_follow_system">Автоматична (як у системі)</string>
+    <string name="light">Світла</string>
+    <string name="language">Мова</string>
 </resources>

@@ -16,4 +16,11 @@
     <string name="vegetable_oil">rostlinného oleje</string>
     <string name="milk">mléka</string>
     <string name="flour">mouky</string>
+    <string name="sample_instructions">1. Předehřejte troubu na 200°C (400°F).
+\n2. Lehce míchejte vajíčka po dobu 1 min.
+\n3. Přimíchejte olej a mléko. Poté přidejte cukr a míchejte, dokud nebudete mít hladké těsto.
+\n4. Přidejte hladkou mouku, pečící prášek a sůl a opatrně smíchejte dokud nebudete mít hladké těsto.
+\n5. Přimíchejte čokoládové pecičky.
+\n6. Naplňte formičky na muffiny do dvou třetin a pečte 20-25 minut. Po propíchnutí párátkem by mělo párátko zůstat čisté.
+\n7. Nechte muffiny ve formičkách pár minut vychladnout, poté je přendejte na kuchyňskou mřížku.</string>
 </resources>

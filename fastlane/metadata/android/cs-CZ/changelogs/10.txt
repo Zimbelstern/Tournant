@@ -1,0 +1,2 @@
+Nová funcke: Tmavý režim
+Nově přidané jazyky: Norština, Bokmål, Dánšitina, Švédština (Díky Allanu Nordhøy!)

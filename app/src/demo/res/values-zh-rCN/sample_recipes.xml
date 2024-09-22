@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="muffins">松饼</string>
+    <string name="yield_muffins">块松饼</string>
+    <string name="eggs">个中等大小的鸡蛋</string>
+    <string name="vegetable_oil">植物油</string>
+    <string name="milk">牛奶</string>
+    <string name="sugar">糖</string>
+    <string name="flour">面粉</string>
+    <string name="baking_powder">发酵粉</string>
+    <string name="salt">盐</string>
+    <string name="chocolate_chips">巧克力屑</string>
+    <string name="g">克</string>
+    <string name="ml">毫升</string>
+    <string name="tsp">茶匙</string>
+    <string name="sample_instructions">1. 将烤箱预热至 200°C （400°F）。
+\n2. 将鸡蛋轻轻打1分钟。
+\n3. 加入油和牛奶，搅拌均匀。然后加入糖并混合，直到得到表面光滑的糊状物。
+\n4. 过筛面粉、发酵粉和盐，小心地搅拌均匀至光滑。
+\n5. 加入巧克力屑搅拌。
+\n6. 将松饼杯装满三分之二，烘烤20-25分钟。当将烤串插入中间时，它应该干净。
+\n7. 将松饼放入罐中冷却几分钟，然后转移到金属丝架上。</string>
+    <string name="sample_modifications">制作巧克力松饼时，则用100克可可粉代替100克面粉。</string>
+    <string name="sample_category">糕点</string>
+    <string name="sample_cuisine">美式</string>
+</resources>
