@@ -131,7 +131,7 @@ dependencies {
 	implementation("androidx.room:room-paging:$roomVersion")
 	ksp("androidx.room:room-compiler:$roomVersion")
 
-	val moshiVersion = "1.15.0"
+	val moshiVersion = "1.15.1"
 	implementation("com.squareup.moshi:moshi:$moshiVersion")
 	ksp("com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion")
 
@@ -142,7 +142,7 @@ dependencies {
 	implementation(kotlin("reflect"))
 
 	testImplementation("androidx.test.ext:junit-ktx:1.2.1")
-	testImplementation("org.robolectric:robolectric:4.12")
+	testImplementation("org.robolectric:robolectric:4.13")
 
 	androidTestImplementation("androidx.test:runner:1.6.2")
 	androidTestImplementation("androidx.test:rules:1.6.1")
