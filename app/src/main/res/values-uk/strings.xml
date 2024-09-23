@@ -169,4 +169,5 @@
     <string name="auto_follow_system">Автоматична (як у системі)</string>
     <string name="light">Світла</string>
     <string name="language">Мова</string>
+    <string name="gourmand165">Числа з рухомою комою як значення «Вихід» (проблема #165 в Gourmand)</string>
 </resources>

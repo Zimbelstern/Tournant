@@ -23,4 +23,12 @@
     <string name="g">г</string>
     <string name="ml">мл</string>
     <string name="tsp">ч. л.</string>
+    <string name="pretzels">Брецелі</string>
+    <string name="dessert">Десерт</string>
+    <string name="tiramisu">Тирамісу</string>
+    <string name="panna_cotta">Пана-кота</string>
+    <string name="german">Німецька</string>
+    <string name="italian">Італійська</string>
+    <string name="croissants">Круасани</string>
+    <string name="french">Французька</string>
 </resources>
