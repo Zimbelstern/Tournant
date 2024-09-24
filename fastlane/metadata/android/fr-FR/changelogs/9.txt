@@ -1,2 +1,0 @@
-- Nouvelle fonctionnalité dans 1.1.5 : Implémentation d'une section affichant toutes les catégories et cuisines recherchées
-- Correction de bug

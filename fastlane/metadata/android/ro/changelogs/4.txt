@@ -1,2 +1,0 @@
-– Rezolvare: Crash la citirea rețetelor mai marj.
-– Îmbunătățire: Termenul de căutare este păstrat la schimbarea orientației.

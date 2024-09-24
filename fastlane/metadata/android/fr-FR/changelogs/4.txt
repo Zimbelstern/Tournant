@@ -1,2 +1,0 @@
-- Correction de bug : plantage lors de la lecture de livres de cuisine plus volumineux.
-- Amélioration : la requête de recherche est restaurée lors des changements d'orientation.

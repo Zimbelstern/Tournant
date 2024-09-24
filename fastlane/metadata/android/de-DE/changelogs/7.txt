@@ -1,4 +1,0 @@
-Neue Funktion: Zutaten und Abschnitte der Anleitung können durch Tippen abgehakt werden
-Verbesserung: Unterstützung von Rezeptreferenzen und Gruppen in der Zutatenliste
-Verbesserung des Designs
-Kleine Optimierungen

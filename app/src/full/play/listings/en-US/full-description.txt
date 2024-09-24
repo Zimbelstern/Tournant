@@ -1,0 +1,13 @@
+Tournant serves your favorite dishes on your Android device!
+
+**Features**
+📝 Create and edit recipes (with Markdown support)
+💡 Add ingredients, ingredient groups and linked recipes
+🔍 Search for recipes and categories and sort by various criteria
+🧰 Scale ingredient lists, quickly start timers, log preparation dates, and benefit from other useful tools
+📦 Export and share recipes as JSON files or ZIP archive with friends or use the Gourmand XML format
+
+Tournant is compatible with Gourmand Recipe Manager (previously known as Gourmet) for desktop. Importing, exporting and syncing with a Gourmand XML file is supported.
+
+**Visit the website for documentation**
+https://tournant.zimbelstern.eu

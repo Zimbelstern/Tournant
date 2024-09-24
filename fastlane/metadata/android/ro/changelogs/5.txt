@@ -1,2 +1,0 @@
-– Rezolvare: Crash la ajustarea cantităților de ingrediente non-numerice
-– Rezolvare: Nepotrivire între numele şi cantitățile ingredientelor

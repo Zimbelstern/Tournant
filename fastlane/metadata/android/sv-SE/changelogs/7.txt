@@ -1,4 +1,0 @@
-Ny funktion: Du kan trycka på en ingrediens eller ett stycke i instruktionerna för att markera det som kryssat.
-Förbättring: Stöd för ingrediensreferenser och ingrediensgrupper
-Förbättring: Designförbättringar
-Buggfixar: Små optimeringar

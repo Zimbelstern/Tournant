@@ -1,1 +1,0 @@
-Las cantidades de ingredientes se pueden calcular para obtener más o menos porciones.

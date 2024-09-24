@@ -1,2 +1,0 @@
-- Neue Funktion in 1.1.5: In der Suche wird eine Übersicht über Kategorien und Küchen angezeigt
-- Fehlerbehebung

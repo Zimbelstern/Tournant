@@ -1,2 +1,0 @@
-– Fehlerbehebung: Absturz beim Skalieren nicht-numerischer Zutatenmengen
-– Fehlerbehebung: Verrutschte Zutatenmengen

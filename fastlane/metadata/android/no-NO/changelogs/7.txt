@@ -1,4 +1,0 @@
-Ny funksjon: Trykk på en ingrediens eller et avsnitt i veiledningen for å markere det som avkrysset
-Forbedring: Støtte for ingrediensreferanser og ingrediensgrupper
-Forbedring: Designforbedringer
-Feilrettinger: Små optimaliseringer

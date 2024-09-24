@@ -1,1 +1,0 @@
-Cantitățile ingredientelor pot fi ajustate automat pentru mai multe sau mai puține porții.

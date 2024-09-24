@@ -1,1 +1,0 @@
-- New feature: Implemented a section showing all categories and cuisines in search

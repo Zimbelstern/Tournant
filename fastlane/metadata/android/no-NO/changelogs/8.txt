@@ -1,1 +1,0 @@
-- Ny funksjon: Del som viser alle kategorier og forskjellige kjøkken i søk

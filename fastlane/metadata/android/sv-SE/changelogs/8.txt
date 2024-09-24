@@ -1,1 +1,0 @@
-- Ny funktion: Implementerade ett avsnitt som visar alla kategorier och ursprungsland i sökningen

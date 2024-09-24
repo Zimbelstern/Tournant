@@ -1,1 +1,0 @@
-- Nueva funcionalidad: se implementó una sección que muestra todas las categorías y cocinas en la búsqueda

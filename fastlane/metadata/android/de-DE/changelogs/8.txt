@@ -1,1 +1,0 @@
-- Neue Funktion: In der Suche wird eine Übersicht über Kategorien und Küchen angezeigt

@@ -1,3 +1,0 @@
-Tournant 2.0 comes with a completely rewritten codebase, paving the way for in-app recipe editing.
-The mode setting (standalone or synced) was moved to the app settings. Editing features will be added gradually after this release.
-With this version, there are already many improvements to the app: Much faster loading times, better display of amount ranges, import of multiple files, and many more.

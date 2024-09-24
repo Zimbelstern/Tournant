@@ -1,2 +1,0 @@
-New feature: Dark theme
-New languages: Norwegian Bokmål, Danish, Swedish (Thanks to Allan Nordhøy!)

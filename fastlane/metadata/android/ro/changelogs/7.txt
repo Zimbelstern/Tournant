@@ -1,4 +1,0 @@
-Funcție nouă: Atinge un ingredient sau paragraf din instrucțiuni pentru a-l bifa.
-Îmbunătățire: Suport pentru referințe şi grupuri de ingrediente.
-Îmbunătățire: Îmbunătățiri de design.
-Rezolvare: Mici optimizări

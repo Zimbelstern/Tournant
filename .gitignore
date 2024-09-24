@@ -4,11 +4,7 @@
 app/build/
 app/release/
 build/
-fastlane/*
-!fastlane/metadata/
-fastlane/metadata/android/*
-!fastlane/metadata/android/*/
+scripts/
 local.properties
 *.iml
 *.log
-zimbelstern/

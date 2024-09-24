@@ -1,4 +1,0 @@
-Nueva funcionalidad: toque un ingrediente o párrafo de las instrucciones para marcarlo como hecho
-Mejora: soporte para referencias de ingredientes y grupos de ingredientes.
-Mejora: mejoras de diseño
-Corrección de bugs: pequeñas optimizaciones

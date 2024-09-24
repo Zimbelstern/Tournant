@@ -1,1 +1,0 @@
-Rezeptmanager mit Gourmand-Kompatibilität

@@ -1,9 +1,10 @@
 plugins {
 	id("com.android.application")
+	id("com.github.triplet.play") version "3.10.1"
+	id("com.google.devtools.ksp") version "1.9.10-1.0.13"
 	id("kotlin-android")
 	id("kotlin-parcelize")
 	id("kotlin-kapt")
-	id("com.google.devtools.ksp") version "1.9.10-1.0.13"
 	id("org.jetbrains.kotlin.android")
 }
 
@@ -67,13 +68,18 @@ android {
 
 	flavorDimensions += "database"
 	productFlavors {
-		create("default") {
-			dimension = "database"
-		}
 		create("demo") {
 			dimension = "database"
 			applicationIdSuffix = ".demo"
+		}
+		create("full") {
+			dimension = "database"
+		}
+	}
 
+	playConfigs {
+		register("demo") {
+			enabled.set(false)
 		}
 	}
 
@@ -87,30 +93,6 @@ android {
 	}
 
 	namespace = "eu.zimbelstern.tournant"
-}
-
-tasks.register("assembleReleaseSigned", Exec::class) {
-	group = "zimbelstern"
-	description = "Assembles a release APK and signs it with my key"
-	dependsOn("assembleDefaultRelease")
-	commandLine("../zimbelstern/sign.sh")
-	args(
-		workingDir.path
-	)
-}
-
-tasks.register("deployRelease", Exec::class) {
-	group = "zimbelstern"
-	description = "Deploys signed release APK to my F-Droid repository"
-	dependsOn("assembleReleaseSigned")
-	commandLine("../zimbelstern/deploy.sh")
-	args(
-		workingDir.path,
-		android.defaultConfig.applicationId,
-		android.defaultConfig.applicationId!!.split('.').last(),
-		android.defaultConfig.versionCode,
-		android.defaultConfig.versionName
-	)
 }
 
 dependencies {

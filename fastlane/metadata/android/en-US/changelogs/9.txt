@@ -1,2 +1,0 @@
-- New feature in 1.1.5: Implemented a section showing all categories and cuisines in search
-- Bugfix

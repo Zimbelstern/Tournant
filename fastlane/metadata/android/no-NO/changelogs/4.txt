@@ -1,2 +1,0 @@
-- Feilretting: Krasj ved lesing av større kokebøker.
-- Forbedring: Søket gjenopprettes ved endring av sideretning.

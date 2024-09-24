@@ -1,3 +1,0 @@
-Tournant 2.0 are cod complet rescris, începând drumul către editarea rețetelor din aplicație.
-Setarea modului (de sine stătător sau sincronizat) a fost mutată în setările aplicației. Funcțiile de editare vor fi adăugate gradual după această versiune.
-În această versiune, sunt deja multe îmbunătățiri aduse aplicației: timp de încărcare mult mai rapid, afişare mai bunā a cantităților, import la mai multe fişiere şi multe altele.
