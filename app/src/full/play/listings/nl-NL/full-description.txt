@@ -12,4 +12,3 @@ Met Tournant kun je je favoriete kook- en bakrecepten beheren. Ook kun je de app
 </ul>
 
 <b>Documentatie is beschikbaar op</b>
-https://tournant.zimbelstern.eu
