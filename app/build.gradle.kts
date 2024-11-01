@@ -1,7 +1,7 @@
 plugins {
 	id("com.android.application")
 	id("com.github.triplet.play") version "3.10.1"
-	id("com.google.devtools.ksp") version "1.9.10-1.0.13"
+	id("com.google.devtools.ksp") version "2.0.21-1.0.25"
 	id("kotlin-android")
 	id("kotlin-parcelize")
 	id("kotlin-kapt")
@@ -9,12 +9,12 @@ plugins {
 }
 
 android {
-	compileSdk = 34
+	compileSdk = 35
 
 	defaultConfig {
 		applicationId = "eu.zimbelstern.tournant"
 		minSdk = 21
-		targetSdk = 34
+		targetSdk = 35
 		versionCode = 26
 		versionName = "2.8.1"
 
@@ -96,11 +96,11 @@ android {
 }
 
 dependencies {
-	implementation("androidx.core:core-ktx:1.13.1")
+	implementation("androidx.core:core-ktx:1.15.0")
 	implementation("androidx.appcompat:appcompat:1.7.0")
-	implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+	implementation("androidx.constraintlayout:constraintlayout:2.2.0")
 	implementation("androidx.preference:preference-ktx:1.2.1")
-	implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6")
+	implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
 	implementation("androidx.paging:paging-runtime-ktx:3.3.2")
 	implementation("com.google.android.material:material:1.12.0")
 	implementation("com.google.android.flexbox:flexbox:3.0.0")
