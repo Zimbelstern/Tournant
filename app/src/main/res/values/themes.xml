@@ -1,6 +1,6 @@
 <resources>
 
-	<style name="Theme.Tournant" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+	<style name="Theme.Tournant" parent="Theme.MaterialComponents.DayNight">
 
 		<!-- Primary colors -->
 		<item name="colorPrimary">@color/blue_dark</item>
@@ -14,8 +14,8 @@
 		<item name="actionBarStyle">@style/Tournant.ActionBar</item>
 		<item name="actionBarTheme">@style/ThemeOverlay.AppCompat.DayNight.ActionBar</item>
 		<item name="actionModeStyle">@style/Tournant.ActionMode</item>
-		<item name="android:statusBarColor">@color/amber_dark</item>
-		<item name="android:navigationBarColor">@color/amber_dark</item>
+		<item name="android:statusBarColor">@color/bar_color</item>
+		<item name="android:navigationBarColor">@color/bar_color</item>
 
 		<!-- Surfaces -->
 		<item name="colorSurface">@color/light_surface</item>
@@ -28,10 +28,16 @@
 
 	</style>
 
+	<style name="Theme.Tournant.NoActionBar" parent="Theme.Tournant">
+		<item name="windowNoTitle">true</item>
+		<item name="windowActionBar">false</item>
+		<item name="windowActionModeOverlay">true</item>
+	</style>
+
 	<style name="Theme.Tournant.Splash" parent="Theme.SplashScreen">
 		<item name="windowSplashScreenBackground">@color/light_surface</item>
 		<item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
-		<item name="postSplashScreenTheme">@style/Theme.Tournant.KitchenBackground</item>
+		<item name="postSplashScreenTheme">@style/Theme.Tournant.NoActionBar.KitchenBackground</item>
 	</style>
 
 	<style name="h" parent="@android:style/TextAppearance.Medium">
@@ -69,6 +75,9 @@
 
 	<!-- For light and dark theme -->
 	<style name="Theme.Tournant.KitchenBackground" parent="Theme.Tournant">
+		<item name="android:windowBackground">@drawable/background_repeat</item>
+	</style>
+	<style name="Theme.Tournant.NoActionBar.KitchenBackground" parent="Theme.Tournant.NoActionBar">
 		<item name="android:windowBackground">@drawable/background_repeat</item>
 	</style>
 

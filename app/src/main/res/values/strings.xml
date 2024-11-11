@@ -2,7 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
 	<!-- Non-translatable names -->
-	<string name="app_name" translatable="false">Tournant</string>
+	<string name="tournant" translatable="false">Tournant</string>
 
 	<!-- App bar titles -->
 	<string name="recipes">Recipes</string>
@@ -173,6 +173,7 @@
 	<string name="add_to_selection">Add to selection</string>
 	<string name="remove">Remove</string>
 	<string name="options">Options</string>
+	<string name="menu">Menu</string>
 	<string name="inspiration">Looking for inspiration?</string>
 	<string name="to">to</string>
 

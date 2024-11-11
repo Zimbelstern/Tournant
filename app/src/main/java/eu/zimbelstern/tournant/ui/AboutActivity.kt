@@ -24,7 +24,7 @@ class AboutActivity : AppCompatActivity() {
 				.commit()
 		}
 		supportActionBar?.apply {
-			title = getString(R.string.about_app_name, getString(R.string.app_name))
+			title = getString(R.string.about_app_name, getString(R.string.tournant))
 			setDisplayHomeAsUpEnabled(true)
 			setDisplayShowTitleEnabled(true)
 		}
@@ -36,7 +36,7 @@ class AboutActivity : AppCompatActivity() {
 
 		override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
 			setPreferencesFromResource(R.xml.about_preferences, rootKey)
-			findPreference<PreferenceCategory>("about")?.title = getString(R.string.about_app_name, getString(R.string.app_name))
+			findPreference<PreferenceCategory>("about")?.title = getString(R.string.about_app_name, getString(R.string.tournant))
 			findPreference<Preference>("version")?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
 				if (egg < 3) egg++ else Toast.makeText(context, getString(R.string.egg), Toast.LENGTH_LONG).show()
 				true

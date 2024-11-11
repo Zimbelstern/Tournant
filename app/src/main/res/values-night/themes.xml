@@ -1,6 +1,6 @@
 <resources>
 
-	<style name="Theme.Tournant" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+	<style name="Theme.Tournant" parent="Theme.MaterialComponents.DayNight">
 
 		<!-- Primary colors -->
 		<item name="colorPrimary">@color/amber_dark</item>
@@ -13,8 +13,8 @@
 		<!-- Bar colors -->
 		<item name="actionBarStyle">@style/Tournant.ActionBar</item>
 		<item name="actionModeStyle">@style/Tournant.ActionMode</item>
-		<item name="android:statusBarColor">@color/blue_darker</item>
-		<item name="android:navigationBarColor">@color/blue_darker</item>
+		<item name="android:statusBarColor">@color/bar_color</item>
+		<item name="android:navigationBarColor">@color/bar_color</item>
 
 		<!-- Surfaces -->
 		<item name="colorSurface">@color/dark_surface</item>
@@ -29,10 +29,10 @@
 	<style name="Theme.Tournant.Splash" parent="Theme.SplashScreen.IconBackground">
 		<item name="windowSplashScreenBackground">@color/dark_surface</item>
 		<item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
-		<item name="postSplashScreenTheme">@style/Theme.Tournant.KitchenBackground</item>
+		<item name="postSplashScreenTheme">@style/Theme.Tournant.NoActionBar.KitchenBackground</item>
 	</style>
 
-	<color name="bar_color">@color/blue_dark</color>
+	<color name="bar_color">@color/blue_darker</color>
 	<color name="heading_color">@color/blue_light</color>
 	<color name="subtitle_color">@color/blue_light_pale</color>
 	<color name="highlight_color">@color/amber</color>

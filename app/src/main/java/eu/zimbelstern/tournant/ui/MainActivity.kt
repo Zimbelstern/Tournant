@@ -13,12 +13,11 @@ import android.text.style.StyleSpan
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.MenuItem.OnActionExpandListener
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.RadioButton
-import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -29,6 +28,7 @@ import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.text.toSpannable
+import androidx.core.view.GravityCompat
 import androidx.core.view.children
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
@@ -54,6 +54,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.util.Locale
 
 class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface {
 
@@ -72,9 +73,8 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 	}
 
 	private lateinit var recipeListAdapter: RecipeListAdapter
-	private var searchMenuItem: MenuItem? = null
-	private var searchView: SearchView? = null
 	private var mode = 0
+	private var optionsMenu: Menu? = null
 
 	private var recipeOpen = false
 	private var restartPending = false
@@ -111,6 +111,11 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 		binding = ActivityMainBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 
+		setSupportActionBar(binding.toolbar)
+		supportActionBar?.setDisplayShowTitleEnabled(false)
+
+		initNavDrawer()
+		
 		findViewById<View>(android.R.id.content).apply {
 			viewTreeObserver.addOnPreDrawListener(
 				object : ViewTreeObserver.OnPreDrawListener {
@@ -126,7 +131,7 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 
 		binding.welcomeView.apply {
 			@SuppressLint("SetTextI18n")
-			appNameAndVersion.text = "${getString(R.string.app_name)} ${getString(R.string.versionName)}"
+			appNameAndVersion.text = "${getString(R.string.tournant)} ${getString(R.string.versionName)}"
 			chooseFile.apply {
 				if (mode == MODE_SYNCED) text = getString(R.string.change_synced_file)
 				setOnClickListener {
@@ -181,20 +186,19 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 			viewModel.syncedFileName.combine(viewModel.countAllRecipes) { filename, count ->
 				Pair(filename, count)
 			}.collectLatest {
-				supportActionBar?.title =
+				binding.title.text =
 					it.first?.substringBeforeLast(".")
-						?: getString(if (it.second > 0) R.string.all_recipes else R.string.app_name)
+						?: getString(if (it.second > 0) R.string.all_recipes else R.string.tournant)
 			}
 		}
 
 
 		// RECIPE COUNT
-		supportActionBar?.setDisplayShowTitleEnabled(true)
 		lifecycleScope.launch {
 			viewModel.waitingForRecipes.combine(viewModel.countAllRecipes) { waiting, count ->
 				Pair(waiting, count)
 			}.collectLatest {
-				binding.root.displayedChild = when {
+				binding.content.displayedChild = when {
 					it.first -> {
 						Log.d(TAG, "Waiting for recipes")
 						LOADING_SCREEN
@@ -247,6 +251,67 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 			}
 		}
 
+		// SEARCH
+		binding.search.apply {
+			findViewById<View>(R.id.search_mag_icon).visibility = View.GONE
+			binding.title.visibility = if (isIconified) View.VISIBLE else View.GONE
+
+			setOnSearchClickListener  {
+				Log.d(TAG, "Search expanded")
+				binding.title.visibility = View.GONE
+			}
+
+			setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+				override fun onQueryTextChange(query: String?): Boolean {
+					Log.d(TAG, "Search query text changed")
+					if (viewModel.searchQuery.value != null || !query.isNullOrEmpty())
+						viewModel.search(query)
+					return true
+				}
+				override fun onQueryTextSubmit(query: String?): Boolean {
+					Log.d(TAG, "Search query text submitted")
+					clearFocus()
+					return true
+				}
+			})
+
+			setOnCloseListener {
+				Log.d(TAG, "Search collapsed")
+				binding.title.visibility = View.VISIBLE
+				viewModel.search(null)
+				false
+			}
+		}
+
+		onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+			override fun handleOnBackPressed() {
+				binding.search.apply {
+					if (!isIconified) {
+						viewModel.search(null)
+					}
+				}
+			}
+		})
+
+		lifecycleScope.launch {
+			viewModel.searchQuery.collectLatest {
+				Log.d(TAG, "Search query: $it")
+				binding.search.apply {
+					if (it != query) {
+						setQuery(it, false)
+					}
+					if (isIconified != (it == null)) {
+						isIconified = it == null
+					}
+				}
+			}
+		}
+
+		lifecycleScope.launch {
+			viewModel.idsRecipesFiltered.collectLatest {
+				binding.recipeCount.text = String.format(Locale.getDefault(), "%d", it.size)
+			}
+		}
 
 		if (intent.action == Intent.ACTION_VIEW) {
 			if (mode == MODE_STANDALONE)
@@ -256,6 +321,36 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 			intent.action = ""
 		}
 
+	}
+
+	private fun initNavDrawer() {
+		binding.navDrawer.apply {
+			navTop.setNavigationItemSelectedListener {
+				binding.root.closeDrawers()
+				true
+			}
+			navBottom.apply {
+				menu.findItem(R.id.show_about).title = getString(R.string.about_app_name, getString(R.string.tournant))
+				setNavigationItemSelectedListener {
+					when (it.itemId) {
+						R.id.show_settings -> {
+							startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
+							binding.root.closeDrawers()
+							true
+						}
+						R.id.show_about -> {
+							startActivity(Intent(this@MainActivity, AboutActivity::class.java))
+							binding.root.closeDrawers()
+							true
+						}
+						else -> false
+					}
+				}
+			}
+			binding.navDrawerButton.setOnClickListener {
+				binding.root.openDrawer(GravityCompat.START)
+			}
+		}
 	}
 
 	private fun importRecipesFromFile() {
@@ -276,10 +371,7 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 	}
 
 	override fun searchForSomething(query: CharSequence?) {
-		if (!query.isNullOrEmpty()) {
-			searchMenuItem?.expandActionView()
-			searchView?.setQuery(query, true)
-		}
+		binding.search.setQuery(query, true)
 	}
 
 	override fun isReadOnly(): Boolean {
@@ -427,6 +519,7 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu): Boolean {
+		optionsMenu = menu
 		menuInflater.inflate(R.menu.options, menu)
 
 		if (mode == MODE_SYNCED) {
@@ -438,152 +531,43 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 
 		menu.findItem(R.id.export_all).subMenu?.clearHeader()
 		menu.findItem(R.id.share_all).subMenu?.clearHeader()
-		menu.findItem(R.id.show_about)?.title = getString(R.string.about_app_name, getString(R.string.app_name))
 
-		// SEARCH
-		searchMenuItem = menu.findItem(R.id.search).apply {
-
-			setOnActionExpandListener(object : OnActionExpandListener {
-				override fun onMenuItemActionExpand(p0: MenuItem): Boolean {
-					Log.d(TAG, "Search expanded")
-					viewModel.searchQuery.value.let {
-						if (it == null)
-							viewModel.search("")
-						else
-							(actionView as SearchView).setQuery(it, true)
-					}
-					return true
-				}
-				override fun onMenuItemActionCollapse(p0: MenuItem): Boolean {
-					Log.d(TAG, "Search collapsed")
-					if (viewModel.searchQuery.value != null)
-						viewModel.search(null)
-					return true
-				}
-			})
-
-			searchView = (actionView as SearchView).apply {
-				setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-					override fun onQueryTextChange(query: String?): Boolean {
-						if (viewModel.searchQuery.value != null || !query.isNullOrEmpty())
-							viewModel.search(query)
-						return true
-					}
-					override fun onQueryTextSubmit(query: String?): Boolean {
-						clearFocus()
-						return true
-					}
-				})
-				queryHint = getString(R.string.type_or_tap_to_search)
-				maxWidth = Int.MAX_VALUE
-			}
-
-		}
-
-		lifecycleScope.launch {
-			viewModel.countAllRecipes.collectLatest { count ->
-				var revalidate = false
-				for (item in mapOf(
-					searchMenuItem to (count > 1),
-					menu.findItem(R.id.recipe_count) to (count > 0),
-					menu.findItem(R.id.select_all) to (count > 0),
-				)) {
-					if (item.key?.isVisible != item.value) {
-						item.key?.isVisible = item.value
-						revalidate = true
-					}
-				}
-				if (revalidate)
-					invalidateOptionsMenu()
-			}
-		}
-
-		lifecycleScope.launch {
-			viewModel.searchQuery.collectLatest {
-				Log.d(TAG, "Search query: $it")
-				if (it != null) {
-					searchMenuItem?.apply {
-						if (!isActionViewExpanded) {
-							searchForSomething(it)
-						}
-					}
-				} else {
-					searchMenuItem?.apply {
-						if (isActionViewExpanded)
-							collapseActionView()
-					}
-				}
-			}
-		}
-
-		lifecycleScope.launch {
-			viewModel.idsRecipesFiltered.collectLatest {
-				menu.findItem(R.id.recipe_count).actionView?.findViewById<TextView>(R.id.number)?.text = it.size.toString()
-			}
+		(viewModel.countAllRecipes.value > 0).let {
+			menu.findItem(R.id.select_all).isVisible = it
+			menu.findItem(R.id.sorting).isVisible = it
 		}
 
 		return true
 	}
 
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
-		return when (item.itemId) {
-			R.id.new_recipe -> {
-				startActivity(Intent(this, RecipeEditingActivity::class.java).apply {
-					putExtra("RECIPE_ID", 0)
-				})
-				true
-			}
-			R.id.import_recipes -> {
-				importRecipesFromFile()
-				true
-			}
-			R.id.refresh -> {
-				viewModel.syncWithFile(true)
-				true
-			}
-			R.id.sorting -> {
-				showSortDialog()
-				true
-			}
-			R.id.export_all_json -> {
-				exportRecipes(getFilteredRecipesIds(), "json")
-				true
-			}
-			R.id.export_all_zip -> {
-				exportRecipes(getFilteredRecipesIds(), "zip")
-				true
-			}
-			R.id.export_all_gourmand -> {
-				exportRecipes(getFilteredRecipesIds(), "xml")
-				true
-			}
-			R.id.share_all_json -> {
-				shareRecipes(getFilteredRecipesIds(), "json")
-				true
-			}
-			R.id.share_all_zip -> {
-				shareRecipes(getFilteredRecipesIds(), "zip")
-				true
-			}
-			R.id.share_all_gourmand -> {
-				shareRecipes(getFilteredRecipesIds(), "xml")
-				true
-			}
+		when (item.itemId) {
+			R.id.new_recipe -> createNewRecipe()
+			R.id.import_recipes -> importRecipesFromFile()
+			R.id.refresh -> viewModel.syncWithFile(true)
+			R.id.sorting -> showSortDialog()
+
+			R.id.export_all_json -> exportRecipes(getFilteredRecipesIds(), "json")
+			R.id.export_all_zip -> exportRecipes(getFilteredRecipesIds(), "zip")
+			R.id.export_all_gourmand -> exportRecipes(getFilteredRecipesIds(), "xml")
+
+			R.id.share_all_json -> shareRecipes(getFilteredRecipesIds(), "json")
+			R.id.share_all_zip -> shareRecipes(getFilteredRecipesIds(), "zip")
+			R.id.share_all_gourmand -> shareRecipes(getFilteredRecipesIds(), "xml")
+
 			R.id.select_all -> {
 				startSupportActionMode(recipeListAdapter)
 				recipeListAdapter.select(getFilteredRecipesIds())
-				true
 			}
-			R.id.show_settings -> {
-				startActivity(Intent(this, SettingsActivity::class.java))
-				true
-			}
-			R.id.show_about -> {
-				startActivity(Intent(this, AboutActivity::class.java))
-				true
-			}
-			else -> false
+			else -> return false
 		}
+		return true
+	}
+
+	private fun createNewRecipe() {
+		startActivity(Intent(this, RecipeEditingActivity::class.java).apply {
+			putExtra("RECIPE_ID", 0)
+		})
 	}
 
 	private fun showSortDialog() {

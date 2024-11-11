@@ -1,17 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	tools:context=".ui.MainActivity">
+	android:layout_height="match_parent">
 
-	<include android:id="@+id/loading_view"
-		layout="@layout/activity_main_loading"/>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical">
 
-	<include android:id="@+id/welcome_view"
-		layout="@layout/activity_main_welcome"/>
+		<androidx.appcompat.widget.Toolbar
+			android:id="@+id/toolbar"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize"
+			android:background="@color/bar_color"
+			app:contentInsetStart="0dp">
 
-	<include android:id="@+id/recipes_view"
-		layout="@layout/activity_main_recipes"/>
+			<ImageButton
+				android:id="@+id/nav_drawer_button"
+				android:layout_width="48dp"
+				android:layout_height="match_parent"
+				android:layout_marginStart="6dp"
+				android:contentDescription="@string/menu"
+				android:src="@drawable/ic_menu"
+				android:background="@color/transparent"
+				app:tint="@color/normal_text_color"/>
 
-</ViewFlipper>
+			<TextView
+				android:id="@+id/title"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="8dp"
+				android:text="@string/tournant"
+				style="@style/TextAppearance.AppCompat.Title"/>
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:orientation="horizontal"
+				android:layout_gravity="end"
+				android:gravity="center">
+
+				<androidx.appcompat.widget.SearchView
+					android:id="@+id/search"
+					android:layout_width="0dp"
+					android:layout_height="match_parent"
+					android:layout_weight="1"
+					android:maxWidth="1000dp"
+					android:title="@string/search"
+					android:icon="@drawable/ic_search"
+					app:iconifiedByDefault="true"
+					app:queryBackground="@null"
+					app:queryHint="@string/type_or_tap_to_search"
+					app:searchHintIcon="@null"/>
+
+				<TextView
+					android:id="@+id/recipe_count"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center|end"
+					android:background="@drawable/recipe_count_border"
+					android:paddingTop="1dp"
+					android:paddingBottom="2dp"
+					android:layout_marginEnd="3dp"
+					android:paddingEnd="5dp"
+					android:paddingStart="5dp"
+					android:textSize="13sp"
+					android:textStyle="bold"
+					tools:text="123"/>
+
+			</LinearLayout>
+
+
+
+
+		</androidx.appcompat.widget.Toolbar>
+
+		<ViewFlipper
+			android:id="@+id/content"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			tools:context=".ui.MainActivity">
+
+			<include
+				android:id="@+id/loading_view"
+				layout="@layout/activity_main_loading" />
+
+			<include
+				android:id="@+id/welcome_view"
+				layout="@layout/activity_main_welcome" />
+
+			<include
+				android:id="@+id/recipes_view"
+				layout="@layout/activity_main_recipes" />
+
+		</ViewFlipper>
+	</LinearLayout>
+
+
+	<include android:id="@+id/nav_drawer" layout="@layout/navigation_view" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

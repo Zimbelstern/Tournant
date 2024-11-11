@@ -1,6 +1,7 @@
 .directory
 .gradle/
 .idea/
+.kotlin/
 app/build/
 app/release/
 build/

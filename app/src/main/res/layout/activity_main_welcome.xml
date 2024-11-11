@@ -26,7 +26,7 @@
 				android:id="@+id/app_name_and_version"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/app_name"
+				android:text="@string/tournant"
 				android:textColor="@color/highlight_color"
 				style="@style/h1"/>
 
