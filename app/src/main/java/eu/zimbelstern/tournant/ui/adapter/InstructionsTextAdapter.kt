@@ -21,14 +21,14 @@ import eu.zimbelstern.tournant.findFirstAmount
 import eu.zimbelstern.tournant.findFirstIngredientWithAmount
 import eu.zimbelstern.tournant.toRangeList
 import eu.zimbelstern.tournant.toStringForCooks
-import eu.zimbelstern.tournant.withFractionsToFloat
+import eu.zimbelstern.tournant.withFractionsToDouble
 import kotlin.math.roundToInt
 
 class InstructionsTextAdapter(
 	private val instructionsTextInterface: InstructionsTextInterface,
 	private val paragraphs: List<Spanned>,
 	private val ingredients: List<Ingredient> = listOf(),
-	private val scale: Float? = 1f
+	private val scale: Double? = 1.0
 	) : RecyclerView.Adapter<InstructionsTextAdapter.InstructionTextViewHolder>() {
 
 	class InstructionTextViewHolder(val binding: RecyclerItemTextBinding) : RecyclerView.ViewHolder(binding.root)
@@ -41,7 +41,7 @@ class InstructionsTextAdapter(
 
 	override fun onBindViewHolder(holder: InstructionTextViewHolder, position: Int) {
 		val paragraph = SpannableStringBuilder(paragraphs[position])
-		if (scale != null && scale != 1f) {
+		if (scale != null && scale != 1.0) {
 			ingredients.filter { it.amount != null }.forEach { ingredient ->
 				var cursor = 0
 				while (cursor < paragraph.length) {
@@ -73,7 +73,7 @@ class InstructionsTextAdapter(
 							Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 						)
 						// Create new amount string
-						amount.value.withFractionsToFloat()?.let {
+						amount.value.withFractionsToDouble()?.let {
 							(it * scale).toStringForCooks().also { newAmount ->
 								Log.d("", "...-> $newAmount")
 								// Insert new string

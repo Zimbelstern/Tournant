@@ -395,7 +395,7 @@
 									android:imeOptions="actionNext"
 									android:inputType="numberDecimal"
 									android:hint="@string/yield"
-									android:text="@={Converter.floatToString(recipe.yieldValue, recipe.yieldValue)}"/>
+									android:text="@={Converter.doubleToString(recipe.yieldValue, recipe.yieldValue)}"/>
 
 							</com.google.android.material.textfield.TextInputLayout>
 

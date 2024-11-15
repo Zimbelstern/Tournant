@@ -10,14 +10,14 @@ import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
 import java.util.Stack
 import kotlin.math.pow
-import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
 val separator = DecimalFormatSymbols.getInstance().decimalSeparator
 
-fun Float.getNumberOfDigits(): Int {
+fun Double.getNumberOfDigits(): Int {
 	var f = this
 	var i = 0
-	while (f != f.roundToInt().toFloat()) {
+	while (f != f.roundToLong().toDouble()) {
 		i++
 		f *= 10
 	}
@@ -27,7 +27,7 @@ fun Float.getNumberOfDigits(): Int {
 /*
     Returns a localised string omitting trailing zeros, with or without thousands separator
 */
-fun Float?.toStringForCooks(thousands: Boolean = true): String {
+fun Double?.toStringForCooks(thousands: Boolean = true): String {
 	if (this == null)
 		return ""
 
@@ -46,12 +46,12 @@ fun Float?.toStringForCooks(thousands: Boolean = true): String {
 	return formattedNumber
 }
 
-fun String.parseLocalFormattedFloat(): Float? {
-	return replace(Regex("[^0-9$separator]"), "").replace(separator, '.').toFloatOrNull()
+fun String.parseLocalFormattedDouble(): Double? {
+	return replace(Regex("[^0-9$separator]"), "").replace(separator, '.').toDoubleOrNull()
 }
 
-fun Float.roundToNDigits(n: Int): Float {
-	return (this * 10f.pow(n)).roundToInt() / 10f.pow(n)
+fun Double.roundToNDigits(n: Int): Double {
+	return (this * 10f.pow(n)).roundToLong() / 10.0.pow(n)
 }
 
 fun String.getQuantityIntForPlurals(): Int? {
@@ -64,26 +64,26 @@ fun String.getQuantityIntForPlurals(): Int? {
 	}
 }
 
-fun String.withFractionsToFloat(separator: Char = eu.zimbelstern.tournant.separator): Float? {
+fun String.withFractionsToDouble(separator: Char = eu.zimbelstern.tournant.separator): Double? {
 	return try {
 		 when {
 			 this.contains(" ") -> {
-				 this.split(" ")[1].withFractionsToFloat(separator)
-					 ?.plus(this.split(" ")[0].toFloat())
+				 this.split(" ")[1].withFractionsToDouble(separator)
+					 ?.plus(this.split(" ")[0].toDouble())
 			 }
 
 			 this.contains("/") -> {
-				 this.split("/")[0].toFloat() / this.split("/")[1].toFloat()
+				 this.split("/")[0].toDouble() / this.split("/")[1].toDouble()
 			 }
 
-			 else -> Regex("[^0-9$separator]").replace(this, "").replace(separator, '.').toFloat()
+			 else -> Regex("[^0-9$separator]").replace(this, "").replace(separator, '.').toDouble()
 		 }
 	} catch (_: Exception) {
 		null
 	}
 }
 
-fun String.extractFractionsToFloat(separator: Char = eu.zimbelstern.tournant.separator): Pair<Float?, String?> {
+fun String.extractFractionsToDouble(separator: Char = eu.zimbelstern.tournant.separator): Pair<Double?, String?> {
 	val fraction =
 		if (get(0).isDigit()) {
 			split(" ").takeWhile { it.matches(Regex("^[0-9$separator/ ]+$")) }.joinToString(" ")
@@ -93,7 +93,7 @@ fun String.extractFractionsToFloat(separator: Char = eu.zimbelstern.tournant.sep
 			substring(fraction.length).trim()
 		}
 		else null
-	return Pair(fraction?.withFractionsToFloat(separator), remainingString)
+	return Pair(fraction?.withFractionsToDouble(separator), remainingString)
 }
 
 fun List<Int>.toRangeList(): List<IntRange> {
@@ -112,7 +112,7 @@ fun List<Int>.toRangeList(): List<IntRange> {
 	return result.toList()
 }
 
-fun MutableList<Ingredient>.scale(factor: Float?): List<Ingredient> {
+fun MutableList<Ingredient>.scale(factor: Double?): List<Ingredient> {
 	return if (factor != null) {
 		map {
 			it.withScaledAmount(factor)
@@ -170,10 +170,10 @@ fun MutableList<IngredientLine>.move(from: Int, to: Int) {
 	}
 }
 
-fun Spanned.findDurationsByRegex(dashWords: String, timeUnitWords: String): Sequence<Pair<Float, IntRange>> {
+fun Spanned.findDurationsByRegex(dashWords: String, timeUnitWords: String): Sequence<Pair<Double, IntRange>> {
 	return Regex("""(\d{1,3}([$separator/]\d{1,2})?((\s?\p{Pd}\s?)|(\s$dashWords\s)))?\d{1,3}([$separator/]\d{1,2})?\s?($timeUnitWords)([^A-Za-z]|$)""").findAll(this).map {
 		Pair(
-			it.value.takeWhile { char -> char.isDigit() || char == separator || char == '/'}.withFractionsToFloat(separator)!!,
+			it.value.takeWhile { char -> char.isDigit() || char == separator || char == '/'}.withFractionsToDouble(separator)!!,
 			IntRange(it.range.first, it.range.last.minus(if (it.value.last().isLetter()) 0 else 1))
 		)
 	}

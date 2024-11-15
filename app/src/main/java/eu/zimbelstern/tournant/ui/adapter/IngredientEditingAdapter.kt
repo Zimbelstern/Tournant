@@ -73,8 +73,8 @@ class IngredientEditingAdapter(
 					} else {
 						val numbers = it.toString().split("-")
 						try {
-							ingredient.amount = NumberFormat.getInstance().parse(numbers[0])?.toFloat()
-							ingredient.amountRange = if (numbers.size == 2) NumberFormat.getInstance().parse(numbers[1])?.toFloat() else null
+							ingredient.amount = NumberFormat.getInstance().parse(numbers[0])?.toDouble()
+							ingredient.amountRange = if (numbers.size == 2) NumberFormat.getInstance().parse(numbers[1])?.toDouble() else null
 						} catch (_: Exception) { }
 					}
 				}

@@ -38,16 +38,16 @@ object Converter {
 		return listOfNotNull(hourString, minString).joinToString(" ")
 	}
 
-	@InverseMethod("stringToFloat")
+	@InverseMethod("stringToDouble")
 	@JvmStatic
-	fun floatToString(@Suppress("UNUSED_PARAMETER") oldValue: Float?, value: Float?): String {
+	fun doubleToString(@Suppress("UNUSED_PARAMETER") oldValue: Double?, value: Double?): String {
 		return value?.toStringForCooks(thousands = false) ?: ""
 	}
 
 	@JvmStatic
-	fun stringToFloat(oldValue: Float?, value: String): Float? {
+	fun stringToDouble(oldValue: Double?, value: String): Double? {
 		return if (value.isEmpty()) null else try {
-			NumberFormat.getInstance().parse(value)?.toFloat()
+			NumberFormat.getInstance().parse(value)?.toDouble()
 		} catch (_: Exception) {
 			oldValue
 		}

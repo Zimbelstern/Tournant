@@ -37,7 +37,7 @@ object DemoDatabase {
 										rating = 5f,
 										preptime = 10,
 										cooktime = 25,
-										yieldValue = 20f,
+										yieldValue = 20.0,
 										yieldUnit = ContextCompat.getString(context, R.string.yield_muffins),
 										instructions = ContextCompat.getString(context, R.string.sample_instructions),
 										notes = ContextCompat.getString(context, R.string.sample_modifications),
@@ -47,18 +47,18 @@ object DemoDatabase {
 										}.toByteArray()
 									),
 									listOf(
-										Triple(2f, null, R.string.eggs),
-										Triple(125f, R.string.ml, R.string.vegetable_oil),
-										Triple(250f, R.string.ml, R.string.milk),
-										Triple(250f, R.string.g, R.string.sugar),
-										Triple(400f, R.string.g, R.string.flour),
-										Triple(3f, R.string.tsp, R.string.baking_powder),
-										Triple(1f, R.string.tsp, R.string.salt),
-										Triple(100f, R.string.g, R.string.chocolate_chips)
+										Triple(2, null, R.string.eggs),
+										Triple(125, R.string.ml, R.string.vegetable_oil),
+										Triple(250, R.string.ml, R.string.milk),
+										Triple(250, R.string.g, R.string.sugar),
+										Triple(400, R.string.g, R.string.flour),
+										Triple(3, R.string.tsp, R.string.baking_powder),
+										Triple(1, R.string.tsp, R.string.salt),
+										Triple(100, R.string.g, R.string.chocolate_chips)
 									).mapIndexed { i, item ->
 										Ingredient(
 											position = i,
-											amount = item.first,
+											amount = item.first.toDouble(),
 											amountRange = null,
 											unit = item.second?.let { ContextCompat.getString(context, it) },
 											item = ContextCompat.getString(context, item.third),

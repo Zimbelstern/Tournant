@@ -6,8 +6,8 @@ import androidx.core.text.parseAsHtml
 import eu.zimbelstern.tournant.data.Ingredient
 import eu.zimbelstern.tournant.data.Recipe
 import eu.zimbelstern.tournant.data.RecipeWithIngredients
-import eu.zimbelstern.tournant.extractFractionsToFloat
-import eu.zimbelstern.tournant.withFractionsToFloat
+import eu.zimbelstern.tournant.extractFractionsToDouble
+import eu.zimbelstern.tournant.withFractionsToDouble
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import java.io.IOException
@@ -55,7 +55,7 @@ class GourmetXmlParser(private val separator: Char) {
 		var rating: Float? = null
 		var preptime: Int? = null
 		var cooktime: Int? = null
-		var yieldValue: Float? = null
+		var yieldValue: Double? = null
 		var yieldUnit: String? = null
 		var ingredientList: MutableList<Ingredient> = mutableListOf()
 		var instructions: String? = null
@@ -155,9 +155,9 @@ class GourmetXmlParser(private val separator: Char) {
 				else -> skip(parser)
 			}
 		}
-		val amount = amountString?.split("-")?.get(0)?.withFractionsToFloat(separator)
+		val amount = amountString?.split("-")?.get(0)?.withFractionsToDouble(separator)
 		val amountRange = if (amountString?.contains("-") == true)
-			amountString.split("-")[1].withFractionsToFloat(separator)
+			amountString.split("-")[1].withFractionsToDouble(separator)
 		else null
 
 		return Ingredient(position, amount, amountRange, unit, item, null, optional)
@@ -169,9 +169,9 @@ class GourmetXmlParser(private val separator: Char) {
 		val amountString = parser.getAttributeValue(null, "amount")
 		val refId = parser.getAttributeValue(null, "refid").toLong()
 
-		val amount = amountString?.split("-")?.get(0)?.withFractionsToFloat(separator)
+		val amount = amountString?.split("-")?.get(0)?.withFractionsToDouble(separator)
 		val amountRange = if (amountString?.contains("-") == true)
-			amountString.split("-")[1].withFractionsToFloat(separator)
+			amountString.split("-")[1].withFractionsToDouble(separator)
 		else null
 
 		readStringField(parser)
@@ -218,15 +218,15 @@ class GourmetXmlParser(private val separator: Char) {
 			when {
 				timeString.contains("hours") -> {
 					if (timeString.contains("minutes")) {
-						timeString.split(" ")[0].withFractionsToFloat(separator)!!.times(60)
-							.plus(timeString.split(" ")[2].withFractionsToFloat(separator)!!)
+						timeString.split(" ")[0].withFractionsToDouble(separator)!!.times(60)
+							.plus(timeString.split(" ")[2].withFractionsToDouble(separator)!!)
 							.toInt()
 					} else {
-						timeString.split(" ")[0].withFractionsToFloat(separator)?.times(60)?.toInt()
+						timeString.split(" ")[0].withFractionsToDouble(separator)?.times(60)?.toInt()
 					}
 				}
-				timeString.contains("minutes") -> timeString.split(" ")[0].withFractionsToFloat(separator)?.toInt()
-				else -> timeString.withFractionsToFloat(separator)?.toInt()
+				timeString.contains("minutes") -> timeString.split(" ")[0].withFractionsToDouble(separator)?.toInt()
+				else -> timeString.withFractionsToDouble(separator)?.toInt()
 			}
 		} catch (_: Exception) {
 			null
@@ -234,12 +234,12 @@ class GourmetXmlParser(private val separator: Char) {
 	}
 
 	@Throws(XmlPullParserException::class, IOException::class)
-	private fun readYield(parser: XmlPullParser): Pair<Float?, String?> {
+	private fun readYield(parser: XmlPullParser): Pair<Double?, String?> {
 		val tag = parser.name
 		parser.require(XmlPullParser.START_TAG, null, tag)
 		val yieldString = readText(parser)
 		parser.require(XmlPullParser.END_TAG, null, tag)
-		return yieldString.extractFractionsToFloat(separator)
+		return yieldString.extractFractionsToDouble(separator)
 	}
 
 	@Throws(XmlPullParserException::class, IOException::class)

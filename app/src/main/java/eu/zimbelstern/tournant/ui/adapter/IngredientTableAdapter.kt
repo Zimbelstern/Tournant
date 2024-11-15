@@ -12,14 +12,14 @@ import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.data.Ingredient
 import eu.zimbelstern.tournant.databinding.InputFieldScaleBinding
 import eu.zimbelstern.tournant.databinding.RecyclerItemIngredientsBinding
-import eu.zimbelstern.tournant.parseLocalFormattedFloat
+import eu.zimbelstern.tournant.parseLocalFormattedDouble
 import eu.zimbelstern.tournant.toStringForCooks
 import java.text.DecimalFormatSymbols
 
 class IngredientTableAdapter(
 	private val ingredientTableInterface: IngredientTableInterface,
 	ingredientList: List<Ingredient>,
-	private val scale: Float? = null
+	private val scale: Double? = null
 ) : RecyclerView.Adapter<IngredientTableAdapter.IngredientTableViewHolder>() {
 
 	private val tableRows = createTableRows(ingredientList, scale)
@@ -61,13 +61,13 @@ class IngredientTableAdapter(
 				holder.binding.ingredientItem.apply {
 					paintFlags = paintFlags or Paint.UNDERLINE_TEXT_FLAG
 					setOnClickListener {
-						ingredientTableInterface.openRecipe(refId, row.amountString.substringBefore('-').parseLocalFormattedFloat(), row.unitString.trim())
+						ingredientTableInterface.openRecipe(refId, row.amountString.substringBefore('-').parseLocalFormattedDouble(), row.unitString.trim())
 					}
 				}
 			}
 
 			if (row.amountString.isNotEmpty()) {
-				val amount = row.amountString.substringBefore('-').parseLocalFormattedFloat() ?: return
+				val amount = row.amountString.substringBefore('-').parseLocalFormattedDouble() ?: return
 				ingredientViews.forEach {
 					it.setOnLongClickListener {
 						val customView = InputFieldScaleBinding.inflate(LayoutInflater.from(holder.binding.root.context), holder.binding.root, false)
@@ -84,10 +84,10 @@ class IngredientTableAdapter(
 							.setTitle(R.string.scale_to)
 							.setView(customView.root)
 							.setPositiveButton(R.string.ok) { dialog, _ ->
-								val newAmount = customView.inputField.text.toString().parseLocalFormattedFloat()
+								val newAmount = customView.inputField.text.toString().parseLocalFormattedDouble()
 								if (newAmount != null)
 									ingredientTableInterface.scale(
-										newAmount / amount * (scale ?: 1f)
+										newAmount / amount * (scale ?: 1.0)
 									)
 								dialog.dismiss()
 							}
@@ -105,8 +105,8 @@ class IngredientTableAdapter(
 		return tableRows.size
 	}
 
-	private fun createTableRows(ingredientList: List<Ingredient>, scale: Float?): List<IngredientRow> {
-		val scaleOrEmpty = if (scale != null && scale != 1f) {
+	private fun createTableRows(ingredientList: List<Ingredient>, scale: Double?): List<IngredientRow> {
+		val scaleOrEmpty = if (scale != null && scale != 1.0) {
 			"(${scale.toStringForCooks()}x)"
 		} else ""
 		return mutableListOf<IngredientRow>().apply {
@@ -157,8 +157,8 @@ class IngredientTableAdapter(
 
 	interface IngredientTableInterface {
 		fun getResources(): Resources
-		fun openRecipe(refId: Long, yieldAmount: Float?, yieldUnit: String?)
-		fun scale(scaleFactor: Float)
+		fun openRecipe(refId: Long, yieldAmount: Double?, yieldUnit: String?)
+		fun scale(scaleFactor: Double)
 	}
 
 }

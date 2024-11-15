@@ -29,8 +29,8 @@ data class Ingredient(
 	@ColumnInfo(index = true)
 	var recipeId: Long,
 	var position: Int,
-	var amount: Float?,
-	var amountRange: Float?,
+	var amount: Double?,
+	var amountRange: Double?,
 	var unit: String?,
 	var item: String?,
 	var refId: Long?,
@@ -41,8 +41,8 @@ data class Ingredient(
 	// Constructor for simple ingredient
 	constructor(
 		position: Int,
-		amount: Float?,
-		amountRange: Float?,
+		amount: Double?,
+		amountRange: Double?,
 		unit: String?,
 		item: String,
 		group: String?,
@@ -61,8 +61,8 @@ data class Ingredient(
 	// Constructor for reference ingredient
 	constructor(
 		position: Int,
-		amount: Float?,
-		amountRange: Float?,
+		amount: Double?,
+		amountRange: Double?,
 		unit: String?,
 		refId: Long,
 		group: String?,
@@ -84,8 +84,8 @@ data class Ingredient(
 		if (refId != null) item = null
 	}
 
-	fun withScaledAmount(factor: Float): Ingredient {
-		if (factor == 1f) {
+	fun withScaledAmount(factor: Double): Ingredient {
+		if (factor == 1.0) {
 			return this
 		}
 

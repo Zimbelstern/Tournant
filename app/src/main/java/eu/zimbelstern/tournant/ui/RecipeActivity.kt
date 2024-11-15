@@ -61,7 +61,7 @@ import eu.zimbelstern.tournant.databinding.ActivityRecipeBinding
 import eu.zimbelstern.tournant.databinding.InputFieldTimeBinding
 import eu.zimbelstern.tournant.databinding.RecyclerPreparationsBinding
 import eu.zimbelstern.tournant.getQuantityIntForPlurals
-import eu.zimbelstern.tournant.parseLocalFormattedFloat
+import eu.zimbelstern.tournant.parseLocalFormattedDouble
 import eu.zimbelstern.tournant.scale
 import eu.zimbelstern.tournant.splitLines
 import eu.zimbelstern.tournant.toStringForCooks
@@ -183,13 +183,13 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 						binding.recipeDetailYields.visibility = View.VISIBLE
 						binding.recipeDetailYieldsValue.apply {
 							keyListener = DigitsKeyListener.getInstance("0123456789" + DecimalFormatSymbols.getInstance().decimalSeparator)
-							hint = (it ?: 1f).toStringForCooks(thousands = false)
+							hint = (it ?: 1.0).toStringForCooks(thousands = false)
 							if (it != null) {
 								text = SpannableStringBuilder(hint)
 							}
 							fillYieldsUnit(it, recipe.yieldUnit)
 							addTextChangedListener { editable ->
-								val scaleFactor = editable.toString().replace(DecimalFormatSymbols.getInstance().decimalSeparator, '.').toFloatOrNull()?.div(recipe.yieldValue ?: 1f)
+								val scaleFactor = editable.toString().replace(DecimalFormatSymbols.getInstance().decimalSeparator, '.').toDoubleOrNull()?.div(recipe.yieldValue ?: 1.0)
 								recipeWithIngredients.ingredients.scale(scaleFactor).let { list ->
 									binding.recipeDetailIngredientsRecycler.adapter = IngredientTableAdapter(this@RecipeActivity, list, scaleFactor)
 									binding.recipeDetailInstructionsRecycler.adapter = recipe.instructions?.let {
@@ -225,7 +225,7 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 					}
 				}
 				if (intent.hasExtra("RECIPE_YIELD_AMOUNT")) {
-					val requestedYieldAmount = intent.getFloatExtra("RECIPE_YIELD_AMOUNT", 0f)
+					val requestedYieldAmount = intent.getDoubleExtra("RECIPE_YIELD_AMOUNT", 0.0)
 					val requestedYieldUnit = intent.getStringExtra("RECIPE_YIELD_UNIT")
 					if (requestedYieldUnit.isNullOrEmpty() && recipeWithIngredients.recipe.yieldUnit != null) {
 						scale(requestedYieldAmount)
@@ -238,16 +238,16 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 				binding.recipeDetailLess.setOnClickListener {
 					binding.recipeDetailYieldsValue.text = SpannableStringBuilder(
 						RecipeUtils.lessYield(
-							binding.recipeDetailYieldsValue.text.toString().replace(DecimalFormatSymbols.getInstance().decimalSeparator, '.').toFloatOrNull()
-								?: recipeWithIngredients.recipe.yieldValue ?: 1f
+							binding.recipeDetailYieldsValue.text.toString().replace(DecimalFormatSymbols.getInstance().decimalSeparator, '.').toDoubleOrNull()
+								?: recipeWithIngredients.recipe.yieldValue ?: 1.0
 						).toStringForCooks(thousands = false)
 					)
 				}
 				binding.recipeDetailMore.setOnClickListener {
 					binding.recipeDetailYieldsValue.text = SpannableStringBuilder(
 						RecipeUtils.moreYield(
-							binding.recipeDetailYieldsValue.text.toString().replace(DecimalFormatSymbols.getInstance().decimalSeparator, '.').toFloatOrNull()
-								?: recipeWithIngredients.recipe.yieldValue ?: 1f
+							binding.recipeDetailYieldsValue.text.toString().replace(DecimalFormatSymbols.getInstance().decimalSeparator, '.').toDoubleOrNull()
+								?: recipeWithIngredients.recipe.yieldValue ?: 1.0
 						).toStringForCooks(thousands = false))
 				}
 				binding.recipeDetailReset.setOnClickListener {
@@ -347,7 +347,7 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 		return markwon?.toMarkdown(text) ?: text.replace("\n", "<br/>").parseAsHtml()
 	}
 
-	private fun fillYieldsUnit(value: Float?, unit: String?) {
+	private fun fillYieldsUnit(value: Double?, unit: String?) {
 		binding.recipeDetailYieldsText.text = if (value != null) {
 			unit
 				?: resources.getQuantityText(
@@ -386,7 +386,7 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 		return true
 	}
 
-	override fun openRecipe(refId: Long, yieldAmount: Float?, yieldUnit: String?) {
+	override fun openRecipe(refId: Long, yieldAmount: Double?, yieldUnit: String?) {
 		startActivity(Intent(this, RecipeActivity::class.java).apply {
 			putExtra("RECIPE_ID", refId)
 			if (yieldAmount != null) {
@@ -396,9 +396,9 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 		})
 	}
 
-	override fun scale(scaleFactor: Float) {
+	override fun scale(scaleFactor: Double) {
 		binding.root.clearFocus()
-		val oldYieldValue = binding.recipeDetailYieldsValue.hint.toString().parseLocalFormattedFloat() ?: 1f
+		val oldYieldValue = binding.recipeDetailYieldsValue.hint.toString().parseLocalFormattedDouble() ?: 1.0
 		binding.recipeDetailYieldsValue.setText((oldYieldValue * scaleFactor).toStringForCooks(thousands = false))
 	}
 

@@ -34,7 +34,7 @@ data class Recipe(
 	var rating: Float?,
 	var preptime: Int?,
 	var cooktime: Int?,
-	var yieldValue: Float?,
+	var yieldValue: Double?,
 	var yieldUnit: String?,
 	var instructions: String?,
 	var notes: String?,
@@ -56,7 +56,7 @@ data class Recipe(
 		rating: Float? = null,
 		preptime: Int? = null,
 		cooktime: Int? = null,
-		yieldValue: Float? = null,
+		yieldValue: Double? = null,
 		yieldUnit: String? = null,
 		instructions: String? = null,
 		notes: String? = null,
@@ -95,7 +95,7 @@ data class Recipe(
 		if (cooktime == 0) cooktime = null
 		if (preptime == 0) preptime = null
 		if (yieldUnit?.isBlank() == true) yieldUnit = null
-		if (yieldValue == 0f) yieldValue = if (yieldUnit != null) 1f else null
+		if (yieldValue == 0.0) yieldValue = if (yieldUnit != null) 1.0 else null
 		if (instructions?.isBlank() == true) category = null
 		if (notes?.isBlank() == true) category = null
 		modified = Date()

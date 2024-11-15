@@ -5,33 +5,21 @@ import kotlin.math.roundToInt
 
 class RecipeUtils {
 	companion object {
-		fun moreYield(currentYield: Float): Float {
-			return if (currentYield >= 1) {
-				currentYield.roundToInt() + 1f
-			}
-			else if (currentYield >= 0.5f) {
-				1f
-			}
-			else if (currentYield >= 0.25f) {
-				0.5f
-			}
-			else {
-				currentYield
+		fun moreYield(currentYield: Double): Double {
+			return when {
+				currentYield >= 1 -> currentYield.roundToInt() + 1.0
+				currentYield >= 0.5 -> 1.0
+				currentYield >= 0.25 -> 0.5
+				else -> currentYield
 			}
 		}
 
-		fun lessYield(currentYield: Float): Float {
-			return if (currentYield > 1) {
-				ceil(currentYield) - 1
-			}
-			else if (currentYield > 0.5f) {
-				0.5f
-			}
-			else if (currentYield > 0.25f){
-				0.25f
-			}
-			else {
-				currentYield
+		fun lessYield(currentYield: Double): Double {
+			return when {
+				currentYield > 1 -> ceil(currentYield) - 1
+				currentYield > 0.5 -> 0.5
+				currentYield > 0.25 -> 0.25
+				else -> currentYield
 			}
 		}
 	}
