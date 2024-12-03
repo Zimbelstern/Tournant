@@ -144,4 +144,24 @@
     <string name="missing_features_gourmand">Les propriétés de recette suivantes ne sont pas prises en charge par Gourmand:
 \n%s</string>
     <string name="archive_original_images">Archiver avec des images originales</string>
+    <string name="created">Créé</string>
+    <string name="creation_date">Date de création</string>
+    <string name="modified">Modifié</string>
+    <string name="modification_date">Date de modification</string>
+    <plurals name="prepared_times">
+        <item quantity="one">Préparé une fois</item>
+        <item quantity="many">Préparé %d fois</item>
+        <item quantity="other">Préparé %d fois</item>
+    </plurals>
+    <string name="gourmand165">Nombre à virgule pour le nombre de portion (problème #165 de Gourmand)</string>
+    <string name="preparations_count">Nombre de réalisation</string>
+    <string name="prepared_on">Préparé le</string>
+    <string name="last_prepared">Dernière préparation</string>
+    <string name="log_preparation">Journal de réalisation</string>
+    <string name="logbook">Journaux</string>
+    <string name="last_time">Dernière fois : %s</string>
+    <string name="auto_follow_system">Auto (celui du système)</string>
+    <string name="light">Clair</string>
+    <string name="dark">Sombre</string>
+    <string name="language">Langue</string>
 </resources>
