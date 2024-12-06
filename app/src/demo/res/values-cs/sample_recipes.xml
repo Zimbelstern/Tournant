@@ -23,4 +23,12 @@
 \n5. Přimíchejte čokoládové pecičky.
 \n6. Naplňte formičky na muffiny do dvou třetin a pečte 20-25 minut. Po propíchnutí párátkem by mělo párátko zůstat čisté.
 \n7. Nechte muffiny ve formičkách pár minut vychladnout, poté je přendejte na kuchyňskou mřížku.</string>
+    <string name="croissants">Croissanty</string>
+    <string name="pretzels">Preclíky</string>
+    <string name="dessert">Dezert</string>
+    <string name="tiramisu">Tiramisu</string>
+    <string name="panna_cotta">Panacota</string>
+    <string name="german">Němčina</string>
+    <string name="french">Francouzština</string>
+    <string name="italian">Italština</string>
 </resources>
