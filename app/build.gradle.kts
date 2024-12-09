@@ -16,13 +16,14 @@ android {
 		minSdk = 21
 		targetSdk = 35
 		versionCode = 27
-		versionName = "2.9.0"
+		versionName = "2.9.0-fdroid"
 
 		ksp {
 			arg("room.schemaLocation", "$projectDir/schemas")
 		}
 
 		testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+		vectorDrawables.generatedDensities?.clear()
 	}
 
 	val availableLanguages = File("$projectDir/app/src/main/res").walk()
