@@ -151,4 +151,5 @@
     <string name="light">浅色</string>
     <string name="dark">深色</string>
     <string name="language">语言</string>
+    <string name="gourmand165">成品量支持小数 (Gourmand issue #165)</string>
 </resources>
