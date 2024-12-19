@@ -26,7 +26,7 @@ android {
 		vectorDrawables.generatedDensities?.clear()
 	}
 
-	val availableLanguages = File("$projectDir/app/src/main/res").walk()
+	val availableLanguages = File("$projectDir/src/main/res").walk()
 		.filter { file ->
 			file.isDirectory
 				&& file.walk().any { it.name == "strings.xml" }
