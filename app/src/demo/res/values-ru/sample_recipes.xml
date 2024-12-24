@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="muffins">Кексы Маффины</string>
+    <string name="pastries">Выпечка</string>
+    <string name="american">Американская</string>
+    <string name="yield_muffins">кексы маффины</string>
+    <string name="g">Г</string>
+    <string name="ml">мл</string>
+    <string name="tsp">ч.л.</string>
+    <string name="eggs">средние яйца</string>
+    <string name="vegetable_oil">растительное масло</string>
+    <string name="milk">молоко</string>
+    <string name="sugar">сахар</string>
+    <string name="flour">мука</string>
+    <string name="baking_powder">разрыхлитель теста</string>
+    <string name="salt">соль</string>
+    <string name="chocolate_chips">шоколадные кусочки</string>
+    <string name="sample_modifications">Для шоколадных маффинов замените 100 г муки на 100 г какао-порошка.</string>
+    <string name="croissants">Круассаны</string>
+    <string name="pretzels">Крендельки</string>
+    <string name="dessert">Десерт</string>
+    <string name="tiramisu">Тирамису</string>
+    <string name="panna_cotta">Панна-котта</string>
+    <string name="german">Немецкий</string>
+    <string name="french">Французский</string>
+    <string name="italian">Итальянский</string>
+    <string name="sample_instructions">1. Разогрейте духовку до 200°C (400°F).  \n2. Взбейте яйца легонько в течение 1 минуты.  \n3. Добавьте масло и молоко и взбейте до объединения. Затем добавьте сахар и перемешайте до получения однородного теста.  \n4. Просейте муку, разрыхлитель теста и соль и аккуратно перемешайте до однородности.  \n5. Вмешайте шоколадные кусочки.  \n6. Заполните формы для маффинов на две трети и выпекайте 20-25 минут. Когда шпажка вставлена в середину, она должна выйти чистой.  \n7. Оставьте маффины в форме для остывания на несколько минут, затем перенесите на решетку.</string>
+</resources>
