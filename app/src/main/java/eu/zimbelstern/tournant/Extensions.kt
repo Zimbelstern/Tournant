@@ -174,7 +174,7 @@ fun Spanned.findDurationsByRegex(dashWords: String, timeUnitWords: String): Sequ
 	return Regex("""(\d{1,3}([$separator/]\d{1,2})?((\s?\p{Pd}\s?)|(\s$dashWords\s)))?\d{1,3}([$separator/]\d{1,2})?\s?($timeUnitWords)([^A-Za-z]|$)""").findAll(this).map {
 		Pair(
 			it.value.takeWhile { char -> char.isDigit() || char == separator || char == '/'}.withFractionsToDouble(separator)!!,
-			IntRange(it.range.first, it.range.last.minus(if (it.value.last().isLetter()) 0 else 1))
+			IntRange(it.range.first, it.range.last.minus(if (Regex("""[A-Za-z]$""").matches(it.value)) 0 else 1))
 		)
 	}
 }
