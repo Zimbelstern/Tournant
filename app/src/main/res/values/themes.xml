@@ -75,10 +75,10 @@
 
 	<!-- For light and dark theme -->
 	<style name="Theme.Tournant.KitchenBackground" parent="Theme.Tournant">
-		<item name="android:windowBackground">@drawable/background_repeat</item>
+<!--		<item name="android:windowBackground">@drawable/background_repeat</item>-->
 	</style>
 	<style name="Theme.Tournant.NoActionBar.KitchenBackground" parent="Theme.Tournant.NoActionBar">
-		<item name="android:windowBackground">@drawable/background_repeat</item>
+<!--		<item name="android:windowBackground">@drawable/background_repeat</item>-->
 	</style>
 
 	<!-- For light and dark theme -->

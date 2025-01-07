@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.graphics.Typeface
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.text.Spanned
 import android.text.style.StyleSpan
@@ -29,7 +30,10 @@ import androidx.core.net.toUri
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.text.toSpannable
 import androidx.core.view.GravityCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.children
+import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -350,6 +354,16 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 			binding.navDrawerButton.setOnClickListener {
 				binding.root.openDrawer(GravityCompat.START)
 			}
+		}
+
+		// Handle enforced edge-to-edge display on Android 15
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			binding.root.setStatusBarBackgroundColor(getColor(R.color.bar_color))
+		}
+		ViewCompat.setOnApplyWindowInsetsListener(binding.navDrawer.root) { view, insets ->
+			val bars = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+			view.updatePadding(bottom = bars.bottom)
+			WindowInsetsCompat.CONSUMED
 		}
 	}
 
