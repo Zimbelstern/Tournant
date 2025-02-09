@@ -18,25 +18,12 @@
 
 		<!-- Surfaces -->
 		<item name="colorSurface">@color/dark_surface</item>
-		<item name="android:windowBackground">?attr/colorSurface</item>
+		<item name="android:windowBackground">@color/bar_color</item>
 		<item name="materialCardViewStyle">@style/Tournant.CardViewStyle</item>
 
 		<!-- Dialogs -->
 		<item name="materialAlertDialogTheme">@style/Theme.Tournant.Dialog</item>
 
 	</style>
-
-	<style name="Theme.Tournant.Splash" parent="Theme.SplashScreen.IconBackground">
-		<item name="windowSplashScreenBackground">@color/dark_surface</item>
-		<item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
-		<item name="postSplashScreenTheme">@style/Theme.Tournant.NoActionBar.KitchenBackground</item>
-	</style>
-
-	<color name="bar_color">@color/blue_darker</color>
-	<color name="heading_color">@color/blue_light</color>
-	<color name="subtitle_color">@color/blue_light_pale</color>
-	<color name="highlight_color">@color/amber</color>
-	<color name="normal_text_color">@color/text_on_dark_card</color>
-	<color name="checked_text_color">@color/text_on_dark_card_checked</color>
 
 </resources>

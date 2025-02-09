@@ -9,10 +9,17 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.ViewGroupCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -26,6 +33,7 @@ import eu.zimbelstern.tournant.data.Ingredient
 import eu.zimbelstern.tournant.data.IngredientGroupTitle
 import eu.zimbelstern.tournant.databinding.ActivityRecipeEditingBinding
 import eu.zimbelstern.tournant.move
+import eu.zimbelstern.tournant.safeInsets
 import eu.zimbelstern.tournant.ui.adapter.IngredientEditingAdapter
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -61,6 +69,23 @@ class RecipeEditingActivity : AppCompatActivity(), IngredientEditingAdapter.Ingr
 		}
 
 		binding = ActivityRecipeEditingBinding.inflate(layoutInflater)
+
+		enableEdgeToEdge()
+		ViewGroupCompat.installCompatInsetsDispatch(window.decorView.rootView)
+
+		ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, windowInsets ->
+			Log.d(TAG, "setOnApplyWindowInsetsListener(content)")
+			view.updateLayoutParams<MarginLayoutParams> {
+				topMargin = windowInsets.safeInsets().top
+				bottomMargin = windowInsets.safeInsets().bottom
+			}
+			view.updatePadding(
+				left = windowInsets.safeInsets().left,
+				right = windowInsets.safeInsets().right,
+			)
+			WindowInsetsCompat.CONSUMED
+		}
+
 		setContentView(binding.root)
 
 		supportActionBar?.apply {

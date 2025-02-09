@@ -5,14 +5,21 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
+import androidx.core.content.ContextCompat
 import androidx.core.os.LocaleListCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.ViewGroupCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -29,6 +36,7 @@ import eu.zimbelstern.tournant.Constants.Companion.PREF_MODE
 import eu.zimbelstern.tournant.Constants.Companion.PREF_SCREEN_ON
 import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.TournantApplication
+import eu.zimbelstern.tournant.safeInsets
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -52,12 +60,37 @@ class SettingsActivity : AppCompatActivity() {
 			setDisplayHomeAsUpEnabled(true)
 			setDisplayShowTitleEnabled(true)
 		}
+
+		enableEdgeToEdge()
+		ViewGroupCompat.installCompatInsetsDispatch(window.decorView.rootView)
+
+		ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { view, windowInsets ->
+			Log.d(localClassName.split(".").last(), "setOnApplyWindowInsetsListener(content)")
+			view.updatePadding(
+				top = windowInsets.safeInsets().top,
+				bottom = windowInsets.safeInsets().bottom
+			)
+			windowInsets
+		}
+
 	}
 
 	class SettingsFragment : PreferenceFragmentCompat() {
 
 		companion object {
 			private const val TAG = "SettingsFragment"
+		}
+
+		override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+			super.onViewCreated(view, savedInstanceState)
+			ViewCompat.setOnApplyWindowInsetsListener(view) { v, windowInsets ->
+				v.updatePadding(
+					left = windowInsets.safeInsets().left,
+					right = windowInsets.safeInsets().right,
+				)
+				WindowInsetsCompat.CONSUMED
+			}
+			view.setBackgroundColor(ContextCompat.getColor(view.context, R.color.surface))
 		}
 
 		override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

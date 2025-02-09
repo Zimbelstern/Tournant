@@ -3,6 +3,7 @@ package eu.zimbelstern.tournant
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import androidx.core.text.toSpanned
+import androidx.core.view.WindowInsetsCompat
 import eu.zimbelstern.tournant.data.Ingredient
 import eu.zimbelstern.tournant.data.IngredientGroupTitle
 import eu.zimbelstern.tournant.data.IngredientLine
@@ -208,4 +209,8 @@ fun Spanned.splitLines(): List<Spanned> {
 		newSpans.add(0, this.subSequence(start, end).trimStart('\n') as? Spanned ?: SpannableStringBuilder(" ").toSpanned())
 	}
 	return newSpans
+}
+
+fun WindowInsetsCompat.safeInsets() : androidx.core.graphics.Insets {
+	return getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout() or WindowInsetsCompat.Type.ime())
 }

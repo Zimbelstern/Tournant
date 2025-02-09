@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<color name="bar_color">@color/blue_darker</color>
+	<color name="heading_color">@color/blue_light</color>
+	<color name="subtitle_color">@color/blue_light_pale</color>
+	<color name="highlight_color">@color/amber</color>
+	<color name="normal_text_color">@color/text_on_dark_card</color>
+	<color name="checked_text_color">@color/text_on_dark_card_checked</color>
+	<color name="surface">@color/dark_surface</color>
+
+</resources>

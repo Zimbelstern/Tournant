@@ -20,12 +20,10 @@
 			android:exported="false"/>
 		<activity
 			android:name=".ui.RecipeActivity"
-			android:exported="false"
-			android:theme="@style/Theme.Tournant.KitchenBackground"/>
+			android:exported="false"/>
 		<activity
 			android:name=".ui.RecipeEditingActivity"
-			android:exported="false"
-			android:theme="@style/Theme.Tournant.KitchenBackground"/>
+			android:exported="false"/>
 		<activity
 			android:name=".ui.MainActivity"
 			android:exported="true"

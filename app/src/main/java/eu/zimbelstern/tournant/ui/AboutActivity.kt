@@ -4,14 +4,23 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.ViewGroupCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.get
 import eu.zimbelstern.tournant.R
+import eu.zimbelstern.tournant.safeInsets
 
 class AboutActivity : AppCompatActivity() {
 
@@ -28,11 +37,36 @@ class AboutActivity : AppCompatActivity() {
 			setDisplayHomeAsUpEnabled(true)
 			setDisplayShowTitleEnabled(true)
 		}
+
+		enableEdgeToEdge()
+		ViewGroupCompat.installCompatInsetsDispatch(window.decorView.rootView)
+
+		ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { view, windowInsets ->
+			Log.d(localClassName.split(".").last(), "setOnApplyWindowInsetsListener(content)")
+			view.updatePadding(
+				top = windowInsets.safeInsets().top,
+				bottom = windowInsets.safeInsets().bottom
+			)
+			windowInsets
+		}
+
 	}
 
 	class AboutFragment : PreferenceFragmentCompat() {
 
 		private var egg = 1
+
+		override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+			super.onViewCreated(view, savedInstanceState)
+			ViewCompat.setOnApplyWindowInsetsListener(view) { v, windowInsets ->
+				v.updatePadding(
+					left = windowInsets.safeInsets().left,
+					right = windowInsets.safeInsets().right,
+				)
+				WindowInsetsCompat.CONSUMED
+			}
+			view.setBackgroundColor(ContextCompat.getColor(view.context, R.color.surface))
+		}
 
 		override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
 			setPreferencesFromResource(R.xml.about_preferences, rootKey)

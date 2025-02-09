@@ -24,18 +24,24 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup.MarginLayoutParams
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
 import androidx.core.content.FileProvider
 import androidx.core.text.parseAsHtml
+import androidx.core.view.ViewCompat
+import androidx.core.view.ViewGroupCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
@@ -62,6 +68,7 @@ import eu.zimbelstern.tournant.databinding.InputFieldTimeBinding
 import eu.zimbelstern.tournant.databinding.RecyclerPreparationsBinding
 import eu.zimbelstern.tournant.getQuantityIntForPlurals
 import eu.zimbelstern.tournant.parseLocalFormattedDouble
+import eu.zimbelstern.tournant.safeInsets
 import eu.zimbelstern.tournant.scale
 import eu.zimbelstern.tournant.splitLines
 import eu.zimbelstern.tournant.toStringForCooks
@@ -118,6 +125,23 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 		}
 
 		binding = ActivityRecipeBinding.inflate(layoutInflater)
+
+		enableEdgeToEdge()
+		ViewGroupCompat.installCompatInsetsDispatch(window.decorView.rootView)
+
+		ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, windowInsets ->
+			Log.d(TAG, "setOnApplyWindowInsetsListener(content)")
+			view.updateLayoutParams<MarginLayoutParams> {
+				topMargin = windowInsets.safeInsets().top
+				bottomMargin = windowInsets.safeInsets().bottom
+			}
+			view.updatePadding(
+				left = windowInsets.safeInsets().left,
+				right = windowInsets.safeInsets().right,
+			)
+			WindowInsetsCompat.CONSUMED
+		}
+
 		setContentView(binding.root)
 
 		supportActionBar?.apply {

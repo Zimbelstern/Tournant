@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.graphics.Typeface
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.text.Spanned
 import android.text.style.StyleSpan
@@ -14,22 +15,30 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup.MarginLayoutParams
 import android.view.ViewTreeObserver
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ShareCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.text.toSpannable
 import androidx.core.view.GravityCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.ViewGroupCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.children
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -45,6 +54,7 @@ import eu.zimbelstern.tournant.TournantApplication
 import eu.zimbelstern.tournant.databinding.ActivityMainBinding
 import eu.zimbelstern.tournant.databinding.SortOptionsBinding
 import eu.zimbelstern.tournant.pagination.RecipeDescriptionLoadStateAdapter
+import eu.zimbelstern.tournant.safeInsets
 import eu.zimbelstern.tournant.ui.adapter.CategoriesCuisinesAdapter
 import eu.zimbelstern.tournant.ui.adapter.RecipeListAdapter
 import kotlinx.coroutines.Dispatchers
@@ -109,13 +119,61 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 		sharedPrefs.registerOnSharedPreferenceChangeListener(sharedPrefsListener)
 
 		binding = ActivityMainBinding.inflate(layoutInflater)
+
+		enableEdgeToEdge()
+		ViewGroupCompat.installCompatInsetsDispatch(window.decorView.rootView)
+
+		ViewCompat.setOnApplyWindowInsetsListener(binding.toolbar) { view, windowInsets ->
+			Log.d(TAG, "setOnApplyWindowInsetsListener(toolbar)")
+			view.updateLayoutParams<MarginLayoutParams> {
+				topMargin = windowInsets.safeInsets().top
+				leftMargin = windowInsets.safeInsets().left
+				rightMargin = windowInsets.safeInsets().right
+			}
+			WindowInsetsCompat.CONSUMED
+		}
+
+		ViewCompat.setOnApplyWindowInsetsListener(binding.content) { view, windowInsets ->
+			Log.d(TAG, "setOnApplyWindowInsetsListener(recycler)")
+			view.updatePadding(
+				left = windowInsets.safeInsets().left,
+				right = windowInsets.safeInsets().right,
+				bottom = windowInsets.safeInsets().bottom
+			)
+			WindowInsetsCompat.CONSUMED
+		}
+
+		ViewCompat.setOnApplyWindowInsetsListener(binding.navDrawer.root) { view, windowInsets ->
+			Log.d(TAG, "setOnApplyWindowInsetsListener(drawer)")
+			view.updatePadding(
+				top = windowInsets.safeInsets().top,
+				bottom = windowInsets.safeInsets().bottom
+			)
+			windowInsets
+		}
+
+		listOf(binding.navDrawer.navTop, binding.navDrawer.navSpacer, binding.navDrawer.navBottom).forEach {
+			ViewCompat.setOnApplyWindowInsetsListener(it) { view, windowInsets ->
+				Log.d(TAG, "setOnApplyWindowInsetsListener(drawer)")
+				view.updateLayoutParams<MarginLayoutParams> {
+					leftMargin = windowInsets.safeInsets().left
+				}
+				WindowInsetsCompat.CONSUMED
+			}
+		}
+
+		if (Build.VERSION.SDK_INT < 35) {
+			@Suppress("DEPRECATION")
+			window.statusBarColor = ContextCompat.getColor(this, R.color.bar_color)
+		}
+
 		setContentView(binding.root)
 
 		setSupportActionBar(binding.toolbar)
 		supportActionBar?.setDisplayShowTitleEnabled(false)
 
 		initNavDrawer()
-		
+
 		findViewById<View>(android.R.id.content).apply {
 			viewTreeObserver.addOnPreDrawListener(
 				object : ViewTreeObserver.OnPreDrawListener {

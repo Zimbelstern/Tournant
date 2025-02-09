@@ -72,15 +72,13 @@
 
 			</LinearLayout>
 
-
-
-
 		</androidx.appcompat.widget.Toolbar>
 
 		<ViewFlipper
 			android:id="@+id/content"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
+			android:background="@drawable/background_repeat"
 			tools:context=".ui.MainActivity">
 
 			<include
@@ -96,8 +94,8 @@
 				layout="@layout/activity_main_recipes" />
 
 		</ViewFlipper>
-	</LinearLayout>
 
+	</LinearLayout>
 
 	<include android:id="@+id/nav_drawer" layout="@layout/navigation_view" />
 

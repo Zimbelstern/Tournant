@@ -23,6 +23,14 @@
 	<color name="white">#ffffff</color>
 	<color name="transparent">#00123456</color>
 
+	<color name="bar_color">@color/amber</color>
+	<color name="heading_color">@color/blue_text</color>
+	<color name="subtitle_color">@color/blue_dark_pale</color>
+	<color name="highlight_color">@color/blue</color>
+	<color name="normal_text_color">@color/text_on_card</color>
+	<color name="checked_text_color">@color/text_on_card_checked</color>
+	<color name="surface">@color/light_surface</color>
+
 	<array name="material_colors_700" tools:ignore="UnusedResources">
 		<item name="red_700" type="color">#d01716</item>
 		<item name="pink_700" type="color">#c2185b</item>
