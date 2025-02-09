@@ -64,6 +64,7 @@
 
 	<style name="Tournant.ActionMode" parent="Widget.AppCompat.ActionMode">
 		<item name="background">@color/bar_color</item>
+		<item name="titleTextStyle">?attr/textAppearanceHeadline6</item>
 	</style>
 
 	<color name="bar_color">@color/amber</color>
