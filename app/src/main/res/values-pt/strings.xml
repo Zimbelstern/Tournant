@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="ascending">Crescente</string>
-    <string name="delete_all_recipes_sure">Isto irá apagar permanentemente todas as receitas importadas no banco de dados (mas não excluirá nenhum arquivo). Tem certeza?</string>
+    <string name="delete_all_recipes_sure">Isto irá apagar permanentemente <b>todas as receitas importadas</b> no banco de dados. Tem certeza?</string>
     <string name="save">Gravar</string>
     <string name="recipes">Receitas</string>
     <string name="copy_to_clipboard">Copiar</string>
@@ -122,4 +122,45 @@
     <string name="done">Feito</string>
     <string name="unset_rating">Desfazer avaliação</string>
     <string name="delete_selected_sure_named">Isso irá apagar permanentemente %s do banco de dados. Tem certeza?</string>
+    <string name="description">Descrição</string>
+    <string name="recipe_imported">%s importado</string>
+    <string name="json_file">Arquivo JSON (recomendado)</string>
+    <string name="archive_original_images">Arquivo com imagens originais</string>
+    <string name="gourmand_file">Arquivo XML Gourmand</string>
+    <string name="translations">Traduções</string>
+    <string name="egg">Coma um biscoito: 🍪</string>
+    <string name="limitations">Limitações</string>
+    <string name="created">Criado</string>
+    <string name="creation_date">Data de criação</string>
+    <string name="modified">Modificado</string>
+    <string name="modification_date">Data de modificação</string>
+    <string name="preparations_count">Numero de preparações</string>
+    <string name="prepared_on">Praparado em</string>
+    <string name="last_prepared">Último preparado</string>
+    <string name="log_preparation">historico de preparação</string>
+    <string name="logbook">Registro de eventos</string>
+    <string name="set_timer">Definir cronômetro</string>
+    <string name="last_time">Último tempo: %s</string>
+    <string name="missing_features_gourmand">As seguintes propriedades de receita não são suportadas pelo Gourmand:\n%s</string>
+    <plurals name="prepared_times">
+        <item quantity="one">Preparado uma vez</item>
+        <item quantity="many">Preparado %d vezes</item>
+        <item quantity="other">Preparado %d vezes</item>
+    </plurals>
+    <plurals name="recipes_imported">
+        <item quantity="one">%s e uma outra receita importada</item>
+        <item quantity="many">%s e %d outras receitas importadas</item>
+        <item quantity="other">%s e %d outras receitas importadas</item>
+    </plurals>
+    <string name="set_alarm">Definir alarme</string>
+    <string name="auto_follow_system">Automático (sistema de acompanhamento)</string>
+    <string name="light">Luz</string>
+    <string name="dark">Escuro</string>
+    <string name="language">Idioma</string>
+    <string name="website">Site</string>
+    <string name="issues">Rastreador de bugs</string>
+    <string name="ok">Ok</string>
+    <string name="gourmand165">Números de ponto flutuante como valor de rendimento (Gourmand problema(issue) #165)</string>
+    <string name="markdown_support">Markdown suporte</string>
+    <string name="database_id">ID da Base-de-dados</string>
 </resources>
