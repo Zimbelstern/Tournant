@@ -314,9 +314,10 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 			findViewById<View>(R.id.search_mag_icon).visibility = View.GONE
 			binding.title.visibility = if (isIconified) View.VISIBLE else View.GONE
 
-			setOnSearchClickListener  {
+			setOnSearchClickListener {
 				Log.d(TAG, "Search expanded")
 				binding.title.visibility = View.GONE
+				viewModel.search("")
 			}
 
 			setOnQueryTextListener(object : SearchView.OnQueryTextListener {
