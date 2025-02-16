@@ -2,6 +2,7 @@ package eu.zimbelstern.tournant.ui
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -73,6 +74,10 @@ class SettingsActivity : AppCompatActivity() {
 			windowInsets
 		}
 
+		@Suppress("DEPRECATION")
+		if (Build.VERSION.SDK_INT < 35) {
+			window.navigationBarColor = ContextCompat.getColor(this, R.color.bar_color)
+		}
 	}
 
 	class SettingsFragment : PreferenceFragmentCompat() {

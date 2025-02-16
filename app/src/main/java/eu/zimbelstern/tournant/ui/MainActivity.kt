@@ -162,9 +162,10 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 			}
 		}
 
+		@Suppress("DEPRECATION")
 		if (Build.VERSION.SDK_INT < 35) {
-			@Suppress("DEPRECATION")
 			window.statusBarColor = ContextCompat.getColor(this, R.color.bar_color)
+			window.navigationBarColor = ContextCompat.getColor(this, R.color.bar_color)
 		}
 
 		setContentView(binding.root)

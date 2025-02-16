@@ -3,6 +3,7 @@ package eu.zimbelstern.tournant.ui
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -50,6 +51,10 @@ class AboutActivity : AppCompatActivity() {
 			windowInsets
 		}
 
+		@Suppress("DEPRECATION")
+		if (Build.VERSION.SDK_INT < 35) {
+			window.navigationBarColor = ContextCompat.getColor(this, R.color.bar_color)
+		}
 	}
 
 	class AboutFragment : PreferenceFragmentCompat() {

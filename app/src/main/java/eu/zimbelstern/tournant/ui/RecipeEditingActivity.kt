@@ -2,6 +2,7 @@ package eu.zimbelstern.tournant.ui
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
 import android.text.method.DigitsKeyListener
 import android.util.Log
@@ -15,6 +16,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.ViewGroupCompat
 import androidx.core.view.WindowInsetsCompat
@@ -84,6 +86,11 @@ class RecipeEditingActivity : AppCompatActivity(), IngredientEditingAdapter.Ingr
 				right = windowInsets.safeInsets().right,
 			)
 			WindowInsetsCompat.CONSUMED
+		}
+
+		@Suppress("DEPRECATION")
+		if (Build.VERSION.SDK_INT < 35) {
+			window.navigationBarColor = ContextCompat.getColor(this, R.color.bar_color)
 		}
 
 		setContentView(binding.root)

@@ -7,6 +7,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
 import android.provider.AlarmClock
 import android.text.InputFilter
@@ -35,6 +36,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.text.parseAsHtml
 import androidx.core.view.ViewCompat
@@ -140,6 +142,11 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 				right = windowInsets.safeInsets().right,
 			)
 			WindowInsetsCompat.CONSUMED
+		}
+
+		@Suppress("DEPRECATION")
+		if (Build.VERSION.SDK_INT < 35) {
+			window.navigationBarColor = ContextCompat.getColor(this, R.color.bar_color)
 		}
 
 		setContentView(binding.root)
