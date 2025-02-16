@@ -10,4 +10,4 @@ Tournant — рецепти улюблених страв завжди під р
 Tournant сумісний з Gourmand Recipe Manager (раніше відомим як Gourmet) для комп'ютера. Підтримуються імпорт і експорт XML-файлів Gourmand, а також синхронізація з файлом XML на пристрої.
 
 **Докладні інструкції — на вебсайті**
-[tournant.zimbelstern.eu](https://tournant.zimbelstern.eu/?lang=en) (англійською)
+https://tournant.zimbelstern.eu

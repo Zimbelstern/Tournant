@@ -170,4 +170,5 @@
     <string name="light">Світла</string>
     <string name="language">Мова</string>
     <string name="gourmand165">Числа з рухомою комою як значення «Вихід» (проблема #165 в Gourmand)</string>
+    <string name="menu">Меню</string>
 </resources>
