@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="recipes">Retseptid</string>
+    <string name="all_recipes">Kõik retseptid</string>
+    <string name="recipe">Retsept</string>
+    <plurals name="n_recipes">
+        <item quantity="one">%d retsept</item>
+        <item quantity="other">%d retsepti</item>
+    </plurals>
+    <string name="title">Pealkiri</string>
+    <string name="description">Kirjeldus</string>
+    <string name="category">Kategooria</string>
+    <string name="cuisine">Rahvuslik köök</string>
+    <string name="rating">Hinnang</string>
+    <string name="source">Allikas</string>
+    <string name="webpage">Veebileht</string>
+    <string name="cooktime">Küpsetamise aeg</string>
+    <string name="preptime">Ettevalmistuse aeg</string>
+    <string name="yield">Portsjoneid:</string>
+    <string name="unit">Ühik</string>
+    <string name="ingredient">Koostisosa</string>
+    <string name="ingredients">Koostisosad</string>
+    <string name="group">Grupp</string>
+    <string name="optional">%s (valikuline)</string>
+    <string name="instructions">Juhised</string>
+    <string name="notes">Märkused</string>
+    <plurals name="servings">
+        <item quantity="one">" "</item>
+        <item quantity="other">" "</item>
+    </plurals>
+    <plurals name="lots">
+        <item quantity="one">" "</item>
+        <item quantity="other">" "</item>
+    </plurals>
+    <string name="created">Loodud</string>
+    <string name="creation_date">Loomise kuupäev</string>
+    <string name="modified">Muudetud</string>
+    <string name="modification_date">Muutmise kuupäev</string>
+    <string name="preparations_count">Valmistuskordi</string>
+    <string name="prepared_on">Valmistatud</string>
+    <string name="last_prepared">Viimati valmistatud</string>
+    <string name="log_preparation">Logi valmistusaeg</string>
+    <string name="logbook">Logiraamat</string>
+    <plurals name="prepared_times">
+        <item quantity="one">Valmistatud üks kord</item>
+        <item quantity="other">Valmistatud %d korda</item>
+    </plurals>
+    <string name="last_time">Viimati: %s</string>
+    <string name="new_recipe">Uus retsept</string>
+    <string name="recipe_count">Retseptide arv</string>
+    <string name="import_recipes">Impordi retsepte</string>
+    <string name="refresh">Värskenda</string>
+    <string name="settings">Seadistused</string>
+    <string name="share">Jaga</string>
+    <string name="share_selected">Jaga valik</string>
+    <string name="export_selected">Ekspordi valik</string>
+    <string name="json_file">JSON-fail (soovitatav)</string>
+    <string name="archive_original_images">Arhiiv algsete piltidega</string>
+    <string name="share_all">Jaga kõiki</string>
+    <string name="export_all">Ekspordi kõik</string>
+    <string name="select_all">Vali kõik</string>
+    <string name="be_careful">Ole ettevaatlik</string>
+    <string name="keep_screen_on">Retseptivaates hoia ekraan sisselülitatuna</string>
+    <string name="synced_file">Sünkroniseeritud Gourmandi XML-fail</string>
+    <string name="markdown_support">Markdowni tugi</string>
+    <string name="color_theme">Kasutatavad värvid</string>
+    <string name="light">Hele kujundus</string>
+    <string name="dark">Tume kujundus</string>
+    <string name="language">Keel</string>
+    <string name="import_export">Ühilduvus Gourmandiga</string>
+    <string name="auto_follow_system">Automaatne (kasuta süsteemi kujundust)</string>
+    <string name="delete_all_recipes">Kustuta kõik retseptid</string>
+    <string name="delete_all_recipes_sure">Järgnevaga kustutad andmebaasist <b>kõik imporditud retseptid</b>. Kas kindlasti soovid seda?</string>
+    <string name="website">Veebisait</string>
+    <string name="version">Versioon</string>
+    <string name="license">Litsents</string>
+    <string name="code">Lähtekood</string>
+    <string name="translations">Tõlked</string>
+    <string name="donate">Toeta rahaliselt</string>
+    <string name="libraries">Teegid</string>
+    <string name="search">Otsi</string>
+    <string name="about_app_name">Rakenduse teave: %s</string>
+    <string name="general_settings">Üldised seadistused</string>
+    <string name="issues">Veahaldus</string>
+</resources>
