@@ -158,4 +158,5 @@
     <string name="language">Taal</string>
     <string name="auto_follow_system">Automatisch (systeemthema)</string>
     <string name="gourmand165">Zwevendekommagetallen als aantal (Gourmand-probleem #165)</string>
+    <string name="menu">Menu</string>
 </resources>
