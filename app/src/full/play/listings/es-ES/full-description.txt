@@ -1,15 +1,13 @@
-<b>¡Tournant sirve tus platos favoritos en tu dispositivo Android!</b>
+¡Tournant sirve tus platos favoritos en tu dispositivo Android!
+
+**Características**
+📝 Crear y editar recetas
+💡 Add ingredients, ingredient groups and linked recipes
+🔍 Buscar en recetas y categorías
+🧰 Calcular listas de ingredientes
+📦 Exportar y compartir recetas
+
 Con Tournant puede administrar sus recetas para cocinar y hornear. Puede sincronizar la aplicación con un archivo de recetas del Gestor de Recetas Gourmand (anteriormente conocido como Gourmet) o usar Tournant como gestor de recetas independiente.
 
-<b>Características</b>
-<ul>
-<li>Crear y editar recetas</li>
-<li>Importar y exportar archivos XML (Gourmand)</li>
-<li>Sincronizar con un archivo XML en el dispositivo Android</li>
-<li>Buscar en recetas y categorías</li>
-<li>Compartir recetas</li>
-<li>Calcular listas de ingredientes</li>
-</ul>
-
-<b>Visite el sitio web para la documentación</b>
-https://torneo.zimbelstern.eu
+**Visite el sitio web para la documentación**
+https://tournant.zimbelstern.eu
