@@ -2,7 +2,7 @@ Tournant serveert je favoriete gerechten op je Android-apparaat!
 
 **Mogelijkheiden**
 📝 Maak recepten en bewerk ze;
-💡 Add ingredients, ingredient groups and linked recipes;
+💡 Voeg ingrediënten, ingrediëntgroepen en gekoppelde recepten toe;
 🔍 Doorzoek recepten en categorieën;
 🧰 Stem ingrediëntenlijsten af op het aantal personen;
 📦 Exporteer en deel recepten.
