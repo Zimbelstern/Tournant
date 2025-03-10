@@ -15,9 +15,19 @@ class ExportImportTest {
 
 	@Test
 	fun exportImportTest() {
-		val testRecipes = generateSampleRecipeWithIngredients(2)
-		assertEquals(testRecipes, exportImportWithChar(testRecipes, '.'))
-		assertEquals(testRecipes, exportImportWithChar(testRecipes, ','))
+		val testRecipes = sampleRecipeWithIngredients(2)
+		assertEquals(testRecipes, exportImportWithChar(testRecipes, '.').mapIndexed { index, recipeWithIngredients ->
+			recipeWithIngredients.apply {
+				recipe.created = testRecipes[index].recipe.created
+				recipe.modified = testRecipes[index].recipe.modified
+			}
+		})
+		assertEquals(testRecipes, exportImportWithChar(testRecipes, ',').mapIndexed { index, recipeWithIngredients ->
+			recipeWithIngredients.apply {
+				recipe.created = testRecipes[index].recipe.created
+				recipe.modified = testRecipes[index].recipe.modified
+			}
+		})
 	}
 
 	private fun exportImportWithChar(testRecipes: List<RecipeWithIngredients>, char: Char) : List<RecipeWithIngredients> {
@@ -33,30 +43,30 @@ class ExportImportTest {
 		}
 	}
 
-	private fun generateSampleRecipeWithIngredients(n: Int) = mutableListOf<RecipeWithIngredients>().apply {
+	private fun sampleRecipeWithIngredients(n: Int) = mutableListOf<RecipeWithIngredients>().apply {
 		for (i in 1..n) {
 			add(RecipeWithIngredients(
-				Recipe(
-					null,
-					"Sample recipe",
-					null,
-					"Category",
-					"Cuisine",
-					"Source",
-					"https://tournant.zimbelstern.eu",
-					4.5f,
-					60,
-					30,
-					2f,
-					"portions",
-					"Let's start:\n1. Do this, then\n2. do that\n3. and serve it!",
-					"Notes"
+				recipe = Recipe(
+					gourmandId = null,
+					title = "Sample recipe",
+					description = null,
+					category = "Category",
+					cuisine = "Cuisine",
+					source = "Source",
+					link = "https://tournant.zimbelstern.eu",
+					rating = 4.5f,
+					preptime = 60,
+					cooktime = 30,
+					yieldValue = 2.0,
+					yieldUnit = "portions",
+					instructions = "Let's start:\n1. Do this, then\n2. do that\n3. and serve it!",
+					notes = "Notes"
 				),
-				mutableListOf(
-					Ingredient(0, 2f, null, "mg", "Ingredient 1", null, false),
-					Ingredient(1, 3f, null, "km", "Ingredient 2", null, true),
-					Ingredient(2, .25f, null, "µF", "Ingredient 3", "Ingredient Group", true)
-				)
+				ingredients = mutableListOf(
+					Ingredient(0, 2.0, null, "mg", "Ingredient 1", null, false),
+					Ingredient(1, 3.0, null, "km", "Ingredient 2", null, true),
+					Ingredient(2, 0.25, null, "µF", "Ingredient 3", "Ingredient Group", true)
+				),
 			))
 		}
 	}.toList()
