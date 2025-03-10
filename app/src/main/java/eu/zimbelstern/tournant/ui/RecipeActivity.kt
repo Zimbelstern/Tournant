@@ -398,7 +398,7 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 		}
 	}
 
-	private fun shareRecipe(format: String): Boolean {
+	private fun shareRecipe(format: String) {
 		lifecycleScope.launch {
 			withContext(Dispatchers.IO) {
 				val filename = binding.recipeDetailTitle.text.toString().ifBlank { getString(R.string.recipe) }
@@ -414,7 +414,6 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 					.startChooser()
 			}
 		}
-		return true
 	}
 
 	override fun openRecipe(refId: Long, yieldAmount: Double?, yieldUnit: String?) {
@@ -538,7 +537,7 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 		}
 	}
 
-	private fun logPreparation(): Boolean {
+	private fun logPreparation() {
 		MaterialDatePicker.Builder.datePicker()
 			.setCalendarConstraints(
 				CalendarConstraints.Builder()
@@ -554,7 +553,6 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 				}
 			}
 			.show(supportFragmentManager, "DatePicker")
-		return true
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -566,9 +564,9 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
 		return when (item.itemId) {
-			R.id.log_preparation -> logPreparation()
-			R.id.share_json -> shareRecipe("json")
-			R.id.share_zip -> shareRecipe("zip")
+			R.id.log_preparation -> { logPreparation(); true }
+			R.id.share_json -> { shareRecipe("json"); true }
+			R.id.share_zip -> { shareRecipe("zip"); true }
 			R.id.share_gourmand -> {
 				(application as TournantApplication).withGourmandIssueCheck(this, setOf(intent.getLongExtra("RECIPE_ID", 0L))) {
 					shareRecipe("xml")

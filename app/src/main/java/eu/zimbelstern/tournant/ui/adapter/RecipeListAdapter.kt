@@ -203,16 +203,19 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 					setCompoundDrawablesRelativeWithIntrinsicBounds(AppCompatResources.getDrawable(context, R.drawable.ic_modification_date), null, null, null)
 				}
 				SORTED_BY_INSTRUCTIONS_LENGTH -> {
+					@Suppress("SetTextI18n")
 					text = (recipe.instructionsLength ?: 0).toString()
 					contentDescription = context.getString(R.string.instructions_length)
 					setCompoundDrawablesRelativeWithIntrinsicBounds(AppCompatResources.getDrawable(context, R.drawable.ic_notes), null, null, null)
 				}
 				SORTED_BY_INGREDIENTS_COUNT -> {
+					@Suppress("SetTextI18n")
 					text = recipe.ingredientsCount.toString()
 					contentDescription = context.getString(R.string.ingredients_count)
 					setCompoundDrawablesRelativeWithIntrinsicBounds(AppCompatResources.getDrawable(context, R.drawable.ic_list_numbered), null, null, null)
 				}
 				SORTED_BY_PREPARATIONS_COUNT -> {
+					@Suppress("SetTextI18n")
 					text = recipe.preparationsCount.toString()
 					contentDescription = context.getString(R.string.preparations_count)
 					setCompoundDrawablesRelativeWithIntrinsicBounds(AppCompatResources.getDrawable(context, R.drawable.ic_calendar_checked), null, null, null)

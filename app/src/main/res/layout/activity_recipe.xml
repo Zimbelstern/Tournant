@@ -548,6 +548,7 @@
 						android:layout_marginEnd="8dp"
 						android:src="@drawable/ic_arrow"
 						android:scaleType="fitXY"
+						android:importantForAccessibility="no"
 						app:tint="@color/checked_text_color"/>
 
 				</LinearLayout>
@@ -557,6 +558,7 @@
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
+				android:baselineAligned="false"
 				android:orientation="horizontal"
 				android:layout_marginHorizontal="16dp"
 				android:layout_marginBottom="16dp"

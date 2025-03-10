@@ -84,7 +84,6 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 
 	private lateinit var recipeListAdapter: RecipeListAdapter
 	private var mode = 0
-	private var optionsMenu: Menu? = null
 
 	private var recipeOpen = false
 	private var restartPending = false
@@ -579,7 +578,6 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu): Boolean {
-		optionsMenu = menu
 		menuInflater.inflate(R.menu.options, menu)
 
 		if (mode == MODE_SYNCED) {

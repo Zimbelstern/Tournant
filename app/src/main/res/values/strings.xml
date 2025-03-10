@@ -10,10 +10,6 @@
 
 	<!-- Recipe -->
 	<string name="recipe">Recipe</string>
-	<plurals name="n_recipes">
-		<item quantity="one">%d recipe</item>
-		<item quantity="other">%d recipes</item>
-	</plurals>
 	<string name="title">Title</string>
 	<string name="description">Description</string>
 	<string name="category">Category</string>
@@ -64,14 +60,11 @@
 	<string name="mode_synced_description_long">Tournant stays in sync with a single XML file on your device. Recipe editing is disabled because it would create conflicts and there is currently no sync feature in Gourmand to solve those.</string>
 
 	<!-- First start UI & file choose options -->
-	<string name="choose_file_long">Choose a Gourmet/Gourmand XML file from your device.</string>
 	<string name="change_synced_file">Change synced file</string>
 	<string name="change_mode_explanation">You can change the mode in the settings.</string>
 
 	<!-- Messages -->
-	<string name="file_does_not_exist">The file does not exist</string>
 	<string name="no_recipes_found">No recipes found</string>
-	<string name="recipe_not_found">Recipe not found</string>
 	<string name="inputstream_null">Error while opening the file</string>
 	<string name="unknown_file_error">Unknown file error: %s</string>
 	<string name="importing_only_in_standalone_mode">Importing only in standalone mode</string>
@@ -87,7 +80,6 @@
 	<string name="gourmand165">Floating point numbers as yield value (Gourmand issue #165)</string>
 
 	<!-- Options menu -->
-	<string name="recipe_count">Number of recipes</string>
 	<string name="new_recipe">New recipe</string>
 	<string name="import_recipes">Import recipes</string>
 	<string name="refresh">Refresh</string>
@@ -168,7 +160,6 @@
 	<string name="less">less</string>
 	<string name="more">more</string>
 	<string name="reset">reset</string>
-	<string name="checked">checked</string>
 	<string name="selected">%d selected</string>
 	<string name="add_to_selection">Add to selection</string>
 	<string name="remove">Remove</string>
@@ -190,7 +181,6 @@
 	<!-- Sort options -->
 	<string name="sort_by">Sort by</string>
 	<string name="totaltime">Total time</string>
-	<string name="database_id">Database ID</string>
 	<string name="instructions_length">Instructions length</string>
 	<string name="ingredients_count">Number of ingredients</string>
 	<string name="ascending">Ascending</string>
@@ -203,5 +193,17 @@
 	<string name="hours_for_regex">(hour)|(hours)</string>
 	<string name="minutes_for_regex">(minute)|(minutes)</string>
 	<string name="seconds_for_regex">(second)|(seconds)</string>
+
+	<!-- Currently unused -->
+	<plurals name="n_recipes" tools:keep="@plurals/n_recipes">
+		<item quantity="one">%d recipe</item>
+		<item quantity="other">%d recipes</item>
+	</plurals>
+	<string name="choose_file_long" tools:ignore="UnusedResources">Choose a Gourmet/Gourmand XML file from your device.</string>
+	<string name="file_does_not_exist" tools:ignore="UnusedResources">The file does not exist</string>
+	<string name="recipe_not_found" tools:ignore="UnusedResources">Recipe not found</string>
+	<string name="recipe_count" tools:ignore="UnusedResources">Number of recipes</string>
+	<string name="checked" tools:ignore="UnusedResources">checked</string>
+	<string name="database_id" tools:ignore="UnusedResources">Database ID</string>
 
 </resources>

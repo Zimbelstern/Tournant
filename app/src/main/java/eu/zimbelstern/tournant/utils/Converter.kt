@@ -12,6 +12,7 @@ object Converter {
 		return value?.div(60)?.toString() ?: ""
 	}
 
+	@Suppress("Unused")
 	@JvmStatic
 	fun hourToTime(oldValue: Int?, value: String): Int? {
 		val hour = value.toIntOrNull()
@@ -24,6 +25,7 @@ object Converter {
 		return value?.mod(60)?.toString() ?: ""
 	}
 
+	@Suppress("Unused")
 	@JvmStatic
 	fun minToTime(oldValue: Int?, value: String): Int? {
 		val min = value.toIntOrNull()
@@ -44,6 +46,7 @@ object Converter {
 		return value?.toStringForCooks(thousands = false) ?: ""
 	}
 
+	@Suppress("Unused")
 	@JvmStatic
 	fun stringToDouble(oldValue: Double?, value: String): Double? {
 		return if (value.isEmpty()) null else try {

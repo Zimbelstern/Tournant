@@ -6,7 +6,8 @@
 	android:orientation="horizontal"
 	android:gravity="center"
 	android:padding="16dp"
-	android:background="@drawable/background_repeat">
+	android:background="@drawable/background_repeat"
+	tools:ignore="Overdraw">
 
 	<ImageView
 		android:layout_width="92dp"
@@ -43,6 +44,7 @@
 
 		</LinearLayout>
 
+		<!--suppress AndroidDomInspection -->
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
