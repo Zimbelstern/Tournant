@@ -97,13 +97,13 @@ android {
 }
 
 dependencies {
-	implementation("androidx.activity:activity-ktx:1.10.0")
+	implementation("androidx.activity:activity-ktx:1.10.1")
 	implementation("androidx.core:core-ktx:1.16.0-alpha02")
 	implementation("androidx.appcompat:appcompat:1.7.0")
-	implementation("androidx.constraintlayout:constraintlayout:2.2.0")
+	implementation("androidx.constraintlayout:constraintlayout:2.2.1")
 	implementation("androidx.preference:preference-ktx:1.2.1")
 	implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
-	implementation("androidx.paging:paging-runtime-ktx:3.3.2")
+	implementation("androidx.paging:paging-runtime-ktx:3.3.6")
 	implementation("com.google.android.material:material:1.12.0")
 	implementation("com.google.android.flexbox:flexbox:3.0.0")
 	implementation("com.github.bumptech.glide:glide:4.16.0")
@@ -115,7 +115,7 @@ dependencies {
 	implementation("androidx.room:room-paging:$roomVersion")
 	ksp("androidx.room:room-compiler:$roomVersion")
 
-	val moshiVersion = "1.15.1"
+	val moshiVersion = "1.15.2"
 	implementation("com.squareup.moshi:moshi:$moshiVersion")
 	ksp("com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion")
 
@@ -126,7 +126,7 @@ dependencies {
 	implementation(kotlin("reflect"))
 
 	testImplementation("androidx.test.ext:junit-ktx:1.2.1")
-	testImplementation("org.robolectric:robolectric:4.13")
+	testImplementation("org.robolectric:robolectric:4.14.1")
 
 	androidTestImplementation("androidx.test:runner:1.6.2")
 	androidTestImplementation("androidx.test:rules:1.6.1")
