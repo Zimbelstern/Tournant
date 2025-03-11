@@ -65,7 +65,7 @@
     <string name="select_all">Виділити все</string>
     <string name="general_settings">Загальні налаштування</string>
     <string name="be_careful">Будьте обережні</string>
-    <string name="keep_screen_on">Тримати дисплей увімкненим у перегляді одного рецепта</string>
+    <string name="keep_screen_on">Тримати дисплей увімкненим при перегляді одного рецепта</string>
     <string name="synced_file">Синхронізований XML-файл Gourmand</string>
     <string name="color_theme">Кольорова схема</string>
     <string name="import_export">Сумісність з Gourmand</string>

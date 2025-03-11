@@ -7,13 +7,13 @@
 \n5. Вмішайте шоколадні дрібки.
 \n6. Заповніть формочки тістом на дві третини і випікайте протягом 20-25 хвилин. Мафіни готові, коли тісто не пристає до шпажки, вставленої всередину.
 \n7. Залиште готові мафіни у формочках на кілька хвилин, а потім перекладіть їх на решітку для охолодження.</string>
-    <string name="yield_muffins">штук</string>
+    <string name="yield_muffins">мафінів</string>
     <string name="vegetable_oil">олії</string>
     <string name="flour">борошна</string>
     <string name="sugar">цукру</string>
     <string name="muffins">Мафіни</string>
     <string name="salt">солі</string>
-    <string name="eggs">яйця</string>
+    <string name="eggs">яєць</string>
     <string name="american">Американська</string>
     <string name="sample_modifications">Для шоколадних мафінів візьміть 100 г какао-порошку замість 100 г борошна.</string>
     <string name="baking_powder">розпушувача</string>
