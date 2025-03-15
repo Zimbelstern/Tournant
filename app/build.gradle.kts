@@ -15,8 +15,8 @@ android {
 		applicationId = "eu.zimbelstern.tournant"
 		minSdk = 21
 		targetSdk = 35
-		versionCode = 30
-		versionName = "2.9.3"
+		versionCode = 31
+		versionName = "2.9.4"
 
 		ksp {
 			arg("room.schemaLocation", "$projectDir/schemas")
