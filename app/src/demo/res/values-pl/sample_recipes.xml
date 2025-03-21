@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pastries">Ciasta</string>
+    <string name="american">amerykańska</string>
+    <string name="yield_muffins">muffiny</string>
+    <string name="g">g</string>
+    <string name="ml">ml</string>
+    <string name="tsp">łyżeczka</string>
+    <string name="vegetable_oil">olej roślinny</string>
+    <string name="milk">mleko</string>
+    <string name="sugar">cukier</string>
+    <string name="flour">mąka</string>
+    <string name="baking_powder">proszek do pieczenia</string>
+    <string name="salt">sól</string>
+    <string name="chocolate_chips">wiórki czekoladowe</string>
+    <string name="croissants">Croissanty</string>
+    <string name="pretzels">Precle</string>
+    <string name="dessert">Deser</string>
+    <string name="tiramisu">Tiramisu</string>
+    <string name="panna_cotta">Panna cotta</string>
+    <string name="german">niemiecka</string>
+    <string name="french">francuska</string>
+    <string name="italian">włoska</string>
+    <string name="sample_modifications">Żeby zrobić muffiny czekoladowe, zastąpić 100g mąki 100g kakao.</string>
+    <string name="sample_instructions">1. Rozgrzać piekarnik do 200°C.\n2. Ubijać jajka delikatnie przez 1 min.\n3. Dodać olej i mleko i ubijać do wymieszania. Następnie dodać cukier i miksować, aż powstanie gładka masa.\n4. Dodać mąkę, proszek do pieczenia i sól, a następnie wymieszać ostrożnie.\n5. Wmieszać wiórki czekoladowe.\n6. Wypełnić formy na muffiny w 2/3 i piec przez 20-25 minut. Patyczek wbijany w środek powinien wyjść czysty.\n7. Pozostawić muffiny w formie na parę minut do wystygnięcia.</string>
+    <string name="eggs">średnie jajka</string>
+    <string name="muffins">Muffiny</string>
+</resources>
