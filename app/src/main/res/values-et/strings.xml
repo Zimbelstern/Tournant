@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="recipes">Retseptid</string>
     <string name="all_recipes">Kõik retseptid</string>
     <string name="recipe">Retsept</string>
@@ -82,4 +82,79 @@
     <string name="about_app_name">Rakenduse teave: %s</string>
     <string name="general_settings">Üldised seadistused</string>
     <string name="issues">Veahaldus</string>
+    <string name="ok">Sobib</string>
+    <string name="done">Valmis</string>
+    <string name="less">vähem</string>
+    <string name="menu">Menüü</string>
+    <string name="inspiration">Otsid inspiratsiooni?</string>
+    <string name="save">Salvesta</string>
+    <string name="descending">Kahanevalt</string>
+    <string name="ingredients_count">Koostisosade arv</string>
+    <string name="ascending">Kasvavalt</string>
+    <string name="mode_standalone">Autonoomne</string>
+    <string name="mode_standalone_description_short">Autonoomne: oma andmebaas koos retseptide muutmise võimalusega</string>
+    <string name="mode_standalone_description_long">Tournant loob oma andmebaasi sinu retseptide jaoks. Sa saad retsepte importida xml-failidest. Retsepte saad ka muuta (arendusjärgus).</string>
+    <string name="mode_synced">Sünkroniseeritud</string>
+    <string name="recipe_not_found" tools:ignore="UnusedResources">Retsepti ei leidu</string>
+    <string name="inputstream_null">Viga faili avamisel</string>
+    <string name="unknown_file_error">Tundmatu failiviga: %s</string>
+    <string name="importing_only_in_standalone_mode">Importimine toimib vaid autonoomses režiimis</string>
+    <string name="file_not_changed">Sünkroniseeritud fail pole muutunud</string>
+    <string name="recipe_imported">%s on imporditud</string>
+    <plurals name="recipes_imported">
+        <item quantity="one">%s ja veel üks retsept on imporditud</item>
+        <item quantity="other">%s ja veel %d retsepti on imporditud</item>
+    </plurals>
+    <string name="gourmand165">Ujukomaarvud portsjonite jaoks (Gourmandi veateade #165)</string>
+    <string name="dependent_recipes">Sõltuvad retseptid</string>
+    <string name="gourmand_file">Gourmandi xml-fail</string>
+    <string name="delete_selected">Kustuta valik</string>
+    <plurals name="delete_selected_sure">
+        <item quantity="one">Järgnevaga kustutad jäädavalt andmebaasist ühe retsepti. Kas kindlasti soovid seda?</item>
+        <item quantity="other">Järgnevaga kustutad jäädavalt andmebaasist %d retsepti. Kas kindlasti soovid seda?</item>
+    </plurals>
+    <string name="dependent_recipes_found">Valikus on üks või enam retsepti, mis on kasutusel ka muudes retseptides. Palun lahenda need sõltuvused või muidu kustutame ka kõik seotud retseptid.\nSõltuvad retseptid: %s</string>
+    <string name="delete_selected_sure_named">Järgnevaga kustutame „%s“ andmebaasist jäädavalt. Kas oled kindel, et soovid seda?</string>
+    <string name="use_comma_as_decimal_separator">Eksportimisel ja importimisel kasuta kümnendkoha eraldajana koma</string>
+    <string name="type_or_tap_to_search">Otsimiseks kirjuta või puuduta…</string>
+    <string name="cancel">Katkesta</string>
+    <string name="copy_to_clipboard">Kopeeri lõikelauale</string>
+    <string name="missing_features_gourmand">Gourmand ei toeta järgmiseid retseptide omadusi:\n%s</string>
+    <string name="mode">Töörežiim</string>
+    <string name="mode_synced_description_short">Alati sünkroonis xml-failiga (ainult lugemisõigusega)</string>
+    <string name="copied_to_clipboard">Kopeeritud lõikelauale</string>
+    <string name="mode_synced_description_long">Tournant hoiab end sünkroonis ühe xml-failiga sinu nutiseadmes. Kuna võiks tekkida vastuolu versioonide vahel ja Gourmandis puudub meetod nende lahendamiseks, siis retseptide muutmine on välja lülitatud.</string>
+    <string name="minutes_for_regex">(minut)|(minutit)</string>
+    <string name="options">Valikud</string>
+    <string name="change_synced_file">Muuda sünkroniseeritud faili</string>
+    <string name="change_mode_explanation">Kasutusrežiimi saad muuta seadistustest.</string>
+    <string name="no_recipes_found">Retsepte ei leidu</string>
+    <string name="no_suitable_application">Sobivat rakendust ei leidu</string>
+    <string name="limitations">Piirangud</string>
+    <string name="egg">Napsa üks küpsis: 🍪</string>
+    <string name="more">rohkem</string>
+    <string name="reset">lähtesta</string>
+    <string name="selected">%d on valitud</string>
+    <string name="add_to_selection">Lisa valikusse</string>
+    <string name="remove">Eemalda</string>
+    <string name="to">kuni</string>
+    <string name="edit">Muuda</string>
+    <string name="add_photo">Lisa foto</string>
+    <string name="remove_photo">Eemalda foto</string>
+    <string name="unset_rating">Eemalda hinnang</string>
+    <string name="make_mandatory">Muuda kohustuslikuks</string>
+    <string name="make_optional">Muuda valikuliseks</string>
+    <string name="scale_to">Suurenda kuni</string>
+    <string name="sort_by">Järjestus</string>
+    <string name="totaltime">Koguaeg</string>
+    <string name="instructions_length">Juhendi pikkus</string>
+    <string name="set_alarm">Lisa äratus</string>
+    <string name="set_timer">Lisa taimer</string>
+    <string name="timer_set">Lisasid taimeri: %s</string>
+    <string name="hours_for_regex">(tund)|(tundi)</string>
+    <string name="seconds_for_regex">(sekund)|(sekundit)</string>
+    <string name="choose_file_long" tools:ignore="UnusedResources">Vali oma nutiseadmest Gourmet/Gourmandi xml-fail.</string>
+    <string name="file_does_not_exist" tools:ignore="UnusedResources">Faili pole olemas</string>
+    <string name="checked" tools:ignore="UnusedResources">kontrollitud</string>
+    <string name="database_id" tools:ignore="UnusedResources">Andmebaasi tunnus</string>
 </resources>
