@@ -86,7 +86,7 @@
     <string name="log_preparation">Учетная ведомость</string>
     <string name="logbook">Ведомость</string>
     <plurals name="prepared_times">
-        <item quantity="one">Готовилось один раз</item>
+        <item quantity="one">Готовилось %d раз</item>
         <item quantity="few">Готовилось %d раза</item>
         <item quantity="many">Готовилось %d раз</item>
         <item quantity="other">Готовилось %d раз</item>
@@ -168,4 +168,12 @@
         <item quantity="other">Это навсегда удалит %d рецептов из базы данных. Вы уверены?</item>
     </plurals>
     <string name="remove_photo">Удалить фото</string>
+    <string name="menu">Меню</string>
+    <string name="keywords">Ключевые слова</string>
+    <string name="season">Пора года</string>
+    <string name="from">от</string>
+    <string name="until">до</string>
+    <string name="app_language">Язык приложения</string>
+    <string name="all_languages">Все языки</string>
+    <string name="supported_languages">Поддерживаемые языки</string>
 </resources>
