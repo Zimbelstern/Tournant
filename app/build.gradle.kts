@@ -98,19 +98,19 @@ android {
 
 dependencies {
 	implementation("androidx.activity:activity-ktx:1.10.1")
-	implementation("androidx.core:core-ktx:1.16.0-alpha02")
 	implementation("androidx.appcompat:appcompat:1.7.0")
 	implementation("androidx.constraintlayout:constraintlayout:2.2.1")
-	implementation("androidx.preference:preference-ktx:1.2.1")
-	implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
-	implementation("androidx.paging:paging-runtime-ktx:3.3.6")
-	implementation("com.google.android.material:material:1.12.0")
-	implementation("com.google.android.flexbox:flexbox:3.0.0")
+	implementation("androidx.core:core-ktx:1.16.0")
 	implementation("androidx.core:core-splashscreen:1.0.1")
 	implementation("androidx.exifinterface:exifinterface:1.4.1")
+	implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
+	implementation("androidx.paging:paging-runtime-ktx:3.3.6")
+	implementation("androidx.preference:preference-ktx:1.2.1")
+	implementation("com.google.android.material:material:1.12.0")
+	implementation("com.google.android.flexbox:flexbox:3.0.0")
 	implementation("io.coil-kt.coil3:coil:3.1.0")
 
-	val roomVersion = "2.6.1"
+	val roomVersion = "2.7.1"
 	implementation("androidx.room:room-ktx:$roomVersion")
 	implementation("androidx.room:room-runtime:$roomVersion")
 	implementation("androidx.room:room-paging:$roomVersion")
@@ -134,5 +134,4 @@ dependencies {
 	androidTestImplementation("androidx.test.ext:junit-ktx:1.2.1")
 	androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 	androidTestImplementation("androidx.test.espresso:espresso-contrib:3.6.1")
-	androidTestImplementation("tools.fastlane:screengrab:2.1.1")
 }
