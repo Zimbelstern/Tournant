@@ -2,6 +2,7 @@ package eu.zimbelstern.tournant.ui
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.os.Build
 import android.os.Bundle
 import android.text.method.DigitsKeyListener
@@ -22,6 +23,7 @@ import androidx.core.view.ViewGroupCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
+import androidx.exifinterface.media.ExifInterface
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -103,25 +105,35 @@ class RecipeEditingActivity : AppCompatActivity(), IngredientEditingAdapter.Ingr
 		val imageChooser = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
 			if (uri != null)
 				try {
-					contentResolver.openInputStream(uri).use { inputStream ->
-						if (inputStream == null)
-							Toast.makeText(this, getString(R.string.inputstream_null), Toast.LENGTH_LONG).show()
-						else {
-							File(application.filesDir, "images").mkdir()
-							File(File(application.filesDir, "images"), "tmp.jpg").outputStream().use { outputStream ->
-								val image = BitmapFactory.decodeStream(inputStream)
-								image.compress(Bitmap.CompressFormat.JPEG, 75, outputStream)
-								imageChanged = true
-								imageRemoved = false
-							}
-							binding.editImage.load(File(File(application.filesDir, "images"), "tmp.jpg")) {
-								addLastModifiedToFileCacheKey(true)
-							}
-							binding.editImageRemove.visibility = View.VISIBLE
-						}
+					val rotation = contentResolver.openInputStream(uri)?.use {
+						ExifInterface(it).rotationDegrees.takeUnless { it == 0 }
 					}
+					contentResolver.openInputStream(uri)?.use { inputStream ->
+						val sourceImage = BitmapFactory.decodeStream(inputStream)
+						val rotatedImage = rotation?.let {
+							Log.e(TAG, "Rotate bitmap by $it degrees")
+							val matrix = Matrix().apply { postRotate(it.toFloat()) }
+							Bitmap.createBitmap(sourceImage, 0, 0, sourceImage.width, sourceImage.height, matrix, true)
+						} ?: sourceImage
+
+						File(application.filesDir, "images").mkdir()
+						File(File(application.filesDir, "images"), "tmp.jpg").outputStream().use { outputStream ->
+							rotatedImage.compress(Bitmap.CompressFormat.JPEG, 75, outputStream)
+							imageChanged = true
+							imageRemoved = false
+						}
+
+						sourceImage.recycle()
+						rotatedImage.recycle()
+
+						binding.editImage.load(File(File(application.filesDir, "images"), "tmp.jpg")) {
+							addLastModifiedToFileCacheKey(true)
+						}
+						binding.editImageRemove.visibility = View.VISIBLE
+					} ?: Toast.makeText(this, getString(R.string.inputstream_null), Toast.LENGTH_LONG).show()
 				}
 				catch (e: Exception) {
+					Log.e(TAG, e.message.toString())
 					Toast.makeText(this, getString(R.string.unknown_file_error, e.message), Toast.LENGTH_LONG).show()
 				}
 		}
