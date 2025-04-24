@@ -106,8 +106,9 @@ dependencies {
 	implementation("androidx.paging:paging-runtime-ktx:3.3.6")
 	implementation("com.google.android.material:material:1.12.0")
 	implementation("com.google.android.flexbox:flexbox:3.0.0")
-	implementation("com.github.bumptech.glide:glide:4.16.0")
 	implementation("androidx.core:core-splashscreen:1.0.1")
+	implementation("androidx.exifinterface:exifinterface:1.4.1")
+	implementation("io.coil-kt.coil3:coil:3.1.0")
 
 	val roomVersion = "2.6.1"
 	implementation("androidx.room:room-ktx:$roomVersion")

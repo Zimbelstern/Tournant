@@ -47,8 +47,8 @@ import androidx.core.view.updatePadding
 import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
-import com.bumptech.glide.Glide
-import com.bumptech.glide.signature.ObjectKey
+import coil3.load
+import coil3.request.addLastModifiedToFileCacheKey
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
@@ -182,10 +182,9 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 					binding.recipeDetailImage.visibility = recipe.image.let { image ->
 						val imageFile = File(File(application.filesDir, "images"), "${recipe.id}.jpg")
 						if (imageFile.exists()) {
-							Glide.with(this@RecipeActivity)
-								.load(File(File(application.filesDir, "images"), "${recipe.id}.jpg"))
-								.signature(ObjectKey(imageFile.lastModified()))
-								.into(binding.recipeDetailImageDrawable)
+							binding.recipeDetailImageDrawable.load(File(File(application.filesDir, "images"), "${recipe.id}.jpg")) {
+								addLastModifiedToFileCacheKey(true)
+							}
 							View.VISIBLE
 						}
 						else if (image != null) {

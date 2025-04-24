@@ -19,8 +19,8 @@ import androidx.core.view.setPadding
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.signature.ObjectKey
+import coil3.load
+import coil3.request.addLastModifiedToFileCacheKey
 import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_CREATED
 import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_INGREDIENTS_COUNT
 import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_INSTRUCTIONS_LENGTH
@@ -120,10 +120,9 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 		holder.binding.recipeCardImage.apply {
 			val imageFile = File(File(context.applicationContext.filesDir, "images"), "${recipe.id}.jpg")
 			if (imageFile.exists()) {
-				Glide.with(context)
-					.load(imageFile)
-					.signature(ObjectKey(imageFile.lastModified()))
-					.into(this)
+				load(imageFile) {
+					addLastModifiedToFileCacheKey(true)
+				}
 			}
 			else if (recipe.image != null) {
 				setImageBitmap(BitmapFactory.decodeByteArray(recipe.image, 0, recipe.image.size))

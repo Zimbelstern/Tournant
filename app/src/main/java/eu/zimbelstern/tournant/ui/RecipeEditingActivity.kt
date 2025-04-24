@@ -25,9 +25,8 @@ import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.signature.ObjectKey
+import coil3.load
+import coil3.request.addLastModifiedToFileCacheKey
 import com.google.android.material.textfield.TextInputLayout
 import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.TournantApplication
@@ -115,11 +114,9 @@ class RecipeEditingActivity : AppCompatActivity(), IngredientEditingAdapter.Ingr
 								imageChanged = true
 								imageRemoved = false
 							}
-							Glide.with(this)
-								.load(File(File(application.filesDir, "images"), "tmp.jpg"))
-								.diskCacheStrategy(DiskCacheStrategy.NONE)
-								.skipMemoryCache(true)
-								.into(binding.editImage)
+							binding.editImage.load(File(File(application.filesDir, "images"), "tmp.jpg")) {
+								addLastModifiedToFileCacheKey(true)
+							}
 							binding.editImageRemove.visibility = View.VISIBLE
 						}
 					}
@@ -158,10 +155,9 @@ class RecipeEditingActivity : AppCompatActivity(), IngredientEditingAdapter.Ingr
 				if (recipe.id != 0L) {
 					val imageFile = File(File(application.filesDir, "images"), "${recipe.id}.jpg")
 					if (imageFile.exists()) {
-						Glide.with(this@RecipeEditingActivity)
-							.load(imageFile)
-							.signature(ObjectKey(imageFile.lastModified()))
-							.into(binding.editImage)
+							binding.editImage.load(imageFile) {
+								addLastModifiedToFileCacheKey(true)
+							}
 						binding.editImageRemove.visibility = View.VISIBLE
 					}
 					else recipe.image?.let { image ->
