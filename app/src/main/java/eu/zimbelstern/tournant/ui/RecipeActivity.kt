@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.ClipData
 import android.content.ClipboardManager
-import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Build
@@ -106,7 +105,7 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 	}
 
 	private val markwon: Markwon? by lazy {
-		if (getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE).getBoolean(PREF_MARKDOWN, true)) {
+		if (getSharedPreferences(packageName + "_preferences", MODE_PRIVATE).getBoolean(PREF_MARKDOWN, true)) {
 			Markwon.builder(this)
 				.usePlugin(HtmlPlugin.create())
 				.usePlugin(RecipeMarkwonPlugin(this))
@@ -156,7 +155,7 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 			setDisplayShowTitleEnabled(true)
 		}
 
-		if (getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE).getBoolean(PREF_SCREEN_ON, true))
+		if (getSharedPreferences(packageName + "_preferences", MODE_PRIVATE).getBoolean(PREF_SCREEN_ON, true))
 			window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
 		if (resources.displayMetrics.run { widthPixels / density } > 600) {
@@ -230,7 +229,7 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 							}
 							setOnFocusChangeListener { _, hasFocus ->
 								if (!hasFocus) {
-									(getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.hideSoftInputFromWindow(binding.root.windowToken, 0)
+									(getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager)?.hideSoftInputFromWindow(binding.root.windowToken, 0)
 								}
 							}
 							savedInstanceState?.getString("YIELD_VALUE")?.let {
@@ -556,7 +555,7 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 
 	override fun onCreateOptionsMenu(menu: Menu): Boolean {
 		menuInflater.inflate(R.menu.options_recipe, menu)
-		if (application.getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE).getInt(PREF_MODE, 0) == MODE_SYNCED)
+		if (application.getSharedPreferences(packageName + "_preferences", MODE_PRIVATE).getInt(PREF_MODE, 0) == MODE_SYNCED)
 			menu.removeItem(R.id.edit)
 		return true
 	}

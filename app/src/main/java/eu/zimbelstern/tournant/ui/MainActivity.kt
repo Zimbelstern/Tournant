@@ -2,7 +2,6 @@ package eu.zimbelstern.tournant.ui
 
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.graphics.Typeface
@@ -29,6 +28,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.content.edit
 import androidx.core.net.toUri
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.text.toSpannable
@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 		installSplashScreen()
 		super.onCreate(savedInstanceState)
 
-		val sharedPrefs = getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE)
+		val sharedPrefs = getSharedPreferences(packageName + "_preferences", MODE_PRIVATE)
 		sharedPrefs.getInt(PREF_COLOR_THEME, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM).let {
 			if (it == AppCompatDelegate.MODE_NIGHT_YES || it == AppCompatDelegate.MODE_NIGHT_NO)
 				AppCompatDelegate.setDefaultNightMode(it)
@@ -211,7 +211,7 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 		binding.welcomeView.recipesWebsite.setOnClickListener {
 			val href = "https://tournant.zimbelstern.eu/recipes"
 			try {
-				startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(href)))
+				startActivity(Intent(Intent.ACTION_VIEW, href.toUri()))
 			} catch (_: ActivityNotFoundException) {
 				Toast.makeText(this, href, Toast.LENGTH_LONG).show()
 			}
@@ -653,10 +653,10 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 	}
 
 	private fun migrate() {
-		val prefs = getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE)
+		val prefs = getSharedPreferences(packageName + "_preferences", MODE_PRIVATE)
 		if (prefs.getInt(PREF_VERSION, 0) < 11) {
 			if (prefs.getInt(PREF_MODE, 0) !in (MODE_STANDALONE..MODE_SYNCED)) {
-				prefs.edit().putInt(PREF_MODE, MODE_STANDALONE).apply()
+				prefs.edit { putInt(PREF_MODE, MODE_STANDALONE) }
 			}
 			File(filesDir, "tmp.xml").let {
 				if (it.exists())
@@ -677,14 +677,14 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 				}
 			}
 			prefs.getString("LINKED_FILE_URI", null)?.let {
-				prefs.edit().remove("LINKED_FILE_URI").apply()
+				prefs.edit() { remove("LINKED_FILE_URI") }
 				if (prefs.getInt(PREF_MODE, MODE_STANDALONE) == MODE_SYNCED) {
-					prefs.edit().putString(PREF_FILE, it).apply()
+					prefs.edit {putString(PREF_FILE, it)}
 					viewModel.syncWithFile()
 				}
 			}
 		}
-		prefs.edit().putInt(PREF_VERSION, BuildConfig.VERSION_CODE).apply()
+		prefs.edit { putInt(PREF_VERSION, BuildConfig.VERSION_CODE)}
 	}
 
 	private fun restartApplication() {

@@ -8,6 +8,7 @@ import android.graphics.Typeface
 import android.text.Spanned
 import android.text.style.StyleSpan
 import android.util.Log
+import androidx.core.graphics.scale
 import androidx.core.text.toSpannable
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import eu.zimbelstern.tournant.data.RecipeList
@@ -97,7 +98,7 @@ class TournantApplication : Application() {
 					imageFile.inputStream().use { inputStream ->
 						val byteArrayOutputStream = ByteArrayOutputStream()
 						val image = BitmapFactory.decodeStream(inputStream)
-						Bitmap.createScaledBitmap(image, 256, (image.height * 256f / image.width).roundToInt(), true)
+						image.scale(256, (image.height * 256f / image.width).roundToInt())
 							.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream)
 						it.recipe.image = byteArrayOutputStream.toByteArray()
 					}
@@ -137,7 +138,7 @@ class TournantApplication : Application() {
 	}
 
 	fun getDecimalSeparator() =
-		if (getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE)
+		if (getSharedPreferences(packageName + "_preferences", MODE_PRIVATE)
 				.getBoolean(Constants.PREF_DECIMAL_SEPARATOR_COMMA, DecimalFormatSymbols.getInstance().decimalSeparator == ','))
 			','
 		else

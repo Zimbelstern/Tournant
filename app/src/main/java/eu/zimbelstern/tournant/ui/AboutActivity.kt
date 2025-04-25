@@ -2,7 +2,6 @@ package eu.zimbelstern.tournant.ui
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.ViewGroupCompat
 import androidx.core.view.WindowInsetsCompat
@@ -107,7 +107,7 @@ class AboutActivity : AppCompatActivity() {
 		}
 
 		private fun actionViewUri(uriString: String) {
-			val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uriString))
+			val intent = Intent(Intent.ACTION_VIEW, uriString.toUri())
 			try {
 				startActivity(intent)
 			} catch (_: ActivityNotFoundException) {

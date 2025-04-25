@@ -1,6 +1,5 @@
 package eu.zimbelstern.tournant.ui
 
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -16,6 +15,7 @@ import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.core.content.ContextCompat
+import androidx.core.content.edit
 import androidx.core.os.LocaleListCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.ViewGroupCompat
@@ -102,7 +102,7 @@ class SettingsActivity : AppCompatActivity() {
 			setPreferencesFromResource(R.xml.root_preferences, rootKey)
 			val sharedPrefs = requireActivity().getSharedPreferences(
 				requireActivity().packageName + "_preferences",
-				Context.MODE_PRIVATE
+				MODE_PRIVATE
 			)
 
 			findPreference<ListPreference>("mode")?.apply {
@@ -115,9 +115,9 @@ class SettingsActivity : AppCompatActivity() {
 				setOnPreferenceChangeListener { _, value ->
 					val opt = options[entryValues.indexOf(value)]
 					sharedPrefs
-						.edit()
-						.putInt(PREF_MODE, opt)
-						.apply()
+						.edit {
+    						putInt(PREF_MODE, opt)
+						}
 					summary = context.resources.getStringArray(R.array.mode_options_summary)[opt - 1]
 					findPreference<Preference>("file")?.isEnabled = opt == MODE_SYNCED
 					if (opt == MODE_SYNCED && sharedPrefs.getString(PREF_FILE, "").isNullOrEmpty()) {
@@ -146,9 +146,9 @@ class SettingsActivity : AppCompatActivity() {
 				isChecked = sharedPrefs.getBoolean(PREF_MARKDOWN, true)
 				setOnPreferenceChangeListener { _, value ->
 					sharedPrefs
-						.edit()
-						.putBoolean(PREF_MARKDOWN, value as Boolean)
-						.apply()
+						.edit {
+							putBoolean(PREF_MARKDOWN, value as Boolean)
+						}
 					true
 				}
 			}
@@ -157,9 +157,9 @@ class SettingsActivity : AppCompatActivity() {
 				isChecked = sharedPrefs.getBoolean(PREF_SCREEN_ON, true)
 				setOnPreferenceChangeListener { _, value ->
 					sharedPrefs
-						.edit()
-						.putBoolean(PREF_SCREEN_ON, value as Boolean)
-						.apply()
+						.edit {
+							putBoolean(PREF_SCREEN_ON, value as Boolean)
+						}
 					true
 				}
 			}
@@ -174,9 +174,9 @@ class SettingsActivity : AppCompatActivity() {
 				setOnPreferenceChangeListener { _, value ->
 					val opt = options[entryValues.indexOf(value)]
 					sharedPrefs
-						.edit()
-						.putInt(PREF_COLOR_THEME, opt)
-						.apply()
+						.edit {
+							putInt(PREF_COLOR_THEME, opt)
+						}
 					AppCompatDelegate.setDefaultNightMode(opt)
 					true
 				}
@@ -217,9 +217,9 @@ class SettingsActivity : AppCompatActivity() {
 				isChecked = sharedPrefs.getBoolean(PREF_DECIMAL_SEPARATOR_COMMA, DecimalFormatSymbols.getInstance().decimalSeparator == ',')
 				setOnPreferenceChangeListener { _, value ->
 					sharedPrefs
-						.edit()
-						.putBoolean(PREF_DECIMAL_SEPARATOR_COMMA, value as Boolean)
-						.apply()
+						.edit {
+							putBoolean(PREF_DECIMAL_SEPARATOR_COMMA, value as Boolean)
+						}
 					true
 				}
 			}
@@ -277,11 +277,11 @@ class SettingsActivity : AppCompatActivity() {
 				if (inputStream == null) {
 					Toast.makeText(this, getString(R.string.inputstream_null), Toast.LENGTH_LONG).show()
 				} else {
-					getSharedPreferences(packageName + "_preferences", Context.MODE_PRIVATE)
-						.edit()
-						.putString(PREF_FILE, it.toString())
-						.putLong(PREF_FILE_LAST_MODIFIED, -1)
-						.apply()
+					getSharedPreferences(packageName + "_preferences", MODE_PRIVATE)
+						.edit {
+							putString(PREF_FILE, it.toString())
+								.putLong(PREF_FILE_LAST_MODIFIED, -1)
+						}
 				}
 			} catch (e: Exception) {
 				Toast.makeText(this, getString(R.string.unknown_file_error, e.message), Toast.LENGTH_LONG).show()

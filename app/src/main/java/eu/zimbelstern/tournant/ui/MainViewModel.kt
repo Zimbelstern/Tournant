@@ -45,6 +45,8 @@ import java.io.InputStream
 import java.io.InputStreamReader
 import java.util.zip.ZipInputStream
 import kotlin.random.Random
+import androidx.core.content.edit
+import androidx.core.net.toUri
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -79,9 +81,9 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 			orderedBy.emit(orderBy)
 		}
 		application.getSharedPreferences(application.packageName + "_preferences", Context.MODE_PRIVATE)
-			.edit()
-			.putInt(PREF_SORT, orderBy)
-			.apply()
+			.edit {
+				putInt(PREF_SORT, orderBy)
+			}
 	}
 
 
@@ -280,7 +282,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 		val path = sharedPrefs.getString(PREF_FILE, "")
 		if (!path.isNullOrEmpty()) {
 			Log.d(TAG, "Syncing with $path")
-			val uri = Uri.parse(path)
+			val uri = path.toUri()
 			val documentFile = DocumentFile.fromSingleUri(application, uri)
 
 			if (documentFile == null) {
@@ -315,7 +317,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 								}
 								recipeDao.compareAndUpdateGourmandRecipes(recipesFromFile)
 							}
-							sharedPrefs.edit().putLong(PREF_FILE_LAST_MODIFIED, lastModified).apply()
+							sharedPrefs.edit { putLong(PREF_FILE_LAST_MODIFIED, lastModified)}
 						} catch (e: Exception) {
 							Log.e(TAG, "Couldn't update; $e")
 							withContext(Dispatchers.Main) {
