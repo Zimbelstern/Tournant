@@ -19,6 +19,7 @@ import androidx.core.view.setPadding
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import coil3.dispose
 import coil3.load
 import coil3.request.addLastModifiedToFileCacheKey
 import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_CREATED
@@ -118,6 +119,7 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 		}
 
 		holder.binding.recipeCardImage.apply {
+			dispose()
 			val imageFile = File(File(context.applicationContext.filesDir, "images"), "${recipe.id}.jpg")
 			if (imageFile.exists()) {
 				load(imageFile) {
