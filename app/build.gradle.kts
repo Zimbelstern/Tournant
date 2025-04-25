@@ -1,7 +1,7 @@
 plugins {
 	id("com.android.application")
 	id("com.github.triplet.play") version "3.10.1"
-	id("com.google.devtools.ksp") version "2.0.21-1.0.25"
+	id("com.google.devtools.ksp") version "2.1.20-2.0.0"
 	id("kotlin-android")
 	id("kotlin-parcelize")
 	id("kotlin-kapt")
