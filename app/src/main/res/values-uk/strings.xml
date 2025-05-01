@@ -58,7 +58,7 @@
     <string name="share">Поділитися</string>
     <string name="delete_selected">Видалити виділене</string>
     <string name="share_selected">Поділитися виділеним</string>
-    <string name="delete_selected_sure_named">Це назавжди видалить %s із бази даних. Ви впевнені?</string>
+    <string name="delete_selected_sure_named">%s буде назавжди видалено з бази даних. Ви впевнені?</string>
     <string name="dependent_recipes">Залежні рецепти</string>
     <string name="share_all">Поділитися всім</string>
     <string name="export_all">Експортувати все</string>
@@ -104,15 +104,15 @@
     <string name="recipe_count">Кількість рецептів</string>
     <string name="export_selected">Експортувати виділене</string>
     <plurals name="delete_selected_sure">
-        <item quantity="one">Це назавжди видалить %d рецепт із бази даних. Ви впевнені?</item>
-        <item quantity="few">Це назавжди видалить %d рецепти з бази даних. Ви впевнені?</item>
-        <item quantity="many">Це назавжди видалить %d рецептів з бази даних. Ви впевнені?</item>
-        <item quantity="other">Це назавжди видалить %d рецептів з бази даних. Ви впевнені?</item>
+        <item quantity="one">%d рецепт буде назавжди видалено з бази даних. Ви впевнені?</item>
+        <item quantity="few">%d рецепти буде назавжди видалено з бази даних. Ви впевнені?</item>
+        <item quantity="many">%d рецептів буде назавжди видалено з бази даних. Ви впевнені?</item>
+        <item quantity="other">%d рецептів буде назавжди видалено з бази даних. Ви впевнені?</item>
     </plurals>
     <string name="dependent_recipes_found">Вибір містить один або кілька рецептів, які використовуються в інших рецептах. Ви повинні вирішити ці залежності або також видалити їх.
 \nЗалежні рецепти: %s</string>
     <string name="use_comma_as_decimal_separator">Використовувати кому як десятковий роздільник під час імпорту та експорту</string>
-    <string name="delete_all_recipes_sure">Це призведе до остаточного видалення <b>всіх імпортованих рецептів</b> у базі даних. Ви впевнені?</string>
+    <string name="delete_all_recipes_sure"><b>Усі імпортовані рецепти</b> у базі даних буде видалено назавжди. Ви впевнені?</string>
     <string name="all_recipes">Усі рецепти</string>
     <string name="ascending">Зростанням</string>
     <string name="copy_to_clipboard">Копіювати в буфер обміну</string>
@@ -171,4 +171,12 @@
     <string name="language">Мова</string>
     <string name="gourmand165">Числа з рухомою комою як значення «Вихід» (проблема #165 в Gourmand)</string>
     <string name="menu">Меню</string>
+    <string name="app_language">Мова додатка</string>
+    <string name="all_languages">Усі мови</string>
+    <string name="keywords">Ключові слова</string>
+    <string name="season">Пора року</string>
+    <string name="supported_languages">Мови, що підтримуються</string>
+    <string name="from">з</string>
+    <string name="until">по</string>
+    <string name="comma_separated">через кому</string>
 </resources>
