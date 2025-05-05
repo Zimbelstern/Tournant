@@ -20,7 +20,7 @@
         <item quantity="other">lots</item>
     </plurals>
     <string name="no_recipes_found">Aucune recette trouvée</string>
-    <string name="unknown_file_error">Erreur de fichier inconnue : %s</string>
+    <string name="unknown_file_error">Erreur de fichier inconnue : %s</string>
     <plurals name="servings">
         <item quantity="one">portion</item>
         <item quantity="many">portions</item>
@@ -42,7 +42,7 @@
     <string name="issues">Suivi des bogues</string>
     <string name="license">Licence</string>
     <string name="ok">OK</string>
-    <string name="egg">Prenez un cookie : 🍪</string>
+    <string name="egg">Prenez un cookie : 🍪</string>
     <string name="less">moins</string>
     <string name="recipe_not_found">Recette introuvable</string>
     <string name="color_theme">Schéma de couleur</string>
@@ -53,7 +53,7 @@
     <string name="be_careful">Faites attention</string>
     <string name="use_comma_as_decimal_separator">Utilisez une virgule comme séparateur décimal lors de l\'importation et de l\'exportation</string>
     <string name="delete_all_recipes">Supprimer toutes les recettes</string>
-    <string name="delete_all_recipes_sure">Cela va effacer définitivement <b>toutes les recettes</b> importées dans la base de données. Êtes-vous sûr ?</string>
+    <string name="delete_all_recipes_sure">Cela va effacer définitivement <b>toutes les recettes</b> importées dans la base de données. Êtes-vous sûr ?</string>
     <string name="synced_file">Fichier Gourmand XML synchronisé</string>
     <string name="recipe">Recette</string>
     <string name="title">Titre</string>
@@ -66,7 +66,7 @@
     <string name="add_to_selection">Ajouter à la sélection</string>
     <string name="remove">Retirer</string>
     <string name="options">Options</string>
-    <string name="inspiration">Vous cherchez de l\'inspiration \?</string>
+    <string name="inspiration">Vous cherchez de l\'inspiration ?</string>
     <string name="edit">Éditer</string>
     <string name="save">Sauvegarder</string>
     <string name="add_photo">Ajouter photo</string>
@@ -80,24 +80,23 @@
     <string name="share_selected">Partager sélectionné</string>
     <string name="export_selected">Exporter sélectionné</string>
     <string name="delete_selected">Supprimer sélectionné</string>
-    <string name="delete_selected_sure_named">Cela effacera définitivement %s de la base de données. Êtes-vous sûr \?</string>
+    <string name="delete_selected_sure_named">Cela effacera définitivement %s de la base de données. Êtes-vous sûr ?</string>
     <string name="dependent_recipes">Recettes dépendantes</string>
-    <string name="dependent_recipes_found">La sélection contient une ou plusieurs recettes qui sont utilisées dans d\'autres recettes. Vous devez résoudre ces dépendances ou les supprimer également.
-\nRecettes dépendantes : %s</string>
+    <string name="dependent_recipes_found">La sélection contient une ou plusieurs recettes qui sont utilisées dans d\'autres recettes. Vous devez résoudre ces dépendances ou les supprimer également.\nRecettes dépendantes : %s</string>
     <string name="share_all">Tout partager</string>
     <string name="export_all">Tout exporter</string>
     <string name="select_all">Tout sélectionner</string>
     <plurals name="delete_selected_sure">
-        <item quantity="one">Cela effacera définitivement une recette de la base de données. Êtes-vous sûr \?</item>
-        <item quantity="many">Cela effacera définitivement %d recettes de la base de données. Êtes-vous sûr \?</item>
-        <item quantity="other">Cela effacera définitivement %d recettes de la base de données. Êtes-vous sûr \?</item>
+        <item quantity="one">Cela effacera définitivement une recette de la base de données. Êtes-vous sûr ?</item>
+        <item quantity="many">Cela effacera définitivement %d recettes de la base de données. Êtes-vous sûr ?</item>
+        <item quantity="other">Cela effacera définitivement %d recettes de la base de données. Êtes-vous sûr ?</item>
     </plurals>
     <string name="mode">Mode</string>
     <string name="mode_standalone">Autonome</string>
-    <string name="mode_standalone_description_short">Autonome : Votre propre base de données avec la possibilité d\'éditer les recettes</string>
+    <string name="mode_standalone_description_short">Autonome : Votre propre base de données avec la possibilité d\'éditer les recettes</string>
     <string name="mode_standalone_description_long">Tournant crée sa propre base de données pour vos recettes. Vous pouvez importer des recettes à partir de fichiers XML. Les recettes peuvent être éditées (en développement).</string>
     <string name="mode_synced">Synchronisé</string>
-    <string name="mode_synced_description_short">Synchronisé : Toujours synchronisé avec un fichier XML (lecture-seulement)</string>
+    <string name="mode_synced_description_short">Synchronisé : Toujours synchronisé avec un fichier XML (lecture-seulement)</string>
     <string name="mode_synced_description_long">Tournant reste synchronisé avec un seul fichier XML sur votre appareil. L\'édition des recettes est désactivée car elle créerait des conflits et il n\'existe actuellement aucune fonctionnalité de synchronisation dans Gourmand pour les résoudre.</string>
     <string name="change_synced_file">Modifier le fichier synchronisé</string>
     <string name="change_mode_explanation">Vous pouvez changer le mode dans les réglages.</string>
@@ -141,8 +140,7 @@
     <string name="set_alarm">Régler l\'alarme</string>
     <string name="no_suitable_application">Aucune application appropriée</string>
     <string name="limitations">Restrictions</string>
-    <string name="missing_features_gourmand">Les propriétés de recette suivantes ne sont pas prises en charge par Gourmand:
-\n%s</string>
+    <string name="missing_features_gourmand">Les propriétés de recette suivantes ne sont pas prises en charge par Gourmand :\n%s</string>
     <string name="archive_original_images">Archiver avec des images originales</string>
     <string name="created">Créé</string>
     <string name="creation_date">Date de création</string>
@@ -159,9 +157,10 @@
     <string name="last_prepared">Dernière préparation</string>
     <string name="log_preparation">Journal de réalisation</string>
     <string name="logbook">Journaux</string>
-    <string name="last_time">Dernière fois : %s</string>
+    <string name="last_time">Dernière fois : %s</string>
     <string name="auto_follow_system">Auto (celui du système)</string>
     <string name="light">Clair</string>
     <string name="dark">Sombre</string>
     <string name="language">Langue</string>
+    <string name="menu">Menu</string>
 </resources>
