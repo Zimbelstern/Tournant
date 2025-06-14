@@ -173,22 +173,24 @@ fun MutableList<IngredientLine>.move(from: Int, to: Int) {
 
 val floatingNumber = """\d{1,3}([$separator/]\d{1,2})?"""
 private fun dashOrWord(dashWords: String) = """(\s?\p{Pd}\s?)|(\s$dashWords\s)"""
-private fun numberOrRange(dashWords: String) = """$floatingNumber(${dashOrWord(dashWords)})?$floatingNumber"""
+private fun numberOrRange(dashWords: String) = """($floatingNumber(${dashOrWord(dashWords)}))?$floatingNumber"""
 
-fun Spanned.findDurationsByRegex(dashWords: String, timeUnitWords: String): Sequence<Pair<Double, IntRange>> {
-	return Regex("""(${numberOrRange(dashWords)}\s?($timeUnitWords))([^\p{L}]|\z)""")
+fun Spanned.findDurationsByRegex(dashWords: String, timeUnitWords: String): Sequence<Pair<Double, IntRange>> =
+	Regex("""(${numberOrRange(dashWords)}\s?($timeUnitWords))([^\p{L}]|\z)""")
 		.findAll(this)
 		.mapNotNull { match ->
-			match.groups[1]?.let {
-				Pair(
-					it.value
-						.takeWhile { char -> char.isDigit() || char == separator }
-						.withFractionsToDouble(separator)!!,
-					it.range
-				)
+			match.groups[1]?.let { durationString ->
+				durationString.value
+					.takeWhile { char -> char.isDigit() || char == separator }
+					.withFractionsToDouble(separator)
+					?.let { value ->
+						Pair(
+							value,
+							durationString.range
+						)
+					}
+				}
 			}
-		}
-}
 
 fun Spanned.findFirstIngredientWithAmount(dashWords: String, ingredient: Ingredient, from: Int): MatchResult? {
 	return Regex("""${numberOrRange(dashWords)}\s?${ingredient.unit ?: ""}\s${ingredient.item}""").find(this, from)

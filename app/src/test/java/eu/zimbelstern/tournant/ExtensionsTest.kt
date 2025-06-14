@@ -17,6 +17,7 @@ class ExtensionsTest {
 	}
 
 	private val stringsUnderTest = listOf(
+		"2 min" to listOf(2.0 to 0..4),
 		"cook for 30 min, then let rest for 10 min" to listOf(30.0 to 9..14, 10.0 to 35..40),
 		"20 - 30 min" to listOf(20.0 to 0..10),
 		"4.5 to 5 minutes" to listOf(4.5 to 0..15),
