@@ -5,6 +5,8 @@ import android.net.Uri
 import android.util.Log
 import android.webkit.MimeTypeMap
 import android.widget.Toast
+import androidx.core.content.edit
+import androidx.core.net.toUri
 import androidx.core.text.isDigitsOnly
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.AndroidViewModel
@@ -45,8 +47,6 @@ import java.io.InputStream
 import java.io.InputStreamReader
 import java.util.zip.ZipInputStream
 import kotlin.random.Random
-import androidx.core.content.edit
-import androidx.core.net.toUri
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -88,13 +88,15 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 
 
 	// RECIPES
-	val recipeDescriptions = combine(searchQuery, orderedBy) { s, o -> Pair(s, o) }.flatMapLatest { query ->
+	val countAllRecipes = recipeDao.getRecipeCount().stateIn(viewModelScope, SharingStarted.Lazily, -1)
+
+	val recipeDescriptions = combine(searchQuery, orderedBy, countAllRecipes) { searchQuery, orderedBy, _ ->
+		Pair(searchQuery, orderedBy)
+	}.flatMapLatest { (searchQuery, orderedBy) ->
 		Pager(PagingConfig(pageSize = 10, enablePlaceholders = false)) {
-			recipeDao.getPagedRecipeDescriptions(query.first ?: "", query.second)
+			recipeDao.getPagedRecipeDescriptions(searchQuery ?: "", orderedBy)
 		}.flow.cachedIn(viewModelScope)
 	}
-
-	val countAllRecipes = recipeDao.getRecipeCount().stateIn(viewModelScope, SharingStarted.Lazily, -1)
 
 	val idsRecipesFiltered = countAllRecipes.combine(searchQuery) { _, query ->
 		withContext(Dispatchers.IO) {

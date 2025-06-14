@@ -61,6 +61,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -306,6 +307,12 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 		lifecycleScope.launch {
 			viewModel.orderedBy.collectLatest {
 				recipeListAdapter.updateSortedBy(it)
+			}
+		}
+
+		lifecycleScope.launch {
+			viewModel.countAllRecipes.distinctUntilChanged { a, b -> a > 0 == b > 0 }.collectLatest {
+				invalidateOptionsMenu()
 			}
 		}
 
@@ -579,6 +586,7 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu): Boolean {
+		Log.d(TAG, "onCreateOptionsMenu()")
 		menuInflater.inflate(R.menu.options, menu)
 
 		if (mode == MODE_SYNCED) {
