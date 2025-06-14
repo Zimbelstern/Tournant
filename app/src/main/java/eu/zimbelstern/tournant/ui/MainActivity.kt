@@ -317,7 +317,8 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 			setOnSearchClickListener {
 				Log.d(TAG, "Search expanded")
 				binding.title.visibility = View.GONE
-				viewModel.search("")
+				if (query.isNullOrEmpty())
+					viewModel.search("")
 			}
 
 			setOnQueryTextListener(object : SearchView.OnQueryTextListener {
