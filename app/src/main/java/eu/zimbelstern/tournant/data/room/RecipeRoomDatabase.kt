@@ -14,10 +14,10 @@ import eu.zimbelstern.tournant.Constants.Companion.PREF_MODE
 import kotlin.reflect.full.declaredFunctions
 
 @Database(
-	entities = [RecipeEntity::class, IngredientEntity::class, PreparationEntity::class],
+	entities = [RecipeEntity::class, IngredientEntity::class, KeywordEntity::class, PreparationEntity::class],
 	exportSchema = true,
-	version = 4,
-	autoMigrations = [AutoMigration(1, 2), AutoMigration(2, 3)]
+	version = 5,
+	autoMigrations = [AutoMigration(1, 2), AutoMigration(2, 3), AutoMigration(4, 5)]
 )
 abstract class RecipeRoomDatabase : RoomDatabase() {
 	abstract fun recipeDao(): RecipeDao

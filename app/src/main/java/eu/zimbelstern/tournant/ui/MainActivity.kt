@@ -277,8 +277,12 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 
 		// CATEGORIES & CUISINES
 		lifecycleScope.launch {
-			viewModel.filteredCategories.combine(viewModel.filteredCuisines) { categories, cuisines ->
-				listOf(categories, cuisines)
+			combine(
+				viewModel.filteredCategories,
+				viewModel.filteredCuisines,
+				viewModel.filteredKeywords
+			) { categories, cuisines, keywords ->
+				listOf(categories, cuisines, keywords)
 			}.collectLatest {
 				ccAdapter.updateChipAdapters(it)
 				delay(250)

@@ -123,6 +123,11 @@
 
 						</com.google.android.material.chip.ChipGroup>
 
+						<androidx.compose.ui.platform.ComposeView
+							android:id="@+id/recipe_detail_keywords"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"/>
+
 						<LinearLayout
 							android:id="@+id/recipe_detail_source"
 							android:layout_width="match_parent"

@@ -3,9 +3,10 @@ plugins {
 	id("com.github.triplet.play") version "3.10.1"
 	id("com.google.devtools.ksp") version "2.1.20-2.0.0"
 	id("kotlin-android")
-	id("kotlin-parcelize")
 	id("kotlin-kapt")
+	id("kotlin-parcelize")
 	id("org.jetbrains.kotlin.android")
+	id("org.jetbrains.kotlin.plugin.compose") version "2.1.20"
 }
 
 android {
@@ -50,9 +51,10 @@ android {
 	}
 
 	buildFeatures {
-		viewBinding = true
-		dataBinding = true
 		buildConfig = true
+		compose = true
+		dataBinding = true
+		viewBinding = true
 	}
 
 	buildTypes {
@@ -109,6 +111,10 @@ dependencies {
 	implementation("com.google.android.material:material:1.12.0")
 	implementation("com.google.android.flexbox:flexbox:3.0.0")
 	implementation("io.coil-kt.coil3:coil:3.1.0")
+
+	val composeVersion = "1.8.1"
+	implementation("androidx.compose.material:material:$composeVersion")
+	implementation("androidx.compose.ui:ui:$composeVersion")
 
 	val roomVersion = "2.7.1"
 	implementation("androidx.room:room-ktx:$roomVersion")

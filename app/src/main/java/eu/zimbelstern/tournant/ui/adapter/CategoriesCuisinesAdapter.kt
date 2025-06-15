@@ -16,12 +16,14 @@ class CategoriesCuisinesAdapter(mainActivity: MainActivity)
 
 	private var chips = listOf(
 		listOf<ChipData>(),
+		listOf(),
 		listOf()
 	)
 
 	private var adapters = listOf(
 		ChipGroupAdapter(mainActivity),
-		ChipGroupAdapter(mainActivity)
+		ChipGroupAdapter(mainActivity),
+		ChipGroupAdapter(mainActivity, keywords = true)
 	)
 
 	class CategoriesCuisinesViewHolder(val binding: CategoriesAndCuisinesBinding) : RecyclerView.ViewHolder(binding.root)
@@ -34,13 +36,26 @@ class CategoriesCuisinesAdapter(mainActivity: MainActivity)
 
 	override fun onBindViewHolder(holder: CategoriesCuisinesViewHolder, position: Int) {
 		val isCategory = position == 0 && chips[0].isNotEmpty()
+		val isCuisine = position == 0 && chips[0].isEmpty() || position == 1 && chips[0].isNotEmpty() && chips[1].isNotEmpty()
 
 		holder.binding.ccTitle.apply {
-			text = context.getString(if (isCategory) R.string.category else R.string.cuisine)
+			text = context.getString(
+				when {
+					(isCategory) -> R.string.category
+					isCuisine -> R.string.cuisine
+					else -> R.string.keywords
+				}
+			)
 		}
 
 		holder.binding.ccRecycler.apply {
-			adapter = adapters[if (isCategory) 0 else 1]
+			adapter = adapters[
+				when {
+					isCategory -> 0
+					isCuisine -> 1
+					else -> 2
+				}
+			]
 			layoutManager = FlexboxLayoutManager(context)
 		}
 	}

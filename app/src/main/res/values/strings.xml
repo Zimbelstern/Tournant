@@ -13,6 +13,7 @@
 	<string name="title">Title</string>
 	<string name="description">Description</string>
 	<string name="category">Category</string>
+	<string name="keywords">Keywords</string>
 	<string name="cuisine">Cuisine</string>
 	<string name="rating">Rating</string>
 	<string name="source">Source</string>

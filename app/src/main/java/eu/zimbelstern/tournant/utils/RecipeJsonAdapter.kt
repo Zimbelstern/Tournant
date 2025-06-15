@@ -15,6 +15,12 @@ object RecipeJsonAdapter {
 		Moshi.Builder()
 			.add(object {
 				@FromJson
+				fun fromJson(list: List<String>) = LinkedHashSet(list)
+				@ToJson
+				fun toJson(set: LinkedHashSet<String>) = set.toList()
+			})
+			.add(object {
+				@FromJson
 				fun fromJson(string: String?) = Base64.decode(string, Base64.NO_WRAP)
 				@ToJson
 				fun toJson(bytes: ByteArray?) = Base64.encodeToString(bytes, Base64.NO_WRAP)
