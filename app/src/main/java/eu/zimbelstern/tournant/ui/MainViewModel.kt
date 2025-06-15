@@ -16,6 +16,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
+import com.squareup.moshi.JsonDataException
 import eu.zimbelstern.tournant.Constants.Companion.MODE_STANDALONE
 import eu.zimbelstern.tournant.Constants.Companion.MODE_SYNCED
 import eu.zimbelstern.tournant.Constants.Companion.PREF_FILE
@@ -25,7 +26,7 @@ import eu.zimbelstern.tournant.Constants.Companion.PREF_SORT
 import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.TournantApplication
 import eu.zimbelstern.tournant.data.ChipData
-import eu.zimbelstern.tournant.data.RecipeWithIngredients
+import eu.zimbelstern.tournant.data.Recipe
 import eu.zimbelstern.tournant.gourmand.GourmetXmlParser
 import eu.zimbelstern.tournant.utils.RecipeJsonAdapter
 import kotlinx.coroutines.Dispatchers
@@ -39,8 +40,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okio.buffer
-import okio.source
 import okio.use
 import java.io.File
 import java.io.InputStream
@@ -165,7 +164,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 				val parsedRecipes = when (format) {
 					"json" -> {
 						try {
-							readJsonRecipes(inputStream)
+							inputStream.use { readJsonRecipes(it) }
 						} catch (e: Error) {
 							Toast.makeText(application, application.getString(R.string.unknown_file_error, e), Toast.LENGTH_LONG).show()
 							return@withContext
@@ -173,7 +172,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 					}
 					"xml", "bin" -> {
 						try {
-							readXmlRecipes(inputStream)
+							inputStream.use { readXmlRecipes(it) }
 						} catch (e: Error) {
 							Toast.makeText(application, application.getString(R.string.unknown_file_error, e), Toast.LENGTH_LONG).show()
 							return@withContext
@@ -183,7 +182,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 						ZipInputStream(inputStream).use { zipIS ->
 							try {
 								var jsonFound = false
-								var recipeList: List<RecipeWithIngredients>? = null
+								var recipeList: List<Recipe>? = null
 								var entry = zipIS.nextEntry
 								while (entry != null) {
 									if (entry.isDirectory) {
@@ -194,8 +193,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 											error("Malformed zip archive")
 										else
 											jsonFound = true
-										recipeList = RecipeJsonAdapter().fromJson(zipIS.source().buffer())?.recipes
-											?: error("Malformed json file")
+										recipeList = readJsonRecipes(zipIS)
 									} else if (entry.name.endsWith(".jpg") && entry.name.dropLast(4).isDigitsOnly()) {
 										File(application.filesDir, "import").mkdir()
 										File(File(application.filesDir, "import"), entry.name).outputStream().use { fileOS ->
@@ -236,7 +234,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 					}
 				} else {
 					try {
-						val insertedRecipes = recipeDao.insertRecipesWithIngredients(parsedRecipes)
+						val insertedRecipes = recipeDao.insertRecipesWithIngredientsAndPreparations(parsedRecipes.map { it.toRecipeWithIngredientsAndPreparations() })
 						if (format == "zip") {
 							insertedRecipes.forEach {
 								val imageFile = File(File(application.filesDir, "import"), "${it.recipe.prevId}.jpg")
@@ -271,12 +269,18 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 		}
 	}
 
-	private fun readJsonRecipes(inputStream: InputStream): List<RecipeWithIngredients> {
-		return inputStream.use { RecipeJsonAdapter().fromJson(it.source().buffer())?.recipes ?: throw Error("Malformed json file") }
+	private fun readJsonRecipes(inputStream: InputStream): List<Recipe> {
+			val json = inputStream.bufferedReader().readText()
+			return try {
+				RecipeJsonAdapter.adapter.fromJson(json)?.recipes
+			} catch (e: JsonDataException) {
+				Log.w(TAG, "Falling back to old json format because of $e")
+				RecipeJsonAdapter.oldAdapter.fromJson(json)?.recipes?.map { it.toRecipe() }
+			} ?: throw Error("Malformed json file")
 	}
 
-	private fun readXmlRecipes(inputStream: InputStream): List<RecipeWithIngredients> {
-		return inputStream.use { GourmetXmlParser(application.getDecimalSeparator()).parse(it) }
+	private fun readXmlRecipes(inputStream: InputStream): List<Recipe> {
+		return GourmetXmlParser(application.getDecimalSeparator()).parse(inputStream)
 	}
 
 	fun syncWithFile(notify: Boolean = false) {
@@ -317,7 +321,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 										}
 									}
 								}
-								recipeDao.compareAndUpdateGourmandRecipes(recipesFromFile)
+								recipeDao.compareAndUpdateGourmandRecipes(recipesFromFile.map { it.toRecipeWithIngredientsAndPreparations() })
 							}
 							sharedPrefs.edit { putLong(PREF_FILE_LAST_MODIFIED, lastModified)}
 						} catch (e: Exception) {

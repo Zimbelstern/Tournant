@@ -111,9 +111,9 @@ class IngredientTableAdapter(
 		} else ""
 		return mutableListOf<IngredientRow>().apply {
 			var group: String? = null
-			ingredientList.forEach {
+			ingredientList.forEachIndexed { i, it ->
 				if (it.group != group) {
-					if (it.position != 0) {
+					if (i != 0) {
 						add(IngredientRow("", "", "", "", null))
 					}
 					if (!it.group.isNullOrEmpty()) {

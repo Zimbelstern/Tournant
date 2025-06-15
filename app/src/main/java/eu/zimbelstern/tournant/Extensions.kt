@@ -122,7 +122,7 @@ fun MutableList<Ingredient>.scale(factor: Double?): List<Ingredient> {
 	else this
 }
 
-fun MutableList<Ingredient>.inflate(): MutableList<IngredientLine> {
+fun MutableList<Ingredient>.addGroupTitles(): MutableList<IngredientLine> {
 	val newList = mutableListOf<IngredientLine>()
 	var group: String? = null
 	for (item in this) {
@@ -141,17 +141,14 @@ fun MutableList<Ingredient>.inflate(): MutableList<IngredientLine> {
 	return newList
 }
 
-fun MutableList<IngredientLine>.deflate(): MutableList<Ingredient> {
+fun MutableList<IngredientLine>.hideGroupTitles(): MutableList<Ingredient> {
 	val newList = mutableListOf<Ingredient>()
 	var group: String? = null
-	var i = 0
 	for (item in this) {
 		if (item is Ingredient && (item.item?.isBlank() == false || item.refId?.equals(0L) == false)) {
 			newList.add(item.apply {
 				item.group = group
-				item.position = i
 			})
-			i++
 		}
 		if (item is IngredientGroupTitle)
 			group = item.title

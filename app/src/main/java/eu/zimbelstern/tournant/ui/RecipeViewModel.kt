@@ -9,13 +9,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.TournantApplication
-import eu.zimbelstern.tournant.data.Preparation
 import eu.zimbelstern.tournant.data.RecipeTitleId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -25,15 +25,19 @@ class RecipeViewModel(application: TournantApplication, private val recipeId: Lo
 
 	private val recipeDao = application.database.recipeDao()
 
-	val recipe = recipeDao.getRecipeFlowById(recipeId).onEach { recipeWithIngredients ->
-		recipeWithIngredients.ingredients.forEach {
-			it.refId?.let { refId ->
-				withContext(Dispatchers.IO) {
-					it.item = recipeDao.getRecipeTitleById(refId)
+	val recipe = recipeDao.getRecipeById(recipeId)
+		.map {
+			it.toRecipe()
+		}
+		.onEach {  recipe ->
+			recipe.ingredients.forEach {
+				it.refId?.let { refId ->
+					withContext(Dispatchers.IO) {
+						it.item = recipeDao.getRecipeTitleById(refId)
+					}
 				}
 			}
 		}
-	}
 
 	val recipeDates = flow {
 		while (true) {
@@ -42,10 +46,10 @@ class RecipeViewModel(application: TournantApplication, private val recipeId: Lo
 		}
 	}.combine(recipe) { _, recipe ->
 		Pair(
-			recipe.recipe.created?.let {
+			recipe.created?.let {
 				DateUtils.getRelativeDateTimeString(application, it.time, MINUTE_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, 0)
 			},
-			recipe.recipe.modified?.takeIf { it != recipe.recipe.created }?.let {
+			recipe.modified?.takeIf { it != recipe.created }?.let {
 				DateUtils.getRelativeDateTimeString(application, it.time, MINUTE_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, 0)
 			}
 		)
@@ -63,10 +67,10 @@ class RecipeViewModel(application: TournantApplication, private val recipeId: Lo
 		}
 	}
 
-	fun addPreparation(time: Long) {
+	fun addPreparation(date: Date) {
 		viewModelScope.launch {
 			withContext(Dispatchers.IO) {
-				recipeDao.insertPreparation(Preparation(recipeId, Date(time)))
+				recipeDao.addPreparation(recipeId, date)
 				withContext(Dispatchers.Main) {
 					Toast.makeText(getApplication(), R.string.done, Toast.LENGTH_SHORT).show()
 				}
@@ -74,10 +78,10 @@ class RecipeViewModel(application: TournantApplication, private val recipeId: Lo
 		}
 	}
 
-	fun removePreparation(preparation: Preparation) {
+	fun removePreparation(date: Date) {
 		viewModelScope.launch {
 			withContext(Dispatchers.IO) {
-				recipeDao.deletePreparation(preparation)
+				recipeDao.removePreparation(recipeId, date)
 			}
 		}
 	}

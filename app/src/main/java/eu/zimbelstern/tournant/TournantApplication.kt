@@ -11,8 +11,8 @@ import android.util.Log
 import androidx.core.graphics.scale
 import androidx.core.text.toSpannable
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import eu.zimbelstern.tournant.data.RecipeList
-import eu.zimbelstern.tournant.data.RecipeRoomDatabase
+import eu.zimbelstern.tournant.data.Cookbook
+import eu.zimbelstern.tournant.data.room.RecipeRoomDatabase
 import eu.zimbelstern.tournant.gourmand.GourmandIssues
 import eu.zimbelstern.tournant.gourmand.GourmetXmlWriter
 import eu.zimbelstern.tournant.utils.RecipeJsonAdapter
@@ -87,20 +87,20 @@ class TournantApplication : Application() {
 
 		val recipeDao = database.recipeDao()
 
-		val recipes = recipeDao.getRecipesById(recipeIds)
-		val refs = recipeDao.getReferencedRecipes(recipeIds)
+		val recipes = recipeDao.getRecipesById(recipeIds).map { it.toRecipe() }
+		val refs = recipeDao.getReferencedRecipes(recipeIds).map { it.toRecipe() }
 
 		if (format != "zip") {
 			// Read externally saved images, compress and add to recipe objects
 			(recipes + refs).forEach {
-				val imageFile = File(File(filesDir, "images"), "${it.recipe.id}.jpg")
+				val imageFile = File(File(filesDir, "images"), "${it.id}.jpg")
 				if (imageFile.exists()) {
 					imageFile.inputStream().use { inputStream ->
 						val byteArrayOutputStream = ByteArrayOutputStream()
 						val image = BitmapFactory.decodeStream(inputStream)
 						image.scale(256, (image.height * 256f / image.width).roundToInt())
 							.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream)
-						it.recipe.image = byteArrayOutputStream.toByteArray()
+						it.image = byteArrayOutputStream.toByteArray()
 					}
 				}
 			}
@@ -115,7 +115,7 @@ class TournantApplication : Application() {
 				if (format == "xml")
 					GourmetXmlWriter(getDecimalSeparator()).serialize(recipes + refs)
 				else
-					RecipeJsonAdapter().toJson(RecipeList(recipes + refs)).encodeToByteArray()
+					RecipeJsonAdapter.adapter.toJson(Cookbook(recipes + refs)).encodeToByteArray()
 			)
 		}
 
@@ -124,7 +124,7 @@ class TournantApplication : Application() {
 				zipOS.putNextEntry(ZipEntry("$filename.json"))
 				recipeFile.inputStream().use { it.copyTo(zipOS) }
 
-				(recipes + refs).map{ it.recipe.id }.forEach { recipeId ->
+				(recipes + refs).map{ it.id }.forEach { recipeId ->
 					File(File(filesDir, "images"), "$recipeId.jpg").let { imageFile ->
 						if (imageFile.exists()) {
 							zipOS.putNextEntry(ZipEntry("$recipeId.jpg"))

@@ -3,7 +3,7 @@ package eu.zimbelstern.tournant.gourmand
 import android.util.Base64
 import android.util.Xml
 import eu.zimbelstern.tournant.data.Ingredient
-import eu.zimbelstern.tournant.data.RecipeWithIngredients
+import eu.zimbelstern.tournant.data.Recipe
 import org.xmlpull.v1.XmlSerializer
 import java.io.StringWriter
 import kotlin.math.roundToInt
@@ -19,7 +19,7 @@ class GourmetXmlWriter(private val separator: Char) {
 		docdecl(" gourmetDoc")
 	}
 
-	fun serialize(recipes: List<RecipeWithIngredients>): ByteArray {
+	fun serialize(recipes: List<Recipe>): ByteArray {
 		serializer.apply {
 			startTag(null, "gourmetDoc")
 
@@ -34,60 +34,60 @@ class GourmetXmlWriter(private val separator: Char) {
 		return writer.toString().toByteArray()
 	}
 
-	private fun XmlSerializer.writeRecipe(recipe: RecipeWithIngredients) {
+	private fun XmlSerializer.writeRecipe(recipe: Recipe) {
 		startTag(null, "recipe")
-		attribute(null, "id", recipe.recipe.id.toString())
+		attribute(null, "id", recipe.id.toString())
 
 		startTag(null, "title")
-		text(recipe.recipe.title)
+		text(recipe.title)
 		endTag(null, "title")
 
-		recipe.recipe.category?.let {
+		recipe.category?.let {
 			startTag(null, "category")
 			text(it)
 			endTag(null, "category")
 		}
 
-		recipe.recipe.cuisine?.let {
+		recipe.cuisine?.let {
 			startTag(null, "cuisine")
 			text(it)
 			endTag(null, "cuisine")
 		}
 
-		recipe.recipe.source?.let {
+		recipe.source?.let {
 			startTag(null, "source")
 			text(it)
 			endTag(null, "source")
 		}
 
-		recipe.recipe.link?.let {
+		recipe.link?.let {
 			startTag(null, "link")
 			text(it)
 			endTag(null, "link")
 		}
 
-		recipe.recipe.rating?.let {
+		recipe.rating?.let {
 			startTag(null, "rating")
 			text("$it/5")
 			endTag(null, "rating")
 		}
 
-		recipe.recipe.preptime?.let {
+		recipe.preptime?.let {
 			startTag(null, "preptime")
 			text("$it minutes")
 			endTag(null, "preptime")
 		}
 
-		recipe.recipe.cooktime?.let {
+		recipe.cooktime?.let {
 			startTag(null, "cooktime")
 			text("$it minutes")
 			endTag(null, "cooktime")
 		}
 
-		recipe.recipe.yieldValue?.let { yieldValue ->
+		recipe.yieldValue?.let { yieldValue ->
 			startTag(null, "yields")
 			text(yieldValue.roundToInt().toString()) // see Gourmand issue #165
-			recipe.recipe.yieldUnit?.let {
+			recipe.yieldUnit?.let {
 				text(" $it")
 			}
 			endTag(null, "yields")
@@ -117,19 +117,19 @@ class GourmetXmlWriter(private val separator: Char) {
 			endTag(null, "ingredient-list")
 		}
 
-		recipe.recipe.instructions?.let {
+		recipe.instructions?.let {
 			startTag(null, "instructions")
 			text(it.replace("<br/>", "\n").replace("<", "&lt;").replace(">", "&gt;"))
 			endTag(null, "instructions")
 		}
 
-		recipe.recipe.notes?.let {
+		recipe.notes?.let {
 			startTag(null, "modifications")
 			text(it.replace("<br/>", "\n").replace("<", "&lt;").replace(">", "&gt;"))
 			endTag(null, "modifications")
 		}
 
-		recipe.recipe.image?.let {
+		recipe.image?.let {
 			startTag(null, "image")
 			attribute(null, "format", "jpg")
 			cdsect(Base64.encodeToString(it, Base64.DEFAULT))

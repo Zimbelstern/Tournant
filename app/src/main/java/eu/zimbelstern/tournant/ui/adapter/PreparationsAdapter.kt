@@ -4,10 +4,10 @@ import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import eu.zimbelstern.tournant.data.Preparation
 import eu.zimbelstern.tournant.databinding.RecyclerItemPreparationsBinding
+import java.util.Date
 
-class PreparationsAdapter(private val preparationsInterface: PreparationsInterface, private val preparations: MutableList<Preparation>)
+class PreparationsAdapter(private val preparationsInterface: PreparationsInterface, private val preparations: MutableList<Date>)
 	: RecyclerView.Adapter<PreparationsAdapter.PreparationsViewHolder>() {
 
 	class PreparationsViewHolder(val binding: RecyclerItemPreparationsBinding) : RecyclerView.ViewHolder(binding.root)
@@ -21,7 +21,7 @@ class PreparationsAdapter(private val preparationsInterface: PreparationsInterfa
 	override fun onBindViewHolder(holder: PreparationsViewHolder, position: Int) {
 
 		holder.binding.root.apply {
-			text = DateFormat.getDateFormat(context).format(preparations[position].date)
+			text = DateFormat.getDateFormat(context).format(preparations[position])
 			setOnCloseIconClickListener {
 				preparationsInterface.removePreparation(preparations[position])
 				preparations.removeAt(position)
@@ -34,7 +34,7 @@ class PreparationsAdapter(private val preparationsInterface: PreparationsInterfa
 	override fun getItemCount() = preparations.size
 
 	interface PreparationsInterface {
-		fun removePreparation(preparation: Preparation)
+		fun removePreparation(date: Date)
 	}
 
 }

@@ -235,13 +235,13 @@ class RecipeEditingActivity : AppCompatActivity(), IngredientEditingAdapter.Ingr
 				itemTouchHelper.attachToRecyclerView(binding.editIngredients)
 
 				binding.editIngredientsNewIngredient.setOnClickListener {
-					viewModel.ingredients.value.add(Ingredient(0, null, null, null, "", null, false))
+					viewModel.ingredients.value.add(Ingredient(null, null, null, "", null, null, false))
 					adapter.onItemInserted()
 					adapter.notifyItemInserted(adapter.itemCount + 1)
 				}
 
 				binding.editIngredientsNewReference.setOnClickListener {
-					viewModel.ingredients.value.add(Ingredient(0, null, null, null, 0, null, false))
+					viewModel.ingredients.value.add(Ingredient(null, null, null, null, 0, null, false))
 					adapter.onItemInserted()
 					adapter.notifyItemInserted(adapter.itemCount + 1)
 				}
@@ -348,10 +348,6 @@ class RecipeEditingActivity : AppCompatActivity(), IngredientEditingAdapter.Ingr
 
 	override fun startDrag(holder: RecyclerView.ViewHolder) {
 		itemTouchHelper.startDrag(holder)
-	}
-
-	override fun removeIngredient(id: Long) {
-		viewModel.ingredientsRemoved.add(id)
 	}
 
 }

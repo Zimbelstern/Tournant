@@ -686,7 +686,7 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 				}
 			}
 			prefs.getString("LINKED_FILE_URI", null)?.let {
-				prefs.edit() { remove("LINKED_FILE_URI") }
+				prefs.edit { remove("LINKED_FILE_URI") }
 				if (prefs.getInt(PREF_MODE, MODE_STANDALONE) == MODE_SYNCED) {
 					prefs.edit {putString(PREF_FILE, it)}
 					viewModel.syncWithFile()

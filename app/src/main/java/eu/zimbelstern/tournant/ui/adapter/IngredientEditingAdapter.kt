@@ -116,9 +116,7 @@ class IngredientEditingAdapter(
 					setOnMenuItemClickListener { item ->
 						when (item.itemId) {
 							R.id.remove_ingredient -> {
-								val removedLine =
-									ingredientLines.removeAt(holder.bindingAdapterPosition)
-								ingredientEditingInterface.removeIngredient((removedLine as Ingredient).id)
+								ingredientLines.removeAt(holder.bindingAdapterPosition)
 								notifyItemRemoved(holder.bindingAdapterPosition)
 								true
 							}
@@ -167,7 +165,6 @@ class IngredientEditingAdapter(
 								notifyItemRemoved(stopIndex)
 								true
 							}
-
 							else -> false
 						}
 					}
@@ -196,7 +193,6 @@ class IngredientEditingAdapter(
 
 	interface IngredientEditingInterface {
 		fun startDrag(holder: ViewHolder)
-		fun removeIngredient(id: Long)
 	}
 
 }

@@ -1,0 +1,48 @@
+{
+	"recipes": [
+		{
+			"id": 1,
+			"title": "Sample recipe",
+			"category": "Category",
+			"cuisine": "Cuisine",
+			"source": "Source",
+			"link": "https://tournant.zimbelstern.eu",
+			"rating": 4.5,
+			"preptime": 60,
+			"cooktime": 30,
+			"yieldValue": 2.0,
+			"yieldUnit": "portions",
+			"instructions": "Let's start:\n1. Do this, then\n2. do that\n3. and serve it!",
+			"notes": "Notes",
+			"created": 0,
+			"modified": 1,
+			"ingredients": [
+				{
+					"amount": 3.0,
+					"unit": "km",
+					"item": "First ingredient",
+					"refId": 3,
+					"optional": false
+				},
+				{
+					"amount": 2.0,
+					"unit": "mg",
+					"item": "Second ingredient",
+					"optional": false
+				},
+				{
+					"amount": 0.25,
+					"unit": "µF",
+					"item": "Third ingredient",
+					"group": "Ingredient Group",
+					"optional": true
+				}
+			],
+			"preparations": [
+				0,
+				84600,
+				84600
+			]
+		}
+	]
+}

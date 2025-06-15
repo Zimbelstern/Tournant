@@ -63,7 +63,6 @@ import eu.zimbelstern.tournant.Constants.Companion.PREF_SCREEN_ON
 import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.RecipeUtils
 import eu.zimbelstern.tournant.TournantApplication
-import eu.zimbelstern.tournant.data.Preparation
 import eu.zimbelstern.tournant.databinding.ActivityRecipeBinding
 import eu.zimbelstern.tournant.databinding.InputFieldTimeBinding
 import eu.zimbelstern.tournant.databinding.RecyclerPreparationsBinding
@@ -174,8 +173,7 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 		}
 
 		lifecycleScope.launch {
-			viewModel.recipe.collectLatest { recipeWithIngredients ->
-				recipeWithIngredients.recipe.let { recipe ->
+			viewModel.recipe.collectLatest { recipe ->
 					binding.recipe = recipe
 					title = recipe.title
 					binding.recipeDetailImage.visibility = recipe.image.let { image ->
@@ -219,7 +217,7 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 							fillYieldsUnit(it, recipe.yieldUnit)
 							addTextChangedListener { editable ->
 								val scaleFactor = editable.toString().replace(DecimalFormatSymbols.getInstance().decimalSeparator, '.').toDoubleOrNull()?.div(recipe.yieldValue ?: 1.0)
-								recipeWithIngredients.ingredients.scale(scaleFactor).let { list ->
+								recipe.ingredients.scale(scaleFactor).let { list ->
 									binding.recipeDetailIngredientsRecycler.adapter = IngredientTableAdapter(this@RecipeActivity, list, scaleFactor)
 									binding.recipeDetailInstructionsRecycler.adapter = recipe.instructions?.let {
 										InstructionsTextAdapter(this@RecipeActivity, parseRecipeText(it).splitLines(), list, scaleFactor)
@@ -244,22 +242,21 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 						binding.recipeDetailNotesText.movementMethod = LinkMovementMethod.getInstance()
 						binding.recipeDetailNotesText.text = parseRecipeText(it)
 					}
-				}
-				recipeWithIngredients.ingredients.let { list ->
+				recipe.ingredients.let { list ->
 					binding.recipeDetailIngredients.visibility = View.VISIBLE
 					if (savedInstanceState?.getString("YIELD_VALUE").isNullOrEmpty()) {
 						binding.recipeDetailIngredientsRecycler.adapter = IngredientTableAdapter(this@RecipeActivity, list)
 					} else {
-						savedInstanceState?.putString("YIELD_VALUE", null)
+						savedInstanceState.putString("YIELD_VALUE", null)
 					}
 				}
 				if (intent.hasExtra("RECIPE_YIELD_AMOUNT")) {
 					val requestedYieldAmount = intent.getDoubleExtra("RECIPE_YIELD_AMOUNT", 0.0)
 					val requestedYieldUnit = intent.getStringExtra("RECIPE_YIELD_UNIT")
-					if (requestedYieldUnit.isNullOrEmpty() && recipeWithIngredients.recipe.yieldUnit != null) {
+					if (requestedYieldUnit.isNullOrEmpty() && recipe.yieldUnit != null) {
 						scale(requestedYieldAmount)
 					}
-					else if (requestedYieldUnit == recipeWithIngredients.recipe.yieldUnit) {
+					else if (requestedYieldUnit == recipe.yieldUnit) {
 						binding.recipeDetailYieldsValue.setText(requestedYieldAmount.toStringForCooks(thousands = false))
 					}
 					intent.removeExtra("RECIPE_YIELD_AMOUNT")
@@ -268,7 +265,7 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 					binding.recipeDetailYieldsValue.text = SpannableStringBuilder(
 						RecipeUtils.lessYield(
 							binding.recipeDetailYieldsValue.text.toString().replace(DecimalFormatSymbols.getInstance().decimalSeparator, '.').toDoubleOrNull()
-								?: recipeWithIngredients.recipe.yieldValue ?: 1.0
+								?: recipe.yieldValue ?: 1.0
 						).toStringForCooks(thousands = false)
 					)
 				}
@@ -276,14 +273,14 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 					binding.recipeDetailYieldsValue.text = SpannableStringBuilder(
 						RecipeUtils.moreYield(
 							binding.recipeDetailYieldsValue.text.toString().replace(DecimalFormatSymbols.getInstance().decimalSeparator, '.').toDoubleOrNull()
-								?: recipeWithIngredients.recipe.yieldValue ?: 1.0
+								?: recipe.yieldValue ?: 1.0
 						).toStringForCooks(thousands = false))
 				}
 				binding.recipeDetailReset.setOnClickListener {
 					binding.recipeDetailYieldsValue.setText("")
 				}
 				binding.recipeDetailCopy.apply {
-					if (recipeWithIngredients.ingredients.isEmpty())
+					if (recipe.ingredients.isEmpty())
 						visibility = View.GONE
 					else {
 						visibility = View.VISIBLE
@@ -295,19 +292,19 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 					}
 				}
 				binding.recipeDetailPreparations.apply {
-					if (recipeWithIngredients.preparations.isEmpty())
+					if (recipe.preparations.isEmpty())
 						visibility = View.GONE
 					else {
 						visibility = View.VISIBLE
 						binding.recipeDetailPreparationsCount.text = resources.getQuantityString(
 							R.plurals.prepared_times,
-							recipeWithIngredients.preparations.size,
-							recipeWithIngredients.preparations.size
+							recipe.preparations.size,
+							recipe.preparations.size
 						)
 						binding.recipeDetailPreparationsTime.text = getString(
 							R.string.last_time,
 							DateUtils.getRelativeTimeSpanString(
-								recipeWithIngredients.preparations.last().date.time,
+								recipe.preparations.last().time,
 								Date().time,
 								DAY_IN_MILLIS
 							)
@@ -316,7 +313,7 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 							.setTitle(R.string.prepared_on)
 							.setView(
 								RecyclerPreparationsBinding.inflate(layoutInflater).apply {
-									preparationsRecycler.adapter = PreparationsAdapter(this@RecipeActivity, recipeWithIngredients.preparations.asReversed())
+									preparationsRecycler.adapter = PreparationsAdapter(this@RecipeActivity, recipe.preparations.asReversed())
 									preparationsRecycler.layoutManager = FlexboxLayoutManager(this@RecipeActivity)
 								}.root
 							)
@@ -547,7 +544,7 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 			.build()
 			.apply {
 				addOnPositiveButtonClickListener {
-					viewModel.addPreparation(it)
+					viewModel.addPreparation(Date(it))
 				}
 			}
 			.show(supportFragmentManager, "DatePicker")
@@ -590,7 +587,7 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 		super.onSaveInstanceState(outState)
 	}
 
-	override fun removePreparation(preparation: Preparation) {
-		viewModel.removePreparation(preparation)
+	override fun removePreparation(date: Date) {
+		viewModel.removePreparation(date)
 	}
 }

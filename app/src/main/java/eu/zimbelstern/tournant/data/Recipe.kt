@@ -1,90 +1,76 @@
 package eu.zimbelstern.tournant.data
 
 import android.os.Parcelable
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
-import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import eu.zimbelstern.tournant.utils.RoomTypeConverters
+import eu.zimbelstern.tournant.data.room.IngredientEntity
+import eu.zimbelstern.tournant.data.room.PreparationEntity
+import eu.zimbelstern.tournant.data.room.RecipeEntity
+import eu.zimbelstern.tournant.data.room.RecipeWithIngredientsAndPreparations
 import kotlinx.parcelize.Parcelize
 import java.util.Date
 
 @Parcelize
-@Entity
 @JsonClass(generateAdapter = true)
-@TypeConverters(RoomTypeConverters::class)
 data class Recipe(
-	// Constructor for Room entity
-	@PrimaryKey(autoGenerate = true)
-	var id: Long,
-
-	@Transient
-	var prevId: Long? = null,
-
-	@field:Json(ignore = true)
-	val gourmandId: Int? = null,
-
+	val id: Long = 0,
+	var gourmandId: Int? = null,
 	var title: String,
-	var description: String?,
-	var category: String?,
-	var cuisine: String?,
-	var source: String?,
-	var link: String?,
-	var rating: Float?,
-	var preptime: Int?,
-	var cooktime: Int?,
-	var yieldValue: Double?,
-	var yieldUnit: String?,
-	var instructions: String?,
-	var notes: String?,
-	var image: ByteArray?,
-	var thumbnail: ByteArray?,
+	var description: String? = null,
+	var category: String? = null,
+	var cuisine: String? = null,
+	var source: String? = null,
+	var link: String? = null,
+	var rating: Float? = null,
+	var preptime: Int? = null,
+	var cooktime: Int? = null,
+	var yieldValue: Double? = null,
+	var yieldUnit: String? = null,
+	var instructions: String? = null,
+	var notes: String? = null,
+	var image: ByteArray? = null,
+	var thumbnail: ByteArray? = null,
 	var created: Date? = Date(),
 	var modified: Date? = created,
+	val ingredients: MutableList<Ingredient> = mutableListOf(),
+	val preparations: MutableList<Date> = mutableListOf(),
 ) : Parcelable {
 
-	// Constructor for outdoor (non-room) usage
-	constructor(
-		gourmandId: Int? = null,
-		title: String = "",
-		description: String? = null,
-		category: String? = null,
-		cuisine: String? = null,
-		source: String? = null,
-		link: String? = null,
-		rating: Float? = null,
-		preptime: Int? = null,
-		cooktime: Int? = null,
-		yieldValue: Double? = null,
-		yieldUnit: String? = null,
-		instructions: String? = null,
-		notes: String? = null,
-		image: ByteArray? = null,
-		thumbnail: ByteArray? = null,
-		created: Date? = Date(),
-		modified: Date? = created,
-	) : this(0,
-		null,
-		gourmandId,
-		title,
-		description,
-		category,
-		cuisine,
-		source,
-		link,
-		rating,
-		preptime,
-		cooktime,
-		yieldValue,
-		yieldUnit,
-		instructions,
-		notes,
-		image,
-		thumbnail,
-		created,
-		modified,
-	)
+	fun toRecipeWithIngredientsAndPreparations(): RecipeWithIngredientsAndPreparations =
+		RecipeWithIngredientsAndPreparations(
+			RecipeEntity(
+				id = id,
+				gourmandId = gourmandId,
+				title = title,
+				description = description,
+				category = category,
+				cuisine = cuisine,
+				source = source,
+				link = link,
+				rating = rating,
+				preptime = preptime,
+				cooktime = cooktime,
+				yieldValue = yieldValue,
+				yieldUnit = yieldUnit,
+				instructions = instructions,
+				notes = notes,
+				image = image,
+				thumbnail = thumbnail,
+				created = created,
+				modified = modified
+			),
+			ingredients.mapIndexed { i, it -> IngredientEntity(
+				recipeId = id,
+				position = i,
+				amount = it.amount,
+				amountRange = it.amountRange,
+				unit = it.unit,
+				item = it.item,
+				refId = it.refId,
+				group = it.group,
+				optional = it.optional
+			) },
+			preparations.groupBy { it }.map { (date, elements) -> PreparationEntity(id, date, elements.size) }
+		)
 
 	fun processModifications() {
 		if (description?.isBlank() == true) description = null
@@ -130,6 +116,8 @@ data class Recipe(
 		} else if (other.thumbnail != null) return false
 		if (created != other.created) return false
 		if (modified != other.modified) return false
+		if (ingredients != other.ingredients) return false
+		if (preparations != other.preparations) return false
 
 		return true
 	}
@@ -154,6 +142,8 @@ data class Recipe(
 		result = 31 * result + (thumbnail?.contentHashCode() ?: 0)
 		result = 31 * result + (created?.hashCode() ?: 0)
 		result = 31 * result + (modified?.hashCode() ?: 0)
+		result = 31 * result + (ingredients.hashCode())
+		result = 31 * result + (preparations.hashCode())
 		return result
 	}
 

@@ -118,6 +118,7 @@ dependencies {
 
 	val moshiVersion = "1.15.2"
 	implementation("com.squareup.moshi:moshi:$moshiVersion")
+	implementation("com.squareup.moshi:moshi-kotlin:$moshiVersion")
 	ksp("com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion")
 
 	val markwonVersion = "4.6.2"
