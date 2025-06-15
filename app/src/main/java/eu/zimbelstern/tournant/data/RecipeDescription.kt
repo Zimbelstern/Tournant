@@ -8,6 +8,8 @@ data class RecipeDescription(
 	val description: String?,
 	val category: String?,
 	val cuisine: String?,
+	val seasonFrom: Int?,
+	val seasonUntil: Int?,
 	val rating: Float?,
 	val image: ByteArray?, // TODO: Replace with thumbnail
 	val preptime: Int?,
@@ -19,6 +21,9 @@ data class RecipeDescription(
 	val preparationsCount: Int,
 	val prepared: Long?,
 ) {
+
+	@Ignore
+	var season = Season.createOrNull(seasonFrom, seasonUntil)
 
 	@Ignore
 	var keywords: LinkedHashSet<String> = linkedSetOf()

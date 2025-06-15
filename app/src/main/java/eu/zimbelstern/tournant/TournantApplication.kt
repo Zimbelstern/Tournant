@@ -52,6 +52,8 @@ class TournantApplication : Application() {
 						issues.add(GourmandIssues.NO_KEYWORDS)
 					if (it.recipe.language != (getAppOrSystemLocale()))
 						issues.add(GourmandIssues.NO_LANGUAGE)
+					if (it.recipe.seasonFrom != null)
+						issues.add(GourmandIssues.NO_SEASON)
 					if (it.recipe.yieldValue?.run { this <= this.toInt() } == false)
 						issues.add(GourmandIssues.NO_FRACTIONS_IN_YIELD)
 				}
@@ -63,6 +65,7 @@ class TournantApplication : Application() {
 						GourmandIssues.NO_DESCRIPTIONS -> getString(R.string.description)
 						GourmandIssues.NO_KEYWORDS -> getString(R.string.keywords)
 						GourmandIssues.NO_LANGUAGE -> getString(R.string.language)
+						GourmandIssues.NO_SEASON -> getString(R.string.season)
 						GourmandIssues.NO_FRACTIONS_IN_YIELD -> getString(R.string.gourmand165)
 						else -> ""
 					}

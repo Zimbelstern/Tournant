@@ -17,26 +17,49 @@ import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.view.ActionMode
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Chip
 import androidx.compose.material.ChipDefaults
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.LocalRippleConfiguration
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.RippleConfiguration
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.RippleAlpha
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Outline
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.core.view.setPadding
 import androidx.paging.PagingDataAdapter
@@ -55,10 +78,13 @@ import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.data.ChipData
 import eu.zimbelstern.tournant.data.RecipeDescription
 import eu.zimbelstern.tournant.databinding.RecyclerItemRecipeBinding
+import eu.zimbelstern.tournant.ui.TournantTheme
 import eu.zimbelstern.tournant.ui.getRandom
 import eu.zimbelstern.tournant.ui.materialColors100
 import eu.zimbelstern.tournant.ui.materialColors200
+import eu.zimbelstern.tournant.ui.materialColors700
 import java.io.File
+import java.util.Calendar
 import java.util.Date
 
 class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
@@ -198,6 +224,64 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 									textAlign = TextAlign.Center,
 									modifier = Modifier.align(Alignment.Center)
 								)
+							}
+						}
+					}
+				}
+			}
+		}
+
+		holder.binding.season.setContent {
+			recipe.season?.let { season ->
+				TournantTheme {
+					Surface {
+						var yearWidth by remember { mutableIntStateOf(0) }
+						Column(
+							Modifier
+								.fillMaxWidth()
+								.onGloballyPositioned { yearWidth = it.size.width }
+						) {
+							val relativeOffset = Calendar.getInstance().run {
+								get(Calendar.MONTH) / 12f +
+										(get(Calendar.DAY_OF_MONTH) - 1) / (12f * getActualMaximum(Calendar.DAY_OF_MONTH))
+							}
+							Box(
+								Modifier
+									.size(width = 6.dp, height = 7.dp)
+									.padding(bottom = 1.dp)
+									.offset(x = LocalDensity.current.run { yearWidth.toDp() - 6.dp } * relativeOffset)
+									.clip(TriangularShape)
+									.background(if (season.nowInSeason()) MaterialTheme.colors.primary else Color.Gray.copy(.4f))
+							)
+							Box(
+								Modifier.padding(horizontal = 3.dp)
+							) {
+								Box(
+									Modifier
+										.height(4.dp)
+										.fillMaxWidth()
+										.clip(CircleShape)
+										.background(Color.Gray.copy(.2f))
+								)
+								Row {
+									val months = season.getIncludedMonths()
+									(0..11).forEach { i ->
+										Box(
+											Modifier
+												.height(4.dp)
+												.weight(1f)
+												.clip(
+													RoundedCornerShape(
+														topStartPercent = if (i in months && i - 1 !in months) 50 else 0,
+														bottomStartPercent = if (i in months && i - 1 !in months) 50 else 0,
+														topEndPercent = if (i in months && i + 1 !in months) 50 else 0,
+														bottomEndPercent = if (i in months && i + 1 !in months) 50 else 0
+													)
+												)
+												.background(if (i in months) materialColors700[(i + 5) % 14] else Color.Transparent)
+										) { }
+									}
+								}
 							}
 						}
 					}
@@ -422,6 +506,18 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 		fun exportRecipes(recipeIds: Set<Long>, format: String)
 		fun shareRecipes(recipeIds: Set<Long>, format: String)
 		fun showDeleteDialog(recipeIds: Set<Long>)
+	}
+
+	object TriangularShape : Shape {
+		override fun createOutline(size: Size, layoutDirection: LayoutDirection, density: Density) =
+			Outline.Generic(
+				Path().apply {
+					moveTo(0f, 0f)
+					lineTo(size.width, 0f)
+					lineTo(size.width / 2, size.height)
+					close()
+				}
+			)
 	}
 
 }

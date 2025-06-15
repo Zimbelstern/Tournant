@@ -36,23 +36,51 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Chip
 import androidx.compose.material.ChipDefaults
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.LocalRippleConfiguration
+import androidx.compose.material.LocalTextStyle
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFontFamilyResolver
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextMeasurer
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -85,8 +113,8 @@ import eu.zimbelstern.tournant.TournantApplication
 import eu.zimbelstern.tournant.databinding.ActivityRecipeBinding
 import eu.zimbelstern.tournant.databinding.InputFieldTimeBinding
 import eu.zimbelstern.tournant.databinding.RecyclerPreparationsBinding
+import eu.zimbelstern.tournant.getAppOrSystemLocale
 import eu.zimbelstern.tournant.getQuantityIntForPlurals
-import eu.zimbelstern.tournant.logit
 import eu.zimbelstern.tournant.parseLocalFormattedDouble
 import eu.zimbelstern.tournant.safeInsets
 import eu.zimbelstern.tournant.scale
@@ -214,6 +242,101 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 								Text(text = it, textAlign = TextAlign.Center, modifier = Modifier.widthIn(min = 24.dp))
 							}
 						}
+				}
+			}
+		}
+
+		binding.recipeDetailSeason.setContent {
+			viewModel.recipe.map { it.season?.getIncludedMonths() }.collectAsState(null).value?.let { months ->
+				TournantTheme {
+					Surface {
+						Column {
+							Text(
+								stringResource(R.string.season),
+								color = colorResource(R.color.heading_color),
+								fontFamily = FontFamily(Font(R.font.quicksand_bold)),
+								fontSize = 18.sp
+							)
+
+							val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
+
+							val monthNamesThreeLetters = Calendar.getInstance().run {
+								(0..11).map {
+									set(Calendar.MONTH, it)
+									getDisplayName(
+										Calendar.MONTH,
+										Calendar.SHORT,
+										getAppOrSystemLocale()
+									)
+									?.take(3) ?: ""
+								}
+							}
+
+							val maxSpaceThreeLetters = TextMeasurer(
+								LocalFontFamilyResolver.current,
+								LocalDensity.current,
+								LocalLayoutDirection.current
+							).run {
+								monthNamesThreeLetters.maxOf {
+									measure(it, LocalTextStyle.current.copy(fontSize = 12.sp)).size.width
+								} + 2 * resources.displayMetrics.density
+							}
+
+							val availableSpace = remember { mutableIntStateOf(0) }
+
+							val useThreeLetters = remember { derivedStateOf { maxSpaceThreeLetters * 12 <= availableSpace.intValue } }
+
+							Row(
+								Modifier
+									.fillMaxWidth()
+									.onGloballyPositioned {
+										availableSpace.intValue = it.size.width
+									}
+							) {
+								monthNamesThreeLetters.forEachIndexed { i, monthName ->
+									Column(
+										Modifier.weight(1f),
+										horizontalAlignment = Alignment.CenterHorizontally
+									) {
+										Box(
+											Modifier
+												.padding(bottom = 2.dp)
+												.alpha(if (i in months) 1f else .3f)
+										) {
+											Text(
+												text = if (useThreeLetters.value) monthName else monthName.take(1),
+												fontSize = 12.sp
+											)
+											if (i == currentMonth)
+												Box(
+													Modifier
+														.size(4.dp)
+														.align(Alignment.BottomCenter)
+														.clip(CircleShape)
+														.background(if (i in months) MaterialTheme.colors.primary else Color.Gray.copy(.3f))
+												)
+										}
+										if (i in months) {
+											Box(
+												Modifier
+													.height(4.dp)
+													.fillMaxWidth()
+													.clip(
+														RoundedCornerShape(
+															topStartPercent = if (i - 1 !in months) 50 else 0,
+															bottomStartPercent = if (i - 1 !in months) 50 else 0,
+															topEndPercent = if (i + 1 !in months) 50 else 0,
+															bottomEndPercent = if (i + 1 !in months) 50 else 0
+														)
+													)
+													.background(materialColors700[(i + 5) % 14])
+											)
+										}
+									}
+								}
+							}
+						}
+					}
 				}
 			}
 		}

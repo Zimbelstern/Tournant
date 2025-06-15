@@ -19,6 +19,8 @@ data class RecipeEntity(
 	val language: Locale = getAppOrSystemLocale(),
 	val category: String?,
 	val cuisine: String?,
+	val seasonFrom: Int?,
+	val seasonUntil: Int?,
 	val source: String?,
 	val link: String?,
 	val rating: Float?,
@@ -53,6 +55,8 @@ data class RecipeEntity(
 		if (language != other.language) return false
 		if (category != other.category) return false
 		if (cuisine != other.cuisine) return false
+		if (seasonFrom != other.seasonFrom) return false
+		if (seasonUntil != other.seasonUntil) return false
 		if (source != other.source) return false
 		if (link != other.link) return false
 		if (yieldUnit != other.yieldUnit) return false
@@ -79,6 +83,8 @@ data class RecipeEntity(
 		result = 31 * result + language.hashCode()
 		result = 31 * result + (category?.hashCode() ?: 0)
 		result = 31 * result + (cuisine?.hashCode() ?: 0)
+		result = 31 * result + (seasonFrom?.hashCode() ?: 0)
+		result = 31 * result + (seasonUntil?.hashCode() ?: 0)
 		result = 31 * result + (source?.hashCode() ?: 0)
 		result = 31 * result + (link?.hashCode() ?: 0)
 		result = 31 * result + (yieldUnit?.hashCode() ?: 0)
