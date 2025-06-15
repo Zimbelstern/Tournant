@@ -23,6 +23,7 @@ data class Recipe(
 	var category: String? = null,
 	var cuisine: String? = null,
 	var keywords: LinkedHashSet<String> = linkedSetOf(),
+	var season: Season? = null,
 	var source: String? = null,
 	var link: String? = null,
 	var rating: Float? = null,
@@ -50,6 +51,8 @@ data class Recipe(
 				language = language,
 				category = category,
 				cuisine = cuisine,
+				seasonFrom = season?.from,
+				seasonUntil = season?.until,
 				source = source,
 				link = link,
 				rating = rating,
@@ -83,6 +86,7 @@ data class Recipe(
 		if (description?.isBlank() == true) description = null
 		if (category?.isBlank() == true) category = null
 		if (cuisine?.isBlank() == true) cuisine = null
+		if (season?.getIncludedMonths()?.size == 12) season = null
 		if (source?.isBlank() == true) source = null
 		if (link?.isBlank() == true) link = null
 		if (cooktime == 0) cooktime = null
@@ -105,6 +109,7 @@ data class Recipe(
 		if (language != other.language) return false
 		if (category != other.category) return false
 		if (cuisine != other.cuisine) return false
+		if (season != other.season) return false
 		if (source != other.source) return false
 		if (link != other.link) return false
 		if (rating != other.rating) return false
@@ -139,6 +144,7 @@ data class Recipe(
 		result = 31 * result + language.hashCode()
 		result = 31 * result + (category?.hashCode() ?: 0)
 		result = 31 * result + (cuisine?.hashCode() ?: 0)
+		result = 31 * result + (season?.hashCode() ?: 0)
 		result = 31 * result + (source?.hashCode() ?: 0)
 		result = 31 * result + (link?.hashCode() ?: 0)
 		result = 31 * result + (rating?.hashCode() ?: 0)

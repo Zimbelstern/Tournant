@@ -25,6 +25,7 @@ class Constants {
 		const val SORTED_BY_INGREDIENTS_COUNT = 8
 		const val SORTED_BY_PREPARATIONS_COUNT = 9
 		const val SORTED_BY_PREPARED = 10
+		const val SORTED_BY_SEASON = 11
 	}
 	
 }

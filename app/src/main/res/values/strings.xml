@@ -13,8 +13,9 @@
 	<string name="title">Title</string>
 	<string name="description">Description</string>
 	<string name="category">Category</string>
-	<string name="keywords">Keywords</string>
 	<string name="cuisine">Cuisine</string>
+	<string name="keywords">Keywords</string>
+	<string name="season">Season</string>
 	<string name="rating">Rating</string>
 	<string name="source">Source</string>
 	<string name="webpage">Webpage</string>
@@ -168,6 +169,8 @@
 	<string name="menu">Menu</string>
 	<string name="inspiration">Looking for inspiration?</string>
 	<string name="to">to</string>
+	<string name="from">from</string>
+	<string name="until">until</string>
 
 	<!-- Editing -->
 	<string name="edit">Edit</string>

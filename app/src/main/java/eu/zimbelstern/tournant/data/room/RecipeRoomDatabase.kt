@@ -17,8 +17,8 @@ import kotlin.reflect.full.declaredFunctions
 @Database(
 	entities = [RecipeEntity::class, IngredientEntity::class, KeywordEntity::class, PreparationEntity::class],
 	exportSchema = true,
-	version = 6,
-	autoMigrations = [AutoMigration(1, 2), AutoMigration(2, 3), AutoMigration(4, 5)]
+	version = 7,
+	autoMigrations = [AutoMigration(1, 2), AutoMigration(2, 3), AutoMigration(4, 5), AutoMigration(6, 7)]
 )
 abstract class RecipeRoomDatabase : RoomDatabase() {
 	abstract fun recipeDao(): RecipeDao

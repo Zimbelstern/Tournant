@@ -6,6 +6,7 @@ import eu.zimbelstern.tournant.data.RecipeDescription
 import eu.zimbelstern.tournant.data.room.RecipeDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.Calendar
 
 class RecipeDescriptionPagingSource(
 	private val recipeDao: RecipeDao,
@@ -19,7 +20,8 @@ class RecipeDescriptionPagingSource(
 				query = query ?: "",
 				orderedBy = orderedBy,
 				offset = params.key?.plus(2)?.times(params.loadSize) ?: 0,
-				limit = params.loadSize
+				limit = params.loadSize,
+				Calendar.getInstance().get(Calendar.MONTH)
 			).onEach {
 				it.keywords = LinkedHashSet(recipeDao.getKeywords(it.id))
 			}

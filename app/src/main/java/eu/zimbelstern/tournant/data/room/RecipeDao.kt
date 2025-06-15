@@ -18,6 +18,7 @@ import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_PREPARATIONS_COUNT
 import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_PREPARED
 import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_PREPTIME
 import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_RATING
+import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_SEASON
 import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_TITLE
 import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_TOTALTIME
 import eu.zimbelstern.tournant.data.RecipeDescription
@@ -70,12 +71,14 @@ abstract class RecipeDao {
 	@Query(
 		"""
 		SELECT
-			id, title, description, category, cuisine, rating, image, preptime, cooktime, created, modified,
+			id, title, description, category, cuisine, rating, seasonFrom, seasonUntil, image, preptime, cooktime, created, modified,
 			LENGTH(instructions) AS instructionsLength,
 			(SELECT COUNT(*) FROM Ingredient WHERE recipeId = recipe.id) AS ingredientsCount,
 			(SELECT COUNT(*) FROM Preparation WHERE recipeId = recipe.id) AS preparationsCount,
 			(SELECT date FROM Preparation WHERE recipeId = recipe.id ORDER BY date DESC LIMIT 1) AS prepared,
-			CASE WHEN :orderedBy = $SORTED_BY_TOTALTIME * 2 OR :orderedBy = $SORTED_BY_TOTALTIME * 2 + 1 THEN preptime + cooktime END AS totaltime
+			CASE WHEN :orderedBy / 2 = $SORTED_BY_TOTALTIME THEN preptime + cooktime END AS totaltime,
+			CASE WHEN :orderedBy / 2 = $SORTED_BY_SEASON THEN (seasonFrom - :month + 12) % 12 END AS seasonStart,
+			CASE WHEN :orderedBy / 2 = $SORTED_BY_SEASON THEN (seasonUntil - :month + 12) % 12 END AS seasonEnd
 		FROM recipe
 		LEFT JOIN Keyword ON recipeId = recipe.id
 		WHERE title LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%' OR category LIKE '%' || :query || '%' OR cuisine LIKE '%' || :query || '%' OR keyword LIKE '%' || :query || '%'
@@ -108,12 +111,17 @@ abstract class RecipeDao {
 			CASE WHEN :orderedBy = $SORTED_BY_PREPARATIONS_COUNT * 2 + 1 THEN preparationsCount END DESC,
 			CASE WHEN :orderedBy = $SORTED_BY_PREPARED * 2 THEN prepared END ASC,
 			CASE WHEN :orderedBy = $SORTED_BY_PREPARED * 2 + 1 THEN prepared END DESC,
+			CASE WHEN :orderedBy / 2 = $SORTED_BY_SEASON THEN
+				CASE WHEN seasonFrom IS NOT NULL THEN seasonStart - seasonEnd > 0 ELSE -1 END
+			END DESC,
+			CASE WHEN :orderedBy / 2 = $SORTED_BY_SEASON THEN seasonStart END ASC,
+			CASE WHEN :orderedBy / 2 = $SORTED_BY_SEASON THEN seasonEnd END ASC,
 			title COLLATE LOCALIZED
 			LIMIT :limit
 			OFFSET :offset
 	"""
 	)
-	abstract fun getRecipeDescriptions(query: String, orderedBy: Int, offset: Int, limit: Int): List<RecipeDescription>
+	abstract fun getRecipeDescriptions(query: String, orderedBy: Int, offset: Int, limit: Int, month: Int): List<RecipeDescription>
 
 	@Query("SELECT keyword FROM Keyword WHERE recipeId = :id ORDER BY position")
 	abstract fun getKeywords(id: Long): List<String>

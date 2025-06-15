@@ -16,6 +16,7 @@
 	<string name="category">Kategorie</string>
 	<string name="cuisine">Küche</string>
 	<string name="keywords">Schlüsselwörter</string>
+	<string name="season">Saison</string>
 	<string name="rating">Bewertung</string>
 	<string name="source">Quelle</string>
 	<string name="webpage">Webseite</string>
@@ -47,10 +48,10 @@
 	<string name="log_preparation">Zubereitung vermerken</string>
 	<string name="logbook">Logbuch</string>
 	<plurals name="prepared_times" tools:ignore="MissingQuantity">
+		<item quantity="one">Einmal zubereitet</item>
 		<item quantity="other">%d Mal zubereitet</item>
 	</plurals>
 	<string name="last_time">Zuletzt: %s</string>
-
 
 	<!-- Modes -->
 	<string name="mode">Modus</string>
@@ -161,6 +162,8 @@
 	<string name="menu">Menü</string>
 	<string name="inspiration">Inspiration gefällig?</string>
 	<string name="to">bis</string>
+	<string name="from">von</string>
+	<string name="until">bis</string>
 
 	<!-- Editing -->
 	<string name="edit">Bearbeiten</string>
@@ -192,4 +195,5 @@
 	<string name="hours_for_regex">(Stunden?)</string>
 	<string name="minutes_for_regex">(Minuten?)</string>
 	<string name="seconds_for_regex">(Sekunden?)</string>
+
 </resources>

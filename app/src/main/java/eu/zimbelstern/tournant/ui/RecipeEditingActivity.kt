@@ -17,31 +17,46 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Divider
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ExposedDropdownMenuBox
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key
@@ -55,6 +70,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -73,6 +89,7 @@ import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.TournantApplication
 import eu.zimbelstern.tournant.data.Ingredient
 import eu.zimbelstern.tournant.data.IngredientGroupTitle
+import eu.zimbelstern.tournant.data.Season
 import eu.zimbelstern.tournant.databinding.ActivityRecipeEditingBinding
 import eu.zimbelstern.tournant.getAppOrSystemLocale
 import eu.zimbelstern.tournant.move
@@ -84,6 +101,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import java.io.File
 import java.text.DecimalFormatSymbols
+import java.util.Calendar
 import java.util.Locale
 
 class RecipeEditingActivity : AppCompatActivity(), IngredientEditingAdapter.IngredientEditingInterface {
@@ -268,6 +286,140 @@ class RecipeEditingActivity : AppCompatActivity(), IngredientEditingAdapter.Ingr
 			}
 		}
 
+		var from by mutableStateOf<Int?>(null)
+		var until by mutableStateOf<Int?>(null)
+		@OptIn(ExperimentalMaterialApi::class)
+		binding.editSeason.setContent {
+			TournantTheme {
+				Surface {
+					Column {
+						Text(
+							stringResource(R.string.season),
+							Modifier.padding(top = 16.dp),
+							color = MaterialTheme.colors.onSurface,
+							fontSize = 14.sp
+						)
+						Row(verticalAlignment = Alignment.CenterVertically) {
+							var fromExpanded by remember { mutableStateOf(false) }
+							var untilExpanded by remember { mutableStateOf(false) }
+							ExposedDropdownMenuBox(
+								expanded = fromExpanded,
+								onExpandedChange = { fromExpanded = true },
+								modifier = Modifier.weight(1f)
+							) {
+								OutlinedTextField(
+									value = from?.let {
+										Calendar.getInstance().run {
+											set(Calendar.MONTH, it)
+											getDisplayName(Calendar.MONTH, Calendar.LONG, getAppOrSystemLocale())
+										}
+									} ?: "",
+									onValueChange = {},
+									label = { Text(stringResource(R.string.from)) },
+									readOnly = true,
+									singleLine = true,
+									trailingIcon = { Icon(Icons.Filled.ArrowDropDown, "") }
+								)
+								DropdownMenu(
+									expanded = fromExpanded,
+									onDismissRequest = { fromExpanded = false },
+									modifier = Modifier.exposedDropdownSize()
+								) {
+									for (i in 0..11) {
+										DropdownMenuItem(
+											onClick = {
+												from = i
+												if (until == null)
+													untilExpanded = true
+												else
+													binding.recipe?.season = Season.createOrNull(from, until)
+												fromExpanded = false
+											}
+										) {
+											Calendar.getInstance().run {
+												set(Calendar.MONTH, i)
+												Text(getDisplayName(Calendar.MONTH, Calendar.LONG, getAppOrSystemLocale()) ?: "")
+											}
+										}
+									}
+								}
+							}
+							Spacer(Modifier.width(8.dp))
+							ExposedDropdownMenuBox(
+								expanded = untilExpanded,
+								onExpandedChange = { untilExpanded = it },
+								modifier = Modifier.weight(1f)
+							) {
+								OutlinedTextField(
+									value = until?.let {
+										Calendar.getInstance().run {
+											set(Calendar.MONTH, it)
+											getDisplayName(Calendar.MONTH, Calendar.LONG, getAppOrSystemLocale())
+										}
+									} ?: "",
+									onValueChange = {},
+									enabled = from != null,
+									label = { Text(stringResource(R.string.until)) },
+									readOnly = true,
+									singleLine = true,
+									trailingIcon = { Icon(Icons.Filled.ArrowDropDown, "") },
+								)
+								if (from != null)
+								DropdownMenu(
+									modifier = Modifier.exposedDropdownSize(),
+									expanded = untilExpanded,
+									onDismissRequest = {
+										untilExpanded = false
+										if (until == null) {
+											until = from
+											binding.recipe?.season = Season.createOrNull(from, until)
+										}
+									}
+								) {
+									for (i in 0..11) {
+										DropdownMenuItem(
+											{
+												until = i
+												binding.recipe?.season = Season.createOrNull(from, until)
+												untilExpanded = false
+											}
+										) {
+											Calendar.getInstance().run {
+												set(Calendar.MONTH, i)
+												Text(getDisplayName(Calendar.MONTH, Calendar.LONG, getAppOrSystemLocale()) ?: "")
+											}
+										}
+									}
+								}
+							}
+							Spacer(Modifier.width(8.dp))
+							val focusManager = LocalFocusManager.current
+							IconButton(
+								{
+									from = null
+									until = null
+									binding.recipe?.season = null
+									focusManager.clearFocus(true)
+								},
+									modifier = Modifier
+										.padding(top = 4.dp)
+										.clip(CircleShape)
+										.size(42.dp)
+										.padding(6.dp)
+										.background(MaterialTheme.colors.onSurface.copy(.25f))
+							) {
+								Icon(
+									imageVector = Icons.Filled.Clear,
+									tint = MaterialTheme.colors.onSurface,
+									contentDescription = stringResource(R.string.reset)
+								)
+							}
+						}
+					}
+				}
+			}
+		}
+
 		lifecycleScope.launch {
 			viewModel.recipe.collectLatest { recipe ->
 				binding.recipe = recipe
@@ -286,6 +438,8 @@ class RecipeEditingActivity : AppCompatActivity(), IngredientEditingAdapter.Ingr
 				}
 				keywords = recipe.keywords.joinToString(", ")
 				language = recipe.language.displayName
+				from = recipe.season?.from
+				until = recipe.season?.until
 			}
 		}
 

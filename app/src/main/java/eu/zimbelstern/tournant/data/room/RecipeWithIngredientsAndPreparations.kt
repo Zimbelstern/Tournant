@@ -5,6 +5,7 @@ import androidx.room.Relation
 import com.squareup.moshi.JsonClass
 import eu.zimbelstern.tournant.data.Ingredient
 import eu.zimbelstern.tournant.data.Recipe
+import eu.zimbelstern.tournant.data.Season
 
 @JsonClass(generateAdapter = true)
 data class RecipeWithIngredientsAndPreparations(
@@ -39,6 +40,7 @@ data class RecipeWithIngredientsAndPreparations(
 			category = recipe.category,
 			cuisine = recipe.cuisine,
 			keywords = LinkedHashSet(keywords.map { it.keyword }),
+			season = Season.createOrNull(recipe.seasonFrom, recipe.seasonUntil),
 			source = recipe.source,
 			link = recipe.link,
 			rating = recipe.rating,
