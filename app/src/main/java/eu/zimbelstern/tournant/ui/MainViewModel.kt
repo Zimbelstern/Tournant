@@ -28,6 +28,7 @@ import eu.zimbelstern.tournant.TournantApplication
 import eu.zimbelstern.tournant.data.ChipData
 import eu.zimbelstern.tournant.data.Recipe
 import eu.zimbelstern.tournant.gourmand.GourmetXmlParser
+import eu.zimbelstern.tournant.pagination.RecipeDescriptionPagingSource
 import eu.zimbelstern.tournant.utils.RecipeJsonAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -45,7 +46,6 @@ import java.io.File
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.util.zip.ZipInputStream
-import kotlin.random.Random
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -89,11 +89,16 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 	// RECIPES
 	val countAllRecipes = recipeDao.getRecipeCount().stateIn(viewModelScope, SharingStarted.Lazily, -1)
 
-	val recipeDescriptions = combine(searchQuery, orderedBy, countAllRecipes) { searchQuery, orderedBy, _ ->
+	val recipeDescriptions = combine(
+		searchQuery,
+		orderedBy,
+		countAllRecipes,
+		application.database.invalidationTracker.createFlow("Recipe", "Ingredient", "Preparation", "Keyword", emitInitialState = true)
+	) { searchQuery, orderedBy, _, _ ->
 		Pair(searchQuery, orderedBy)
 	}.flatMapLatest { (searchQuery, orderedBy) ->
-		Pager(PagingConfig(pageSize = 10, enablePlaceholders = false)) {
-			recipeDao.getPagedRecipeDescriptions(searchQuery ?: "", orderedBy)
+		Pager(PagingConfig(pageSize = 10, initialLoadSize = 30, enablePlaceholders = false)) {
+			RecipeDescriptionPagingSource(recipeDao, searchQuery, orderedBy)
 		}.flow.cachedIn(viewModelScope)
 	}
 
@@ -104,14 +109,12 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 	}.stateIn(viewModelScope, SharingStarted.Lazily, setOf())
 
 	// CATEGORIES & CUISINES
-	private val colors = application.resources.obtainTypedArray(R.array.material_colors_700)
-	private val rippleColors = application.resources.obtainTypedArray(R.array.material_colors_900)
-	private fun createChipData(strings: List<String>): List<ChipData> {
+
+	private fun createChipData(strings: List<String>, keywords: Boolean = false): List<ChipData> {
 		val list = mutableListOf<ChipData>()
 		strings.forEach {
-			val pseudoRandomInt = Random(it.hashCode()).nextInt(colors.length())
-			val color = colors.getColorStateList(pseudoRandomInt) ?: return@forEach
-			val rippleColor = rippleColors.getColorStateList(pseudoRandomInt) ?: return@forEach
+			val color = (if (keywords) materialColors100 else materialColors700).getRandom(it)
+			val rippleColor = (if (keywords) materialColors200 else materialColors900).getRandom(it)
 			list.add(ChipData(it, null, color, rippleColor))
 		}
 		return list
@@ -133,6 +136,18 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 	val filteredCuisines = searchQuery.flatMapLatest { query ->
 		if (query != null)
 			recipeDao.getCuisines(query).combine(allCuisines) { filtered, all ->
+				filtered.mapNotNull { filter ->
+					all.find { it.string == filter.string }.also { it?.count = filter.count }
+				}
+			}
+		else
+			listOf(listOf<ChipData>(), listOf()).asFlow()
+	}
+
+	val allKeywords = recipeDao.getAllKeywords().map { createChipData(it, keywords = true) }
+	val filteredKeywords = searchQuery.flatMapLatest { query ->
+		if (query != null)
+			recipeDao.getKeywords(query).combine(allKeywords) { filtered, all ->
 				filtered.mapNotNull { filter ->
 					all.find { it.string == filter.string }.also { it?.count = filter.count }
 				}

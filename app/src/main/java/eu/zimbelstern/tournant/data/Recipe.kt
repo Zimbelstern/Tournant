@@ -3,6 +3,7 @@ package eu.zimbelstern.tournant.data
 import android.os.Parcelable
 import com.squareup.moshi.JsonClass
 import eu.zimbelstern.tournant.data.room.IngredientEntity
+import eu.zimbelstern.tournant.data.room.KeywordEntity
 import eu.zimbelstern.tournant.data.room.PreparationEntity
 import eu.zimbelstern.tournant.data.room.RecipeEntity
 import eu.zimbelstern.tournant.data.room.RecipeWithIngredientsAndPreparations
@@ -18,6 +19,7 @@ data class Recipe(
 	var description: String? = null,
 	var category: String? = null,
 	var cuisine: String? = null,
+	var keywords: LinkedHashSet<String> = linkedSetOf(),
 	var source: String? = null,
 	var link: String? = null,
 	var rating: Float? = null,
@@ -69,6 +71,7 @@ data class Recipe(
 				group = it.group,
 				optional = it.optional
 			) },
+			keywords.mapIndexed { i, it -> KeywordEntity(id, i, it) },
 			preparations.groupBy { it }.map { (date, elements) -> PreparationEntity(id, date, elements.size) }
 		)
 
@@ -117,6 +120,7 @@ data class Recipe(
 		if (created != other.created) return false
 		if (modified != other.modified) return false
 		if (ingredients != other.ingredients) return false
+		if (keywords != other.keywords) return false
 		if (preparations != other.preparations) return false
 
 		return true
@@ -143,6 +147,7 @@ data class Recipe(
 		result = 31 * result + (created?.hashCode() ?: 0)
 		result = 31 * result + (modified?.hashCode() ?: 0)
 		result = 31 * result + (ingredients.hashCode())
+		result = 31 * result + (keywords.hashCode())
 		result = 31 * result + (preparations.hashCode())
 		return result
 	}

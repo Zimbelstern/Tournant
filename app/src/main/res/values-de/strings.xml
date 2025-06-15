@@ -15,6 +15,7 @@
 	<string name="description">Beschreibung</string>
 	<string name="category">Kategorie</string>
 	<string name="cuisine">Küche</string>
+	<string name="keywords">Schlüsselwörter</string>
 	<string name="rating">Bewertung</string>
 	<string name="source">Quelle</string>
 	<string name="webpage">Webseite</string>
@@ -170,6 +171,7 @@
 	<string name="make_optional">Als optional markieren</string>
 	<string name="make_mandatory">Als nicht optional markieren</string>
 	<string name="scale_to">Umrechnen auf</string>
+	<string name="comma_separated">durch Kommas getrennt</string>
 
 	<!-- Sort options -->
 	<string name="sort_by">Sortieren nach</string>

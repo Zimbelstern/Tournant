@@ -5,6 +5,7 @@ import android.content.ActivityNotFoundException
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
@@ -34,6 +35,26 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Chip
+import androidx.compose.material.ChipDefaults
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.LocalRippleConfiguration
+import androidx.compose.material.RippleConfiguration
+import androidx.compose.material.Text
+import androidx.compose.material.ripple.RippleAlpha
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -81,13 +102,13 @@ import io.noties.markwon.SoftBreakAddsNewLinePlugin
 import io.noties.markwon.html.HtmlPlugin
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.text.DecimalFormatSymbols
 import java.util.Calendar
 import java.util.Date
-import kotlin.random.Random
 
 class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTableInterface, InstructionsTextAdapter.InstructionsTextInterface, PreparationsAdapter.PreparationsInterface {
 
@@ -172,6 +193,31 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 			weight = getString(R.string.cooktime).length.toFloat()
 		}
 
+		@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterialApi::class)
+		binding.recipeDetailKeywords.setContent {
+			CompositionLocalProvider(LocalRippleConfiguration provides null) {
+				FlowRow(
+					horizontalArrangement = Arrangement.spacedBy(8.dp),
+					verticalArrangement = Arrangement.spacedBy(8.dp)
+				) {
+					viewModel.recipe
+						.map { it.keywords }
+						.collectAsState(emptyList())
+						.value.forEach {
+							Chip(
+								modifier = Modifier.height(24.dp),
+								onClick = {},
+								colors = ChipDefaults.chipColors(backgroundColor = materialColors100.getRandom(it)),
+								border = BorderStroke(2.dp, materialColors200.getRandom(it)),
+								shape = RoundedCornerShape(4.dp)
+							) {
+								Text(text = it, textAlign = TextAlign.Center, modifier = Modifier.widthIn(min = 24.dp))
+							}
+						}
+				}
+			}
+		}
+
 		lifecycleScope.launch {
 			viewModel.recipe.collectLatest { recipe ->
 					binding.recipe = recipe
@@ -193,14 +239,10 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 						}
 					}
 					recipe.category?.let {
-						val colors = resources.obtainTypedArray(R.array.material_colors_700)
-						binding.recipeDetailCategory.chipBackgroundColor = colors.getColorStateList(Random(it.hashCode()).nextInt(resources.getStringArray(R.array.material_colors_700).size))
-						colors.recycle()
+						binding.recipeDetailCategory.chipBackgroundColor = ColorStateList.valueOf(materialColors700.getRandom(it).toArgb())
 					}
 					recipe.cuisine?.let {
-						val colors = resources.obtainTypedArray(R.array.material_colors_700)
-						binding.recipeDetailCuisine.chipBackgroundColor = colors.getColorStateList(Random(it.hashCode()).nextInt(resources.getStringArray(R.array.material_colors_700).size))
-						colors.recycle()
+						binding.recipeDetailCuisine.chipBackgroundColor = ColorStateList.valueOf(materialColors900.getRandom(it).toArgb())
 					}
 					recipe.instructions?.let {
 						binding.recipeDetailInstructions.visibility = View.VISIBLE

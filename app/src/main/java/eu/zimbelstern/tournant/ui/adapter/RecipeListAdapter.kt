@@ -1,6 +1,7 @@
 package eu.zimbelstern.tournant.ui.adapter
 
 import android.annotation.SuppressLint
+import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.BitmapFactory
 import android.text.format.DateUtils
@@ -15,6 +16,28 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.view.ActionMode
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Chip
+import androidx.compose.material.ChipDefaults
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.LocalRippleConfiguration
+import androidx.compose.material.RippleConfiguration
+import androidx.compose.material.Text
+import androidx.compose.material.ripple.RippleAlpha
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.core.view.setPadding
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -32,6 +55,9 @@ import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.data.ChipData
 import eu.zimbelstern.tournant.data.RecipeDescription
 import eu.zimbelstern.tournant.databinding.RecyclerItemRecipeBinding
+import eu.zimbelstern.tournant.ui.getRandom
+import eu.zimbelstern.tournant.ui.materialColors100
+import eu.zimbelstern.tournant.ui.materialColors200
 import java.io.File
 import java.util.Date
 
@@ -142,6 +168,43 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 			visibility = if (recipe.description != null) View.VISIBLE else View.GONE
 		}
 
+		@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterialApi::class)
+		holder.binding.recipeCardKeywords.setContent {
+			if (recipe.keywords.isNotEmpty()) {
+				FlowRow(
+					horizontalArrangement = Arrangement.spacedBy(4.dp),
+					verticalArrangement = Arrangement.spacedBy(12.dp)
+				) {
+					recipe.keywords.forEach {
+						CompositionLocalProvider(
+							LocalRippleConfiguration provides
+									RippleConfiguration(
+										color = materialColors200.getRandom(it),
+										rippleAlpha = RippleAlpha(0f, 0f, 0f, 1f)
+									)
+						) {
+							Box {
+								Chip(
+									onClick = { recipeListInterface.searchForSomething(it) },
+									modifier = Modifier.height(24.dp),
+									colors = ChipDefaults.chipColors(backgroundColor = materialColors100.getRandom(it)),
+									border = BorderStroke(2.dp, materialColors200.getRandom(it)),
+									shape = RoundedCornerShape(4.dp)
+								) {
+									Text(text = it, modifier = Modifier.alpha(0f))
+								}
+								Text(
+									text = it,
+									textAlign = TextAlign.Center,
+									modifier = Modifier.align(Alignment.Center)
+								)
+							}
+						}
+					}
+				}
+			}
+		}
+
 		holder.binding.recipeCardRating.apply {
 			rating = recipe.rating ?: 0f
 			visibility = if (recipe.rating != null) View.VISIBLE else View.GONE
@@ -149,8 +212,10 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 
 		holder.binding.recipeCardCategory.apply {
 			text = recipe.category
-			chipBackgroundColor = ccColors[text]?.color
-			rippleColor = ccColors[text]?.rippleColor
+			ccColors[text]?.let {
+				chipBackgroundColor =  ColorStateList.valueOf(it.color.toArgb())
+				rippleColor = ColorStateList.valueOf(it.rippleColor.toArgb())
+			}
 			visibility = if (recipe.category != null) View.VISIBLE else View.GONE
 			setOnClickListener {
 				recipeListInterface.searchForSomething(text)
@@ -159,8 +224,10 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 
 		holder.binding.recipeCardCuisine.apply {
 			text = recipe.cuisine
-			chipBackgroundColor = ccColors[text]?.color
-			rippleColor = ccColors[text]?.rippleColor
+			ccColors[text]?.let {
+				chipBackgroundColor =  ColorStateList.valueOf(it.color.toArgb())
+				rippleColor = ColorStateList.valueOf(it.rippleColor.toArgb())
+			}
 			visibility = if (recipe.cuisine != null) View.VISIBLE else View.GONE
 			setOnClickListener {
 				recipeListInterface.searchForSomething(text)
@@ -234,7 +301,7 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 	}
 
 	override fun onBindViewHolder(holder: RecipeListViewHolder, position: Int, payloads: MutableList<Any>) {
-		Log.d(TAG, "Selected views: $selectedItems")
+		Log.v(TAG, "Selected views: $selectedItems")
 		if (payloads.isEmpty()) return super.onBindViewHolder(holder, position, payloads)
 
 		Log.d(TAG, "View #$position, payloads: $payloads")

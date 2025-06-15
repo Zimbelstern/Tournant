@@ -51,8 +51,7 @@
 				android:id="@+id/recipe_card_description"
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
-				android:layout_marginStart="12dp"
-				app:layout_constraintStart_toEndOf="@id/recipe_card_image"
+				app:layout_constraintStart_toStartOf="@id/recipe_card_title"
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintTop_toBottomOf="@id/recipe_card_title"
 				android:maxLines="3"
@@ -97,6 +96,15 @@
 					android:textColor="@color/white"/>
 
 			</com.google.android.material.chip.ChipGroup>
+
+			<androidx.compose.ui.platform.ComposeView
+				android:id="@+id/recipe_card_keywords"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="4dp"
+				app:layout_constraintStart_toStartOf="@id/recipe_card_title"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/chip_group"/>
 
 			<TextView
 				android:id="@+id/sorted_by"

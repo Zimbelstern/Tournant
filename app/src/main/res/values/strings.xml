@@ -13,6 +13,7 @@
 	<string name="title">Title</string>
 	<string name="description">Description</string>
 	<string name="category">Category</string>
+	<string name="keywords">Keywords</string>
 	<string name="cuisine">Cuisine</string>
 	<string name="rating">Rating</string>
 	<string name="source">Source</string>
@@ -177,6 +178,7 @@
 	<string name="make_optional">Make optional</string>
 	<string name="make_mandatory">Make mandatory</string>
 	<string name="scale_to">Scale to</string>
+	<string name="comma_separated">comma-separated</string>
 
 	<!-- Sort options -->
 	<string name="sort_by">Sort by</string>

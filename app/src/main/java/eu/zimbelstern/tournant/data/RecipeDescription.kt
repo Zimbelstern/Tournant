@@ -1,5 +1,7 @@
 package eu.zimbelstern.tournant.data
 
+import androidx.room.Ignore
+
 data class RecipeDescription(
 	val id: Long,
 	val title: String,
@@ -15,8 +17,12 @@ data class RecipeDescription(
 	val instructionsLength: Int?,
 	val ingredientsCount: Int,
 	val preparationsCount: Int,
-	val prepared: Long?
+	val prepared: Long?,
 ) {
+
+	@Ignore
+	var keywords: LinkedHashSet<String> = linkedSetOf()
+
 	override fun equals(other: Any?): Boolean {
 		if (this === other) return true
 		if (other !is RecipeDescription) return false

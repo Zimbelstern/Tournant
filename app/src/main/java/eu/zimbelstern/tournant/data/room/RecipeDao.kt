@@ -1,7 +1,6 @@
 package eu.zimbelstern.tournant.data.room
 
 import android.util.Log
-import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -78,7 +77,9 @@ abstract class RecipeDao {
 			(SELECT date FROM Preparation WHERE recipeId = recipe.id ORDER BY date DESC LIMIT 1) AS prepared,
 			CASE WHEN :orderedBy = $SORTED_BY_TOTALTIME * 2 OR :orderedBy = $SORTED_BY_TOTALTIME * 2 + 1 THEN preptime + cooktime END AS totaltime
 		FROM recipe
-		WHERE title LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%' OR category LIKE '%' || :query || '%' OR cuisine LIKE '%' || :query || '%'
+		LEFT JOIN Keyword ON recipeId = recipe.id
+		WHERE title LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%' OR category LIKE '%' || :query || '%' OR cuisine LIKE '%' || :query || '%' OR keyword LIKE '%' || :query || '%'
+		GROUP BY recipe.id
 		ORDER BY
 			CASE WHEN :orderedBy = $SORTED_BY_TITLE * 2 THEN title COLLATE LOCALIZED END ASC,
 			CASE WHEN :orderedBy = $SORTED_BY_TITLE * 2 + 1 THEN title COLLATE LOCALIZED END DESC,
@@ -108,14 +109,19 @@ abstract class RecipeDao {
 			CASE WHEN :orderedBy = $SORTED_BY_PREPARED * 2 THEN prepared END ASC,
 			CASE WHEN :orderedBy = $SORTED_BY_PREPARED * 2 + 1 THEN prepared END DESC,
 			title COLLATE LOCALIZED
+			LIMIT :limit
+			OFFSET :offset
 	"""
 	)
-	abstract fun getPagedRecipeDescriptions(query: String, orderedBy: Int): PagingSource<Int, RecipeDescription>
+	abstract fun getRecipeDescriptions(query: String, orderedBy: Int, offset: Int, limit: Int): List<RecipeDescription>
+
+	@Query("SELECT keyword FROM Keyword WHERE recipeId = :id ORDER BY position")
+	abstract fun getKeywords(id: Long): List<String>
 
 	@Query("SELECT COUNT(*) FROM recipe")
 	abstract fun getRecipeCount(): Flow<Int>
 
-	@Query("SELECT id FROM recipe WHERE title LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%' OR category LIKE '%' || :query || '%' OR cuisine LIKE '%' || :query || '%'")
+	@Query("SELECT id FROM recipe left join keyword on recipeId = recipe.id WHERE title LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%' OR category LIKE '%' || :query || '%' OR cuisine LIKE '%' || :query || '%' OR keyword LIKE '%' || :query || '%'")
 	abstract fun getRecipeIds(query: String): List<Long>
 
 	@Query("""
@@ -134,10 +140,15 @@ abstract class RecipeDao {
 	@Query("SELECT DISTINCT cuisine FROM recipe WHERE cuisine IS NOT NULL ORDER BY cuisine COLLATE LOCALIZED ASC")
 	abstract fun getAllCuisines(): Flow<List<String>>
 
+	@Query("SELECT DISTINCT keyword FROM Keyword ORDER BY keyword COLLATE LOCALIZED ASC")
+	abstract fun getAllKeywords(): Flow<List<String>>
+
 	@Query("""
 		SELECT category AS string, COUNT(*) AS count
 		FROM recipe
-		WHERE (title LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%' OR category LIKE '%' || :query || '%' OR cuisine LIKE '%' || :query || '%') AND category IS NOT NULL
+		LEFT JOIN keyword ON recipeId = recipe.id
+		WHERE (title LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%' OR category LIKE '%' || :query || '%' OR cuisine LIKE '%' || :query || '%' OR keyword LIKE '%' || :query || '%')
+			AND category IS NOT NULL
 		GROUP BY category ORDER BY category COLLATE LOCALIZED ASC
 	""")
 	abstract fun getCategories(query: String): Flow<List<StringAndCount>>
@@ -145,12 +156,23 @@ abstract class RecipeDao {
 	@Query("""
 		SELECT cuisine AS string, COUNT(*) AS count
 		FROM recipe
-		WHERE (title LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%'  OR category LIKE '%' || :query || '%' OR cuisine LIKE '%' || :query || '%')
+		LEFT JOIN keyword ON recipeId = recipe.id
+		WHERE (title LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%'  OR category LIKE '%' || :query || '%' OR cuisine LIKE '%' || :query || '%' OR keyword LIKE '%' || :query || '%')
 			AND cuisine IS NOT NULL
 		GROUP BY cuisine ORDER BY cuisine COLLATE LOCALIZED ASC
 	""")
 	abstract fun getCuisines(query: String): Flow<List<StringAndCount>>
 
+	@Query("""
+		SELECT keyword AS string, COUNT(*) AS count
+		FROM recipe
+		LEFT JOIN keyword ON recipeId = recipe.id
+		WHERE (title LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%'  OR category LIKE '%' || :query || '%' OR cuisine LIKE '%' || :query || '%' OR keyword LIKE '%' || :query || '%')
+			AND keyword IS NOT NULL
+		GROUP BY keyword ORDER BY keyword COLLATE LOCALIZED ASC
+	""")
+	abstract fun getKeywords(query: String): Flow<List<StringAndCount>>
+	
 	@Query("SELECT DISTINCT source FROM recipe WHERE source IS NOT NULL ORDER BY source COLLATE LOCALIZED ASC")
 	abstract fun getSources(): Flow<List<String>>
 
@@ -194,6 +216,15 @@ abstract class RecipeDao {
 	abstract suspend fun deleteIngredientsNotInList(recipeId: Long, positions: List<Int>)
 
 
+	// Keywords
+
+	@Insert(onConflict = OnConflictStrategy.REPLACE)
+	abstract suspend fun insertKeyword(preparation: KeywordEntity): Long
+
+	@Query("DELETE FROM Keyword WHERE recipeId = :recipeId AND position not IN (:positions)")
+	abstract suspend fun deleteKeywordsNotInList(recipeId: Long, positions: List<Int>)
+
+
 	// Preparations
 
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -212,13 +243,16 @@ abstract class RecipeDao {
 	abstract suspend fun getPreparation(recipeId: Long, date: Long): PreparationEntity?
 
 
-
 	suspend fun upsertSingleRecipe(recipe: RecipeWithIngredientsAndPreparations): Long {
 		return if (recipe.recipe.id == 0L) {
 			insertRecipe(recipe.recipe).also { id ->
 				recipe.ingredients.forEach {
 					it.recipeId = id
 					insertIngredient(it)
+				}
+				recipe.keywords.forEach {
+					it.recipeId = id
+					insertKeyword(it)
 				}
 				recipe.preparations.forEach {
 					it.recipeId = id
@@ -232,6 +266,10 @@ abstract class RecipeDao {
 				insertIngredient(it)
 			}
 			deleteIngredientsNotInList(recipe.recipe.id, recipe.ingredients.map { it.position })
+			recipe.keywords.forEach {
+				insertKeyword(it)
+			}
+			deleteKeywordsNotInList(recipe.recipe.id, recipe.keywords.map { it.position })
 			recipe.preparations.forEach {
 				insertPreparationDate(it)
 			}

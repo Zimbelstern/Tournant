@@ -21,6 +21,12 @@ data class RecipeWithIngredientsAndPreparations(
 		parentColumn = "id",
 		entityColumn = "recipeId"
 	)
+	val keywords: List<KeywordEntity> = listOf(),
+
+	@Relation(
+		parentColumn = "id",
+		entityColumn = "recipeId"
+	)
 	val preparations: List<PreparationEntity> = listOf()
 ) {
 
@@ -31,6 +37,7 @@ data class RecipeWithIngredientsAndPreparations(
 			description = recipe.description,
 			category = recipe.category,
 			cuisine = recipe.cuisine,
+			keywords = LinkedHashSet(keywords.map { it.keyword }),
 			source = recipe.source,
 			link = recipe.link,
 			rating = recipe.rating,

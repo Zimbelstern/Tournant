@@ -17,6 +17,16 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.ImeAction
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.ViewGroupCompat
@@ -160,6 +170,32 @@ class RecipeEditingActivity : AppCompatActivity(), IngredientEditingAdapter.Ingr
 
 		binding.editYieldUnit.hint = getString(R.string.optional, getString(R.string.unit))
 
+		var keywords by mutableStateOf("")
+		binding.editKeywords.setContent {
+            val focusManager = LocalFocusManager.current
+			TournantTheme {
+				Surface {
+					OutlinedTextField(
+						value = keywords,
+						onValueChange = { input ->
+							keywords = input
+							binding.recipe?.keywords = LinkedHashSet(
+								input.split(",")
+									.map { it.trim() }
+									.filter { it.isNotBlank() }
+							)
+						},
+						label = { Text(getString(R.string.keywords) + " (" + getString(R.string.comma_separated) + ")") },
+						keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
+						keyboardActions = KeyboardActions(onNext = {
+							focusManager.clearFocus()
+							binding.editSource.requestFocus()
+						}),
+						singleLine = true
+					)
+				}
+			}
+		}
 
 		lifecycleScope.launch {
 			viewModel.recipe.collectLatest { recipe ->
@@ -177,6 +213,7 @@ class RecipeEditingActivity : AppCompatActivity(), IngredientEditingAdapter.Ingr
 						binding.editImageRemove.visibility = View.VISIBLE
 					}
 				}
+				keywords = recipe.keywords.joinToString(", ")
 			}
 		}
 
