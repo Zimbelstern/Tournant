@@ -7,8 +7,10 @@ import eu.zimbelstern.tournant.data.room.KeywordEntity
 import eu.zimbelstern.tournant.data.room.PreparationEntity
 import eu.zimbelstern.tournant.data.room.RecipeEntity
 import eu.zimbelstern.tournant.data.room.RecipeWithIngredientsAndPreparations
+import eu.zimbelstern.tournant.getAppOrSystemLocale
 import kotlinx.parcelize.Parcelize
 import java.util.Date
+import java.util.Locale
 
 @Parcelize
 @JsonClass(generateAdapter = true)
@@ -17,6 +19,7 @@ data class Recipe(
 	var gourmandId: Int? = null,
 	var title: String,
 	var description: String? = null,
+	var language: Locale = getAppOrSystemLocale(),
 	var category: String? = null,
 	var cuisine: String? = null,
 	var keywords: LinkedHashSet<String> = linkedSetOf(),
@@ -44,6 +47,7 @@ data class Recipe(
 				gourmandId = gourmandId,
 				title = title,
 				description = description,
+				language = language,
 				category = category,
 				cuisine = cuisine,
 				source = source,
@@ -98,6 +102,7 @@ data class Recipe(
 		if (gourmandId != other.gourmandId) return false
 		if (title != other.title) return false
 		if (description != other.description) return false
+		if (language != other.language) return false
 		if (category != other.category) return false
 		if (cuisine != other.cuisine) return false
 		if (source != other.source) return false
@@ -131,6 +136,7 @@ data class Recipe(
 		result = 31 * result + (gourmandId ?: 0)
 		result = 31 * result + title.hashCode()
 		result = 31 * result + (description?.hashCode() ?: 0)
+		result = 31 * result + language.hashCode()
 		result = 31 * result + (category?.hashCode() ?: 0)
 		result = 31 * result + (cuisine?.hashCode() ?: 0)
 		result = 31 * result + (source?.hashCode() ?: 0)

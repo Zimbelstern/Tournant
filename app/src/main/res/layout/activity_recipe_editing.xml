@@ -133,6 +133,17 @@
 
 						</com.google.android.material.textfield.TextInputLayout>
 
+						<androidx.compose.ui.platform.ComposeView
+							android:id="@+id/edit_language"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"/>
+
+						<com.google.android.material.divider.MaterialDivider
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_marginTop="16dp"
+							android:layout_marginBottom="8dp"/>
+
 						<TextView
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
@@ -252,6 +263,11 @@
 
 						</com.google.android.material.textfield.TextInputLayout>
 
+						<com.google.android.material.divider.MaterialDivider
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_marginTop="20dp"/>
+
 						<LinearLayout
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
@@ -355,6 +371,11 @@
 						</LinearLayout>
 
 					</LinearLayout>
+
+					<com.google.android.material.divider.MaterialDivider
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginVertical="16dp"/>
 
 				</com.google.android.flexbox.FlexboxLayout>
 
@@ -474,6 +495,12 @@
 						</androidx.constraintlayout.widget.ConstraintLayout>
 
 					</LinearLayout>
+
+					<com.google.android.material.divider.MaterialDivider
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginVertical="16dp"
+						android:layout_marginEnd="16dp"/>
 
 					<com.google.android.material.textfield.TextInputLayout
 						android:layout_width="300dp"

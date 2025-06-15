@@ -48,6 +48,10 @@ class TournantApplication : Application() {
 				(recipes + refs).forEach {
 					if (it.recipe.description != null)
 						issues.add(GourmandIssues.NO_DESCRIPTIONS)
+					if (it.keywords.isNotEmpty())
+						issues.add(GourmandIssues.NO_KEYWORDS)
+					if (it.recipe.language != (getAppOrSystemLocale()))
+						issues.add(GourmandIssues.NO_LANGUAGE)
 					if (it.recipe.yieldValue?.run { this <= this.toInt() } == false)
 						issues.add(GourmandIssues.NO_FRACTIONS_IN_YIELD)
 				}
@@ -57,6 +61,8 @@ class TournantApplication : Application() {
 				val localizedIssues = issues.joinToString("\n") {
 					when (it) {
 						GourmandIssues.NO_DESCRIPTIONS -> getString(R.string.description)
+						GourmandIssues.NO_KEYWORDS -> getString(R.string.keywords)
+						GourmandIssues.NO_LANGUAGE -> getString(R.string.language)
 						GourmandIssues.NO_FRACTIONS_IN_YIELD -> getString(R.string.gourmand165)
 						else -> ""
 					}

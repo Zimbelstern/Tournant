@@ -28,7 +28,11 @@ class InstructionsTextAdapter(
 	private val instructionsTextInterface: InstructionsTextInterface,
 	private val paragraphs: List<Spanned>,
 	private val ingredients: List<Ingredient> = listOf(),
-	private val scale: Double? = 1.0
+	private val scale: Double? = 1.0,
+	private val dashWords: String,
+	private val hString: String,
+	private val minString: String,
+	private val sString: String
 	) : RecyclerView.Adapter<InstructionsTextAdapter.InstructionTextViewHolder>() {
 
 	class InstructionTextViewHolder(val binding: RecyclerItemTextBinding) : RecyclerView.ViewHolder(binding.root)
@@ -97,13 +101,8 @@ class InstructionsTextAdapter(
 		}
 
 		if (paragraph.isNotEmpty()) {
-			val resources = holder.binding.root.context.resources
-			val to = resources.getString(R.string.to)
-			val hourS = "(h)|" + resources.getString(R.string.hours_for_regex)
-			val minuteS = "(min)|" + resources.getString(R.string.minutes_for_regex)
-			val secondS = "(s)|" + resources.getString(R.string.seconds_for_regex)
 			val free = (0..paragraph.length).toMutableList()
-			paragraph.findDurationsByRegex(to, hourS).forEach {
+			paragraph.findDurationsByRegex(dashWords, "(h)|$hString").forEach {
 				paragraph.setSpan(
 					object : ClickableSpan() {
 						override fun onClick(widget: View) {
@@ -114,7 +113,7 @@ class InstructionsTextAdapter(
 				)
 				free.removeAll(it.second)
 			}
-			paragraph.findDurationsByRegex(to, minuteS).forEach {
+			paragraph.findDurationsByRegex(dashWords, "(min)|$minString").forEach {
 				paragraph.setSpan(
 					object : ClickableSpan() {
 						override fun onClick(widget: View) {
@@ -125,7 +124,7 @@ class InstructionsTextAdapter(
 				)
 				free.removeAll(it.second)
 			}
-			paragraph.findDurationsByRegex(to, secondS).forEach {
+			paragraph.findDurationsByRegex(dashWords, "(s)|$sString").forEach {
 				paragraph.setSpan(
 					object : ClickableSpan() {
 						override fun onClick(widget: View) {
