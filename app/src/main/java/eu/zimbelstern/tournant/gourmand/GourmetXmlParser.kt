@@ -86,8 +86,23 @@ class GourmetXmlParser(private val separator: Char) {
 			}
 		}
 		return Recipe(
-			0, gourmandId, title, null, category, cuisine, linkedSetOf(), source, link, rating, preptime, cooktime,
-			yieldValue, yieldUnit, instructions, modifications, image, ingredients = ingredientList, preparations = mutableListOf()
+			gourmandId = gourmandId,
+			title = title,
+			category = category,
+			cuisine = cuisine,
+			keywords = linkedSetOf(),
+			source = source,
+			link = link,
+			rating = rating,
+			preptime = preptime,
+			cooktime = cooktime,
+			yieldValue = yieldValue,
+			yieldUnit = yieldUnit,
+			instructions = instructions,
+			notes = modifications,
+			image = image,
+			ingredients = ingredientList,
+			preparations = mutableListOf()
 		)
 	}
 

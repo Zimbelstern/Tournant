@@ -2,6 +2,9 @@ package eu.zimbelstern.tournant
 
 import android.text.SpannableStringBuilder
 import android.text.Spanned
+import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.core.text.toSpanned
 import androidx.core.view.WindowInsetsCompat
 import eu.zimbelstern.tournant.data.Ingredient
@@ -9,6 +12,7 @@ import eu.zimbelstern.tournant.data.IngredientGroupTitle
 import eu.zimbelstern.tournant.data.IngredientLine
 import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
+import java.util.Locale
 import java.util.Stack
 import kotlin.math.pow
 import kotlin.math.roundToLong
@@ -222,4 +226,14 @@ fun Spanned.splitLines(): List<Spanned> {
 
 fun WindowInsetsCompat.safeInsets() : androidx.core.graphics.Insets {
 	return getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout() or WindowInsetsCompat.Type.ime())
+}
+
+fun getAppOrSystemLocale(): Locale =
+	AppCompatDelegate.getApplicationLocales().get(0)
+		?: LocaleListCompat.getDefault().get(0)
+		?: Locale.getDefault()
+
+fun <T> T.logit(): T {
+	Log.e("logit()", this?.javaClass?.name + ": " + toString())
+	return this
 }

@@ -3,8 +3,10 @@ package eu.zimbelstern.tournant.data.room
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
+import eu.zimbelstern.tournant.getAppOrSystemLocale
 import eu.zimbelstern.tournant.utils.RoomTypeConverters
 import java.util.Date
+import java.util.Locale
 
 @Entity(tableName = "Recipe")
 @TypeConverters(RoomTypeConverters::class)
@@ -14,6 +16,7 @@ data class RecipeEntity(
 	val gourmandId: Int? = null,
 	val title: String,
 	val description: String?,
+	val language: Locale = getAppOrSystemLocale(),
 	val category: String?,
 	val cuisine: String?,
 	val source: String?,
@@ -47,6 +50,7 @@ data class RecipeEntity(
 		if (prevId != other.prevId) return false
 		if (title != other.title) return false
 		if (description != other.description) return false
+		if (language != other.language) return false
 		if (category != other.category) return false
 		if (cuisine != other.cuisine) return false
 		if (source != other.source) return false
@@ -72,6 +76,7 @@ data class RecipeEntity(
 		result = 31 * result + (prevId?.hashCode() ?: 0)
 		result = 31 * result + title.hashCode()
 		result = 31 * result + (description?.hashCode() ?: 0)
+		result = 31 * result + language.hashCode()
 		result = 31 * result + (category?.hashCode() ?: 0)
 		result = 31 * result + (cuisine?.hashCode() ?: 0)
 		result = 31 * result + (source?.hashCode() ?: 0)

@@ -2,6 +2,7 @@ package eu.zimbelstern.tournant.utils
 
 import androidx.room.TypeConverter
 import java.util.Date
+import java.util.Locale
 
 object RoomTypeConverters {
 
@@ -10,5 +11,11 @@ object RoomTypeConverters {
 
 	@TypeConverter
 	fun dateToLong(date: Date?) = date?.time
+
+	@TypeConverter
+	fun stringToLocale(value: String): Locale = Locale.getAvailableLocales().find { it.toLanguageTag() == value } ?: Locale(value)
+
+	@TypeConverter
+	fun localeToString(locale: Locale): String = locale.toLanguageTag()
 
 }

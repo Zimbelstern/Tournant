@@ -17,16 +17,45 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Divider
+import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.ViewGroupCompat
@@ -45,6 +74,7 @@ import eu.zimbelstern.tournant.TournantApplication
 import eu.zimbelstern.tournant.data.Ingredient
 import eu.zimbelstern.tournant.data.IngredientGroupTitle
 import eu.zimbelstern.tournant.databinding.ActivityRecipeEditingBinding
+import eu.zimbelstern.tournant.getAppOrSystemLocale
 import eu.zimbelstern.tournant.move
 import eu.zimbelstern.tournant.safeInsets
 import eu.zimbelstern.tournant.ui.adapter.IngredientEditingAdapter
@@ -54,6 +84,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import java.io.File
 import java.text.DecimalFormatSymbols
+import java.util.Locale
 
 class RecipeEditingActivity : AppCompatActivity(), IngredientEditingAdapter.IngredientEditingInterface {
 
@@ -170,6 +201,46 @@ class RecipeEditingActivity : AppCompatActivity(), IngredientEditingAdapter.Ingr
 
 		binding.editYieldUnit.hint = getString(R.string.optional, getString(R.string.unit))
 
+		var language by mutableStateOf("")
+		binding.editLanguage.setContent {
+			TournantTheme {
+				Surface {
+					Box (Modifier.fillMaxWidth()) {
+						var expanded by remember { mutableStateOf(false) }
+
+						Box(Modifier.height(IntrinsicSize.Min)) {
+							OutlinedTextField(
+								modifier = Modifier.fillMaxWidth(),
+								value = language,
+								onValueChange = {},
+								label = { Text(stringResource(R.string.language)) },
+								readOnly = true,
+								singleLine = true,
+								trailingIcon = { Icon(Icons.Filled.ArrowDropDown, "") }
+							)
+							Surface(
+								modifier = Modifier
+									.fillMaxSize()
+									.padding(top = 8.dp)
+									.clickable { expanded = true },
+								color = Color.Transparent,
+							) {}
+						}
+
+						if (expanded) {
+							LanguageSelectionDialog { locale ->
+								locale?.let {
+									binding.recipe?.language = it
+									language = it.displayName
+								}
+								expanded = false
+							}
+						}
+					}
+				}
+			}
+		}
+
 		var keywords by mutableStateOf("")
 		binding.editKeywords.setContent {
             val focusManager = LocalFocusManager.current
@@ -214,6 +285,7 @@ class RecipeEditingActivity : AppCompatActivity(), IngredientEditingAdapter.Ingr
 					}
 				}
 				keywords = recipe.keywords.joinToString(", ")
+				language = recipe.language.displayName
 			}
 		}
 
@@ -385,6 +457,86 @@ class RecipeEditingActivity : AppCompatActivity(), IngredientEditingAdapter.Ingr
 
 	override fun startDrag(holder: RecyclerView.ViewHolder) {
 		itemTouchHelper.startDrag(holder)
+	}
+
+	@Composable
+	fun LanguageSelectionDialog(onSelected: (Locale?) -> Unit) {
+		Dialog(
+			onDismissRequest = { onSelected(null) }
+		) {
+			Surface(
+				modifier = Modifier.fillMaxWidth(.9f),
+				elevation = 8.dp,
+				shape = RoundedCornerShape(4.dp)
+			) {
+				LazyColumn {
+					item {
+						Spacer(Modifier.height(4.dp))
+					}
+					item {
+						LanguageCaption(stringResource(R.string.app_language))
+					}
+					item {
+						LanguageSelectionItem(getAppOrSystemLocale(), FontWeight.Normal) { onSelected(it) }
+					}
+					item {
+						Divider(Modifier.padding(12.dp))
+					}
+					item {
+						LanguageCaption(stringResource(R.string.supported_languages))
+					}
+					val allLanguages = Locale.getAvailableLocales().sortedBy { it.displayName }
+					val supportedLanguageTags = getString(R.string.availableLanguages).split(",")
+					allLanguages
+						.filter { it.toLanguageTag() in supportedLanguageTags }
+						.forEach {
+							item {
+								LanguageSelectionItem(it, FontWeight.Normal) { onSelected(it) }
+							}
+						}
+					item {
+						Divider(Modifier.padding(12.dp))
+					}
+					item {
+						LanguageCaption(stringResource(R.string.all_languages))
+					}
+					allLanguages.forEach {
+						item {
+							LanguageSelectionItem(it, if (it.toLanguageTag() in supportedLanguageTags) FontWeight.Bold else FontWeight.Light) { onSelected(it) }
+						}
+					}
+				}
+			}
+		}
+	}
+
+	@Composable
+	fun LanguageCaption(text: String) {
+		Box(Modifier
+			.fillMaxWidth()
+			.padding(16.dp, 12.dp)) {
+			Text(text, fontWeight = FontWeight.Bold)
+		}
+	}
+
+	@Composable
+	fun LanguageSelectionItem(
+		locale: Locale,
+		weight: FontWeight,
+		onSelected: (Locale?) -> Unit
+	) {
+		Box(
+			Modifier
+				.fillMaxWidth()
+				.clickable { onSelected(locale) }
+				.padding(16.dp, 12.dp)
+		) {
+			Text(
+				locale.displayName + " (${locale.toLanguageTag()})",
+				fontWeight = weight,
+				fontStyle = if (weight == FontWeight.Light) FontStyle.Italic else FontStyle.Normal
+			)
+		}
 	}
 
 }

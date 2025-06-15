@@ -178,6 +178,9 @@
 	<string name="make_optional">Make optional</string>
 	<string name="make_mandatory">Make mandatory</string>
 	<string name="scale_to">Scale to</string>
+	<string name="app_language">App language</string>
+	<string name="supported_languages">Supported languages</string>
+	<string name="all_languages">All languages</string>
 	<string name="comma_separated">comma-separated</string>
 
 	<!-- Sort options -->

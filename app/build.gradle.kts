@@ -1,3 +1,5 @@
+import kotlin.sequences.sorted
+
 plugins {
 	id("com.android.application")
 	id("com.github.triplet.play") version "3.10.1"
@@ -33,16 +35,25 @@ android {
 				&& file.walk().any { it.name == "strings.xml" }
 				&& Regex("values-[a-z]{2}(-r?[A-Z]{2})?").matches(file.name)
 		}
-		.map {
-			it.name.drop(7).replace("-r", "-")
-		}
-		.plus("en")
+		.plus(File("$projectDir/src/main/res/values"))
 		.sorted()
-		.joinToString(",")
+		.map {
+			it.walk().find { it.name == "strings.xml" }!!.readText().run {
+				listOf(
+					it.name.drop(7).replace("-r", "-").ifEmpty { "en" },
+					substringAfter("<string name=\"to\">", "").substringBefore("</string>"),
+					substringAfter("<string name=\"hours_for_regex\">", "").substringBefore("</string>"),
+					substringAfter("<string name=\"minutes_for_regex\">", "").substringBefore("</string>"),
+					substringAfter("<string name=\"seconds_for_regex\">", "").substringBefore("</string>")
+				)
+			}
+		}
+
 
 	applicationVariants.configureEach {
 		resValue("string", "versionName", versionName)
-		resValue("string", "availableLanguages", availableLanguages)
+		resValue("string", "availableLanguages", availableLanguages.map { it.first() }.joinToString(","))
+		resValue("string", "localisedTimeStrings", availableLanguages.map { it.joinToString(":") }.joinToString(";"))
 		mergedFlavor.manifestPlaceholders["fileprovider_authority"] = "$applicationId.fileprovider"
 	}
 
@@ -113,6 +124,7 @@ dependencies {
 	implementation("io.coil-kt.coil3:coil:3.1.0")
 
 	val composeVersion = "1.8.1"
+	implementation("androidx.compose.material:material-icons-extended-android:1.7.8")
 	implementation("androidx.compose.material:material:$composeVersion")
 	implementation("androidx.compose.ui:ui:$composeVersion")
 

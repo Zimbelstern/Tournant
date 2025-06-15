@@ -11,12 +11,13 @@ import eu.zimbelstern.tournant.BuildConfig
 import eu.zimbelstern.tournant.Constants.Companion.MODE_STANDALONE
 import eu.zimbelstern.tournant.Constants.Companion.MODE_SYNCED
 import eu.zimbelstern.tournant.Constants.Companion.PREF_MODE
+import eu.zimbelstern.tournant.getAppOrSystemLocale
 import kotlin.reflect.full.declaredFunctions
 
 @Database(
 	entities = [RecipeEntity::class, IngredientEntity::class, KeywordEntity::class, PreparationEntity::class],
 	exportSchema = true,
-	version = 5,
+	version = 6,
 	autoMigrations = [AutoMigration(1, 2), AutoMigration(2, 3), AutoMigration(4, 5)]
 )
 abstract class RecipeRoomDatabase : RoomDatabase() {
@@ -49,7 +50,7 @@ abstract class RecipeRoomDatabase : RoomDatabase() {
 					}, Executors.newSingleThreadExecutor()
 					)
 */
-					.addMigrations(MIGRATION_3_4)
+					.addMigrations(MIGRATION_3_4, MIGRATION_5_6)
 					.build()
 				INSTANCE = instance
 				return instance
@@ -68,6 +69,13 @@ abstract class RecipeRoomDatabase : RoomDatabase() {
 				db.execSQL("INSERT INTO Preparation SELECT recipeId, date, COUNT(*) FROM PreparationOld GROUP BY recipeId, date")
 				db.execSQL("DROP TABLE PreparationOld")
 				db.execSQL("CREATE INDEX IF NOT EXISTS `index_Preparation_recipeId` ON Preparation (recipeId)")
+			}
+		}
+
+		val MIGRATION_5_6 = object : Migration(5, 6) {
+			override fun migrate(db: SupportSQLiteDatabase) {
+				val languageTag = getAppOrSystemLocale().toLanguageTag()
+				db.execSQL("ALTER TABLE Recipe ADD COLUMN language TEXT NOT NULL DEFAULT `$languageTag`")
 			}
 		}
 	}

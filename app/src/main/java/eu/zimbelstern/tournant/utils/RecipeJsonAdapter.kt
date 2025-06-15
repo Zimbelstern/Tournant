@@ -8,7 +8,9 @@ import com.squareup.moshi.ToJson
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import eu.zimbelstern.tournant.data.Cookbook
 import eu.zimbelstern.tournant.data.RecipeList
+import eu.zimbelstern.tournant.getAppOrSystemLocale
 import java.util.Date
+import java.util.Locale
 
 object RecipeJsonAdapter {
 	val adapter: JsonAdapter<Cookbook> by lazy {
@@ -31,6 +33,13 @@ object RecipeJsonAdapter {
 				@ToJson
 				fun toJson(date: Date?) = date?.time
 			})
+			.add(object {
+				@FromJson
+				fun fromJson(string: String?) = Locale.getAvailableLocales().find { it.toLanguageTag() == string }
+					?: string?.let { Locale(it) }
+				@ToJson
+				fun toJson(locale: Locale) = locale.toLanguageTag()
+			})
 			.build()
 			.adapter(Cookbook::class.java)
 			.indent("\t")
@@ -49,6 +58,13 @@ object RecipeJsonAdapter {
 				fun fromJson(long: Long?) = long?.let { Date(it) }
 				@ToJson
 				fun toJson(date: Date?) = date?.time
+			})
+			.add(object {
+				@FromJson
+				@Suppress("unused") // string will always be null, falling back to app language
+				fun fromJson(string: String?) = getAppOrSystemLocale()
+				@ToJson
+				fun toJson(locale: Locale) = locale.toLanguageTag()
 			})
 			.build()
 			.adapter(RecipeList::class.java)

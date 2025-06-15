@@ -46,9 +46,7 @@ import androidx.compose.material.Chip
 import androidx.compose.material.ChipDefaults
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.LocalRippleConfiguration
-import androidx.compose.material.RippleConfiguration
 import androidx.compose.material.Text
-import androidx.compose.material.ripple.RippleAlpha
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -88,6 +86,7 @@ import eu.zimbelstern.tournant.databinding.ActivityRecipeBinding
 import eu.zimbelstern.tournant.databinding.InputFieldTimeBinding
 import eu.zimbelstern.tournant.databinding.RecyclerPreparationsBinding
 import eu.zimbelstern.tournant.getQuantityIntForPlurals
+import eu.zimbelstern.tournant.logit
 import eu.zimbelstern.tournant.parseLocalFormattedDouble
 import eu.zimbelstern.tournant.safeInsets
 import eu.zimbelstern.tournant.scale
@@ -109,6 +108,7 @@ import java.io.File
 import java.text.DecimalFormatSymbols
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 
 class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTableInterface, InstructionsTextAdapter.InstructionsTextInterface, PreparationsAdapter.PreparationsInterface {
 
@@ -220,70 +220,94 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 
 		lifecycleScope.launch {
 			viewModel.recipe.collectLatest { recipe ->
-					binding.recipe = recipe
-					title = recipe.title
-					binding.recipeDetailImage.visibility = recipe.image.let { image ->
-						val imageFile = File(File(application.filesDir, "images"), "${recipe.id}.jpg")
-						if (imageFile.exists()) {
-							binding.recipeDetailImageDrawable.load(File(File(application.filesDir, "images"), "${recipe.id}.jpg")) {
-								addLastModifiedToFileCacheKey(true)
-							}
-							View.VISIBLE
+				binding.recipe = recipe
+				title = recipe.title
+				val lang = if (Build.VERSION.SDK_INT >= 26)
+					Locale.lookupTag(Locale.LanguageRange.parse(recipe.language.toLanguageTag() + ";q=1.0"), getString(R.string.availableLanguages).split(",")) ?: recipe.language.toLanguageTag()
+				else recipe.language.toLanguageTag()
+				val timeStrings = getString(R.string.localisedTimeStrings).split(";").find { it.substringBefore(":") == lang }?.split(":") ?: List(5) { "" }
+				val dashWords = timeStrings[1].ifEmpty { getString(R.string.to) }
+				val hString = timeStrings[2].ifEmpty { getString(R.string.hours_for_regex) }
+				val minString = timeStrings[3].ifEmpty { getString(R.string.minutes_for_regex) }
+				val sString = timeStrings[4].ifEmpty { getString(R.string.seconds_for_regex) }
+				binding.recipeDetailImage.visibility = recipe.image.let { image ->
+					val imageFile = File(File(application.filesDir, "images"), "${recipe.id}.jpg")
+					if (imageFile.exists()) {
+						binding.recipeDetailImageDrawable.load(File(File(application.filesDir, "images"), "${recipe.id}.jpg")) {
+							addLastModifiedToFileCacheKey(true)
 						}
-						else if (image != null) {
-							binding.recipeDetailImageDrawable.setImageBitmap(BitmapFactory.decodeByteArray(image, 0, image.size))
-							View.VISIBLE
+						View.VISIBLE
+					}
+					else if (image != null) {
+						binding.recipeDetailImageDrawable.setImageBitmap(BitmapFactory.decodeByteArray(image, 0, image.size))
+						View.VISIBLE
+					}
+					else {
+						View.GONE
+					}
+				}
+				recipe.category?.let {
+					binding.recipeDetailCategory.chipBackgroundColor = ColorStateList.valueOf(materialColors700.getRandom(it).toArgb())
+				}
+				recipe.cuisine?.let {
+					binding.recipeDetailCuisine.chipBackgroundColor = ColorStateList.valueOf(materialColors900.getRandom(it).toArgb())
+				}
+				recipe.instructions?.let {
+					binding.recipeDetailInstructions.visibility = View.VISIBLE
+					binding.recipeDetailInstructionsRecycler.adapter = InstructionsTextAdapter(
+						this@RecipeActivity,
+						parseRecipeText(it).splitLines(),
+						dashWords = dashWords,
+						hString = hString,
+						minString = minString,
+						sString = sString
+					)
+				}
+				recipe.yieldValue.let {
+					binding.recipeDetailYields.visibility = View.VISIBLE
+					binding.recipeDetailYieldsValue.apply {
+						keyListener = DigitsKeyListener.getInstance("0123456789" + DecimalFormatSymbols.getInstance().decimalSeparator)
+						hint = (it ?: 1.0).toStringForCooks(thousands = false)
+						if (it != null) {
+							text = SpannableStringBuilder(hint)
 						}
-						else {
-							View.GONE
-						}
-					}
-					recipe.category?.let {
-						binding.recipeDetailCategory.chipBackgroundColor = ColorStateList.valueOf(materialColors700.getRandom(it).toArgb())
-					}
-					recipe.cuisine?.let {
-						binding.recipeDetailCuisine.chipBackgroundColor = ColorStateList.valueOf(materialColors900.getRandom(it).toArgb())
-					}
-					recipe.instructions?.let {
-						binding.recipeDetailInstructions.visibility = View.VISIBLE
-						binding.recipeDetailInstructionsRecycler.adapter = InstructionsTextAdapter(this@RecipeActivity, parseRecipeText(it).splitLines())
-					}
-					recipe.yieldValue.let {
-						binding.recipeDetailYields.visibility = View.VISIBLE
-						binding.recipeDetailYieldsValue.apply {
-							keyListener = DigitsKeyListener.getInstance("0123456789" + DecimalFormatSymbols.getInstance().decimalSeparator)
-							hint = (it ?: 1.0).toStringForCooks(thousands = false)
-							if (it != null) {
-								text = SpannableStringBuilder(hint)
-							}
-							fillYieldsUnit(it, recipe.yieldUnit)
-							addTextChangedListener { editable ->
-								val scaleFactor = editable.toString().replace(DecimalFormatSymbols.getInstance().decimalSeparator, '.').toDoubleOrNull()?.div(recipe.yieldValue ?: 1.0)
-								recipe.ingredients.scale(scaleFactor).let { list ->
-									binding.recipeDetailIngredientsRecycler.adapter = IngredientTableAdapter(this@RecipeActivity, list, scaleFactor)
-									binding.recipeDetailInstructionsRecycler.adapter = recipe.instructions?.let {
-										InstructionsTextAdapter(this@RecipeActivity, parseRecipeText(it).splitLines(), list, scaleFactor)
-									}
-									fillYieldsUnit(recipe.yieldValue, recipe.yieldUnit)
+						fillYieldsUnit(it, recipe.yieldUnit)
+						addTextChangedListener { editable ->
+							val scaleFactor = editable.toString().replace(DecimalFormatSymbols.getInstance().decimalSeparator, '.').toDoubleOrNull()?.div(recipe.yieldValue ?: 1.0)
+							recipe.ingredients.scale(scaleFactor).let { list ->
+								binding.recipeDetailIngredientsRecycler.adapter = IngredientTableAdapter(this@RecipeActivity, list, scaleFactor)
+								binding.recipeDetailInstructionsRecycler.adapter = recipe.instructions?.let {
+									InstructionsTextAdapter(
+										this@RecipeActivity,
+										parseRecipeText(it).splitLines(),
+										list,
+										scaleFactor,
+										dashWords,
+										hString,
+										minString,
+										sString
+									)
 								}
+								fillYieldsUnit(recipe.yieldValue, recipe.yieldUnit)
 							}
-							setOnFocusChangeListener { _, hasFocus ->
-								if (!hasFocus) {
-									(getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager)?.hideSoftInputFromWindow(binding.root.windowToken, 0)
-								}
+						}
+						setOnFocusChangeListener { _, hasFocus ->
+							if (!hasFocus) {
+								(getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager)?.hideSoftInputFromWindow(binding.root.windowToken, 0)
 							}
-							savedInstanceState?.getString("YIELD_VALUE")?.let {
-								if (it.isNotEmpty()) {
-									setText(it)
-								}
+						}
+						savedInstanceState?.getString("YIELD_VALUE")?.let {
+							if (it.isNotEmpty()) {
+								setText(it)
 							}
 						}
 					}
-					recipe.notes?.let {
-						binding.recipeDetailNotes.visibility = View.VISIBLE
-						binding.recipeDetailNotesText.movementMethod = LinkMovementMethod.getInstance()
-						binding.recipeDetailNotesText.text = parseRecipeText(it)
-					}
+				}
+				recipe.notes?.let {
+					binding.recipeDetailNotes.visibility = View.VISIBLE
+					binding.recipeDetailNotesText.movementMethod = LinkMovementMethod.getInstance()
+					binding.recipeDetailNotesText.text = parseRecipeText(it)
+				}
 				recipe.ingredients.let { list ->
 					binding.recipeDetailIngredients.visibility = View.VISIBLE
 					if (savedInstanceState?.getString("YIELD_VALUE").isNullOrEmpty()) {

@@ -171,6 +171,9 @@
 	<string name="make_optional">Als optional markieren</string>
 	<string name="make_mandatory">Als nicht optional markieren</string>
 	<string name="scale_to">Umrechnen auf</string>
+	<string name="app_language">App-Sprache</string>
+	<string name="supported_languages">Unterstützte Sprachen</string>
+	<string name="all_languages">Alle Sprachen</string>
 	<string name="comma_separated">durch Kommas getrennt</string>
 
 	<!-- Sort options -->

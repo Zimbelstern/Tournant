@@ -35,6 +35,7 @@ data class RecipeWithIngredientsAndPreparations(
 			id = recipe.id,
 			title = recipe.title,
 			description = recipe.description,
+			language = recipe.language,
 			category = recipe.category,
 			cuisine = recipe.cuisine,
 			keywords = LinkedHashSet(keywords.map { it.keyword }),
