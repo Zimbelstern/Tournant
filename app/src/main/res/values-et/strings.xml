@@ -25,8 +25,8 @@
     <string name="instructions">Juhised</string>
     <string name="notes">Märkused</string>
     <plurals name="servings">
-        <item quantity="one">" "</item>
-        <item quantity="other">" "</item>
+        <item quantity="one">portsjon</item>
+        <item quantity="other">portsjonit</item>
     </plurals>
     <plurals name="lots">
         <item quantity="one">" "</item>
@@ -157,4 +157,12 @@
     <string name="file_does_not_exist" tools:ignore="UnusedResources">Faili pole olemas</string>
     <string name="checked" tools:ignore="UnusedResources">kontrollitud</string>
     <string name="database_id" tools:ignore="UnusedResources">Andmebaasi tunnus</string>
+    <string name="keywords">Märksõnad</string>
+    <string name="season">Hooaeg</string>
+    <string name="from">alates</string>
+    <string name="until">kuni</string>
+    <string name="app_language">Rakenduse keel</string>
+    <string name="supported_languages">Toetatud keeled</string>
+    <string name="all_languages">Kõik keeled</string>
+    <string name="comma_separated">eraldatud komadega</string>
 </resources>
