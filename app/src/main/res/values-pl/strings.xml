@@ -169,4 +169,12 @@
     <string name="totaltime">Całkowity czas</string>
     <string name="add_to_selection">Dodaj do zaznaczenia</string>
     <string name="minutes_for_regex">(minuta)|(minut)|(minuty)</string>
+    <string name="keywords">Słowa kluczowe</string>
+    <string name="season">Pora roku</string>
+    <string name="from">od</string>
+    <string name="until">do</string>
+    <string name="app_language">Język aplikacji</string>
+    <string name="supported_languages">Obsługiwane języki</string>
+    <string name="all_languages">Wszystkie języki</string>
+    <string name="comma_separated">oddzielone przecinkami</string>
 </resources>
