@@ -96,7 +96,7 @@
     <string name="mode_standalone_description_short">Autonome : Votre propre base de données avec la possibilité d\'éditer les recettes</string>
     <string name="mode_standalone_description_long">Tournant crée sa propre base de données pour vos recettes. Vous pouvez importer des recettes à partir de fichiers XML. Les recettes peuvent être éditées (en développement).</string>
     <string name="mode_synced">Synchronisé</string>
-    <string name="mode_synced_description_short">Synchronisé : Toujours synchronisé avec un fichier XML (lecture-seulement)</string>
+    <string name="mode_synced_description_short">Synchronisé : Toujours synchroniser avec un fichier XML (lecture-seulement)</string>
     <string name="mode_synced_description_long">Tournant reste synchronisé avec un seul fichier XML sur votre appareil. L\'édition des recettes est désactivée car elle créerait des conflits et il n\'existe actuellement aucune fonctionnalité de synchronisation dans Gourmand pour les résoudre.</string>
     <string name="change_synced_file">Modifier le fichier synchronisé</string>
     <string name="change_mode_explanation">Vous pouvez changer le mode dans les réglages.</string>
@@ -110,13 +110,13 @@
     <string name="share">Partager</string>
     <string name="ascending">Ascendant</string>
     <string name="copy_to_clipboard">Copier vers le presse-papiers</string>
-    <string name="copied_to_clipboard">Copié vers le presse-papiers</string>
+    <string name="copied_to_clipboard">Copié dans le presse-papiers</string>
     <string name="ingredients_count">Nombre d’ingrédients</string>
     <string name="all_recipes">Toutes les recettes</string>
     <string name="descending">Descendant</string>
     <string name="minutes_for_regex">(minute)|(minutes)</string>
     <string name="seconds_for_regex">(seconde)|(secondes)</string>
-    <string name="database_id">Identifiant dans base de données</string>
+    <string name="database_id">Identifiant de base de données</string>
     <string name="to">à</string>
     <string name="sort_by">Trier par</string>
     <string name="timer_set">Minuteur réglé sur %s</string>
@@ -163,4 +163,12 @@
     <string name="dark">Sombre</string>
     <string name="language">Langue</string>
     <string name="menu">Menu</string>
+    <string name="season">Saison</string>
+    <string name="all_languages">Toutes les langues</string>
+    <string name="supported_languages">Langues supportées</string>
+    <string name="app_language">Langue de l\'application</string>
+    <string name="from">de</string>
+    <string name="until">à</string>
+    <string name="comma_separated">séparées par des virgules</string>
+    <string name="keywords">Mots-clés</string>
 </resources>
