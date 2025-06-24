@@ -153,4 +153,11 @@
     <string name="language">语言</string>
     <string name="gourmand165">成品量支持小数 (Gourmand issue #165)</string>
     <string name="menu">菜单</string>
+    <string name="keywords">关键字</string>
+    <string name="from">从</string>
+    <string name="until">到</string>
+    <string name="app_language">应用语言</string>
+    <string name="supported_languages">已支持的语言</string>
+    <string name="all_languages">所有语言</string>
+    <string name="comma_separated">使用英文逗号分割关键字</string>
 </resources>
