@@ -160,4 +160,5 @@
     <string name="supported_languages">已支持的语言</string>
     <string name="all_languages">所有语言</string>
     <string name="comma_separated">使用英文逗号分割关键字</string>
+    <string name="season">时令</string>
 </resources>
