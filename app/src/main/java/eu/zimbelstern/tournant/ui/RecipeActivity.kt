@@ -304,7 +304,11 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 												.alpha(if (i in months) 1f else .3f)
 										) {
 											Text(
-												text = if (useThreeLetters.value) monthName else monthName.take(1),
+												text = when {
+													useThreeLetters.value -> monthName
+													monthName.first().isDigit() -> monthName.takeWhile { it.isDigit() }
+													else -> monthName.take(1)
+												},
 												fontSize = 12.sp
 											)
 											if (i == currentMonth)
