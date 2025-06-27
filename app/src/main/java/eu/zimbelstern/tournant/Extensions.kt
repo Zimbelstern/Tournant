@@ -194,7 +194,7 @@ fun Spanned.findDurationsByRegex(dashWords: String, timeUnitWords: String): Sequ
 			}
 
 fun Spanned.findFirstIngredientWithAmount(dashWords: String, ingredient: Ingredient, from: Int): MatchResult? {
-	return Regex("""${numberOrRange(dashWords)}\s?${ingredient.unit ?: ""}\s${ingredient.item}""").find(this, from)
+	return Regex("""${numberOrRange(dashWords)}\s?${Regex.escape(ingredient.unit ?: "")}\s${Regex.escape(ingredient.item ?: "")}""").find(this, from)
 }
 
 fun Spanned.findFirstAmount(range: IntRange): MatchResult? {
