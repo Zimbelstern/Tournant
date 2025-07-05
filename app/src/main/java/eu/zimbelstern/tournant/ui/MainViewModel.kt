@@ -277,10 +277,10 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 						File(application.filesDir, "import").listFiles()?.forEach {
 							it.delete()
 						}
-						waitingForRecipes.emit(false)
 					}
 				}
 			}
+			waitingForRecipes.emit(false)
 		}
 	}
 
