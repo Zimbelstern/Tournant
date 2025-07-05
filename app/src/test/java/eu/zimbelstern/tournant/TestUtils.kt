@@ -2,6 +2,7 @@ package eu.zimbelstern.tournant
 
 import eu.zimbelstern.tournant.data.Ingredient
 import eu.zimbelstern.tournant.data.Recipe
+import eu.zimbelstern.tournant.data.Season
 import java.util.Date
 
 fun sampleRecipeWithIngredients(n: Int) =
@@ -13,6 +14,8 @@ fun sampleRecipeWithIngredients(n: Int) =
 			description = null,
 			category = "Category",
 			cuisine = "Cuisine",
+			keywords = linkedSetOf("Keyword 1", "Keyword 2"),
+			season = Season(3, 5),
 			source = "Source",
 			link = "https://tournant.zimbelstern.eu",
 			rating = 4.5f,
@@ -31,14 +34,14 @@ fun sampleRecipeWithIngredients(n: Int) =
 					amount = 3.0,
 					amountRange = null,
 					unit = "km",
-					item = "First ingredient",
+					item = null,
 					group = null,
 					optional = false,
 					refId = 3
 				),
 				Ingredient(
 					amount = 2.0,
-					amountRange = null,
+					amountRange = 3.0,
 					unit = "mg",
 					item = "Second ingredient",
 					group = null,

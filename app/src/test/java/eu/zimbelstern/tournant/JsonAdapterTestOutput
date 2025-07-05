@@ -3,8 +3,17 @@
 		{
 			"id": 1,
 			"title": "Sample recipe",
+			"language": "de-DE",
 			"category": "Category",
 			"cuisine": "Cuisine",
+			"keywords": [
+				"Keyword 1",
+				"Keyword 2"
+			],
+			"season": {
+				"from": 3,
+				"until": 5
+			},
 			"source": "Source",
 			"link": "https://tournant.zimbelstern.eu",
 			"rating": 4.5,
@@ -20,12 +29,12 @@
 				{
 					"amount": 3.0,
 					"unit": "km",
-					"item": "First ingredient",
 					"refId": 3,
 					"optional": false
 				},
 				{
 					"amount": 2.0,
+					"amountRange": 3.0,
 					"unit": "mg",
 					"item": "Second ingredient",
 					"optional": false
