@@ -390,15 +390,15 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 						sString = sString
 					)
 				}
-				recipe.yieldValue.let {
+				recipe.yieldValue.let { yieldValue ->
 					binding.recipeDetailYields.visibility = View.VISIBLE
 					binding.recipeDetailYieldsValue.apply {
 						keyListener = DigitsKeyListener.getInstance("0123456789" + DecimalFormatSymbols.getInstance().decimalSeparator)
-						hint = (it ?: 1.0).toStringForCooks(thousands = false)
-						if (it != null) {
+						hint = (yieldValue ?: 1.0).toStringForCooks(thousands = false)
+						if (yieldValue != null) {
 							text = SpannableStringBuilder(hint)
 						}
-						fillYieldsUnit(it, recipe.yieldUnit)
+						fillYieldsUnit(yieldValue, recipe.yieldUnit)
 						addTextChangedListener { editable ->
 							val scaleFactor = editable.toString().replace(DecimalFormatSymbols.getInstance().decimalSeparator, '.').toDoubleOrNull()?.div(recipe.yieldValue ?: 1.0)
 							recipe.ingredients.scale(scaleFactor).let { list ->

@@ -22,10 +22,10 @@ object DemoDatabase {
 			context.applicationContext,
 			RecipeRoomDatabase::class.java
 		)
-			.build().also {
+			.build().also { database ->
 				MainScope().launch {
 					withContext(Dispatchers.IO) {
-						it.recipeDao().insertRecipesWithIngredientsAndPreparations(
+						database.recipeDao().insertRecipesWithIngredientsAndPreparations(
 							listOf(
 								Recipe(
 									title = ContextCompat.getString(context, R.string.muffins),

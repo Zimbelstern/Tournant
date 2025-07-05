@@ -294,7 +294,7 @@ abstract class RecipeDao {
 		// Stores recipe information except for the ingredients, retrieves the generated ID
 		recipes.forEach {
 			// Save previous id for json parsed recipes
-			it.recipe.prevId = it.recipe.id.takeUnless { it == 0L } ?: it.recipe.gourmandId?.toLong()
+			it.recipe.prevId = it.recipe.id.takeUnless { id -> id == 0L } ?: it.recipe.gourmandId?.toLong()
 			it.recipe.id = 0L
 			// Insert recipe in database and save id
 			it.recipe.id = insertRecipe(it.recipe)
@@ -310,7 +310,7 @@ abstract class RecipeDao {
 						?: throw Error("Error while saving ${it.recipe.title} to database: Referenced recipe not found")
 				}
 			}
-			it.ingredients.forEach { insertIngredient(it) }
+			it.ingredients.forEach { ingredient -> insertIngredient(ingredient) }
 		}
 
 		return recipes
@@ -385,7 +385,7 @@ abstract class RecipeDao {
 					}
 				}
 				Log.d(TAG, "New ingredients: ${it.ingredients.map { ing -> ing.refId ?: ing.item }.joinToString(", ")}")
-				it.ingredients.forEach { insertIngredient(it) }
+				it.ingredients.forEach { ingredient -> insertIngredient(ingredient) }
 			}
 		}
 	}

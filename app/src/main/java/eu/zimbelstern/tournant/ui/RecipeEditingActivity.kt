@@ -57,13 +57,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.key.Key
-import androidx.compose.ui.input.key.KeyEventType
-import androidx.compose.ui.input.key.key
-import androidx.compose.ui.input.key.onPreviewKeyEvent
-import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -164,8 +158,8 @@ class RecipeEditingActivity : AppCompatActivity(), IngredientEditingAdapter.Ingr
 		val imageChooser = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
 			if (uri != null)
 				try {
-					val rotation = contentResolver.openInputStream(uri)?.use {
-						ExifInterface(it).rotationDegrees.takeUnless { it == 0 }
+					val rotation = contentResolver.openInputStream(uri)?.use { inputStream ->
+						ExifInterface(inputStream).rotationDegrees.takeUnless { it == 0 }
 					}
 					contentResolver.openInputStream(uri)?.use { inputStream ->
 						val sourceImage = BitmapFactory.decodeStream(inputStream)
@@ -643,9 +637,9 @@ class RecipeEditingActivity : AppCompatActivity(), IngredientEditingAdapter.Ingr
 					val supportedLanguageTags = getString(R.string.availableLanguages).split(",")
 					allLanguages
 						.filter { it.toLanguageTag() in supportedLanguageTags }
-						.forEach {
+						.forEach { locale ->
 							item {
-								LanguageSelectionItem(it, FontWeight.Normal) { onSelected(it) }
+								LanguageSelectionItem(locale, FontWeight.Normal) { onSelected(it) }
 							}
 						}
 					item {
@@ -654,9 +648,9 @@ class RecipeEditingActivity : AppCompatActivity(), IngredientEditingAdapter.Ingr
 					item {
 						LanguageCaption(stringResource(R.string.all_languages))
 					}
-					allLanguages.forEach {
+					allLanguages.forEach { locale ->
 						item {
-							LanguageSelectionItem(it, if (it.toLanguageTag() in supportedLanguageTags) FontWeight.Bold else FontWeight.Light) { onSelected(it) }
+							LanguageSelectionItem(locale, if (locale.toLanguageTag() in supportedLanguageTags) FontWeight.Bold else FontWeight.Light) { onSelected(it) }
 						}
 					}
 				}
