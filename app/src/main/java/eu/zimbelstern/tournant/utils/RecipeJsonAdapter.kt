@@ -39,7 +39,7 @@ object RecipeJsonAdapter {
 			.add(object {
 				@FromJson
 				fun fromJson(string: String?) = Locale.getAvailableLocales().find { it.toLanguageTag() == string }
-					?: string?.let { Locale(it) }
+					?: string?.let { Locale.forLanguageTag(it) }
 				@ToJson
 				fun toJson(locale: Locale) = locale.toLanguageTag()
 			})

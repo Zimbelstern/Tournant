@@ -13,7 +13,7 @@ object RoomTypeConverters {
 	fun dateToLong(date: Date?) = date?.time
 
 	@TypeConverter
-	fun stringToLocale(value: String): Locale = Locale.getAvailableLocales().find { it.toLanguageTag() == value } ?: Locale(value)
+	fun stringToLocale(value: String): Locale = Locale.getAvailableLocales().find { it.toLanguageTag() == value } ?: Locale.forLanguageTag(value)
 
 	@TypeConverter
 	fun localeToString(locale: Locale): String = locale.toLanguageTag()
