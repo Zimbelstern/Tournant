@@ -89,7 +89,7 @@ object RecipeJsonAdapter {
 			})
 			.add(object {
 				@FromJson
-				@Suppress("unused") // string will always be null, falling back to app language
+				@Suppress("Unused_Parameter") // string will always be null, falling back to app language
 				fun fromJson(string: String?) = getAppOrSystemLocale()
 				@ToJson
 				fun toJson(locale: Locale) = locale.toLanguageTag()

@@ -233,11 +233,13 @@ fun getAppOrSystemLocale(): Locale =
 		?: LocaleListCompat.getDefault().get(0)
 		?: Locale.getDefault()
 
+@Suppress("unused")
 fun <T> T.logit(description: String? = null): T {
 	Log.e("logit()", (description ?: this?.javaClass?.name) + ": $this")
 	return this
 }
 
+@Suppress("unused")
 fun <T, R> T.logit(description: String? = null, lambda: T.() -> R): T {
 	Log.e("logit()", (description ?: this?.javaClass?.name) + ": ${lambda()}")
 	return this

@@ -8,7 +8,8 @@ object Converter {
 
 	@InverseMethod("hourToTime")
 	@JvmStatic
-	fun timeToHour(@Suppress("UNUSED_PARAMETER") oldValue: Int?, value: Int?): String {
+	@Suppress("Unused_Parameter", "RedundantSuppression")
+	fun timeToHour(oldValue: Int?, value: Int?): String {
 		return value?.div(60)?.toString() ?: ""
 	}
 
@@ -21,7 +22,8 @@ object Converter {
 
 	@InverseMethod("minToTime")
 	@JvmStatic
-	fun timeToMin(@Suppress("UNUSED_PARAMETER") oldValue: Int?, value: Int?): String {
+	@Suppress("Unused_Parameter", "RedundantSuppression")
+	fun timeToMin(oldValue: Int?, value: Int?): String {
 		return value?.mod(60)?.toString() ?: ""
 	}
 
@@ -42,7 +44,8 @@ object Converter {
 
 	@InverseMethod("stringToDouble")
 	@JvmStatic
-	fun doubleToString(@Suppress("UNUSED_PARAMETER") oldValue: Double?, value: Double?): String {
+	@Suppress("Unused_Parameter", "RedundantSuppression")
+	fun doubleToString(oldValue: Double?, value: Double?): String {
 		return value?.toStringForCooks(thousands = false) ?: ""
 	}
 
@@ -61,6 +64,7 @@ object Converter {
 		return value?.replace("<br/>", "\n") ?: ""
 	}
 
+	@Suppress("Unused")
 	@JvmStatic fun stringToHtml(value: String): String {
 		return value
 	}
