@@ -112,7 +112,7 @@
     <string name="less">mniej</string>
     <string name="more">więcej</string>
     <string name="reset">zresetuj</string>
-    <string name="selected">Wybrano %d</string>
+    <string name="n_selected">Wybrano %d</string>
     <string name="remove">Usuń</string>
     <string name="options">Opcje</string>
     <string name="menu">Menu</string>

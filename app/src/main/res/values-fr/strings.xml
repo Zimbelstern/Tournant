@@ -62,7 +62,7 @@
     <string name="group">Groupe</string>
     <string name="import_recipes">Importer des recettes</string>
     <string name="import_export">Compatibilité Gourmand</string>
-    <string name="selected">%d sélectionné</string>
+    <string name="n_selected">%d sélectionné</string>
     <string name="add_to_selection">Ajouter à la sélection</string>
     <string name="remove">Retirer</string>
     <string name="options">Options</string>

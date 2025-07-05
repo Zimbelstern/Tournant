@@ -28,7 +28,6 @@ abstract class RecipeRoomDatabase : RoomDatabase() {
 		private var INSTANCE: RecipeRoomDatabase? = null
 		fun getDatabase(context: Context): RecipeRoomDatabase {
 			return INSTANCE ?: synchronized(this) {
-				@Suppress("KotlinConstantConditions")
 				val instance = if (BuildConfig.FLAVOR == "demo") {
 					Class.forName("eu.zimbelstern.tournant.demo.DemoDatabase").kotlin.run {
 						declaredFunctions.find { it.name == "create" }!!.call(objectInstance, context)

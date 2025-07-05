@@ -151,7 +151,7 @@
 	<string name="more">daha fazla</string>
 	<string name="reset">sıfırla</string>
 	<string name="checked">işaretlendi</string>
-	<string name="selected">%d seçildi</string>
+	<string name="n_selected">%d seçildi</string>
 	<string name="add_to_selection">Seçime ekle</string>
 	<string name="remove">Kaldır</string>
 	<string name="options">Seçenekler</string>

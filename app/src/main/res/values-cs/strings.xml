@@ -68,7 +68,7 @@
     <string name="egg">Dejte si sušenku: 🍪</string>
     <string name="less">méně</string>
     <string name="more">více</string>
-    <string name="selected">%d vybráno</string>
+    <string name="n_selected">%d vybráno</string>
     <string name="add_to_selection">Přidejte to výběru</string>
     <string name="remove">Odstranit</string>
     <string name="checked">označeno</string>

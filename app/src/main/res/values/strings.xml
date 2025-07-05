@@ -162,7 +162,7 @@
 	<string name="less">less</string>
 	<string name="more">more</string>
 	<string name="reset">reset</string>
-	<string name="selected">%d selected</string>
+	<string name="n_selected">%d selected</string>
 	<string name="add_to_selection">Add to selection</string>
 	<string name="remove">Remove</string>
 	<string name="options">Options</string>

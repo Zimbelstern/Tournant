@@ -85,7 +85,7 @@
     <string name="copied_to_clipboard">已复制到剪贴板</string>
     <string name="reset">重置</string>
     <string name="checked">已检查</string>
-    <string name="selected">已选中%d份菜谱</string>
+    <string name="n_selected">已选中%d份菜谱</string>
     <string name="remove">移除</string>
     <string name="options">选项</string>
     <string name="edit">编辑</string>

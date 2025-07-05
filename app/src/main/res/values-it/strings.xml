@@ -68,7 +68,7 @@
     <string name="edit">Modifica</string>
     <string name="add_photo">Aggiungi foto</string>
     <string name="export_selected">Esporta di ricette selezionate</string>
-    <string name="selected">%d selezionato</string>
+    <string name="n_selected">%d selezionato</string>
     <string name="mode_synced_description_long">Tournant resta sincronizzato con un singolo file XML sul tuo dispositivo. La modifica della ricetta è disabilitata perché creerebbe dei conflitti e attualmente non esiste una funzione di sincronizzazione in Gourmand per risolvere questi conflitti.</string>
     <string name="new_recipe">Nuova ricetta</string>
     <string name="select_all">Seleziona tutto</string>

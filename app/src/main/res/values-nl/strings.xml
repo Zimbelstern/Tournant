@@ -47,7 +47,7 @@
     <string name="cooktime">Bereidingstijd</string>
     <string name="version">Versie</string>
     <string name="general_settings">Algemene instellingen</string>
-    <string name="selected">%d geselecteerd</string>
+    <string name="n_selected">%d geselecteerd</string>
     <string name="ok">Oké</string>
     <string name="file_does_not_exist">Het bestand bestaat niet</string>
     <string name="mode_synced_description_long">Tournant synchroniseert recepten continu met een xml-bestand op je apparaat. Bewerken is hierdoor niet mogelijk, omdat er momenteel geen manier in Gourmand is om bestandsconflicten te verhelpen.</string>

@@ -46,7 +46,7 @@
     <string name="cooktime">Tempo de cozimento</string>
     <string name="version">Versão</string>
     <string name="general_settings">Opções gerais</string>
-    <string name="selected">%d selecionados</string>
+    <string name="n_selected">%d selecionados</string>
     <string name="file_does_not_exist">O arquivo não existe</string>
     <string name="mode_synced_description_long">Tournant se mantêm sincronizado com um único arquivo XML no seu dispositivo. A edição de receitas fica desabilitada pois pode gerar conflitos e não há atualmente como resolvê-los do lado do Gourmand.</string>
     <string name="sort_by">Ordenar por</string>
@@ -134,10 +134,10 @@
     <string name="creation_date">Data de criação</string>
     <string name="modified">Modificado</string>
     <string name="modification_date">Data de modificação</string>
-    <string name="preparations_count">Numero de preparações</string>
+    <string name="preparations_count">Número de preparações</string>
     <string name="prepared_on">Praparado em</string>
     <string name="last_prepared">Último preparado</string>
-    <string name="log_preparation">historico de preparação</string>
+    <string name="log_preparation">histórico de preparação</string>
     <string name="logbook">Registro de eventos</string>
     <string name="set_timer">Definir cronômetro</string>
     <string name="last_time">Último tempo: %s</string>

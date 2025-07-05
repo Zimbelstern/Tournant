@@ -66,7 +66,7 @@
     <string name="less">menos</string>
     <string name="more">más</string>
     <string name="checked">marcado</string>
-    <string name="selected">%d seleccionado</string>
+    <string name="n_selected">%d seleccionado</string>
     <string name="add_to_selection">Añadar a selección</string>
     <string name="remove">Quitar</string>
     <string name="options">Opciones</string>

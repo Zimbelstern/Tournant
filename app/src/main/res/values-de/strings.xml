@@ -155,7 +155,7 @@
 	<string name="more">Mehr</string>
 	<string name="reset">Zurücksetzen</string>
 	<string name="checked">abgehakt</string>
-	<string name="selected">%d ausgewählt</string>
+	<string name="n_selected">%d ausgewählt</string>
 	<string name="add_to_selection">Zur Auswahl hinzufügen</string>
 	<string name="remove">Entfernen</string>
 	<string name="options">Optionen</string>

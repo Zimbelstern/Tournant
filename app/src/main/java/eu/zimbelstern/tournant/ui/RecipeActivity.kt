@@ -221,6 +221,7 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 			weight = getString(R.string.cooktime).length.toFloat()
 		}
 
+		val keywords = viewModel.recipe.map { it.keywords }
 		@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterialApi::class)
 		binding.recipeDetailKeywords.setContent {
 			CompositionLocalProvider(LocalRippleConfiguration provides null) {
@@ -228,26 +229,24 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 					horizontalArrangement = Arrangement.spacedBy(8.dp),
 					verticalArrangement = Arrangement.spacedBy(8.dp)
 				) {
-					viewModel.recipe
-						.map { it.keywords }
-						.collectAsState(emptyList())
-						.value.forEach {
-							Chip(
-								modifier = Modifier.height(24.dp),
-								onClick = {},
-								colors = ChipDefaults.chipColors(backgroundColor = materialColors100.getRandom(it)),
-								border = BorderStroke(2.dp, materialColors200.getRandom(it)),
-								shape = RoundedCornerShape(4.dp)
-							) {
-								Text(text = it, textAlign = TextAlign.Center, modifier = Modifier.widthIn(min = 24.dp))
-							}
+					keywords.collectAsState(emptyList()).value.forEach {
+						Chip(
+							modifier = Modifier.height(24.dp),
+							onClick = {},
+							colors = ChipDefaults.chipColors(backgroundColor = materialColors100.getRandom(it)),
+							border = BorderStroke(2.dp, materialColors200.getRandom(it)),
+							shape = RoundedCornerShape(4.dp)
+						) {
+							Text(text = it, textAlign = TextAlign.Center, modifier = Modifier.widthIn(min = 24.dp))
 						}
+					}
 				}
 			}
 		}
 
+		val months = viewModel.recipe.map { it.season?.getIncludedMonths() }
 		binding.recipeDetailSeason.setContent {
-			viewModel.recipe.map { it.season?.getIncludedMonths() }.collectAsState(null).value?.let { months ->
+			months.collectAsState(null).value?.let { months ->
 				TournantTheme {
 					Surface {
 						Column {

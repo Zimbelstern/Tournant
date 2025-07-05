@@ -134,7 +134,7 @@
     <string name="egg">Napsa üks küpsis: 🍪</string>
     <string name="more">rohkem</string>
     <string name="reset">lähtesta</string>
-    <string name="selected">%d on valitud</string>
+    <string name="n_selected">%d on valitud</string>
     <string name="add_to_selection">Lisa valikusse</string>
     <string name="remove">Eemalda</string>
     <string name="to">kuni</string>

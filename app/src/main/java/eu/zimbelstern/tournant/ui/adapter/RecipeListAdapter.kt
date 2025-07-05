@@ -467,7 +467,7 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 	}
 
 	private fun updateTitle() {
-		mode?.title = recipeListInterface.getResources().getString(R.string.selected, selectedItems.size)
+		mode?.title = recipeListInterface.getResources().getString(R.string.n_selected, selectedItems.size)
 	}
 
 	fun recipeClosed() {

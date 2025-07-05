@@ -106,7 +106,7 @@
         <item quantity="other">Asta va şterge definitiv %d rețete din baza de date. Sunteți sigur/ă\?</item>
     </plurals>
     <string name="libraries">Librării</string>
-    <string name="selected">%d selectate</string>
+    <string name="n_selected">%d selectate</string>
     <string name="recipes">Rețete</string>
     <string name="share">Partajați</string>
     <string name="ascending">Ascendent</string>

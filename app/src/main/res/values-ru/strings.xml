@@ -154,7 +154,7 @@
     <string name="timer_set">Таймер выставлен на %s</string>
     <string name="minutes_for_regex">(минута)|(минуты)|(минут)</string>
     <string name="seconds_for_regex">(секунда)|(секунды)|(секунд)</string>
-    <string name="selected">%d выбрано</string>
+    <string name="n_selected">%d выбрано</string>
     <string name="copy_to_clipboard">Копировать</string>
     <string name="options">Варианты</string>
     <string name="sort_by">Сортировать</string>
