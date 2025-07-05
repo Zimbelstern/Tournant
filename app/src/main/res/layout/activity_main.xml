@@ -22,9 +22,9 @@
 				android:layout_width="48dp"
 				android:layout_height="match_parent"
 				android:layout_marginStart="6dp"
+				android:background="?attr/actionBarItemBackground"
 				android:contentDescription="@string/menu"
 				android:src="@drawable/ic_menu"
-				android:background="@color/transparent"
 				app:tint="@color/normal_text_color"/>
 
 			<TextView
@@ -60,15 +60,27 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_gravity="center|end"
+					android:layout_marginStart="2dp"
+					android:layout_marginEnd="6dp"
 					android:background="@drawable/recipe_count_border"
 					android:paddingTop="1dp"
 					android:paddingBottom="2dp"
-					android:layout_marginEnd="3dp"
 					android:paddingEnd="5dp"
 					android:paddingStart="5dp"
 					android:textSize="13sp"
 					android:textStyle="bold"
 					tools:text="123"/>
+
+				<ImageButton
+					android:id="@+id/sorting"
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_marginStart="6dp"
+					android:layout_marginEnd="-2dp"
+					android:background="?attr/actionBarItemBackground"
+					android:contentDescription="@string/sort_by"
+					android:src="@drawable/ic_sort"
+					app:tint="@color/normal_text_color"/>
 
 			</LinearLayout>
 

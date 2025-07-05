@@ -354,6 +354,10 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 			}
 		}
 
+		binding.sorting.setOnClickListener {
+			showSortDialog()
+		}
+
 		onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
 			override fun handleOnBackPressed() {
 				binding.search.apply {
@@ -605,7 +609,7 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 
 		(viewModel.countAllRecipes.value > 0).let {
 			menu.findItem(R.id.select_all).isVisible = it
-			menu.findItem(R.id.sorting).isVisible = it
+			binding.sorting.visibility = if (it) View.VISIBLE else View.GONE
 		}
 
 		return true
@@ -616,7 +620,6 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 			R.id.new_recipe -> createNewRecipe()
 			R.id.import_recipes -> importRecipesFromFile()
 			R.id.refresh -> viewModel.syncWithFile(true)
-			R.id.sorting -> showSortDialog()
 
 			R.id.export_all_json -> exportRecipes(getFilteredRecipesIds(), "json")
 			R.id.export_all_zip -> exportRecipes(getFilteredRecipesIds(), "zip")
