@@ -94,6 +94,10 @@ android {
 	ksp {
 		arg("room.schemaLocation", "$projectDir/schemas")
 	}
+
+	lint {
+		baseline = file("lint-baseline.xml")
+	}
 }
 
 dependencies {
