@@ -17,8 +17,8 @@ android {
 		applicationId = "eu.zimbelstern.tournant"
 		minSdk = 21
 		targetSdk = 36
-		versionCode = 36
-		versionName = "2.10.1"
+		versionCode = 37
+		versionName = "2.10.2"
 
 		testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 		vectorDrawables.generatedDensities?.clear()
