@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import eu.zimbelstern.tournant.databinding.RecyclerItemPreparationsBinding
+import eu.zimbelstern.tournant.shiftToLocalDayStart
 import java.util.Date
 
 class PreparationsAdapter(private val preparationsInterface: PreparationsInterface, private val preparations: MutableList<Date>)
@@ -21,7 +22,7 @@ class PreparationsAdapter(private val preparationsInterface: PreparationsInterfa
 	override fun onBindViewHolder(holder: PreparationsViewHolder, position: Int) {
 
 		holder.binding.root.apply {
-			text = DateFormat.getDateFormat(context).format(preparations[position])
+			text = DateFormat.getDateFormat(context).format(preparations[position].shiftToLocalDayStart())
 			setOnCloseIconClickListener {
 				preparationsInterface.removePreparation(preparations[position])
 				preparations.removeAt(position)

@@ -118,6 +118,7 @@ import eu.zimbelstern.tournant.getQuantityIntForPlurals
 import eu.zimbelstern.tournant.parseLocalFormattedDouble
 import eu.zimbelstern.tournant.safeInsets
 import eu.zimbelstern.tournant.scale
+import eu.zimbelstern.tournant.shiftToLocalDayStart
 import eu.zimbelstern.tournant.splitLines
 import eu.zimbelstern.tournant.toStringForCooks
 import eu.zimbelstern.tournant.ui.adapter.IngredientTableAdapter
@@ -496,7 +497,7 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 						binding.recipeDetailPreparationsTime.text = getString(
 							R.string.last_time,
 							DateUtils.getRelativeTimeSpanString(
-								recipe.preparations.last().time,
+								recipe.preparations.last().shiftToLocalDayStart().time,
 								Date().time,
 								DAY_IN_MILLIS
 							)

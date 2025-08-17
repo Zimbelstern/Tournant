@@ -12,8 +12,10 @@ import eu.zimbelstern.tournant.data.IngredientGroupTitle
 import eu.zimbelstern.tournant.data.IngredientLine
 import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
+import java.util.Date
 import java.util.Locale
 import java.util.Stack
+import java.util.TimeZone
 import kotlin.math.pow
 import kotlin.math.roundToLong
 
@@ -232,6 +234,9 @@ fun getAppOrSystemLocale(): Locale =
 	AppCompatDelegate.getApplicationLocales().get(0)
 		?: LocaleListCompat.getDefault().get(0)
 		?: Locale.getDefault()
+
+fun Date.shiftToLocalDayStart(): Date =
+	Date(time - TimeZone.getDefault().getOffset(time))
 
 @Suppress("unused")
 fun <T> T.logit(description: String? = null): T {

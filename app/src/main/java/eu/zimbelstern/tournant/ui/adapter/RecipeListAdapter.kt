@@ -78,6 +78,7 @@ import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.data.ChipData
 import eu.zimbelstern.tournant.data.RecipeDescription
 import eu.zimbelstern.tournant.databinding.RecyclerItemRecipeBinding
+import eu.zimbelstern.tournant.shiftToLocalDayStart
 import eu.zimbelstern.tournant.ui.TournantTheme
 import eu.zimbelstern.tournant.ui.getRandom
 import eu.zimbelstern.tournant.ui.materialColors100
@@ -373,7 +374,7 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 					setCompoundDrawablesRelativeWithIntrinsicBounds(AppCompatResources.getDrawable(context, R.drawable.ic_calendar_checked), null, null, null)
 				}
 				SORTED_BY_PREPARED -> {
-					text = recipe.prepared?.let { DateUtils.getRelativeTimeSpanString(it, Date().time, DAY_IN_MILLIS) } ?: "–"
+					text = recipe.prepared?.let { DateUtils.getRelativeTimeSpanString(it, Date().shiftToLocalDayStart().time, DAY_IN_MILLIS) } ?: "–"
 					contentDescription = context.getString(R.string.last_prepared)
 					setCompoundDrawablesRelativeWithIntrinsicBounds(AppCompatResources.getDrawable(context, R.drawable.ic_calendar_checked), null, null, null)
 				}
