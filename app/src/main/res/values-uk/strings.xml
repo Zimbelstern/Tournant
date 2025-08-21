@@ -70,12 +70,12 @@
     <string name="color_theme">Колірна схема</string>
     <string name="import_export">Сумісність з Gourmand</string>
     <string name="delete_all_recipes">Видалити всі рецепти</string>
-    <string name="website">Веб-сайт</string>
+    <string name="website">Вебсайт</string>
     <string name="version">Версія</string>
     <string name="license">Ліцензія</string>
     <string name="code">Джерело</string>
     <string name="issues">Відстеження помилок</string>
-    <string name="donate">Пожертвуйте</string>
+    <string name="donate">Підтримати</string>
     <string name="libraries">Бібліотеки</string>
     <string name="search">Пошук</string>
     <string name="type_or_tap_to_search">Введіть або торкніться, щоб шукати…</string>
