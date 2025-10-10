@@ -99,7 +99,7 @@
     <string name="importing_only_in_standalone_mode">Importare doar în modul de sine stătător</string>
     <string name="dependent_recipes_found">Selecția conține una sau mai multe rețete ce sunt utilizate în alte rețete. Trebuie să rezolvați aceste dependențe sau să la ştergeți şi pe acestea.
 \nRețete dependente: %s</string>
-    <string name="delete_all_recipes_sure">Asta va şterge definitiv toate rețetele importate în baza de date (dar nu fişierele). Sunteț sigur/ă?</string>
+    <string name="delete_all_recipes_sure">Asta va şterge definitiv <b>toate rețetele importate</b> în baza de date. Sunteț sigur/ă?</string>
     <plurals name="delete_selected_sure">
         <item quantity="one">Asta va şterge definitiv o rețetă din baza de date. Sunteți sigur/ă\?</item>
         <item quantity="few">Asta va şterge definitiv %d rețete din baza de date. Sunteți sigur/ă\?</item>
