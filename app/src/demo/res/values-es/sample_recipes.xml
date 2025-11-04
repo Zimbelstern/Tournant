@@ -23,4 +23,12 @@
     <string name="g">g</string>
     <string name="ml">ml</string>
     <string name="tsp">cdta</string>
+    <string name="croissants">Cruasán</string>
+    <string name="pretzels">Bretzel</string>
+    <string name="dessert">Postre</string>
+    <string name="tiramisu">Tiramisú</string>
+    <string name="panna_cotta">Panna cotta</string>
+    <string name="german">Alemán</string>
+    <string name="french">Frances</string>
+    <string name="italian">Italiano</string>
 </resources>

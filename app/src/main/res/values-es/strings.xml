@@ -163,4 +163,14 @@
     <string name="dark">Oscuro</string>
     <string name="language">Idioma</string>
     <string name="auto_follow_system">Automático (tema del sistema)</string>
+    <string name="keywords">Palabras clave</string>
+    <string name="season">Estación</string>
+    <string name="gourmand165">Las cantidades de producto terminado admiten decimales (Gourmand número 165)</string>
+    <string name="menu">Menú</string>
+    <string name="from">de</string>
+    <string name="until">hasta</string>
+    <string name="app_language">Idioma de la aplicación</string>
+    <string name="supported_languages">Idiomas admitidos</string>
+    <string name="all_languages">Todos los idiomas</string>
+    <string name="comma_separated">separados por comas</string>
 </resources>
