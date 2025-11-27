@@ -8,6 +8,7 @@ import eu.zimbelstern.tournant.data.IngredientLine
 import eu.zimbelstern.tournant.data.Recipe
 import eu.zimbelstern.tournant.data.room.RecipeDao
 import eu.zimbelstern.tournant.hideGroupTitles
+import eu.zimbelstern.tournant.logit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -49,7 +50,9 @@ class RecipeEditingViewModel(private val recipeDao: RecipeDao, private val recip
 						processModifications()
 						ingredients.clear()
 						ingredients.addAll(ingredientList)
-					}.toRecipeWithIngredientsAndPreparations()
+					}.toRecipeWithIngredientsAndPreparations().logit {
+						preparations
+					}
 				)
 				savedWithId.emit(id)
 			}

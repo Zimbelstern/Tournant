@@ -245,7 +245,7 @@ abstract class RecipeDao {
 	abstract suspend fun deletePreparationDate(preparation: PreparationEntity)
 
 	@Query("DELETE FROM Preparation WHERE recipeId = :recipeId AND date not IN (:dates)")
-	abstract suspend fun deletePreparationDatesNotInList(recipeId: Long, dates: List<Int>)
+	abstract suspend fun deletePreparationDatesNotInList(recipeId: Long, dates: List<Long>)
 
 	@Query("SELECT * FROM Preparation WHERE recipeId = :recipeId AND date = :date")
 	abstract suspend fun getPreparation(recipeId: Long, date: Long): PreparationEntity?
@@ -281,7 +281,7 @@ abstract class RecipeDao {
 			recipe.preparations.forEach {
 				insertPreparationDate(it)
 			}
-			deletePreparationDatesNotInList(recipe.recipe.id, recipe.ingredients.map { it.position })
+			deletePreparationDatesNotInList(recipe.recipe.id, recipe.preparations.map { it.date.time })
 			recipe.recipe.id
 		}
 	}
