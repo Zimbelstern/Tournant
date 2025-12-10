@@ -53,7 +53,7 @@
     <string name="be_careful">Faites attention</string>
     <string name="use_comma_as_decimal_separator">Utilisez une virgule comme séparateur décimal lors de l\'importation et de l\'exportation</string>
     <string name="delete_all_recipes">Supprimer toutes les recettes</string>
-    <string name="delete_all_recipes_sure">Cela va effacer définitivement <b>toutes les recettes</b> importées dans la base de données. Êtes-vous sûr ?</string>
+    <string name="delete_all_recipes_sure">Ceci va effacer définitivement <b>toutes les recettes</b> importées dans la base de données. Êtes-vous sûr ?</string>
     <string name="synced_file">Fichier Gourmand XML synchronisé</string>
     <string name="recipe">Recette</string>
     <string name="title">Titre</string>
@@ -80,20 +80,20 @@
     <string name="share_selected">Partager sélectionné</string>
     <string name="export_selected">Exporter sélectionné</string>
     <string name="delete_selected">Supprimer sélectionné</string>
-    <string name="delete_selected_sure_named">Cela effacera définitivement %s de la base de données. Êtes-vous sûr ?</string>
+    <string name="delete_selected_sure_named">Ceci effacera définitivement %s de la base de données. Êtes-vous sûr ?</string>
     <string name="dependent_recipes">Recettes dépendantes</string>
     <string name="dependent_recipes_found">La sélection contient une ou plusieurs recettes qui sont utilisées dans d\'autres recettes. Vous devez résoudre ces dépendances ou les supprimer également.\nRecettes dépendantes : %s</string>
     <string name="share_all">Tout partager</string>
     <string name="export_all">Tout exporter</string>
     <string name="select_all">Tout sélectionner</string>
     <plurals name="delete_selected_sure">
-        <item quantity="one">Cela effacera définitivement une recette de la base de données. Êtes-vous sûr ?</item>
-        <item quantity="many">Cela effacera définitivement %d recettes de la base de données. Êtes-vous sûr ?</item>
-        <item quantity="other">Cela effacera définitivement %d recettes de la base de données. Êtes-vous sûr ?</item>
+        <item quantity="one">Ceci effacera définitivement une recette de la base de données. Êtes-vous sûr ?</item>
+        <item quantity="many">Ceci effacera définitivement %d recettes de la base de données. Êtes-vous sûr ?</item>
+        <item quantity="other">Ceci effacera définitivement %d recettes de la base de données. Êtes-vous sûr ?</item>
     </plurals>
     <string name="mode">Mode</string>
     <string name="mode_standalone">Autonome</string>
-    <string name="mode_standalone_description_short">Autonome : Votre propre base de données avec la possibilité d\'éditer les recettes</string>
+    <string name="mode_standalone_description_short">Autonome : Votre propre base de données avec la possibilité d\'éditer les recettes</string>
     <string name="mode_standalone_description_long">Tournant crée sa propre base de données pour vos recettes. Vous pouvez importer des recettes à partir de fichiers XML. Les recettes peuvent être éditées (en développement).</string>
     <string name="mode_synced">Synchronisé</string>
     <string name="mode_synced_description_short">Synchronisé : Toujours synchroniser avec un fichier XML (lecture-seulement)</string>
@@ -101,7 +101,7 @@
     <string name="change_synced_file">Modifier le fichier synchronisé</string>
     <string name="change_mode_explanation">Vous pouvez changer le mode dans les réglages.</string>
     <string name="search">Rechercher</string>
-    <string name="done">Prêt !</string>
+    <string name="done">Terminé</string>
     <plurals name="n_recipes">
         <item quantity="one">%d recette</item>
         <item quantity="many">%d recettes</item>
@@ -109,7 +109,7 @@
     </plurals>
     <string name="share">Partager</string>
     <string name="ascending">Ascendant</string>
-    <string name="copy_to_clipboard">Copier vers le presse-papiers</string>
+    <string name="copy_to_clipboard">Copier dans le presse-papiers</string>
     <string name="copied_to_clipboard">Copié dans le presse-papiers</string>
     <string name="ingredients_count">Nombre d’ingrédients</string>
     <string name="all_recipes">Toutes les recettes</string>
@@ -157,7 +157,7 @@
     <string name="last_prepared">Dernière préparation</string>
     <string name="log_preparation">Journal de réalisation</string>
     <string name="logbook">Journaux</string>
-    <string name="last_time">Dernière fois : %s</string>
+    <string name="last_time">Dernière fois : %s</string>
     <string name="auto_follow_system">Auto (celui du système)</string>
     <string name="light">Clair</string>
     <string name="dark">Sombre</string>
