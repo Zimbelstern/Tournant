@@ -1,17 +1,21 @@
 package eu.zimbelstern.tournant.ui.adapter
 
 import android.annotation.SuppressLint
+import android.text.InputFilter
 import android.text.InputType
+import android.text.Spanned
 import android.text.method.DigitsKeyListener
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.google.android.material.textfield.TextInputLayout
 import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.data.Ingredient
 import eu.zimbelstern.tournant.data.IngredientGroupTitle
@@ -27,7 +31,8 @@ class IngredientEditingAdapter(
 	private val ingredientEditingInterface: IngredientEditingInterface,
 	private val ingredientLines: MutableList<IngredientLine>,
 	private var titlesWithIds: List<RecipeTitleId>,
-	private var ingredientSuggestions: List<String>
+	private var itemSuggestions: List<String>,
+	private var unitSuggestions: List<String>
 ): RecyclerView.Adapter<ViewHolder>() {
 
 	companion object {
@@ -49,21 +54,36 @@ class IngredientEditingAdapter(
 			GroupTitleViewHolder(RecyclerItemIngredientEditingGroupBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 	}
 
-	@SuppressLint("ClickableViewAccessibility")
 	override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+		when (holder.itemViewType) {
+			VIEW_TYPE_INGREDIENT -> fillIngredientInformation(holder as IngredientViewHolder, ingredientLines[position] as Ingredient)
+			VIEW_TYPE_GROUP -> fillGroupInformation(holder as GroupTitleViewHolder, ingredientLines[position] as IngredientGroupTitle)
+		}
+	}
 
-		if (holder.itemViewType == VIEW_TYPE_INGREDIENT) {
+	@SuppressLint("ClickableViewAccessibility")
+	fun fillIngredientInformation(holder: IngredientViewHolder, ingredient: Ingredient) {
+		with (holder) {
+			binding.ingredient = ingredient
+			val isRef = ingredient.refId != null
 
-			holder as IngredientViewHolder
-			val ingredient = ingredientLines[position] as Ingredient
+			// Set hints for the first ingredient row
+			listOf(
+				binding.editAmountContainer to R.string.amount,
+				binding.editUnitContainer to R.string.unit,
+				binding.editItemContainer to R.string.ingredient
+			).forEach {
+				it.first.hint = if (ingredientLines.take(bindingAdapterPosition).filterIsInstance<Ingredient>().isEmpty())
+					it.first.context.getString(it.second)
+				else
+					null
+			}
 
-			holder.binding.ingredient = ingredient
-
-			holder.binding.editAmount.apply {
+			binding.editAmount.apply {
 				keyListener = DigitsKeyListener.getInstance("0123456789-" + DecimalFormatSymbols.getInstance().decimalSeparator)
-				setText(ingredient.amount.toStringForCooks().plus(
+				setText(ingredient.amount.toStringForCooks(false).plus(
 					ingredient.amountRange.let {
-						if (it != null) "-" + it.toStringForCooks() else ""
+						if (it != null) "-" + it.toStringForCooks(false) else ""
 					}
 				))
 				doAfterTextChanged {
@@ -80,35 +100,65 @@ class IngredientEditingAdapter(
 				}
 			}
 
-			holder.binding.editItem.setRawInputType(InputType.TYPE_CLASS_TEXT)
-
-			if (ingredient.refId == null) {
-				holder.binding.editItem.setSimpleItems(ingredientSuggestions.toTypedArray())
-				holder.binding.editItem.threshold = 3
-			} else {
-				holder.binding.editItemField.visibility = View.GONE
-				holder.binding.editRefField.visibility = View.VISIBLE
-				holder.binding.editRef.setText(titlesWithIds.find { it.id == ingredient.refId }?.title ?: "")
-				holder.binding.editRef.setAdapter(
-					ArrayAdapter(
-						holder.binding.root.context,
-						android.R.layout.simple_dropdown_item_1line,
-						titlesWithIds.map { it.title }
-					)
-				)
-				holder.binding.editRef.doAfterTextChanged { editable ->
-					ingredient.refId = titlesWithIds.find { it.title == editable.toString() }?.id ?: 0L
+			// Prevents new lines on enter press (even for multiline text fields)
+			val onEditorActionListener = TextView.OnEditorActionListener { view, actionId, _ ->
+				if (actionId == EditorInfo.IME_NULL) {
+					view.focusSearch(View.FOCUS_DOWN)?.requestFocus()
+					true
+				} else {
+					false
 				}
 			}
 
-			holder.binding.editPosition.setOnTouchListener { _, event ->
+			val inputFilter = InputFilter { source: CharSequence, start: Int, end: Int, _: Spanned, _: Int, _: Int ->
+				val newText = source.subSequence(start, end).toString()
+				if (newText.contains("\n")) newText.replace("\n", "") else null
+			}
+
+			binding.editUnit.apply {
+				setOnEditorActionListener(onEditorActionListener)
+				setRawInputType(InputType.TYPE_CLASS_TEXT)
+				setSimpleItems(unitSuggestions.toTypedArray())
+				threshold = 3
+				filters = arrayOf(inputFilter)
+			}
+
+			binding.editItem.apply {
+				setOnEditorActionListener(onEditorActionListener)
+				setRawInputType(InputType.TYPE_CLASS_TEXT)
+				filters = arrayOf(inputFilter)
+				setSimpleItems(
+					if (isRef)titlesWithIds.map { it.title }.toTypedArray()
+					else itemSuggestions.toTypedArray()
+				)
+				threshold = if (isRef) 0 else 3
+				if (isRef) {
+					setText(titlesWithIds.find { it.id == ingredient.refId }?.title ?: "")
+					doAfterTextChanged { editable ->
+						ingredient.refId = titlesWithIds.find { it.title == editable.toString() }?.id
+					}
+					onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+						if (!hasFocus && ingredient.refId == null) {
+							binding.editItem.text = null
+						}
+					}
+				}
+			}
+
+			binding.editItemContainer.apply {
+				endIconMinSize = 0
+				endIconMode = if (isRef) TextInputLayout.END_ICON_DROPDOWN_MENU else TextInputLayout.END_ICON_NONE
+			}
+
+
+			binding.editPosition.setOnTouchListener { _, event ->
 				if (event.action == MotionEvent.ACTION_DOWN) {
 					ingredientEditingInterface.startDrag(holder)
 				}
 				false
 			}
 
-			holder.binding.editOptions.setOnClickListener { view ->
+			binding.editOptions.setOnClickListener { view ->
 				PopupMenu(view.context, view).apply {
 					inflate(R.menu.options_ingredient)
 					if (ingredient.optional)
@@ -134,34 +184,34 @@ class IngredientEditingAdapter(
 				}
 			}
 		}
+	}
 
-		if (holder.itemViewType == VIEW_TYPE_GROUP) {
+	fun fillGroupInformation(holder: GroupTitleViewHolder, group: IngredientGroupTitle) {
 
-			holder as GroupTitleViewHolder
-			val group = ingredientLines[position] as IngredientGroupTitle
-
-			holder.binding.group = group
+		with (holder) {
+			binding.group = group
 
 			if (group.title == null) {
-				holder.binding.showTitle.text = (ingredientLines.subList(0, position).findLast { it is IngredientGroupTitle } as IngredientGroupTitle).title
+				val group = ingredientLines.take(bindingAdapterPosition).findLast { it is IngredientGroupTitle } as IngredientGroupTitle
+				binding.showTitle.text = group.title
 			}
 
-			holder.binding.editOptions.setOnClickListener { view ->
+			binding.editOptions.setOnClickListener { view ->
 				PopupMenu(view.context, view).apply {
 					inflate(R.menu.options_ingredient)
 					menu.removeItem(R.id.toggle_optional)
 					setOnMenuItemClickListener { item ->
 						when (item.itemId) {
 							R.id.remove_ingredient -> {
-								ingredientLines.removeAt(holder.bindingAdapterPosition)
-								val stopIndex = holder.bindingAdapterPosition + ingredientLines.subList(
-										holder.bindingAdapterPosition,
-										ingredientLines.size
-									).indexOfFirst {
-										it is IngredientGroupTitle
-									}
+								ingredientLines.removeAt(bindingAdapterPosition)
+								val stopIndex = bindingAdapterPosition + ingredientLines.subList(
+									bindingAdapterPosition,
+									ingredientLines.size
+								).indexOfFirst {
+									it is IngredientGroupTitle
+								}
 								ingredientLines.removeAt(stopIndex)
-								notifyItemRemoved(holder.bindingAdapterPosition)
+								notifyItemRemoved(bindingAdapterPosition)
 								notifyItemRemoved(stopIndex)
 								true
 							}

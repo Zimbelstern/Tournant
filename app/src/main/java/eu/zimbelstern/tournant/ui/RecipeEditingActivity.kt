@@ -482,10 +482,19 @@ class RecipeEditingActivity : AppCompatActivity(), IngredientEditingAdapter.Ingr
 		}
 
 		lifecycleScope.launch {
-			viewModel.titlesWithIds.combine(viewModel.ingredientStrings) { t, i ->
-				Pair(t, i)
-			}.combine(viewModel.ingredients) { titlesIngredients, ingredients ->
-				IngredientEditingAdapter(this@RecipeEditingActivity, ingredients, titlesIngredients.first, titlesIngredients.second)
+			combine(
+				viewModel.ingredients,
+				viewModel.titlesWithIds,
+				viewModel.ingredientItemSuggestions,
+				viewModel.ingredientUnitSuggestions
+			) { ingredients, titles, ingredientItemSuggestions, ingredientUnitSuggestions ->
+				IngredientEditingAdapter(
+					this@RecipeEditingActivity,
+					ingredients,
+					titles,
+					ingredientItemSuggestions,
+					ingredientUnitSuggestions
+				)
 			}.collectLatest { adapter ->
 				binding.editIngredients.adapter = adapter
 

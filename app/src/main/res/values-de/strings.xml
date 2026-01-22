@@ -26,6 +26,7 @@
 	<string name="unit">Einheit</string>
 	<string name="ingredient">Zutat</string>
 	<string name="ingredients">Zutaten</string>
+	<string name="amount">Menge</string>
 	<string name="group">Zutatengruppe</string>
 	<string name="optional">%s (optional)</string>
 	<string name="instructions">Anleitung</string>

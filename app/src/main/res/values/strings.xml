@@ -25,6 +25,7 @@
 	<string name="unit">Unit</string>
 	<string name="ingredient">Ingredient</string>
 	<string name="ingredients">Ingredients</string>
+	<string name="amount">Amount</string>
 	<string name="group">Group</string>
 	<string name="optional">%s (optional)</string>
 	<string name="instructions">Instructions</string>

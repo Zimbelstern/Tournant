@@ -43,7 +43,7 @@
 						android:layout_width="300dp"
 						android:layout_height="wrap_content"
 						app:layout_flexGrow="1"
-						android:layout_marginEnd="16dp">
+						android:layout_marginEnd="8dp">
 
 					<ImageView
 						android:id="@+id/edit_image"
@@ -403,7 +403,7 @@
 						android:layout_width="300dp"
 						android:layout_height="wrap_content"
 						app:layout_flexGrow="1"
-						android:layout_marginEnd="16dp"
+						android:layout_marginEnd="8dp"
 						android:orientation="vertical"
 						android:divider="@drawable/divider_vertical"
 						android:showDividers="middle"

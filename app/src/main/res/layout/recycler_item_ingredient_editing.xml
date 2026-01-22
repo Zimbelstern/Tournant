@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools"
 	xmlns:app="http://schemas.android.com/apk/res-auto">
 
 	<data>
@@ -23,8 +22,12 @@
 			android:importantForAccessibility="no"/>
 
 		<com.google.android.material.textfield.TextInputLayout
-			android:layout_width="50sp"
+			android:id="@+id/edit_amount_container"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
+			android:layout_weight=".4"
+			android:paddingBottom="4dp"
+			app:expandedHintEnabled="false"
 			style="@style/Tournant.TextInputLayout.OutlinedBox.Dense">
 
 			<com.google.android.material.textfield.TextInputEditText
@@ -39,31 +42,37 @@
 
 
 		<com.google.android.material.textfield.TextInputLayout
-			android:layout_width="50sp"
+			android:id="@+id/edit_unit_container"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
+			android:layout_weight=".4"
 			android:layout_marginHorizontal="4dp"
-			style="@style/Tournant.TextInputLayout.OutlinedBox.Dense">
+			android:paddingBottom="4dp"
+			app:endIconMode="none"
+			app:expandedHintEnabled="false"
+			style="@style/Tournant.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu">
 
-			<com.google.android.material.textfield.TextInputEditText
+			<com.google.android.material.textfield.MaterialAutoCompleteTextView
 				android:id="@+id/edit_unit"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:imeOptions="actionNext"
-				android:inputType="text"
+				android:inputType="textMultiLine"
 				android:gravity="end"
+				android:maxLines="3"
 				android:text="@={ingredient.unit}"/>
 
 		</com.google.android.material.textfield.TextInputLayout>
 
 
 		<com.google.android.material.textfield.TextInputLayout
-			android:id="@+id/edit_item_field"
+			android:id="@+id/edit_item_container"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
+			android:paddingBottom="4dp"
 			app:suffixText="@{ingredient.optional}"
 			app:expandedHintEnabled="false"
-			app:endIconMode="none"
 			style="@style/Tournant.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu">
 
 			<com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -75,28 +84,6 @@
 				android:inputType="textMultiLine"
 				android:maxLines="3"
 				android:text="@={ingredient.item}"/>
-
-		</com.google.android.material.textfield.TextInputLayout>
-
-		<com.google.android.material.textfield.TextInputLayout
-			android:id="@+id/edit_ref_field"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			app:suffixText="@{ingredient.optional}"
-			app:expandedHintEnabled="false"
-			style="@style/Tournant.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-			android:visibility="gone"
-			tools:visibility="visible">
-
-			<com.google.android.material.textfield.MaterialAutoCompleteTextView
-				android:id="@+id/edit_ref"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_margin="0dp"
-				android:imeOptions="actionNext"
-				android:inputType="textMultiLine"
-				android:maxLines="3"/>
 
 		</com.google.android.material.textfield.TextInputLayout>
 
