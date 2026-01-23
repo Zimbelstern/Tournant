@@ -17,70 +17,77 @@
 			android:background="@color/bar_color"
 			app:contentInsetStart="0dp">
 
-			<ImageButton
-				android:id="@+id/nav_drawer_button"
-				android:layout_width="48dp"
-				android:layout_height="match_parent"
-				android:layout_marginStart="6dp"
-				android:background="?attr/actionBarItemBackground"
-				android:contentDescription="@string/menu"
-				android:src="@drawable/ic_menu"
-				app:tint="@color/normal_text_color"/>
-
-			<TextView
-				android:id="@+id/title"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_marginStart="8dp"
-				android:text="@string/tournant"
-				style="@style/TextAppearance.AppCompat.Title"/>
-
 			<LinearLayout
-				android:layout_width="wrap_content"
-				android:layout_height="match_parent"
-				android:orientation="horizontal"
-				android:layout_gravity="end"
-				android:gravity="center">
+				android:layout_width="match_parent"
+				android:layout_height="match_parent">
 
-				<androidx.appcompat.widget.SearchView
-					android:id="@+id/search"
+				<ImageButton
+					android:id="@+id/nav_drawer_button"
+					android:layout_width="48dp"
+					android:layout_height="match_parent"
+					android:layout_marginStart="6dp"
+					android:background="?attr/actionBarItemBackground"
+					android:contentDescription="@string/menu"
+					android:src="@drawable/ic_menu"
+					app:tint="@color/normal_text_color"/>
+
+				<TextView
+					android:id="@+id/title"
 					android:layout_width="0dp"
 					android:layout_height="match_parent"
 					android:layout_weight="1"
-					android:maxWidth="1000dp"
-					android:title="@string/search"
-					android:icon="@drawable/ic_search"
-					app:iconifiedByDefault="true"
-					app:queryBackground="@null"
-					app:queryHint="@string/type_or_tap_to_search"
-					app:searchHintIcon="@null"/>
+					android:layout_marginStart="8dp"
+					android:gravity="center_vertical"
+					android:ellipsize="end"
+					android:singleLine="true"
+					android:text="@string/tournant"
+					style="@style/TextAppearance.AppCompat.Title"/>
 
-				<TextView
-					android:id="@+id/recipe_count"
+				<LinearLayout
 					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_gravity="center|end"
-					android:layout_marginStart="2dp"
-					android:layout_marginEnd="6dp"
-					android:background="@drawable/recipe_count_border"
-					android:paddingTop="1dp"
-					android:paddingBottom="2dp"
-					android:paddingEnd="5dp"
-					android:paddingStart="5dp"
-					android:textSize="13sp"
-					android:textStyle="bold"
-					tools:text="123"/>
+					android:layout_height="match_parent">
 
-				<ImageButton
-					android:id="@+id/sorting"
-					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:layout_marginStart="6dp"
-					android:layout_marginEnd="-2dp"
-					android:background="?attr/actionBarItemBackground"
-					android:contentDescription="@string/sort_by"
-					android:src="@drawable/ic_sort"
-					app:tint="@color/normal_text_color"/>
+					<androidx.appcompat.widget.SearchView
+						android:id="@+id/search"
+						android:layout_width="0dp"
+						android:layout_height="match_parent"
+						android:layout_weight="1"
+						android:maxWidth="1000dp"
+						android:title="@string/search"
+						android:icon="@drawable/ic_search"
+						app:iconifiedByDefault="true"
+						app:queryBackground="@null"
+						app:queryHint="@string/type_or_tap_to_search"
+						app:searchHintIcon="@null"/>
+
+					<TextView
+						android:id="@+id/recipe_count"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_gravity="center|end"
+						android:layout_marginStart="2dp"
+						android:layout_marginEnd="6dp"
+						android:background="@drawable/recipe_count_border"
+						android:paddingTop="1dp"
+						android:paddingBottom="2dp"
+						android:paddingEnd="5dp"
+						android:paddingStart="5dp"
+						android:textSize="13sp"
+						android:textStyle="bold"
+						tools:text="123"/>
+
+					<ImageButton
+						android:id="@+id/sorting"
+						android:layout_width="wrap_content"
+						android:layout_height="match_parent"
+						android:layout_marginStart="6dp"
+						android:layout_marginEnd="-2dp"
+						android:background="?attr/actionBarItemBackground"
+						android:contentDescription="@string/sort_by"
+						android:src="@drawable/ic_sort"
+						app:tint="@color/normal_text_color"/>
+
+				</LinearLayout>
 
 			</LinearLayout>
 
