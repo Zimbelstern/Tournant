@@ -1,3 +1,7 @@
+
+import java.text.SimpleDateFormat
+import java.util.Date
+
 plugins {
 	id("com.android.application")
 	id("com.github.triplet.play") version "3.12.1"
@@ -46,6 +50,7 @@ android {
 
 	applicationVariants.configureEach {
 		resValue("string", "versionName", versionName)
+		resValue("string", "buildDate", SimpleDateFormat("dd.MM.yy HH:mm").format(Date()))
 		resValue("string", "availableLanguages", availableLanguages.map { it.first() }.joinToString(","))
 		resValue("string", "localisedTimeStrings", availableLanguages.map { it.joinToString(":") }.joinToString(";"))
 		mergedFlavor.manifestPlaceholders["fileprovider_authority"] = "$applicationId.fileprovider"

@@ -17,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.ViewTreeObserver
 import android.widget.RadioButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
@@ -400,6 +401,9 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 
 	private fun initNavDrawer() {
 		binding.navDrawer.apply {
+			if (BuildConfig.DEBUG) {
+				root.findViewById<TextView>(R.id.build_date).visibility = View.VISIBLE
+			}
 			navTop.setNavigationItemSelectedListener {
 				binding.root.closeDrawers()
 				true

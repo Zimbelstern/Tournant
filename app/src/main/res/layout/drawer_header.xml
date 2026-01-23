@@ -55,6 +55,20 @@
 			android:textSize="20sp"
 			style="@style/h"/>
 
+		<TextView
+			android:id="@+id/build_date"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@color/surface"
+			android:background="@drawable/round_corners"
+			android:backgroundTint="@color/normal_text_color"
+			android:paddingHorizontal="4sp"
+			android:layout_margin="2dp"
+			android:text="@string/buildDate"
+			android:textSize="12sp"
+			android:visibility="gone"
+			tools:visibility="visible"/>
+
 	</LinearLayout>
 
 </LinearLayout>
