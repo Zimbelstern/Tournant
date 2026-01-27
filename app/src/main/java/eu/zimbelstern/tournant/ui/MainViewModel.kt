@@ -27,6 +27,7 @@ import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.TournantApplication
 import eu.zimbelstern.tournant.data.ChipData
 import eu.zimbelstern.tournant.data.Recipe
+import eu.zimbelstern.tournant.data.room.RecipePinEntity
 import eu.zimbelstern.tournant.gourmand.GourmetXmlParser
 import eu.zimbelstern.tournant.pagination.RecipeDescriptionPagingSource
 import eu.zimbelstern.tournant.utils.RecipeJsonAdapter
@@ -93,7 +94,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 		searchQuery,
 		orderedBy,
 		countAllRecipes,
-		application.database.invalidationTracker.createFlow("Recipe", "Ingredient", "Preparation", "Keyword", emitInitialState = true)
+		application.database.invalidationTracker.createFlow("Recipe", "Ingredient", "Preparation", "Keyword", "RecipePin", emitInitialState = true)
 	) { searchQuery, orderedBy, _, _ ->
 		Pair(searchQuery, orderedBy)
 	}.flatMapLatest { (searchQuery, orderedBy) ->
@@ -385,6 +386,26 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 				recipeDao.deleteRecipesByIds(recipeIds)
 				withContext(Dispatchers.Main) {
 					Toast.makeText(application, R.string.done, Toast.LENGTH_SHORT).show()
+				}
+			}
+		}
+	}
+
+	fun pinRecipes(recipeIds: Set<Long>) {
+		viewModelScope.launch { 
+			with(Dispatchers.IO) {
+				recipeIds.forEach {
+					recipeDao.pinRecipe(RecipePinEntity(it))
+				}
+			}
+		}
+	}
+	
+	fun unpinRecipes(recipeIds: Set<Long>) {
+		viewModelScope.launch { 
+			with(Dispatchers.IO) {
+				recipeIds.forEach { 
+					recipeDao.unpinRecipe(it)
 				}
 			}
 		}

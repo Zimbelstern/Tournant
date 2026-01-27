@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
+import androidx.room.OnConflictStrategy.Companion.IGNORE
 import androidx.room.Query
 import androidx.room.RewriteQueriesToDropUnusedColumns
 import androidx.room.Transaction
@@ -76,14 +77,17 @@ abstract class RecipeDao {
 			(SELECT COUNT(*) FROM Ingredient WHERE recipeId = recipe.id) AS ingredientsCount,
 			(SELECT COUNT(*) FROM Preparation WHERE recipeId = recipe.id) AS preparationsCount,
 			(SELECT date FROM Preparation WHERE recipeId = recipe.id ORDER BY date DESC LIMIT 1) AS prepared,
+			CASE WHEN RecipePin.recipeId IS NOT NULL THEN 1 ELSE 0 END AS pinned,
 			CASE WHEN :orderedBy / 2 = $SORTED_BY_TOTALTIME THEN preptime + cooktime END AS totaltime,
 			CASE WHEN :orderedBy / 2 = $SORTED_BY_SEASON THEN (seasonFrom - :month + 12) % 12 END AS seasonStart,
 			CASE WHEN :orderedBy / 2 = $SORTED_BY_SEASON THEN (seasonUntil - :month + 12) % 12 END AS seasonEnd
 		FROM recipe
-		LEFT JOIN Keyword ON recipeId = recipe.id
+		LEFT JOIN Keyword ON Keyword.recipeId = recipe.id
+		LEFT JOIN RecipePin ON RecipePin.recipeId = recipe.id
 		WHERE title LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%' OR category LIKE '%' || :query || '%' OR cuisine LIKE '%' || :query || '%' OR keyword LIKE '%' || :query || '%'
 		GROUP BY recipe.id
 		ORDER BY
+			RecipePin.recipeId IS NOT NULL DESC,
 			CASE WHEN :orderedBy = $SORTED_BY_TITLE * 2 THEN title COLLATE LOCALIZED END ASC,
 			CASE WHEN :orderedBy = $SORTED_BY_TITLE * 2 + 1 THEN title COLLATE LOCALIZED END DESC,
 			CASE WHEN :orderedBy = $SORTED_BY_RATING * 2 AND rating NOTNULL THEN rating ELSE 6 END ASC,
@@ -407,6 +411,12 @@ abstract class RecipeDao {
 				deletePreparationDate(PreparationEntity(recipeId, date, 1))
 		}
 	}
+
+	@Insert(onConflict = IGNORE)
+	abstract suspend fun pinRecipe(recipePin: RecipePinEntity): Long
+
+	@Query("DELETE FROM RecipePin WHERE recipeId = :recipeId")
+	abstract suspend fun unpinRecipe(recipeId: Long)
 
 }
 

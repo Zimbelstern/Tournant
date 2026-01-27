@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto">
 
+	<item android:id="@+id/pin_selected"
+		android:title="@string/pin"
+		android:icon="@drawable/ic_pin"
+		app:showAsAction="always"/>
+
 	<item android:id="@+id/export_selected"
 		android:title="@string/export_selected"
 		android:icon="@drawable/ic_save"

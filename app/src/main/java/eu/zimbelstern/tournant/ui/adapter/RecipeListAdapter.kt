@@ -137,6 +137,7 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 		holder.binding.root.apply {
 
 			isSelected = recipe.id in selectedItems
+			isActivated = recipe.pinned
 
 			setOnClickListener {
 				recipeListInterface.openRecipeDetail(recipe.id)
@@ -199,6 +200,7 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 		holder.binding.recipeCardKeywords.setContent {
 			if (recipe.keywords.isNotEmpty()) {
 				FlowRow(
+					modifier = Modifier.padding(top = 4.dp),
 					horizontalArrangement = Arrangement.spacedBy(4.dp),
 					verticalArrangement = Arrangement.spacedBy(12.dp)
 				) {
@@ -232,6 +234,11 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 			}
 		}
 
+		holder.binding.pin.visibility = if (recipe.pinned) View.VISIBLE else View.GONE
+		holder.binding.pin.setOnClickListener {
+			recipeListInterface.unpinRecipes(setOf(recipe.id))
+		}
+
 		holder.binding.season.setContent {
 			recipe.season?.let { season ->
 				TournantTheme {
@@ -239,6 +246,7 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 						var yearWidth by remember { mutableIntStateOf(0) }
 						Column(
 							Modifier
+								.padding(top = 8.dp, bottom = 6.dp, start = (-3).dp)
 								.fillMaxWidth()
 								.onGloballyPositioned { yearWidth = it.size.width }
 						) {
@@ -386,7 +394,6 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 	}
 
 	override fun onBindViewHolder(holder: RecipeListViewHolder, position: Int, payloads: MutableList<Any>) {
-		Log.v(TAG, "Selected views: $selectedItems")
 		if (payloads.isEmpty()) return super.onBindViewHolder(holder, position, payloads)
 
 		Log.d(TAG, "View #$position, payloads: $payloads")
@@ -429,6 +436,9 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 
 	override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
 		when (item.itemId) {
+			R.id.pin_selected -> {
+				recipeListInterface.pinRecipes(selectedItems.keys.toSet())
+			}
 			R.id.export_selected_json -> {
 				recipeListInterface.exportRecipes(selectedItems.keys.toSet(), "json")
 			}
@@ -505,6 +515,8 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 		fun searchForSomething(query: CharSequence?)
 		fun startActionMode(adapter: RecipeListAdapter)
 		fun exportRecipes(recipeIds: Set<Long>, format: String)
+		fun pinRecipes(recipeIds: Set<Long>)
+		fun unpinRecipes(recipeIds: Set<Long>)
 		fun shareRecipes(recipeIds: Set<Long>, format: String)
 		fun showDeleteDialog(recipeIds: Set<Long>)
 	}

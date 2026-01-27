@@ -20,6 +20,7 @@ data class RecipeDescription(
 	val ingredientsCount: Int,
 	val preparationsCount: Int,
 	val prepared: Long?,
+	val pinned: Boolean,
 ) {
 
 	@Ignore
@@ -48,6 +49,7 @@ data class RecipeDescription(
 		if (modified != other.modified) return false
 		if (instructionsLength != other.instructionsLength) return false
 		if (ingredientsCount != other.ingredientsCount) return false
+		if (pinned != other.pinned) return false
 
 		return true
 	}
@@ -62,10 +64,11 @@ data class RecipeDescription(
 		result = 31 * result + (image?.contentHashCode() ?: 0)
 		result = 31 * result + (preptime ?: 0)
 		result = 31 * result + (cooktime ?: 0)
-		result = 31 * result + (created.hashCode())
-		result = 31 * result + (modified.hashCode())
+		result = 31 * result + created.hashCode()
+		result = 31 * result + modified.hashCode()
 		result = 31 * result + (instructionsLength ?: 0)
-		result = 31 * result + (ingredientsCount)
+		result = 31 * result + ingredientsCount
+		result = 31 * result + pinned.hashCode()
 		return result
 	}
 }

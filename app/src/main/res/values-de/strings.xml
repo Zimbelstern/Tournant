@@ -98,6 +98,8 @@
 	<string name="share">Teilen</string>
 
 	<!-- Action mode menu -->
+	<string name="pin">Anheften</string>
+	<string name="unpin">Lösen</string>
 	<string name="share_selected">Ausgewählte teilen</string>
 	<string name="export_selected">Ausgewählte exportieren</string>
 	<string name="json_file">JSON-Datei (empfohlen)</string>

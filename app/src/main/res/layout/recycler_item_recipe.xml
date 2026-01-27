@@ -9,7 +9,7 @@
 	android:elevation="4dp"
 	app:cardCornerRadius="8dp"
 	app:strokeColor="@color/card_border_color"
-	app:strokeWidth="4dp">
+	app:strokeWidth="3dp">
 
 	<FrameLayout
 		android:layout_width="match_parent"
@@ -39,13 +39,26 @@
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
 				android:layout_marginStart="12dp"
-				app:layout_constraintStart_toEndOf="@id/recipe_card_image"
-				app:layout_constraintEnd_toEndOf="parent"
-				app:layout_constraintTop_toTopOf="parent"
-				android:maxLines="3"
 				android:ellipsize="end"
+				android:paddingTop="1sp"
+				android:includeFontPadding="false"
+				android:maxLines="3"
+				app:layout_constraintEnd_toStartOf="@id/pin"
+				app:layout_constraintStart_toEndOf="@id/recipe_card_image"
+				app:layout_constraintTop_toTopOf="parent"
 				style="@style/h2"
-				tools:text="Recipe title"/>
+				tools:text="Recipe title" />
+
+			<ImageButton
+				android:id="@+id/pin"
+				android:layout_width="28dp"
+				android:layout_height="28dp"
+				android:background="@drawable/button_round"
+				android:backgroundTint="@color/surface"
+				android:src="@drawable/ic_pin"
+				android:contentDescription="@string/unpin"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintTop_toTopOf="@+id/recipe_card_title" />
 
 			<TextView
 				android:id="@+id/recipe_card_description"
@@ -101,7 +114,6 @@
 				android:id="@+id/recipe_card_keywords"
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
-				android:layout_marginTop="4dp"
 				app:layout_constraintStart_toStartOf="@id/recipe_card_title"
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintTop_toBottomOf="@id/chip_group"/>
@@ -150,9 +162,6 @@
 				android:id="@+id/season"
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
-				android:layout_marginBottom="6dp"
-				android:layout_marginTop="8dp"
-				android:layout_marginStart="-3dp"
 				app:layout_constraintBottom_toBottomOf="parent"
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintStart_toStartOf="@id/recipe_card_title"

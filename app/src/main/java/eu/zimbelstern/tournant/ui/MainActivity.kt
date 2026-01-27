@@ -469,6 +469,18 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 		startSupportActionMode(adapter)
 	}
 
+	override fun pinRecipes(recipeIds: Set<Long>) {
+		viewModel.pinRecipes(recipeIds)
+		scrollTopPending = true
+		recipeListAdapter.finishActionMode()
+	}
+
+	override fun unpinRecipes(recipeIds: Set<Long>) {
+		viewModel.unpinRecipes(recipeIds)
+		scrollTopPending = true
+		recipeListAdapter.finishActionMode()
+	}
+
 	override fun exportRecipes(recipeIds: Set<Long>, format: String) {
 		fun export() = lifecycleScope.launch {
 			Log.d(TAG, "Exporting recipes $recipeIds")

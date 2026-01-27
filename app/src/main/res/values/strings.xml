@@ -93,6 +93,8 @@
 	<string name="share">Share</string>
 
 	<!-- Action mode menu -->
+	<string name="pin">Pin</string>
+	<string name="unpin">Unpin</string>
 	<string name="share_selected">Share selected</string>
 	<string name="export_selected">Export selected</string>
 	<string name="json_file">JSON file (recommended)</string>
