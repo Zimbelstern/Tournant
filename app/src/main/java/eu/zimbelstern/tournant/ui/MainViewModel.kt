@@ -286,13 +286,19 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 	}
 
 	private fun readJsonRecipes(inputStream: InputStream): List<Recipe> {
-			val json = inputStream.bufferedReader().readText()
-			return try {
-				RecipeJsonAdapter.adapter.fromJson(json)?.recipes
-			} catch (e: JsonDataException) {
-				Log.w(TAG, "Falling back to old json format because of $e")
+		val json = inputStream.bufferedReader().readText()
+		val recipes = try {
+			RecipeJsonAdapter.adapter.fromJson(json)?.recipes
+		} catch (e: JsonDataException) {
+			Log.w(TAG, "Falling back to old json format because of $e")
+			try {
 				RecipeJsonAdapter.oldAdapter.fromJson(json)?.recipes?.map { it.toRecipe() }
-			} ?: throw Error("Malformed json file")
+			} catch (e: JsonDataException) {
+				Log.e(TAG, "Malformed json file: $e")
+				null
+			}
+		}
+		return recipes ?: listOf()
 	}
 
 	private fun readXmlRecipes(inputStream: InputStream): List<Recipe> {
