@@ -21,7 +21,7 @@
     <string name="ingredient">Інгредієнт</string>
     <string name="ingredients">Інгредієнти</string>
     <string name="group">Група</string>
-    <string name="optional">%s (необов\'язково)</string>
+    <string name="optional">%s (необов’язково)</string>
     <string name="instructions">Інструкції</string>
     <string name="notes">Примітки</string>
     <plurals name="servings">
@@ -96,8 +96,8 @@
     <string name="add_photo">Додати фото</string>
     <string name="remove_photo">Видалити фото</string>
     <string name="unset_rating">Скасувати оцінку</string>
-    <string name="make_optional">Зробити необов\'язковим</string>
-    <string name="make_mandatory">Зробити обов\'язковим</string>
+    <string name="make_optional">Зробити необов’язковим</string>
+    <string name="make_mandatory">Зробити обов’язковим</string>
     <string name="mode_synced_description_long">Tournant синхронізується з одним файлом XML на Вашому пристрої. Редагування рецептів вимкнено, оскільки це призведе до конфліктів, і наразі в Gourmand немає функції синхронізації, щоб вирішити їх.</string>
     <string name="recipe_not_found">Рецепт не знайдено</string>
     <string name="inputstream_null">Помилка під час відкриття файлу</string>
@@ -179,4 +179,7 @@
     <string name="from">з</string>
     <string name="until">по</string>
     <string name="comma_separated">через кому</string>
+    <string name="pin">Закріпити</string>
+    <string name="unpin">Відкріпити</string>
+    <string name="amount">Кількість</string>
 </resources>
