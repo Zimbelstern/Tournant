@@ -85,7 +85,7 @@
     <string name="copied_to_clipboard">已复制到剪贴板</string>
     <string name="reset">重置</string>
     <string name="checked">已检查</string>
-    <string name="n_selected">已选中%d份菜谱</string>
+    <string name="n_selected">已选中 %d 份菜谱</string>
     <string name="remove">移除</string>
     <string name="options">选项</string>
     <string name="edit">编辑</string>
@@ -161,4 +161,7 @@
     <string name="all_languages">所有语言</string>
     <string name="comma_separated">使用英文逗号分割关键字</string>
     <string name="season">时令</string>
+    <string name="amount">量</string>
+    <string name="pin">置顶</string>
+    <string name="unpin">取消置顶</string>
 </resources>
