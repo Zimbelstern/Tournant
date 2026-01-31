@@ -165,4 +165,7 @@
     <string name="supported_languages">Toetatud keeled</string>
     <string name="all_languages">Kõik keeled</string>
     <string name="comma_separated">eraldatud komadega</string>
+    <string name="amount">Kogus</string>
+    <string name="pin">Tõsta esile</string>
+    <string name="unpin">Lõpeta esiletõstmine</string>
 </resources>
