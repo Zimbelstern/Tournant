@@ -1,13 +1,13 @@
-Tournant在您的安卓设备上提供您最喜欢的菜肴！
+Tournant 在您的 Android 设备上为您奉上最喜爱的菜肴！
 
-**特性**
-📝 创建和编辑菜谱
-💡 添加原料、原料组和关联的菜谱
-🔍 搜索菜谱并按照多种标准进行分类和排序
-🧰 缩放原料清单，快速启动计时器，记录准备日期，并受益于其他有用的工具
-📦 以 JSON 文件或 ZIP 压缩文件格式导出菜谱并和好友分享或使用 Gourmand XML 格式
+**功能特性**
+📝 创建和编辑食谱（支持 Markdown 格式）
+💡 添加配料、配料组及关联食谱
+🔍 搜索食谱和类别，并可按多种方式排序
+🧰 缩放配料清单，快速启动定时器，记录准备日期，还能使用其他实用工具
+📦 以 JSON 文件或 ZIP 压缩文件格式导出食谱并和好友分享，也可使用 Gourmand XML 格式
 
-Tournant 兼容桌面版 Gormand Recipe Manager (之前叫 Gourmet）。支持通过 Gourmand XML 文件进行导入、导出和同步。
+Tournant 与桌面版 Gourmand Recipe Manager（原名 Gourmet）兼容。支持通过 Gourmand XML 文件进行导入、导出和同步。
 
 **访问网站获取文档**
 https://tournant.zimbelstern.eu
