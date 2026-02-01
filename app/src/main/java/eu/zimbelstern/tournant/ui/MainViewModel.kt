@@ -28,14 +28,17 @@ import eu.zimbelstern.tournant.TournantApplication
 import eu.zimbelstern.tournant.data.ChipData
 import eu.zimbelstern.tournant.data.Recipe
 import eu.zimbelstern.tournant.data.room.RecipePinEntity
+import eu.zimbelstern.tournant.data.room.RecipeWithIngredientsAndPreparations
 import eu.zimbelstern.tournant.gourmand.GourmetXmlParser
 import eu.zimbelstern.tournant.pagination.RecipeDescriptionPagingSource
 import eu.zimbelstern.tournant.utils.RecipeJsonAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
@@ -157,6 +160,10 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 			listOf(listOf<ChipData>(), listOf()).asFlow()
 	}
 
+	// EVENTS
+	private val _snackbarEvent = MutableSharedFlow<List<RecipeWithIngredientsAndPreparations>>()
+	val snackbarEvent = _snackbarEvent.asSharedFlow()
+
 	init {
 		if (application.getSharedPreferences(application.packageName + "_preferences", Context.MODE_PRIVATE)
 			.getInt(PREF_MODE, MODE_STANDALONE) == MODE_SYNCED)
@@ -260,18 +267,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 								}
 							}
 						}
-						withContext(Dispatchers.Main) {
-							Toast.makeText(application,
-								if (insertedRecipes.size == 1)
-									application.getString(R.string.recipe_imported, insertedRecipes[0].recipe.title)
-								else
-									String.format(
-										application.resources.getQuantityText(R.plurals.recipes_imported, insertedRecipes.size - 1).toString(),
-										insertedRecipes[0].recipe.title,
-										insertedRecipes.size - 1
-									)
-								, Toast.LENGTH_LONG).show()
-						}
+						_snackbarEvent.emit(insertedRecipes)
 					} catch (e: Error) {
 						error(e.message.toString())
 					} finally {

@@ -43,6 +43,7 @@ import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import eu.zimbelstern.tournant.BuildConfig
 import eu.zimbelstern.tournant.Constants.Companion.MODE_STANDALONE
 import eu.zimbelstern.tournant.Constants.Companion.MODE_SYNCED
@@ -386,6 +387,25 @@ class MainActivity : AppCompatActivity(), RecipeListAdapter.RecipeListInterface 
 		lifecycleScope.launch {
 			viewModel.idsRecipesFiltered.collectLatest {
 				binding.recipeCount.text = String.format(Locale.getDefault(), "%d", it.size)
+			}
+		}
+
+		lifecycleScope.launch {
+			viewModel.snackbarEvent.collectLatest { insertedRecipes ->
+				val message =
+					if (insertedRecipes.size == 1)
+						application.getString(R.string.recipe_imported, insertedRecipes[0].recipe.title)
+					else
+						String.format(
+							application.resources.getQuantityText(R.plurals.recipes_imported, insertedRecipes.size - 1).toString(),
+							insertedRecipes[0].recipe.title,
+							insertedRecipes.size - 1
+						)
+				Snackbar.make(
+					binding.root,
+					message,
+					Snackbar.LENGTH_LONG
+				).show()
 			}
 		}
 
