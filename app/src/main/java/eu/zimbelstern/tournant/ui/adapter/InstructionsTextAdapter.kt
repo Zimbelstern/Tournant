@@ -16,13 +16,13 @@ import androidx.recyclerview.widget.RecyclerView
 import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.data.Ingredient
 import eu.zimbelstern.tournant.databinding.RecyclerItemTextBinding
-import eu.zimbelstern.tournant.findDurationsByRegex
 import eu.zimbelstern.tournant.findFirstAmount
 import eu.zimbelstern.tournant.findFirstIngredientWithAmount
+import eu.zimbelstern.tournant.findTimeExpressions
+import eu.zimbelstern.tournant.setClickableSpan
 import eu.zimbelstern.tournant.toRangeList
 import eu.zimbelstern.tournant.toStringForCooks
 import eu.zimbelstern.tournant.withFractionsToDouble
-import kotlin.math.roundToInt
 
 class InstructionsTextAdapter(
 	private val instructionsTextInterface: InstructionsTextInterface,
@@ -102,38 +102,14 @@ class InstructionsTextAdapter(
 
 		if (paragraph.isNotEmpty()) {
 			val free = (0..paragraph.length).toMutableList()
-			paragraph.findDurationsByRegex(dashWords, "(h)|$hString").forEach {
-				paragraph.setSpan(
-					object : ClickableSpan() {
-						override fun onClick(widget: View) {
-							instructionsTextInterface.showAlarmDialog((it.first * 60).roundToInt())
-						}
-					},
-					it.second.first, it.second.last + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-				)
-				free.removeAll(it.second)
-			}
-			paragraph.findDurationsByRegex(dashWords, "(min)|$minString").forEach {
-				paragraph.setSpan(
-					object : ClickableSpan() {
-						override fun onClick(widget: View) {
-							instructionsTextInterface.showTimerDialog((it.first * 60).roundToInt())
-						}
-					},
-					it.second.first, it.second.last + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-				)
-				free.removeAll(it.second)
-			}
-			paragraph.findDurationsByRegex(dashWords, "(s)|$sString").forEach {
-				paragraph.setSpan(
-					object : ClickableSpan() {
-						override fun onClick(widget: View) {
-							instructionsTextInterface.showTimerDialog(it.first.roundToInt())
-						}
-					},
-					it.second.first, it.second.last + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-				)
-				free.removeAll(it.second)
+			paragraph.findTimeExpressions(dashWords, "(h)|$hString", "(min)|$minString", "(s)|$sString").forEach { timeString ->
+				paragraph.setClickableSpan(timeString.position) {
+					if (timeString.seconds < 3600)
+						instructionsTextInterface.showAlarmDialog(timeString.seconds / 3600)
+					else
+						instructionsTextInterface.showTimerDialog(timeString.seconds)
+				}
+				free.removeAll(timeString.position)
 			}
 			free.toRangeList().forEach {
 				paragraph.setSpan(

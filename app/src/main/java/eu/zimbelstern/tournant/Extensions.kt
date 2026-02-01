@@ -2,7 +2,9 @@ package eu.zimbelstern.tournant
 
 import android.text.SpannableStringBuilder
 import android.text.Spanned
+import android.text.style.ClickableSpan
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.core.text.toSpanned
@@ -17,9 +19,11 @@ import java.util.Locale
 import java.util.Stack
 import java.util.TimeZone
 import kotlin.math.pow
+import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 
 val separator = DecimalFormatSymbols.getInstance().decimalSeparator
+val floatingNumber = """\d{1,3}(?:[$separator/]\d{1,2})?"""
 
 fun Double.getNumberOfDigits(): Int {
 	var f = this
@@ -174,29 +178,83 @@ fun MutableList<IngredientLine>.move(from: Int, to: Int) {
 	}
 }
 
-val floatingNumber = """\d{1,3}([$separator/]\d{1,2})?"""
-private fun dashOrWord(dashWords: String) = """(\s?\p{Pd}\s?)|(\s$dashWords\s)"""
-private fun numberOrRange(dashWords: String) = """($floatingNumber(${dashOrWord(dashWords)}))?$floatingNumber"""
+fun SpannableStringBuilder.setClickableSpan(range: IntRange, onClick: (View) -> Unit) =
+	setSpan(
+		object : ClickableSpan() {
+			override fun onClick(v: View) = onClick(v)
+		},
+		range.first, range.last + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+	)
 
-fun Spanned.findDurationsByRegex(dashWords: String, timeUnitWords: String): Sequence<Pair<Double, IntRange>> =
-	Regex("""(${numberOrRange(dashWords)}\s?($timeUnitWords))([^\p{L}]|\z)""")
+
+data class TimeExpression(val seconds: Int, val position: IntRange)
+
+@Suppress("RegExpUnnecessaryNonCapturingGroup")
+fun Spanned.findDurationsByRegex(dashWords: String, timeUnitWords: String, scale: Int): Sequence<TimeExpression> {
+	return Regex("""(?<=\s|^)(?:($floatingNumber)(?:\s?\p{Pd}\s?|\s$dashWords\s))?($floatingNumber)\s?(?:$timeUnitWords)(?=\W|$)""")
 		.findAll(this)
-		.mapNotNull { match ->
-			match.groups[1]?.let { durationString ->
-				durationString.value
-					.takeWhile { char -> char.isDigit() || char == separator }
-					.withFractionsToDouble(separator)
-					?.let { value ->
-						Pair(
-							value,
-							durationString.range
-						)
+		.mapNotNull {
+			it.groups.filterNotNull()[1].value
+				.withFractionsToDouble(separator)
+				?.times(scale)
+				?.roundToInt()
+				?.let { s ->
+					it.groups[0]?.range?.let { p ->
+						TimeExpression(s, p)
+					}
+				}
+		}
+}
+
+fun Spanned.findTimeExpressions(dashWords: String, hoursWords: String, minutesWords: String, secondsWords: String): List<TimeExpression> {
+
+	val hours = findDurationsByRegex(dashWords, hoursWords, 3600)
+	val minutes = findDurationsByRegex(dashWords, minutesWords, 60)
+	val seconds = findDurationsByRegex(dashWords, secondsWords, 1)
+
+	val prime = "['‘]"
+	val doubleprime = """(?:(?:$prime$prime)|"|″)"""
+
+	val minutesAbbr = Regex("""(?<=\s|^)(\d+)${prime}(?=\s|$)""", RegexOption.MULTILINE)
+		.findAll(this)
+		.mapNotNull {
+			it.groups[1]?.value?.toIntOrNull()?.times(60)?.let { s ->
+				it.groups[0]?.range?.let { p ->
+					TimeExpression(s, p)
+				}
+			}
+		}
+
+	val secondsAbbr = Regex("""(?<=\s|^)(\d+)$doubleprime(?=\s|$)""", RegexOption.MULTILINE)
+		.findAll(this)
+		.mapNotNull {
+			it.groups[1]?.value?.toIntOrNull()?.let { s ->
+				it.groups[0]?.range?.let { p ->
+					TimeExpression(s, p)
+				}
+			}
+		}
+
+	val minutesSecondsAbbr = Regex("""(?<=\s|^)(\d+)${prime}(\d+)$doubleprime(?=\s|$)""", RegexOption.MULTILINE)
+		.findAll(this)
+		.mapNotNull {
+			it.groups[1]?.value?.toIntOrNull()?.times(60)?.let { s1 ->
+				it.groups[2]?.value?.toIntOrNull()?.let { s2 ->
+					it.groups[0]?.range?.let { p ->
+						TimeExpression(s1 + s2, p)
 					}
 				}
 			}
+		}
+
+	return (hours + minutes + seconds + minutesAbbr + secondsAbbr + minutesSecondsAbbr).toList()
+}
 
 fun Spanned.findFirstIngredientWithAmount(dashWords: String, ingredient: Ingredient, from: Int): MatchResult? {
-	return Regex("""${numberOrRange(dashWords)}\s?${Regex.escape(ingredient.unit ?: "")}\s${Regex.escape(ingredient.item ?: "")}""").find(this, from)
+	val unit = Regex.escape(ingredient.unit ?: "")
+	val item = Regex.escape(ingredient.item ?: "")
+	return Regex("""(?:($floatingNumber)(?:\s?\p{Pd}\s?|\s$dashWords\s))?($floatingNumber)\s?$unit\s$item""")
+		.find(this, from)
 }
 
 fun Spanned.findFirstAmount(range: IntRange): MatchResult? {

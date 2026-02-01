@@ -17,19 +17,25 @@ class ExtensionsTest {
 	}
 
 	private val stringsUnderTest = listOf(
-		"2 min" to listOf(2.0 to 0..4),
-		"cook for 30 min, then let rest for 10 min" to listOf(30.0 to 9..14, 10.0 to 35..40),
-		"20 - 30 min" to listOf(20.0 to 0..10),
-		"4.5 to 5 minutes" to listOf(4.5 to 0..15),
-		"20 mini muffins" to emptyList()
+		"2 min or longer" to listOf(TimeExpression(120, 0..4)),
+		"cook for 30 min, then let rest for 10 min" to listOf(TimeExpression(1800, 9..14), TimeExpression(600, 35..40)),
+		"20 - 30 min" to listOf(TimeExpression(20*60, 0..10)),
+		"4.5 to 5 minutes" to listOf(TimeExpression(270, 0..15)),
+		"20 mini muffins" to emptyList(),
+		"1'30''" to listOf(TimeExpression(90, 0..5)),
+		"1‘30‘‘" to listOf(TimeExpression(90, 0..5)),
+		"1'" to listOf(TimeExpression(60, 0..1)),
+		"30''" to listOf(TimeExpression(30, 0..3)),
+		"30\"" to listOf(TimeExpression(30, 0..2)),
+		"30″" to listOf(TimeExpression(30, 0..2))
 	)
 
 	@Test
-	fun findDurationsByRegex_test() {
+	fun findTimeExpressions_test() {
 		stringsUnderTest.forEach { (string, result) ->
 			assertEquals(
 				result,
-				SpannedString(string).toSpanned().findDurationsByRegex("to", "min|minutes").toList()
+				SpannedString(string).toSpanned().findTimeExpressions("to", "h", "min|minutes", "s").toList()
 			)
 		}
 	}
