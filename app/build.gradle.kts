@@ -1,6 +1,4 @@
 
-import java.text.SimpleDateFormat
-import java.util.Date
 
 plugins {
 	id("com.android.application")
@@ -50,7 +48,7 @@ android {
 
 	applicationVariants.configureEach {
 		resValue("string", "versionName", versionName)
-		resValue("string", "buildDate", SimpleDateFormat("dd.MM.yy HH:mm").format(Date()))
+		resValue("string", "buildDate", "01.02.26 21:41")
 		resValue("string", "availableLanguages", availableLanguages.map { it.first() }.joinToString(","))
 		resValue("string", "localisedTimeStrings", availableLanguages.map { it.joinToString(":") }.joinToString(";"))
 		mergedFlavor.manifestPlaceholders["fileprovider_authority"] = "$applicationId.fileprovider"
