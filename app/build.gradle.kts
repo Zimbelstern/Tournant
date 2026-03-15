@@ -50,7 +50,6 @@ android {
 
 	applicationVariants.configureEach {
 		resValue("string", "versionName", versionName)
-		resValue("string", "buildDate", SimpleDateFormat("dd.MM.yy HH:mm").format(Date()))
 		resValue("string", "availableLanguages", availableLanguages.map { it.first() }.joinToString(","))
 		resValue("string", "localisedTimeStrings", availableLanguages.map { it.joinToString(":") }.joinToString(";"))
 		mergedFlavor.manifestPlaceholders["fileprovider_authority"] = "$applicationId.fileprovider"
@@ -67,11 +66,13 @@ android {
 		getByName("debug") {
 			applicationIdSuffix = ".debug"
 			versionNameSuffix = "-debug"
+			resValue("string", "buildDate", SimpleDateFormat("dd.MM.yy HH:mm").format(Date()))
 		}
 		getByName("release") {
 			isMinifyEnabled = true
 			isShrinkResources = true
 			proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+			resValue("string", "buildDate", "N/A")
 		}
 	}
 
