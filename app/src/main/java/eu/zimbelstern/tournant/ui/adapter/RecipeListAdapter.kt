@@ -246,7 +246,7 @@ class RecipeListAdapter(private val recipeListInterface: RecipeListInterface)
 						var yearWidth by remember { mutableIntStateOf(0) }
 						Column(
 							Modifier
-								.padding(top = 8.dp, bottom = 6.dp, start = (-3).dp)
+								.padding(top = 8.dp, bottom = 6.dp)
 								.fillMaxWidth()
 								.onGloballyPositioned { yearWidth = it.size.width }
 						) {
