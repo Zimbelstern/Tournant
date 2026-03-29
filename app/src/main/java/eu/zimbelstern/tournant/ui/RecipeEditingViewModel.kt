@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import eu.zimbelstern.tournant.addGroupTitles
 import eu.zimbelstern.tournant.data.IngredientLine
 import eu.zimbelstern.tournant.data.Recipe
-import eu.zimbelstern.tournant.data.room.RecipeDao
+import eu.zimbelstern.tournant.data.room.RecipeRepository
 import eu.zimbelstern.tournant.hideGroupTitles
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,23 +15,23 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class RecipeEditingViewModel(private val recipeDao: RecipeDao, private val recipeId: Long) : ViewModel() {
+class RecipeEditingViewModel(private val recipeRepository: RecipeRepository, private val recipeId: Long) : ViewModel() {
 
 	val recipe = MutableStateFlow(Recipe(title = ""))
 	val ingredients = MutableStateFlow(mutableListOf<IngredientLine>())
-	val titlesWithIds = recipeDao.getRecipeTitlesWithIds()
-	val categoryStrings = recipeDao.getAllCategories()
-	val cuisineStrings = recipeDao.getAllCuisines()
-	val sourceStrings = recipeDao.getSources()
-	val yieldUnitStrings = recipeDao.getYieldUnits()
-	val ingredientItemSuggestions = recipeDao.getIngredientItems()
-	val ingredientUnitSuggestions = recipeDao.getIngredientUnits()
+	val titlesWithIds = recipeRepository.getRecipeTitlesWithIds()
+	val categoryStrings = recipeRepository.getAllCategories()
+	val cuisineStrings = recipeRepository.getAllCuisines()
+	val sourceStrings = recipeRepository.getSources()
+	val yieldUnitStrings = recipeRepository.getYieldUnits()
+	val ingredientItemSuggestions = recipeRepository.getIngredientItems()
+	val ingredientUnitSuggestions = recipeRepository.getIngredientUnits()
 
 	init {
 		if (recipeId != 0L)
 			viewModelScope.launch {
 				withContext(Dispatchers.IO) {
-					recipeDao.getRecipeById(recipeId).map { it.toRecipe() }.collectLatest {
+					recipeRepository.getRecipeById(recipeId).map { it.toRecipe() }.collectLatest {
 						recipe.emit(it)
 						ingredients.emit(it.ingredients.addGroupTitles())
 					}
@@ -45,7 +45,7 @@ class RecipeEditingViewModel(private val recipeDao: RecipeDao, private val recip
 		viewModelScope.launch {
 			withContext(Dispatchers.IO) {
 				val ingredientList = ingredients.value.hideGroupTitles().onEach { it.removeEmptyValues() }
-				val id = recipeDao.upsertSingleRecipe(
+				val id = recipeRepository.upsertSingleRecipe(
 					recipe.value.apply {
 						processModifications()
 						ingredients.clear()
@@ -59,12 +59,12 @@ class RecipeEditingViewModel(private val recipeDao: RecipeDao, private val recip
 
 }
 
-class RecipeEditingViewModelFactory(private val recipeDao: RecipeDao, private val recipeId: Long) : ViewModelProvider.Factory {
+class RecipeEditingViewModelFactory(private val recipeRepository: RecipeRepository, private val recipeId: Long) : ViewModelProvider.Factory {
 
 	override fun <T : ViewModel> create(modelClass: Class<T>): T {
 		if (modelClass.isAssignableFrom(RecipeEditingViewModel::class.java)) {
 			@Suppress("UNCHECKED_CAST")
-			return RecipeEditingViewModel(recipeDao, recipeId) as T
+			return RecipeEditingViewModel(recipeRepository, recipeId) as T
 		}
 		throw IllegalArgumentException("Unknown ViewModel class")
 	}

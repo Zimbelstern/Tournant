@@ -62,7 +62,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 	val waitingForRecipes = MutableStateFlow(false)
 
 	// DAO
-	private val recipeDao = application.database.recipeDao()
+	private val recipeRepository = application.recipeRepository
 
 
 	// SEARCH
@@ -91,7 +91,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 
 
 	// RECIPES
-	val countAllRecipes = recipeDao.getRecipeCount().stateIn(viewModelScope, SharingStarted.Lazily, -1)
+	val countAllRecipes = recipeRepository.getRecipeCount().stateIn(viewModelScope, SharingStarted.Lazily, -1)
 
 	val recipeDescriptions = combine(
 		searchQuery,
@@ -102,13 +102,13 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 		Pair(searchQuery, orderedBy)
 	}.flatMapLatest { (searchQuery, orderedBy) ->
 		Pager(PagingConfig(pageSize = 10, initialLoadSize = 30, enablePlaceholders = false)) {
-			RecipeDescriptionPagingSource(recipeDao, searchQuery, orderedBy)
+			RecipeDescriptionPagingSource(recipeRepository, searchQuery, orderedBy)
 		}.flow.cachedIn(viewModelScope)
 	}
 
 	val idsRecipesFiltered = countAllRecipes.combine(searchQuery) { _, query ->
 		withContext(Dispatchers.IO) {
-			recipeDao.getRecipeIds(query ?: "").toSet()
+			recipeRepository.getRecipeIds(query ?: "").toSet()
 		}
 	}.stateIn(viewModelScope, SharingStarted.Lazily, setOf())
 
@@ -124,10 +124,10 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 		return list
 	}
 
-	val allCategories = recipeDao.getAllCategories().map { createChipData(it) }
+	val allCategories = recipeRepository.getAllCategories().map { createChipData(it) }
 	val filteredCategories = searchQuery.flatMapLatest { query ->
 		if (query != null)
-			recipeDao.getCategories(query).combine(allCategories) { filtered, all ->
+			recipeRepository.getCategories(query).combine(allCategories) { filtered, all ->
 				filtered.mapNotNull { filter ->
 					all.find { it.string == filter.string }.also { it?.count = filter.count }
 				}
@@ -136,10 +136,10 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 			listOf(listOf<ChipData>(), listOf()).asFlow()
 	}
 
-	val allCuisines = recipeDao.getAllCuisines().map { createChipData(it) }
+	val allCuisines = recipeRepository.getAllCuisines().map { createChipData(it) }
 	val filteredCuisines = searchQuery.flatMapLatest { query ->
 		if (query != null)
-			recipeDao.getCuisines(query).combine(allCuisines) { filtered, all ->
+			recipeRepository.getCuisines(query).combine(allCuisines) { filtered, all ->
 				filtered.mapNotNull { filter ->
 					all.find { it.string == filter.string }.also { it?.count = filter.count }
 				}
@@ -148,10 +148,10 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 			listOf(listOf<ChipData>(), listOf()).asFlow()
 	}
 
-	val allKeywords = recipeDao.getAllKeywords().map { createChipData(it, keywords = true) }
+	val allKeywords = recipeRepository.getAllKeywords().map { createChipData(it, keywords = true) }
 	val filteredKeywords = searchQuery.flatMapLatest { query ->
 		if (query != null)
-			recipeDao.getKeywords(query).combine(allKeywords) { filtered, all ->
+			recipeRepository.getKeywords(query).combine(allKeywords) { filtered, all ->
 				filtered.mapNotNull { filter ->
 					all.find { it.string == filter.string }.also { it?.count = filter.count }
 				}
@@ -257,7 +257,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 					}
 				} else {
 					try {
-						val insertedRecipes = recipeDao.insertRecipesWithIngredientsAndPreparations(parsedRecipes.map { it.toRecipeWithIngredientsAndPreparations() })
+						val insertedRecipes = recipeRepository.insertRecipesWithIngredientsAndPreparations(parsedRecipes.map { it.toRecipeWithIngredientsAndPreparations() })
 						if (format == "zip") {
 							insertedRecipes.forEach {
 								val imageFile = File(File(application.filesDir, "import"), "${it.recipe.prevId}.jpg")
@@ -339,7 +339,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 										}
 									}
 								}
-								recipeDao.compareAndUpdateGourmandRecipes(recipesFromFile.map { it.toRecipeWithIngredientsAndPreparations() })
+								recipeRepository.compareAndUpdateGourmandRecipes(recipesFromFile.map { it.toRecipeWithIngredientsAndPreparations() })
 							}
 							sharedPrefs.edit { putLong(PREF_FILE_LAST_MODIFIED, lastModified)}
 						} catch (e: Exception) {
@@ -359,7 +359,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 		}
 	}
 
-	fun getRecipeTitle(id: Long) = recipeDao.getRecipeTitleById(id)
+	fun getRecipeTitle(id: Long) = recipeRepository.getRecipeTitleById(id)
 
 	fun copyRecipesFromExportDir(filename: String, extension: String, toUri: Uri) {
 		viewModelScope.launch {
@@ -374,7 +374,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 		}
 	}
 
-	fun getDepRecipes(recipeIds: Set<Long>) = recipeDao.getDependentRecipeIds(recipeIds).toSet()
+	fun getDepRecipes(recipeIds: Set<Long>) = recipeRepository.getDependentRecipeIds(recipeIds).toSet()
 
 	fun deleteRecipes(recipeIds: Set<Long>) {
 		recipeIds.forEach { id ->
@@ -385,7 +385,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 		}
 		viewModelScope.launch {
 			withContext(Dispatchers.IO) {
-				recipeDao.deleteRecipesByIds(recipeIds)
+				recipeRepository.deleteRecipesByIds(recipeIds)
 				withContext(Dispatchers.Main) {
 					Toast.makeText(application, R.string.done, Toast.LENGTH_SHORT).show()
 				}
@@ -397,7 +397,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 		viewModelScope.launch { 
 			with(Dispatchers.IO) {
 				recipeIds.forEach {
-					recipeDao.pinRecipe(RecipePinEntity(it))
+					recipeRepository.pinRecipe(RecipePinEntity(it))
 				}
 			}
 		}
@@ -407,7 +407,7 @@ class MainViewModel(private val application: TournantApplication) : AndroidViewM
 		viewModelScope.launch { 
 			with(Dispatchers.IO) {
 				recipeIds.forEach { 
-					recipeDao.unpinRecipe(it)
+					recipeRepository.unpinRecipe(it)
 				}
 			}
 		}

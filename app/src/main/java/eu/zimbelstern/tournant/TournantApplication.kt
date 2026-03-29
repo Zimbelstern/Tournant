@@ -12,6 +12,7 @@ import androidx.core.graphics.scale
 import androidx.core.text.toSpannable
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import eu.zimbelstern.tournant.data.Cookbook
+import eu.zimbelstern.tournant.data.room.RecipeRepository
 import eu.zimbelstern.tournant.data.room.RecipeRoomDatabase
 import eu.zimbelstern.tournant.gourmand.GourmandIssues
 import eu.zimbelstern.tournant.gourmand.GourmetXmlWriter
@@ -39,12 +40,16 @@ class TournantApplication : Application() {
 		RecipeRoomDatabase.getDatabase(this)
 	}
 
+	val recipeRepository: RecipeRepository by lazy {
+		RecipeRepository(database.recipeDao())
+	}
+
 	fun withGourmandIssueCheck(context: Context, recipeIds: Set<Long>, onSuccess: (Set<Long>) -> Unit) {
 		MainScope().launch {
 			val issues = mutableSetOf<String>()
 			withContext(Dispatchers.IO) {
-				val recipes = database.recipeDao().getRecipesById(recipeIds)
-				val refs = database.recipeDao().getReferencedRecipes(recipeIds)
+				val recipes = recipeRepository.getRecipesById(recipeIds)
+				val refs = recipeRepository.getReferencedRecipes(recipeIds)
 				(recipes + refs).forEach {
 					if (it.recipe.description != null)
 						issues.add(GourmandIssues.NO_DESCRIPTIONS)
@@ -94,10 +99,8 @@ class TournantApplication : Application() {
 
 	fun writeRecipesToExportDir(recipeIds: Set<Long>, filename: String, format: String) {
 
-		val recipeDao = database.recipeDao()
-
-		val recipes = recipeDao.getRecipesById(recipeIds).map { it.toRecipe() }
-		val refs = recipeDao.getReferencedRecipes(recipeIds).map { it.toRecipe() }
+		val recipes = recipeRepository.getRecipesById(recipeIds).map { it.toRecipe() }
+		val refs = recipeRepository.getReferencedRecipes(recipeIds).map { it.toRecipe() }
 
 		if (format != "zip") {
 			// Read externally saved images, compress and add to recipe objects

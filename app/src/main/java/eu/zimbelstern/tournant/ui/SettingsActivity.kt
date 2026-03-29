@@ -241,7 +241,7 @@ class SettingsActivity : AppCompatActivity() {
 											}
 											imageDir.delete()
 										}
-										database.recipeDao().deleteAllRecipes()
+										recipeRepository.deleteAllRecipes()
 									}
 									withContext(Dispatchers.Main) {
 										Toast.makeText(

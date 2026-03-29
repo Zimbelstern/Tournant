@@ -23,9 +23,9 @@ import java.util.Date
 
 class RecipeViewModel(application: TournantApplication, private val recipeId: Long) : AndroidViewModel(application) {
 
-	private val recipeDao = application.database.recipeDao()
+	private val recipeRepository = application.recipeRepository
 
-	val recipe = recipeDao.getRecipeById(recipeId)
+	val recipe = recipeRepository.getRecipeById(recipeId)
 		.map {
 			it.toRecipe()
 		}
@@ -33,7 +33,7 @@ class RecipeViewModel(application: TournantApplication, private val recipeId: Lo
 			recipe.ingredients.forEach {
 				it.refId?.let { refId ->
 					withContext(Dispatchers.IO) {
-						it.item = recipeDao.getRecipeTitleById(refId)
+						it.item = recipeRepository.getRecipeTitleById(refId)
 					}
 				}
 			}
@@ -60,8 +60,8 @@ class RecipeViewModel(application: TournantApplication, private val recipeId: Lo
 	init {
 		viewModelScope.launch {
 			withContext(Dispatchers.IO) {
-				dependentRecipes.emit(recipeDao.getDependentRecipeIds(setOf(recipeId)).map {
-					RecipeTitleId(it, recipeDao.getRecipeTitleById(it))
+				dependentRecipes.emit(recipeRepository.getDependentRecipeIds(setOf(recipeId)).map {
+					RecipeTitleId(it, recipeRepository.getRecipeTitleById(it))
 				})
 			}
 		}
@@ -70,7 +70,7 @@ class RecipeViewModel(application: TournantApplication, private val recipeId: Lo
 	fun addPreparation(date: Date) {
 		viewModelScope.launch {
 			withContext(Dispatchers.IO) {
-				recipeDao.addPreparation(recipeId, date)
+				recipeRepository.addPreparation(recipeId, date)
 				withContext(Dispatchers.Main) {
 					Toast.makeText(getApplication(), R.string.done, Toast.LENGTH_SHORT).show()
 				}
@@ -81,7 +81,7 @@ class RecipeViewModel(application: TournantApplication, private val recipeId: Lo
 	fun removePreparation(date: Date) {
 		viewModelScope.launch {
 			withContext(Dispatchers.IO) {
-				recipeDao.removePreparation(recipeId, date)
+				recipeRepository.removePreparation(recipeId, date)
 			}
 		}
 	}

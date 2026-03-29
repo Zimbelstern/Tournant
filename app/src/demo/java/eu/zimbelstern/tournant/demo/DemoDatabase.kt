@@ -8,6 +8,7 @@ import androidx.room.Room
 import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.data.Ingredient
 import eu.zimbelstern.tournant.data.Recipe
+import eu.zimbelstern.tournant.data.room.RecipeRepository
 import eu.zimbelstern.tournant.data.room.RecipeRoomDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
@@ -25,7 +26,7 @@ object DemoDatabase {
 			.build().also { database ->
 				MainScope().launch {
 					withContext(Dispatchers.IO) {
-						database.recipeDao().insertRecipesWithIngredientsAndPreparations(
+						RecipeRepository(database.recipeDao()).insertRecipesWithIngredientsAndPreparations(
 							listOf(
 								Recipe(
 									title = ContextCompat.getString(context, R.string.muffins),

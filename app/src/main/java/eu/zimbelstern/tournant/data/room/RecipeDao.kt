@@ -1,6 +1,5 @@
 package eu.zimbelstern.tournant.data.room
 
-import android.util.Log
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -25,12 +24,9 @@ import eu.zimbelstern.tournant.Constants.Companion.SORTED_BY_TOTALTIME
 import eu.zimbelstern.tournant.data.RecipeDescription
 import eu.zimbelstern.tournant.data.RecipeTitleId
 import kotlinx.coroutines.flow.Flow
-import java.util.Date
 
 @Dao
 abstract class RecipeDao {
-
-	companion object { private const val TAG = "RecipeDao" }
 
 	@Transaction
 	@Query("SELECT * FROM recipe WHERE id = :id")
@@ -258,159 +254,7 @@ abstract class RecipeDao {
 	abstract suspend fun getPreparation(recipeId: Long, date: Long): PreparationEntity?
 
 
-	suspend fun upsertSingleRecipe(recipe: RecipeWithIngredientsAndPreparations): Long {
-		return if (recipe.recipe.id == 0L) {
-			insertRecipe(recipe.recipe).also { id ->
-				recipe.ingredients.forEach {
-					it.recipeId = id
-					insertIngredient(it)
-				}
-				recipe.keywords.forEach {
-					it.recipeId = id
-					insertKeyword(it)
-				}
-				recipe.preparations.forEach {
-					it.recipeId = id
-					insertPreparationDate(it)
-				}
-			}
-		}
-		else {
-			updateRecipe(recipe.recipe)
-			recipe.ingredients.forEach {
-				insertIngredient(it)
-			}
-			deleteIngredientsNotInList(recipe.recipe.id, recipe.ingredients.map { it.position })
-			recipe.keywords.forEach {
-				insertKeyword(it)
-			}
-			deleteKeywordsNotInList(recipe.recipe.id, recipe.keywords.map { it.position })
-			recipe.preparations.forEach {
-				insertPreparationDate(it)
-			}
-			deletePreparationDatesNotInList(recipe.recipe.id, recipe.preparations.map { it.date.time })
-			recipe.recipe.id
-		}
-	}
-
-	// Standalone mode: saves recipes in the database
-	@Transaction
-	open suspend fun insertRecipesWithIngredientsAndPreparations(recipes: List<RecipeWithIngredientsAndPreparations>): List<RecipeWithIngredientsAndPreparations> {
-		// TODO: Should throw an error when called from synced mode
-
-		// Stores recipe information except for the ingredients, retrieves the generated ID
-		recipes.forEach {
-			// Save previous id for json parsed recipes
-			it.recipe.prevId = it.recipe.id.takeUnless { id -> id == 0L } ?: it.recipe.gourmandId?.toLong()
-			it.recipe.id = 0L
-			// Insert recipe in database and save id
-			it.recipe.id = insertRecipe(it.recipe)
-		}
-
-		// Stores the ingredients, replaces gourmand refIds with the correct new ones
-		recipes.forEach {
-			it.ingredients.forEach { ingredient ->
-				ingredient.recipeId = it.recipe.id
-				// For referenced recipes
-				if (ingredient.refId != null) {
-					ingredient.refId = recipes.find { rwi -> rwi.recipe.prevId == ingredient.refId }?.recipe?.id
-						?: throw Error("Error while saving ${it.recipe.title} to database: Referenced recipe not found")
-				}
-			}
-			it.ingredients.forEach { ingredient -> insertIngredient(ingredient) }
-		}
-
-		return recipes
-
-	}
-
-	// Synced mode: compares a list of recipes with the database
-	suspend fun compareAndUpdateGourmandRecipes(recipes: List<RecipeWithIngredientsAndPreparations>) {
-		// TODO: Should throw an error when called from standalone mode
-
-		Log.d(TAG, "Updating recipes...")
-		// Remove recipes and ingredients not found in file
-		getDeprecatedRecipes(recipes.mapNotNull { it.recipe.gourmandId }).forEach {
-			Log.d(TAG, "${it.recipe.title} was removed")
-			deleteRecipe(it.recipe)
-		}
-
-		// Update recipe properties
-		recipes.forEach {
-			if (it.recipe.gourmandId == null) {
-				Log.e(TAG, "Recipe ${it.recipe.title} does not have a Gourmand id")
-				return
-			}
-
-			val storedRecipe = getRecipeByGourmandId(it.recipe.gourmandId)
-			if (storedRecipe == null) {
-				Log.d(TAG, "${it.recipe.title} is new")
-				it.recipe.id = insertRecipe(it.recipe)
-			} else {
-				it.recipe.id = storedRecipe.recipe.id
-				if (storedRecipe.recipe != it.recipe) {
-					// Recipe properties have changed
-					Log.d(TAG, "${it.recipe.title} has changed")
-					updateRecipe(it.recipe)
-				} else {
-					Log.v(TAG, "${it.recipe.title} has not changed")
-				}
-			}
-		}
-
-		// Update ingredients
-		recipes.forEach {
-			if (it.recipe.gourmandId == null) return@forEach
-			Log.d(TAG, "Storing ingredients of ${it.recipe.title}")
-
-			// Update reference IDs
-			it.ingredients.forEach { ingredient ->
-				ingredient.recipeId = it.recipe.id
-				ingredient.refId?.let { refId ->
-					val newRef = getRecipeIdByGourmandId(refId)
-					ingredient.refId = newRef ?: throw Error("Error while saving ${it.recipe.title} to database: Referenced recipe not found")
-				}
-			}
-
-			// Compare ingredients
-			val storedIngredients = getRecipeByGourmandId(it.recipe.gourmandId)?.ingredients
-			if (storedIngredients != null) {
-				storedIngredients.forEach { ing ->
-					val new = it.ingredients.find { newIng ->
-						ing.refId?.equals(newIng.refId) ?: ing.item.equals(newIng.item)
-					}
-					if (new == null) {
-						Log.d(TAG, "${ing.refId ?: ing.item} was removed")
-						deleteIngredient(ing)
-					} else {
-						if (new != ing) {
-							Log.d(TAG, "${ing.refId ?: ing.item} has changed")
-							updateIngredient(new)
-						} else {
-							Log.v(TAG, "${ing.refId ?: ing.item} has not changed")
-						}
-					}
-				}
-				Log.d(TAG, "New ingredients: ${it.ingredients.map { ing -> ing.refId ?: ing.item }.joinToString(", ")}")
-				it.ingredients.forEach { ingredient -> insertIngredient(ingredient) }
-			}
-		}
-	}
-
-	suspend fun addPreparation(recipeId: Long, date: Date) {
-		getPreparation(recipeId, date.time)?.let {
-			updatePreparationDate(it.copy(count = it.count + 1))
-		} ?: insertPreparationDate(PreparationEntity(recipeId, date, 1))
-	}
-
-	suspend fun removePreparation(recipeId: Long, date: Date) {
-		getPreparation(recipeId, date.time)?.let {
-			if (it.count > 1)
-				updatePreparationDate(it.copy(count = it.count - 1))
-			else
-				deletePreparationDate(PreparationEntity(recipeId, date, 1))
-		}
-	}
+	// Pins
 
 	@Insert(onConflict = IGNORE)
 	abstract suspend fun pinRecipe(recipePin: RecipePinEntity): Long

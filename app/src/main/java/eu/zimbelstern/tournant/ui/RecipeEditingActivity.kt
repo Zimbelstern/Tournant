@@ -107,7 +107,7 @@ class RecipeEditingActivity : AppCompatActivity(), IngredientEditingAdapter.Ingr
 	private lateinit var binding: ActivityRecipeEditingBinding
 	private val viewModel: RecipeEditingViewModel by viewModels {
 		RecipeEditingViewModelFactory(
-			(application as TournantApplication).database.recipeDao(),
+			(application as TournantApplication).recipeRepository,
 			intent.getLongExtra("RECIPE_ID", 0L)
 		)
 	}
