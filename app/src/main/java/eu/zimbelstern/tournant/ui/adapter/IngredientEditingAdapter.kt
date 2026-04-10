@@ -18,8 +18,9 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.android.material.textfield.TextInputLayout
 import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.data.Ingredient
-import eu.zimbelstern.tournant.data.IngredientGroupTitle
 import eu.zimbelstern.tournant.data.IngredientLine
+import eu.zimbelstern.tournant.data.IngredientLine.IngredientGroupTitle
+import eu.zimbelstern.tournant.data.IngredientLine.IngredientItem
 import eu.zimbelstern.tournant.data.RecipeTitleId
 import eu.zimbelstern.tournant.databinding.RecyclerItemIngredientEditingBinding
 import eu.zimbelstern.tournant.databinding.RecyclerItemIngredientEditingGroupBinding
@@ -44,7 +45,7 @@ class IngredientEditingAdapter(
 	class GroupTitleViewHolder(val binding: RecyclerItemIngredientEditingGroupBinding) : ViewHolder(binding.root)
 
 	override fun getItemViewType(position: Int): Int {
-		return if (ingredientLines[position] is Ingredient) 0 else 1
+		return if (ingredientLines[position] is IngredientItem) 0 else 1
 	}
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -56,7 +57,7 @@ class IngredientEditingAdapter(
 
 	override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 		when (holder.itemViewType) {
-			VIEW_TYPE_INGREDIENT -> fillIngredientInformation(holder as IngredientViewHolder, ingredientLines[position] as Ingredient)
+			VIEW_TYPE_INGREDIENT -> fillIngredientInformation(holder as IngredientViewHolder, (ingredientLines[position] as IngredientItem).ingredient)
 			VIEW_TYPE_GROUP -> fillGroupInformation(holder as GroupTitleViewHolder, ingredientLines[position] as IngredientGroupTitle)
 		}
 	}
@@ -73,7 +74,7 @@ class IngredientEditingAdapter(
 				binding.editUnitContainer to R.string.unit,
 				binding.editItemContainer to R.string.ingredient
 			).forEach {
-				it.first.hint = if (ingredientLines.take(bindingAdapterPosition).filterIsInstance<Ingredient>().isEmpty())
+				it.first.hint = if (ingredientLines.take(bindingAdapterPosition).filterIsInstance<IngredientItem>().isEmpty())
 					it.first.context.getString(it.second)
 				else
 					null

@@ -4,7 +4,7 @@
 
 	<data>
 		<import type="android.view.View"/>
-		<variable name="group" type="eu.zimbelstern.tournant.data.IngredientGroupTitle"/>
+		<variable name="group" type="eu.zimbelstern.tournant.data.IngredientLine.IngredientGroupTitle"/>
 	</data>
 
 	<LinearLayout

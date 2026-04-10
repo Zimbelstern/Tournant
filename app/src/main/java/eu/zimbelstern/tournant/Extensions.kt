@@ -10,14 +10,16 @@ import androidx.core.os.LocaleListCompat
 import androidx.core.text.toSpanned
 import androidx.core.view.WindowInsetsCompat
 import eu.zimbelstern.tournant.data.Ingredient
-import eu.zimbelstern.tournant.data.IngredientGroupTitle
 import eu.zimbelstern.tournant.data.IngredientLine
+import eu.zimbelstern.tournant.data.IngredientLine.IngredientGroupTitle
+import eu.zimbelstern.tournant.data.IngredientLine.IngredientItem
 import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
 import java.util.Date
 import java.util.Locale
 import java.util.Stack
 import java.util.TimeZone
+import kotlin.math.ceil
 import kotlin.math.pow
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
@@ -57,7 +59,23 @@ fun Double?.toStringForCooks(thousands: Boolean = true): String {
 	return formattedNumber
 }
 
-fun String.parseLocalFormattedDouble(): Double? {
+fun Double?.moreYield() = when {
+	this == null -> 1.0
+	this >= 1 -> this.roundToInt() + 1.0
+	this >= 0.5 -> 1.0
+	this >= 0.25 -> 0.5
+	else -> this
+}
+
+fun Double?.lessYield() = when {
+	this == null -> 1.0
+	this > 1 -> ceil(this) - 1
+	this > 0.5 -> 0.5
+	this > 0.25 -> 0.25
+	else -> this
+}
+
+fun String.parseLocalFormattedDoubleOrNull(): Double? {
 	return replace(Regex("[^0-9$separator]"), "").replace(separator, '.').toDoubleOrNull()
 }
 
@@ -123,15 +141,6 @@ fun List<Int>.toRangeList(): List<IntRange> {
 	return result.toList()
 }
 
-fun MutableList<Ingredient>.scale(factor: Double?): List<Ingredient> {
-	return if (factor != null) {
-		map {
-			it.withScaledAmount(factor)
-		}
-	}
-	else this
-}
-
 fun MutableList<Ingredient>.addGroupTitles(): MutableList<IngredientLine> {
 	val newList = mutableListOf<IngredientLine>()
 	var group: String? = null
@@ -144,7 +153,7 @@ fun MutableList<Ingredient>.addGroupTitles(): MutableList<IngredientLine> {
 			if (group != null)
 				newList.add(IngredientGroupTitle(group))
 		}
-		newList.add(item)
+		newList.add(IngredientItem(item))
 	}
 	if (group != null)
 		newList.add(IngredientGroupTitle(null))
@@ -155,9 +164,9 @@ fun MutableList<IngredientLine>.hideGroupTitles(): MutableList<Ingredient> {
 	val newList = mutableListOf<Ingredient>()
 	var group: String? = null
 	for (item in this) {
-		if (item is Ingredient && (item.item?.isBlank() == false || item.refId?.equals(0L) == false)) {
-			newList.add(item.apply {
-				item.group = group
+		if (item is IngredientItem && (item.ingredient.item?.isBlank() == false || item.ingredient.refId?.equals(0L) == false)) {
+			newList.add(item.ingredient.apply {
+				item.ingredient.group = group
 			})
 		}
 		if (item is IngredientGroupTitle)

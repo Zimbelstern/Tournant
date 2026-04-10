@@ -124,6 +124,8 @@ dependencies {
 	implementation("androidx.compose.material:material:$composeVersion")
 	implementation("androidx.compose.material:material-icons-extended-android:1.7.8")
 	implementation("androidx.compose.ui:ui:$composeVersion")
+	implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
+	debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
 
 	val roomVersion = "2.7.2"
 	implementation("androidx.room:room-ktx:$roomVersion")

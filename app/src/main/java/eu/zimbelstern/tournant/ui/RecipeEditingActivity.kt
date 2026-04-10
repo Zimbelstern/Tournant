@@ -82,7 +82,8 @@ import com.google.android.material.textfield.TextInputLayout
 import eu.zimbelstern.tournant.R
 import eu.zimbelstern.tournant.TournantApplication
 import eu.zimbelstern.tournant.data.Ingredient
-import eu.zimbelstern.tournant.data.IngredientGroupTitle
+import eu.zimbelstern.tournant.data.IngredientLine.IngredientGroupTitle
+import eu.zimbelstern.tournant.data.IngredientLine.IngredientItem
 import eu.zimbelstern.tournant.data.Season
 import eu.zimbelstern.tournant.databinding.ActivityRecipeEditingBinding
 import eu.zimbelstern.tournant.getAppOrSystemLocale
@@ -501,13 +502,13 @@ class RecipeEditingActivity : AppCompatActivity(), IngredientEditingAdapter.Ingr
 				itemTouchHelper.attachToRecyclerView(binding.editIngredients)
 
 				binding.editIngredientsNewIngredient.setOnClickListener {
-					viewModel.ingredients.value.add(Ingredient(null, null, null, "", null, null, false))
+					viewModel.ingredients.value.add(IngredientItem(Ingredient(null, null, null, "", null, null, false)))
 					adapter.onItemInserted()
 					adapter.notifyItemInserted(adapter.itemCount + 1)
 				}
 
 				binding.editIngredientsNewReference.setOnClickListener {
-					viewModel.ingredients.value.add(Ingredient(null, null, null, null, 0, null, false))
+					viewModel.ingredients.value.add(IngredientItem(Ingredient(null, null, null, null, 0, null, false)))
 					adapter.onItemInserted()
 					adapter.notifyItemInserted(adapter.itemCount + 1)
 				}

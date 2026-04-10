@@ -17,7 +17,6 @@ import android.text.Spanned
 import android.text.format.DateFormat
 import android.text.format.DateUtils
 import android.text.format.DateUtils.DAY_IN_MILLIS
-import android.text.method.DigitsKeyListener
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.util.Log
@@ -27,7 +26,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.WindowManager
-import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -36,7 +34,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -47,38 +49,71 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.Chip
 import androidx.compose.material.ChipDefaults
+import androidx.compose.material.ContentAlpha
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.LocalRippleConfiguration
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.Remove
+import androidx.compose.material.icons.filled.RepeatOne
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFontFamilyResolver
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextMeasurer
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ShareCompat
@@ -90,7 +125,6 @@ import androidx.core.view.ViewGroupCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
-import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import coil3.load
@@ -108,22 +142,28 @@ import eu.zimbelstern.tournant.Constants.Companion.PREF_MARKDOWN
 import eu.zimbelstern.tournant.Constants.Companion.PREF_MODE
 import eu.zimbelstern.tournant.Constants.Companion.PREF_SCREEN_ON
 import eu.zimbelstern.tournant.R
-import eu.zimbelstern.tournant.RecipeUtils
 import eu.zimbelstern.tournant.TournantApplication
+import eu.zimbelstern.tournant.data.Ingredient
+import eu.zimbelstern.tournant.data.IngredientLine
+import eu.zimbelstern.tournant.data.IngredientLine.IngredientGroupTitle
+import eu.zimbelstern.tournant.data.IngredientLine.IngredientItem
+import eu.zimbelstern.tournant.data.Recipe
 import eu.zimbelstern.tournant.databinding.ActivityRecipeBinding
 import eu.zimbelstern.tournant.databinding.InputFieldTimeBinding
 import eu.zimbelstern.tournant.databinding.RecyclerPreparationsBinding
 import eu.zimbelstern.tournant.getAppOrSystemLocale
 import eu.zimbelstern.tournant.getQuantityIntForPlurals
-import eu.zimbelstern.tournant.parseLocalFormattedDouble
 import eu.zimbelstern.tournant.safeInsets
-import eu.zimbelstern.tournant.scale
+import eu.zimbelstern.tournant.separator
 import eu.zimbelstern.tournant.shiftToLocalDayStart
 import eu.zimbelstern.tournant.splitLines
 import eu.zimbelstern.tournant.toStringForCooks
-import eu.zimbelstern.tournant.ui.adapter.IngredientTableAdapter
 import eu.zimbelstern.tournant.ui.adapter.InstructionsTextAdapter
 import eu.zimbelstern.tournant.ui.adapter.PreparationsAdapter
+import eu.zimbelstern.tournant.ui.elements.TournantCard
+import eu.zimbelstern.tournant.ui.elements.TournantRoundIconButton
+import eu.zimbelstern.tournant.ui.elements.TournantRoundedIconButton
+import eu.zimbelstern.tournant.ui.elements.TournantUnderlinedTextField
 import eu.zimbelstern.tournant.utils.RecipeMarkwonPlugin
 import io.noties.markwon.Markwon
 import io.noties.markwon.SoftBreakAddsNewLinePlugin
@@ -134,12 +174,11 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
-import java.text.DecimalFormatSymbols
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTableInterface, InstructionsTextAdapter.InstructionsTextInterface, PreparationsAdapter.PreparationsInterface {
+class RecipeActivity : AppCompatActivity(), InstructionsTextAdapter.InstructionsTextInterface, PreparationsAdapter.PreparationsInterface {
 
 	companion object {
 		private const val TAG = "RecipeActivity"
@@ -390,99 +429,21 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 						sString = sString
 					)
 				}
-				recipe.yieldValue.let { yieldValue ->
-					binding.recipeDetailYields.visibility = View.VISIBLE
-					binding.recipeDetailYieldsValue.apply {
-						keyListener = DigitsKeyListener.getInstance("0123456789" + DecimalFormatSymbols.getInstance().decimalSeparator)
-						hint = (yieldValue ?: 1.0).toStringForCooks(thousands = false)
-						if (yieldValue != null) {
-							text = SpannableStringBuilder(hint)
-						}
-						fillYieldsUnit(yieldValue, recipe.yieldUnit)
-						addTextChangedListener { editable ->
-							val scaleFactor = editable.toString().replace(DecimalFormatSymbols.getInstance().decimalSeparator, '.').toDoubleOrNull()?.div(recipe.yieldValue ?: 1.0)
-							recipe.ingredients.scale(scaleFactor).let { list ->
-								binding.recipeDetailIngredientsRecycler.adapter = IngredientTableAdapter(this@RecipeActivity, list, scaleFactor)
-								binding.recipeDetailInstructionsRecycler.adapter = recipe.instructions?.let {
-									InstructionsTextAdapter(
-										this@RecipeActivity,
-										parseRecipeText(it).splitLines(),
-										list,
-										scaleFactor,
-										dashWords,
-										hString,
-										minString,
-										sString
-									)
-								}
-								fillYieldsUnit(recipe.yieldValue, recipe.yieldUnit)
-							}
-						}
-						setOnFocusChangeListener { _, hasFocus ->
-							if (!hasFocus) {
-								(getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager)?.hideSoftInputFromWindow(binding.root.windowToken, 0)
-							}
-						}
-						savedInstanceState?.getString("YIELD_VALUE")?.let {
-							if (it.isNotEmpty()) {
-								setText(it)
-							}
-						}
-					}
-				}
 				recipe.notes?.let {
 					binding.recipeDetailNotes.visibility = View.VISIBLE
 					binding.recipeDetailNotesText.movementMethod = LinkMovementMethod.getInstance()
 					binding.recipeDetailNotesText.text = parseRecipeText(it)
 				}
-				recipe.ingredients.let { list ->
-					binding.recipeDetailIngredients.visibility = View.VISIBLE
-					if (savedInstanceState?.getString("YIELD_VALUE").isNullOrEmpty()) {
-						binding.recipeDetailIngredientsRecycler.adapter = IngredientTableAdapter(this@RecipeActivity, list)
-					} else {
-						savedInstanceState.putString("YIELD_VALUE", null)
-					}
-				}
 				if (intent.hasExtra("RECIPE_YIELD_AMOUNT")) {
 					val requestedYieldAmount = intent.getDoubleExtra("RECIPE_YIELD_AMOUNT", 0.0)
 					val requestedYieldUnit = intent.getStringExtra("RECIPE_YIELD_UNIT")
 					if (requestedYieldUnit.isNullOrEmpty() && recipe.yieldUnit != null) {
-						scale(requestedYieldAmount)
+						viewModel.scale(requestedYieldAmount * (recipe.yieldValue ?: 1.0))
 					}
 					else if (requestedYieldUnit == recipe.yieldUnit) {
-						binding.recipeDetailYieldsValue.setText(requestedYieldAmount.toStringForCooks(thousands = false))
+						viewModel.scale(requestedYieldAmount)
 					}
 					intent.removeExtra("RECIPE_YIELD_AMOUNT")
-				}
-				binding.recipeDetailLess.setOnClickListener {
-					binding.recipeDetailYieldsValue.text = SpannableStringBuilder(
-						RecipeUtils.lessYield(
-							binding.recipeDetailYieldsValue.text.toString().replace(DecimalFormatSymbols.getInstance().decimalSeparator, '.').toDoubleOrNull()
-								?: recipe.yieldValue ?: 1.0
-						).toStringForCooks(thousands = false)
-					)
-				}
-				binding.recipeDetailMore.setOnClickListener {
-					binding.recipeDetailYieldsValue.text = SpannableStringBuilder(
-						RecipeUtils.moreYield(
-							binding.recipeDetailYieldsValue.text.toString().replace(DecimalFormatSymbols.getInstance().decimalSeparator, '.').toDoubleOrNull()
-								?: recipe.yieldValue ?: 1.0
-						).toStringForCooks(thousands = false))
-				}
-				binding.recipeDetailReset.setOnClickListener {
-					binding.recipeDetailYieldsValue.setText("")
-				}
-				binding.recipeDetailCopy.apply {
-					if (recipe.ingredients.isEmpty())
-						visibility = View.GONE
-					else {
-						visibility = View.VISIBLE
-						setOnClickListener {
-							val textToCopy = (binding.recipeDetailIngredientsRecycler.adapter as IngredientTableAdapter).ingredientsToString()
-							(getSystemService(CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText(getString(R.string.ingredients), textToCopy))
-							Toast.makeText(this@RecipeActivity, getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show()
-						}
-					}
 				}
 				binding.recipeDetailPreparations.apply {
 					if (recipe.preparations.isEmpty())
@@ -559,31 +520,277 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 			}
 		}
 
+		binding.recipeDetailIngredients.setContent {
+			val recipe by viewModel.recipe.collectAsState(Recipe.createEmpty())
+			if (recipe.ingredients.isNotEmpty()) {
+				TournantTheme {
+					IngredientCard(recipe)
+				}
+			}
+		}
+
+	}
+
+	@Composable
+	fun IngredientCard(recipe: Recipe) {
+		TournantCard(marginEnd = 16.dp, marginBottom = 16.dp) {
+			val textMeasurer = rememberTextMeasurer()
+			Column {
+				Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+					Text(
+						modifier = Modifier.weight(1f),
+						text = stringResource(R.string.ingredients),
+						style = MaterialTheme.typography.h2
+					)
+					TournantRoundIconButton(
+						icon = Icons.Default.RepeatOne,
+						isDark = true,
+						onClick = { viewModel.scaleReset() },
+						contentDescription = stringResource(R.string.reset)
+					)
+					TournantRoundIconButton(
+						icon = Icons.Default.Remove,
+						onClick = { viewModel.scaleDown() },
+						contentDescription = stringResource(R.string.less)
+					)
+					TournantRoundIconButton(
+						icon = Icons.Default.Add,
+						onClick = { viewModel.scaleUp() },
+						contentDescription = stringResource(R.string.more)
+					)
+				}
+				Row(
+					Modifier.padding(vertical = 16.dp)
+				) {
+					val yieldValue by viewModel.yieldValueScaled.collectAsState("")
+					val placeholder = recipe.yieldValue.toStringForCooks(thousands = false)
+					val italicTextStyle = LocalTextStyle.current.copy(fontStyle = FontStyle.Italic)
+					Text(
+						text = stringResource(R.string.yield),
+						style = italicTextStyle
+					)
+					TournantUnderlinedTextField(
+						value = yieldValue,
+						onValueChange = {
+							viewModel.scale(it)
+						},
+						textMeasurer = textMeasurer,
+						placeholder = placeholder.takeIf { it.isNotEmpty() } ?: "1"
+					)
+					Text(
+						recipe.yieldUnit
+							?: pluralStringResource(
+								R.plurals.lots,
+								(yieldValue.takeIf { it.isNotEmpty() } ?: placeholder).getQuantityIntForPlurals() ?: 3
+							),
+						style = italicTextStyle
+					)
+				}
+				Row {
+					val items by viewModel.ingredientsScaled.collectAsState(listOf())
+					IngredientList(
+						items,
+						Modifier.weight(1f),
+						textMeasurer
+					)
+					Column(
+						verticalArrangement = Arrangement.spacedBy(8.dp)
+					) {
+						TournantRoundedIconButton(
+							icon = Icons.Default.ContentCopy,
+							onClick = {
+								(getSystemService(CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(
+									ClipData.newPlainText(
+										getString(R.string.ingredients),
+										items.map { it.toStringForCooks(getString(R.string.optional)) }.joinToString("\n")
+									)
+								)
+								Toast.makeText(
+									this@RecipeActivity,
+									getString(R.string.copied_to_clipboard),
+									Toast.LENGTH_SHORT
+								).show()
+							},
+							contentDescription = stringResource(R.string.copy_to_clipboard)
+						)
+					}
+				}
+			}
+		}
+	}
+
+	@Composable
+	fun IngredientList(
+		items: List<IngredientLine>,
+		modifier: Modifier = Modifier,
+		textMeasurer: TextMeasurer = rememberTextMeasurer()
+	) {
+		val amountMaxWidth = with(LocalDensity.current) {
+			items.filterIsInstance<IngredientItem>().maxOfOrNull {
+				textMeasurer.measure(
+					it.ingredient.amountToStringForCooks(),
+					MaterialTheme.typography.body1
+				).size.width.toDp()
+			}
+		}
+		Column(modifier) {
+			items.forEachIndexed { i, item ->
+				when (item) {
+					is IngredientGroupTitle -> Text(
+						text = item.title ?: "",
+						style = MaterialTheme.typography.caption,
+						modifier = Modifier.padding(bottom = 4.dp)
+					)
+					is IngredientItem -> IngredientDisplay(
+						item = item,
+						id = i,
+						amountMaxWidth = amountMaxWidth ?: 0.dp
+					)
+				}
+			}
+		}
+	}
+
+	@Preview(showBackground = true)
+	@Composable
+	fun IngredientListPreview() {
+		IngredientList(Ingredient.createExamples(3).mapIndexed { i, ingredient -> IngredientItem(ingredient, i % 2 == 1) })
+	}
+
+	@OptIn(ExperimentalFoundationApi::class)
+	@Composable
+	fun IngredientDisplay(item: IngredientItem, id: Int, amountMaxWidth: Dp) {
+		val interactionSource = remember { MutableInteractionSource() }
+		var dialogVisible by remember { mutableStateOf(false) }
+		var value by remember { mutableStateOf(TextFieldValue("")) }
+
+		Row(
+			Modifier
+				.alpha(if (item.isChecked) ContentAlpha.disabled else 1f)
+				.padding(vertical = 2.dp)
+				.combinedClickable(
+					onClick = { viewModel.toggleChecked(id) },
+					onLongClick = {
+						if (item.ingredient.amount != null) {
+							value = TextFieldValue(item.ingredient.amount.toStringForCooks(thousands = false))
+							dialogVisible = true
+						}
+					},
+					indication = null,
+					interactionSource = interactionSource
+				)
+		) {
+			Text(
+				text = item.ingredient.amountToStringForCooks(),
+				modifier = Modifier.width(amountMaxWidth),
+				textAlign = TextAlign.End,
+				lineHeight = 24.sp
+			)
+			val baseItemString = buildAnnotatedString {
+				if (item.ingredient.refId == null) {
+					append(item.ingredient.item)
+				}
+				else {
+					pushStringAnnotation("LINK_TO_RECIPE", item.ingredient.refId.toString())
+					withStyle(SpanStyle(color = MaterialTheme.colors.primary, textDecoration = TextDecoration.Underline)) {
+						append(item.ingredient.item)
+					}
+					pop()
+				}
+			}
+			val fullItemString = buildAnnotatedString {
+				if (item.ingredient.optional) {
+					append(stringResource(R.string.optional, baseItemString))
+				} else {
+					append(baseItemString)
+				}
+				if (item.isChecked) {
+					withStyle(SpanStyle(fontSize = 14.sp, baselineShift = BaselineShift(0.1f))) {
+						append(" ✓")
+					}
+				}
+			}
+			val layoutResult = remember { mutableStateOf<TextLayoutResult?>(null) }
+			Text(
+				text = fullItemString,
+				modifier = Modifier.pointerInput(Unit) {
+					detectTapGestures(
+						onPress = {
+							layoutResult.value?.getOffsetForPosition(it)?.let { offset ->
+								val annotations = baseItemString.getStringAnnotations(
+									tag = "LINK_TO_RECIPE",
+									start = offset,
+									end = offset
+								)
+								if (annotations.isNotEmpty()) {
+									item.ingredient.refId?.let { refId ->
+										openRecipe(refId = refId, item.ingredient.amount, item.ingredient.unit)
+									}
+								} else {
+									viewModel.toggleChecked(id)
+								}
+							}
+						},
+						onLongPress = {
+							value = TextFieldValue(item.ingredient.amount.toStringForCooks(thousands = false))
+							dialogVisible = true
+						}
+					)
+				},
+				onTextLayout = { layoutResult.value = it },
+				lineHeight = 24.sp
+			)
+		}
+		
+		if (dialogVisible) {
+			val focusRequester = remember { FocusRequester() }
+			AlertDialog(
+				title = { Text(stringResource(R.string.scale_to), style = MaterialTheme.typography.h2) },
+				text = {
+					OutlinedTextField(
+						modifier = Modifier.focusRequester(focusRequester),
+						value = value,
+						onValueChange = { newValue ->
+							if (newValue.text.all { it.isDigit() || it == separator } && newValue.text.count { it == separator } <= 1) {
+								value = newValue
+							}
+										},
+						label = { Text(item.ingredient.item ?: "") },
+						trailingIcon = { Text(item.ingredient.unit ?: "", style = MaterialTheme.typography.body1) },
+						keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+						singleLine = true,
+						textStyle = MaterialTheme.typography.body1
+					)
+				},
+				confirmButton = {
+					TextButton(
+						onClick = {
+							viewModel.scale(id, value.text)
+							dialogVisible = false
+						}
+					) {
+						Text(stringResource(R.string.ok))
+					}
+				},
+				dismissButton = {
+					TextButton(
+						onClick = { dialogVisible = false }
+					) {
+						Text(stringResource(R.string.cancel))
+					}
+				},
+				onDismissRequest = { dialogVisible = false },
+			)
+			LaunchedEffect(Unit) {
+				value = value.copy(selection = TextRange(value.text.length))
+				focusRequester.requestFocus()
+			}
+		}
 	}
 
 	// Parses text as markdown or html (if markwon instance null, that depends on user preference)
 	private fun parseRecipeText(text: String): Spanned {
 		return markwon?.toMarkdown(text) ?: text.replace("\n", "<br/>").parseAsHtml()
-	}
-
-	private fun fillYieldsUnit(value: Double?, unit: String?) {
-		binding.recipeDetailYieldsText.text = if (value != null) {
-			unit
-				?: resources.getQuantityText(
-					R.plurals.servings,
-					binding.recipeDetailYieldsValue.text.toString().getQuantityIntForPlurals()
-						?: binding.recipeDetailYieldsValue.hint.toString().getQuantityIntForPlurals()
-						?: 0
-				)
-		}
-		else {
-			resources.getQuantityText(
-				R.plurals.lots,
-				binding.recipeDetailYieldsValue.text.toString().getQuantityIntForPlurals()
-					?: binding.recipeDetailYieldsValue.hint.toString().getQuantityIntForPlurals()
-					?: 0
-			)
-		}
 	}
 
 	private fun shareRecipe(format: String) {
@@ -604,7 +811,7 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 		}
 	}
 
-	override fun openRecipe(refId: Long, yieldAmount: Double?, yieldUnit: String?) {
+	fun openRecipe(refId: Long, yieldAmount: Double?, yieldUnit: String?) {
 		startActivity(Intent(this, RecipeActivity::class.java).apply {
 			putExtra("RECIPE_ID", refId)
 			if (yieldAmount != null) {
@@ -612,12 +819,6 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 				putExtra("RECIPE_YIELD_UNIT", yieldUnit)
 			}
 		})
-	}
-
-	override fun scale(scaleFactor: Double) {
-		binding.root.clearFocus()
-		val oldYieldValue = binding.recipeDetailYieldsValue.hint.toString().parseLocalFormattedDouble() ?: 1.0
-		binding.recipeDetailYieldsValue.setText((oldYieldValue * scaleFactor).toStringForCooks(thousands = false))
 	}
 
 	override fun showAlarmDialog(minutes: Int) {
@@ -773,11 +974,6 @@ class RecipeActivity : AppCompatActivity(), IngredientTableAdapter.IngredientTab
 			}
 			else -> super.onOptionsItemSelected(item)
 		}
-	}
-
-	override fun onSaveInstanceState(outState: Bundle) {
-		outState.putString("YIELD_VALUE", binding.recipeDetailYieldsValue.text.toString())
-		super.onSaveInstanceState(outState)
 	}
 
 	override fun removePreparation(date: Date) {

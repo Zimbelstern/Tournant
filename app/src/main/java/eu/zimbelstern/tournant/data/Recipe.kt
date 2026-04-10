@@ -41,6 +41,10 @@ data class Recipe(
 	val preparations: MutableList<Date> = mutableListOf(),
 ) : Parcelable {
 
+	companion object {
+		fun createEmpty() = Recipe(title = "")
+	}
+
 	fun toRecipeWithIngredientsAndPreparations(): RecipeWithIngredientsAndPreparations =
 		RecipeWithIngredientsAndPreparations(
 			RecipeEntity(
