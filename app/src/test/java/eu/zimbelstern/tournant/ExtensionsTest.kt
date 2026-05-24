@@ -2,6 +2,7 @@ package eu.zimbelstern.tournant
 
 import android.text.SpannedString
 import androidx.core.text.toSpanned
+import eu.zimbelstern.tournant.data.Ingredient
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -38,6 +39,14 @@ class ExtensionsTest {
 				SpannedString(string).toSpanned().findTimeExpressions("to", "h", "min|minutes", "s").toList()
 			)
 		}
+	}
+
+	@Test
+	fun writeIngredientsToString() {
+		assertEquals("3 ml Milk", Ingredient(amount = 3.0, unit = "ml", item = "Milk").toStringForCooks(""))
+		assertEquals("3–4 ml Milk", Ingredient(amount = 3.0, amountRange = 4.0, unit = "ml", item = "Milk").toStringForCooks(""))
+		assertEquals("3–4 Milk", Ingredient(amount = 3.0, amountRange = 4.0, item = "Milk").toStringForCooks(""))
+		assertEquals("Milk", Ingredient(item = "Milk").toStringForCooks(""))
 	}
 
 }
