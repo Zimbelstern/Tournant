@@ -21,12 +21,15 @@ import eu.zimbelstern.tournant.parseLocalFormattedDoubleOrNull
 import eu.zimbelstern.tournant.separator
 import eu.zimbelstern.tournant.toStringForCooks
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -35,6 +38,9 @@ import java.util.Date
 class RecipeViewModel(application: TournantApplication, private val recipeId: Long) : AndroidViewModel(application) {
 
 	private val recipeRepository = application.recipeRepository
+
+	private val _uiEvents = Channel<UiEvent>(Channel.BUFFERED)
+	val uiEvents = _uiEvents.receiveAsFlow()
 
 	private val _recipeYieldValue = MutableStateFlow<Double?>(null)
 	private val _targetYieldValue = MutableStateFlow<Double?>(null)
@@ -63,6 +69,17 @@ class RecipeViewModel(application: TournantApplication, private val recipeId: Lo
 		}
 	}
 
+	private val _weighingModeOn = MutableStateFlow(false)
+	val weighingModeOn = _weighingModeOn.asStateFlow()
+	fun toggleWeighingMode() { _weighingModeOn.update { !it } }
+
+	val ingredientWeight = ingredientsScaled.map { ingredientLines ->
+		ingredientLines
+			.filterIsInstance<IngredientItem>()
+			.filter { it.isSelected }
+			.sumOf { it.ingredient.getMass() ?: 0.0 }
+	}
+
 	val recipe = recipeRepository.getRecipeById(recipeId)
 		.map {
 			it.toRecipe()
@@ -82,13 +99,39 @@ class RecipeViewModel(application: TournantApplication, private val recipeId: Lo
 			}
 		}
 
-	fun toggleChecked(id: Int) {
+	fun toggleChecked(position: Int) {
 		_ingredients.update { list ->
 			list.mapIndexed { i, ingredient ->
-				if (i == id && ingredient is IngredientItem)
-					ingredient.copy(isChecked = !ingredient.isChecked)
+				if (i == position && ingredient is IngredientItem) {
+					if (weighingModeOn.value) {
+						if (ingredient.ingredient.getMass() == null) {
+							viewModelScope.launch { _uiEvents.send(UiEvent.Shrug) }
+							ingredient
+						} else {
+							ingredient.copy(isSelected = !ingredient.isSelected)
+						}
+					} else {
+						ingredient.copy(isChecked = !ingredient.isChecked)
+					}
+				}
 				else
 					ingredient
+			}
+		}
+	}
+
+	fun toggleChecked(groupName: String) {
+		if (weighingModeOn.value) {
+			_ingredients.update { list ->
+				val groupSelectable = list.filterIsInstance<IngredientItem>()
+					.filter { it.ingredient.group == groupName }
+					.any { !it.isSelected && it.ingredient.getMass() != null }
+				list.mapIndexed { i, ingredient ->
+					if (ingredient is IngredientItem && ingredient.ingredient.group == groupName) {
+						ingredient.copy(isSelected = groupSelectable && ingredient.ingredient.getMass() != null)
+					} else
+						ingredient
+				}
 			}
 		}
 	}

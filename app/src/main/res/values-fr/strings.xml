@@ -169,6 +169,7 @@
     <string name="app_language">Langue de l\'application</string>
     <string name="from">de</string>
     <string name="until">à</string>
+    <string name="weigh">Peser</string>
     <string name="comma_separated">séparées par des virgules</string>
     <string name="keywords">Mots-clés</string>
 </resources>

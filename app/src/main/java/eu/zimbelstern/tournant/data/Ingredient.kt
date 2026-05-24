@@ -28,6 +28,15 @@ data class Ingredient(
 		fun createExamples(n: Int) = (1..n).map { createDummy(it) }
 	}
 
+	fun getMass() = when (unit) {
+		"g" -> amount
+		"kg" -> amount?.times(1000)
+		"oz" -> amount?.times(28.349523125)
+		else -> null
+	}
+
+	fun isMassKnown() = getMass() != null
+
 	fun removeEmptyValues() {
 		if (unit?.isBlank() == true) unit = null
 		if (item?.isBlank() == true) item = null

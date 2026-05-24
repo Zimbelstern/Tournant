@@ -36,6 +36,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -71,6 +72,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.RepeatOne
+import androidx.compose.material.icons.filled.Scale
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -111,6 +113,7 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -126,7 +129,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import androidx.core.widget.doOnTextChanged
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import coil3.load
 import coil3.request.addLastModifiedToFileCacheKey
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -482,6 +487,16 @@ class RecipeActivity : AppCompatActivity(), InstructionsTextAdapter.Instructions
 		}
 
 		lifecycleScope.launch {
+			repeatOnLifecycle(Lifecycle.State.STARTED) {
+				viewModel.uiEvents.collect { event ->
+					when (event) {
+						UiEvent.Shrug -> Toast.makeText(this@RecipeActivity, "\uD83E\uDD37", Toast.LENGTH_SHORT).show()
+					}
+				}
+			}
+		}
+
+		lifecycleScope.launch {
 			viewModel.recipeDates.collectLatest { (created, modified) ->
 				created?.let {
 					binding.recipeDetailCreated.visibility = View.VISIBLE
@@ -535,6 +550,7 @@ class RecipeActivity : AppCompatActivity(), InstructionsTextAdapter.Instructions
 	fun IngredientCard(recipe: Recipe) {
 		TournantCard(marginEnd = 16.dp, marginBottom = 16.dp) {
 			val textMeasurer = rememberTextMeasurer()
+			val weighingModeOn by viewModel.weighingModeOn.collectAsState(false)
 			Column {
 				Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
 					Text(
@@ -591,10 +607,12 @@ class RecipeActivity : AppCompatActivity(), InstructionsTextAdapter.Instructions
 					IngredientList(
 						items,
 						Modifier.weight(1f),
-						textMeasurer
+						textMeasurer,
+						weighingModeOn
 					)
 					Column(
-						verticalArrangement = Arrangement.spacedBy(8.dp)
+						verticalArrangement = Arrangement.spacedBy(8.dp),
+						horizontalAlignment = Alignment.End
 					) {
 						TournantRoundedIconButton(
 							icon = Icons.Default.ContentCopy,
@@ -613,6 +631,16 @@ class RecipeActivity : AppCompatActivity(), InstructionsTextAdapter.Instructions
 							},
 							contentDescription = stringResource(R.string.copy_to_clipboard)
 						)
+						TournantRoundedIconButton(
+							icon = Icons.Default.Scale,
+							onClick = { viewModel.toggleWeighingMode() },
+							contentDescription = stringResource(R.string.weigh),
+							isDark = weighingModeOn
+						)
+						val weight by viewModel.ingredientWeight.collectAsState(0.0)
+						if (weighingModeOn) {
+							Text("${weight.toStringForCooks()} g", overflow = TextOverflow.Visible, softWrap = false)
+						}
 					}
 				}
 			}
@@ -623,7 +651,8 @@ class RecipeActivity : AppCompatActivity(), InstructionsTextAdapter.Instructions
 	fun IngredientList(
 		items: List<IngredientLine>,
 		modifier: Modifier = Modifier,
-		textMeasurer: TextMeasurer = rememberTextMeasurer()
+		textMeasurer: TextMeasurer = rememberTextMeasurer(),
+		weighMode: Boolean
 	) {
 		val amountMaxWidth = with(LocalDensity.current) {
 			items.filterIsInstance<IngredientItem>().maxOfOrNull {
@@ -639,12 +668,15 @@ class RecipeActivity : AppCompatActivity(), InstructionsTextAdapter.Instructions
 					is IngredientGroupTitle -> Text(
 						text = item.title ?: "",
 						style = MaterialTheme.typography.caption,
-						modifier = Modifier.padding(bottom = 4.dp)
+						modifier = Modifier.padding(bottom = 4.dp).clickable {
+							item.title?.let { viewModel.toggleChecked(it) }
+						},
 					)
 					is IngredientItem -> IngredientDisplay(
 						item = item,
 						id = i,
-						amountMaxWidth = amountMaxWidth ?: 0.dp
+						amountMaxWidth = amountMaxWidth ?: 0.dp,
+						weighMode
 					)
 				}
 			}
@@ -654,19 +686,19 @@ class RecipeActivity : AppCompatActivity(), InstructionsTextAdapter.Instructions
 	@Preview(showBackground = true)
 	@Composable
 	fun IngredientListPreview() {
-		IngredientList(Ingredient.createExamples(3).mapIndexed { i, ingredient -> IngredientItem(ingredient, i % 2 == 1) })
+		IngredientList(Ingredient.createExamples(3).mapIndexed { i, ingredient -> IngredientItem(ingredient, i % 2 == 1) }, weighMode = false)
 	}
 
 	@OptIn(ExperimentalFoundationApi::class)
 	@Composable
-	fun IngredientDisplay(item: IngredientItem, id: Int, amountMaxWidth: Dp) {
+	fun IngredientDisplay(item: IngredientItem, id: Int, amountMaxWidth: Dp, weighMode: Boolean) {
 		val interactionSource = remember { MutableInteractionSource() }
 		var dialogVisible by remember { mutableStateOf(false) }
 		var value by remember { mutableStateOf(TextFieldValue("")) }
 
 		Row(
 			Modifier
-				.alpha(if (item.isChecked) ContentAlpha.disabled else 1f)
+				.alpha(if (weighMode && item.isSelected || !weighMode && item.isChecked) ContentAlpha.disabled else 1f)
 				.padding(vertical = 2.dp)
 				.combinedClickable(
 					onClick = { viewModel.toggleChecked(id) },
@@ -704,7 +736,7 @@ class RecipeActivity : AppCompatActivity(), InstructionsTextAdapter.Instructions
 				} else {
 					append(baseItemString)
 				}
-				if (item.isChecked) {
+				if (!weighMode && item.isChecked) {
 					withStyle(SpanStyle(fontSize = 14.sp, baselineShift = BaselineShift(0.1f))) {
 						append(" ✓")
 					}
