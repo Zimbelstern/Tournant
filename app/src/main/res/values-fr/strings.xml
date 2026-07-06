@@ -173,6 +173,6 @@
     <string name="comma_separated">séparées par des virgules</string>
     <string name="keywords">Mots-clés</string>
     <string name="amount">Quantité</string>
-    <string name="pin">Attacher</string>
-    <string name="unpin">Détacher</string>
+    <string name="pin">Épingler</string>
+    <string name="unpin">Désépingler</string>
 </resources>
