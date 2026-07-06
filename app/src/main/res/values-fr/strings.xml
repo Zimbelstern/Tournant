@@ -12,12 +12,13 @@
     <string name="category">Catégorie</string>
     <string name="cuisine">Cuisine</string>
     <string name="ingredients">Ingrédients</string>
+	<string name="amount">Quantité</string>
     <string name="webpage">Page web</string>
     <string name="yield">pour</string>
     <plurals name="lots">
-        <item quantity="one">lot</item>
-        <item quantity="many">lots</item>
-        <item quantity="other">lots</item>
+        <item quantity="one">part</item>
+        <item quantity="many">parts</item>
+        <item quantity="other">parts</item>
     </plurals>
     <string name="no_recipes_found">Aucune recette trouvée</string>
     <string name="unknown_file_error">Erreur de fichier inconnue : %s</string>
