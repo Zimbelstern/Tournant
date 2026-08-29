@@ -152,7 +152,7 @@ abstract class RecipeDao {
 	abstract fun getAllKeywords(): Flow<List<String>>
 
 	@Query("""
-		SELECT category AS string, COUNT(*) AS count
+		SELECT category AS string, COUNT(DISTINCT recipe.id) AS count
 		FROM recipe
 		LEFT JOIN keyword ON recipeId = recipe.id
 		WHERE (title LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%' OR category LIKE '%' || :query || '%' OR cuisine LIKE '%' || :query || '%' OR keyword LIKE '%' || :query || '%')
@@ -162,7 +162,7 @@ abstract class RecipeDao {
 	abstract fun getCategories(query: String): Flow<List<StringAndCount>>
 
 	@Query("""
-		SELECT cuisine AS string, COUNT(*) AS count
+		SELECT cuisine AS string, COUNT(DISTINCT recipe.id) AS count
 		FROM recipe
 		LEFT JOIN keyword ON recipeId = recipe.id
 		WHERE (title LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%'  OR category LIKE '%' || :query || '%' OR cuisine LIKE '%' || :query || '%' OR keyword LIKE '%' || :query || '%')
@@ -172,7 +172,7 @@ abstract class RecipeDao {
 	abstract fun getCuisines(query: String): Flow<List<StringAndCount>>
 
 	@Query("""
-		SELECT keyword AS string, COUNT(*) AS count
+		SELECT keyword AS string, COUNT(DISTINCT recipe.id) AS count
 		FROM recipe
 		LEFT JOIN keyword ON recipeId = recipe.id
 		WHERE (title LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%'  OR category LIKE '%' || :query || '%' OR cuisine LIKE '%' || :query || '%' OR keyword LIKE '%' || :query || '%')
