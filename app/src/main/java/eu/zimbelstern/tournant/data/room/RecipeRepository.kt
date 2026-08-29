@@ -163,6 +163,10 @@ class RecipeRepository(private val dao: RecipeDao) {
 				}
 			}
 			it.ingredients.forEach { ingredient -> dao.insertIngredient(ingredient) }
+			it.keywords.forEach { kw ->
+				kw.recipeId = it.recipe.id
+				dao.insertKeyword(kw)
+			}
 		}
 
 		return recipes
