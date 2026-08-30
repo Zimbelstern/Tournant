@@ -97,8 +97,8 @@ data class Recipe(
 		if (preptime == 0) preptime = null
 		if (yieldUnit?.isBlank() == true) yieldUnit = null
 		if (yieldValue == 0.0) yieldValue = if (yieldUnit != null) 1.0 else null
-		if (instructions?.isBlank() == true) category = null
-		if (notes?.isBlank() == true) category = null
+		if (instructions?.isBlank() == true) instructions = null
+		if (notes?.isBlank() == true) notes = null
 		modified = Date()
 	}
 
