@@ -162,4 +162,5 @@
     <string name="amount">量</string>
     <string name="pin">置顶</string>
     <string name="unpin">取消置顶</string>
+    <string name="weigh">称重</string>
 </resources>
