@@ -182,4 +182,5 @@
     <string name="pin">Закріпити</string>
     <string name="unpin">Відкріпити</string>
     <string name="amount">Кількість</string>
+    <string name="weigh">Зважування</string>
 </resources>
