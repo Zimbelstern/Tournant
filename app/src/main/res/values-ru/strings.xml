@@ -180,4 +180,5 @@
     <string name="pin">Закрепить</string>
     <string name="unpin">Открепить</string>
     <string name="comma_separated">через запятую</string>
+    <string name="weigh">Взвесить</string>
 </resources>
