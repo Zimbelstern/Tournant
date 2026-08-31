@@ -177,4 +177,8 @@
     <string name="supported_languages">Obsługiwane języki</string>
     <string name="all_languages">Wszystkie języki</string>
     <string name="comma_separated">oddzielone przecinkami</string>
+    <string name="weigh">Waga</string>
+    <string name="amount">Ilość</string>
+    <string name="pin">Przypnij</string>
+    <string name="unpin">Odepnij</string>
 </resources>
