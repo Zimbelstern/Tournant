@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="muffins">Muffinid</string>
+    <string name="pastries">Küpsetised</string>
+    <string name="american">Ameerika</string>
+    <string name="yield_muffins">muffineid</string>
+    <string name="g">g</string>
+    <string name="ml">ml</string>
+    <string name="tsp">sl</string>
+    <string name="eggs">keskmiseid mune</string>
+    <string name="vegetable_oil">oliivõli</string>
+    <string name="milk">piima</string>
+    <string name="sugar">suhkurt</string>
+    <string name="flour">jahu</string>
+    <string name="baking_powder">küpsetuspulbrit</string>
+    <string name="salt">soola</string>
+    <string name="chocolate_chips">šokolaadilaaste</string>
+    <string name="pretzels">Väikesed kringlid</string>
+    <string name="croissants">Sarvesaiad</string>
+    <string name="sample_modifications">Šokolaadimuffinite jaoks asenda 100 grammi jahu 100 grammi kakaopulbriga.</string>
+    <string name="dessert">Magustoit</string>
+    <string name="tiramisu">Tiramisu</string>
+    <string name="panna_cotta">Panna cotta</string>
+    <string name="german">Saksa</string>
+    <string name="french">Prantsuse</string>
+    <string name="italian">Itaalia</string>
+    <string name="sample_instructions">1. Kuumuta ahi eelnevalt 200 °C-ni (400 °F).\n2. Vahusta mune kergelt 1 minuti jooksul.\n3. Lisa õli ja piim ning vahusta, kuni need on ühtlaselt segunenud. Seejärel lisa suhkur ja sega, kuni saad ühtlase taigna.\n4. Sõelu juurde jahu, küpsetuspulber ja sool ning sega ettevaatlikult, kuni segu on ühtlane.\n5. Sega sisse šokolaaditükid.\n6. Täida muffinivormid kahe kolmandiku ulatuses ja küpseta 20–25 minutit. Kui torkad keskele tiku, peaks see välja võttes olema puhas.\n7. Lase muffinitel vormis paar minutit jahtuda, seejärel tõsta need restile õhkama.</string>
+</resources>

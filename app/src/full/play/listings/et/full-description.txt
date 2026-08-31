@@ -1,0 +1,13 @@
+Tournantist leiad oma Androidi seadmes oma lemmikroad!
+
+**Funktsionaalsused**
+📝 Lisa ja muuda retsepte (kasuta Markdown-vormingu tuge)
+💡 Lisa koostisosi, koostisosade gruppe ja seotud retsepte
+🔍 Otsi retsepte ja kategooriaid ning järjesta tulemusi eri viisil
+🧰 Muuda retsepti mahtu, käivita mugavalt taimereid, logi oma toiduvalmistamise ajalugu ja kasuta muid asjalikke tarvikuid
+📦 Ekspordi ja jaga retsepte oma sõpradega kas JSON- või ZIP-failidena või kasuta Gourmandi XML-vormingut
+
+Tournant ühildub töölauarakendusega Gourmand Recipe Manager (varasema nimega Gourmet). Toimib importimine, eksportimine ja sünkroonimine Gourmandi XML-failiga.
+
+**Juhendid leiad meie veebisaidist**
+https://tournant.zimbelstern.eu

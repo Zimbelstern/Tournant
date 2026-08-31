@@ -168,4 +168,5 @@
     <string name="amount">Kogus</string>
     <string name="pin">Tõsta esile</string>
     <string name="unpin">Lõpeta esiletõstmine</string>
+    <string name="weigh">Kaalu</string>
 </resources>
