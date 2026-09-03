@@ -155,4 +155,23 @@
         <item quantity="many">%s e %d altre ricetta importati</item>
         <item quantity="other">%s e %d altre ricetta importati</item>
     </plurals>
+    <string name="keywords">Parole chiave</string>
+    <string name="season">Stagione</string>
+    <string name="amount">Quantità</string>
+    <string name="log_preparation">Preparazione archiviazione</string>
+    <string name="logbook">Registro cambiamenti</string>
+    <string name="pin">Fissa</string>
+    <string name="unpin">Non fissare più</string>
+    <string name="light">Chiaro</string>
+    <string name="dark">Scuro</string>
+    <string name="reset">Ripristina</string>
+    <string name="menu">Menù</string>
+    <string name="to">a</string>
+    <string name="from">da</string>
+    <string name="until">fino a</string>
+    <string name="weigh">Pesa</string>
+    <string name="app_language">Lingua dell\'app</string>
+    <string name="supported_languages">Lingue supportate</string>
+    <string name="all_languages">Tutte le lingue</string>
+    <string name="comma_separated">separati da una virgola</string>
 </resources>
