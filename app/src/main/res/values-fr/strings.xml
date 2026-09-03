@@ -80,16 +80,16 @@
     <string name="share_selected">Partager sélectionné</string>
     <string name="export_selected">Exporter sélectionné</string>
     <string name="delete_selected">Supprimer sélectionné</string>
-    <string name="delete_selected_sure_named">Ceci effacera définitivement %s de la base de données. Êtes-vous sûr ?</string>
+    <string name="delete_selected_sure_named">Ceci effacera définitivement %s de la base de données. Êtes-vous sûr·e ?</string>
     <string name="dependent_recipes">Recettes dépendantes</string>
     <string name="dependent_recipes_found">La sélection contient une ou plusieurs recettes qui sont utilisées dans d\'autres recettes. Vous devez résoudre ces dépendances ou les supprimer également.\nRecettes dépendantes : %s</string>
     <string name="share_all">Tout partager</string>
     <string name="export_all">Tout exporter</string>
     <string name="select_all">Tout sélectionner</string>
     <plurals name="delete_selected_sure">
-        <item quantity="one">Ceci effacera définitivement une recette de la base de données. Êtes-vous sûr ?</item>
-        <item quantity="many">Ceci effacera définitivement %d recettes de la base de données. Êtes-vous sûr ?</item>
-        <item quantity="other">Ceci effacera définitivement %d recettes de la base de données. Êtes-vous sûr ?</item>
+        <item quantity="one">Ceci effacera définitivement une recette de la base de données. Êtes-vous sûr·e ?</item>
+        <item quantity="many">Ceci effacera définitivement %d recettes de la base de données. Êtes-vous sûr·e ?</item>
+        <item quantity="other">Ceci effacera définitivement %d recettes de la base de données. Êtes-vous sûr·e ?</item>
     </plurals>
     <string name="mode">Mode</string>
     <string name="mode_standalone">Autonome</string>
@@ -165,7 +165,7 @@
     <string name="menu">Menu</string>
     <string name="season">Saison</string>
     <string name="all_languages">Toutes les langues</string>
-    <string name="supported_languages">Langues supportées</string>
+    <string name="supported_languages">Langues prises en charge</string>
     <string name="app_language">Langue de l\'application</string>
     <string name="from">de</string>
     <string name="until">à</string>
