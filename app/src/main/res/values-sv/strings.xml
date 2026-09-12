@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="rating">Betyg</string>
     <string name="checked">valt</string>
     <plurals name="servings">
@@ -17,7 +17,7 @@
     <string name="type_or_tap_to_search">Skriva eller tryck for att söka …</string>
     <string name="cancel">Avbryt</string>
     <string name="recipes">Recept</string>
-	<string name="category">Kategori</string>
+    <string name="category">Kategori</string>
     <string name="cuisine">Kök</string>
     <string name="cooktime">Koktid</string>
     <string name="preptime">Beredningstid</string>
@@ -46,4 +46,127 @@
         <item quantity="other">enheter</item>
     </plurals>
     <string name="website">Nätsida</string>
+    <string name="mode">Läge</string>
+    <string name="mode_standalone">Fristående</string>
+    <string name="mode_standalone_description_short">Fristående: egen databas med möjlighet att redigera recept</string>
+    <string name="mode_standalone_description_long">Tournant skapar en egen databas för dina recept. Du kan importera recept från XML-filer. Recept kan redigeras (under utveckling).</string>
+    <string name="mode_synced">Synkroniserad</string>
+    <string name="mode_synced_description_short">Synkroniserad: alltid synkron med en XML-fil (skrivskyddad)</string>
+    <string name="mode_synced_description_long">Tournant hålls synkroniserat med en XML-fil på din enhet. Redigering av recept är inaktiverad eftersom den skulle skapa konflikter och Gourmand saknar för närvarande en synkroniseringsfunktion för att lösa dem.</string>
+    <string name="change_synced_file">Byt synkroniserad fil</string>
+    <string name="change_mode_explanation">Du kan ändra läget i inställningarna.</string>
+    <string name="import_recipes">Importera recept</string>
+    <string name="synced_file">Synkroniserad Gourmand XML-fil</string>
+    <string name="search">Sök</string>
+    <string name="be_careful">Var försiktig</string>
+    <string name="delete_all_recipes">Ta bort alla recept</string>
+    <string name="delete_all_recipes_sure">Detta raderar <b>alla importerade recept</b> permanent från databasen. Är du säker?</string>
+    <string name="done">Klar</string>
+    <string name="importing_only_in_standalone_mode">Import fungerar bara i fristående läge</string>
+    <string name="file_not_changed">Den synkroniserade filen har inte ändrats</string>
+    <string name="recipe_count" tools:ignore="UnusedResources">Antal recept</string>
+    <string name="refresh">Uppdatera</string>
+    <string name="share_selected">Dela valda</string>
+    <string name="export_selected">Exportera valda</string>
+    <string name="delete_selected">Ta bort valda</string>
+    <string name="delete_selected_sure_named">Detta raderar %s permanent från databasen. Är du säker?</string>
+    <string name="dependent_recipes">Beroende recept</string>
+    <string name="dependent_recipes_found">Urvalet innehåller ett eller flera recept som används i andra recept. Du måste lösa dessa beroenden eller även radera dem.\nBeroende recept: %s</string>
+    <string name="share_all">Dela alla</string>
+    <string name="export_all">Exportera alla</string>
+    <string name="select_all">Markera alla</string>
+    <string name="add_to_selection">Lägg till i urvalet</string>
+    <string name="recipe">Recept</string>
+    <string name="title">Titel</string>
+    <string name="unit">Enhet</string>
+    <string name="ingredient">Ingrediens</string>
+    <string name="group">Grupp</string>
+    <plurals name="delete_selected_sure">
+        <item quantity="one">Detta raderar ett recept permanent från databasen. Är du säker?</item>
+        <item quantity="other">Detta raderar %d recept permanent från databasen. Är du säker?</item>
+    </plurals>
+    <string name="new_recipe">Nytt recept</string>
+    <string name="import_export">Gourmand-kompatibilitet</string>
+    <string name="use_comma_as_decimal_separator">Använd komma som decimalavgränsare vid import och export</string>
+    <string name="remove">Ta bort</string>
+    <string name="options">Alternativ</string>
+    <string name="inspiration">Söker du inspiration?</string>
+    <string name="edit">Redigera</string>
+    <string name="save">Spara</string>
+    <string name="add_photo">Lägg till foto</string>
+    <string name="remove_photo">Ta bort foto</string>
+    <string name="unset_rating">Ta bort betyg</string>
+    <string name="make_optional">Gör valfri</string>
+    <string name="make_mandatory">Gör obligatorisk</string>
+    <plurals name="n_recipes" tools:keep="@plurals/n_recipes">
+        <item quantity="one">%d recept</item>
+        <item quantity="other">%d recept</item>
+    </plurals>
+    <string name="share">Dela</string>
+    <string name="all_recipes">Alla recept</string>
+    <string name="no_suitable_application">Ingen lämplig app</string>
+    <string name="copy_to_clipboard">Kopiera till urklipp</string>
+    <string name="copied_to_clipboard">Kopierat till urklipp</string>
+    <string name="reset">återställ</string>
+    <string name="to">till</string>
+    <string name="scale_to">Skala till</string>
+    <string name="sort_by">Sortera efter</string>
+    <string name="totaltime">Total tid</string>
+    <string name="database_id" tools:ignore="UnusedResources">Databas-ID</string>
+    <string name="instructions_length">Instruktionernas längd</string>
+    <string name="ingredients_count">Antal ingredienser</string>
+    <string name="ascending">Stigande</string>
+    <string name="descending">Fallande</string>
+    <string name="timer_set">Timern är inställd på %s</string>
+    <string name="hours_for_regex">(timme)|(timmar)</string>
+    <string name="minutes_for_regex">(minut)|(minuter)</string>
+    <string name="seconds_for_regex">(sekund)|(sekunder)</string>
+    <string name="description">Beskrivning</string>
+    <string name="limitations">Begränsningar</string>
+    <string name="missing_features_gourmand">Följande receptegenskaper stöds inte av Gourmand:\n%s</string>
+    <string name="json_file">JSON-fil (rekommenderas)</string>
+    <string name="archive_original_images">Arkiv med originalbilder</string>
+    <string name="gourmand_file">Gourmand XML-fil</string>
+    <string name="markdown_support">Stöd för Markdown</string>
+    <string name="translations">Översättningar</string>
+    <string name="set_alarm">Ställ alarm</string>
+    <string name="set_timer">Ställ timer</string>
+    <string name="recipe_imported">%s importerades</string>
+    <plurals name="recipes_imported">
+        <item quantity="one">%s och ett annat recept importerades</item>
+        <item quantity="other">%s och %d andra recept importerades</item>
+    </plurals>
+    <string name="created">Skapad</string>
+    <string name="creation_date">Skapandedatum</string>
+    <string name="modified">Ändrad</string>
+    <string name="modification_date">Ändringsdatum</string>
+    <string name="preparations_count">Antal tillagningar</string>
+    <string name="prepared_on">Tillagad den</string>
+    <string name="last_prepared">Senast tillagad</string>
+    <string name="log_preparation">Logga tillagning</string>
+    <string name="logbook">Loggbok</string>
+    <plurals name="prepared_times">
+        <item quantity="one">Tillagad en gång</item>
+        <item quantity="other">Tillagad %d gånger</item>
+    </plurals>
+    <string name="last_time">Senast: %s</string>
+    <string name="auto_follow_system">Automatiskt (följ systemet)</string>
+    <string name="light">Ljust</string>
+    <string name="dark">Mörkt</string>
+    <string name="language">Språk</string>
+    <string name="gourmand165">Flyttal som portionsvärde (Gourmand-ärende nr 165)</string>
+    <string name="menu">Meny</string>
+    <string name="keywords">Nyckelord</string>
+    <string name="season">Säsong</string>
+    <string name="from">från</string>
+    <string name="until">till</string>
+    <string name="app_language">Appspråk</string>
+    <string name="supported_languages">Språk som stöds</string>
+    <string name="all_languages">Alla språk</string>
+    <string name="comma_separated">kommaseparerad</string>
+    <string name="amount">Mängd</string>
+    <string name="pin">Fäst</string>
+    <string name="unpin">Lossa</string>
+    <string name="n_selected">%d valda</string>
+    <string name="weigh">Väg</string>
 </resources>
